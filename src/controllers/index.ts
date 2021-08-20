@@ -1,0 +1,445 @@
+import { IStateBackground, IRedux, IStateLink, IDelegated } from '../interfaces'
+import Config from '../config'
+
+// layouts
+
+export const LAYOUT_CENTERED = 'LAYOUT_CENTERED'
+export const LAYOUT_CENTERED_NO_SCROLL = 'LAYOUT_CENTERED_NO_SCROLL'
+export const LAYOUT_MINI_DRAWER_CONTENT = 'LAYOUT_MINI_DRAWER_CONTENT'
+export const LAYOUT_TABLE_VIRTUALIZED = 'LAYOUT_TABLE_VIRTUALIZED'
+export const LAYOUT_DEFAULT = 'LAYOUT_DEFAULT'
+export const LAYOUT_NONE = 'LAYOUT_NONE'
+
+// content types
+
+export const APP_CONTENT_FORM = '$form'
+export const APP_CONTENT_WEBAPP = '$webapp'
+export const APP_CONTENT_VIEW = '$view'
+export const APP_CONTENT_HTML = '$html'
+
+// miscellanous
+
+export const DEFAULT = 'DEFAULT'
+
+/**
+ * If a callback is required for a link or button but is not defined, then this
+ * method will provide a dummy one.
+ */
+export function getDudEventCallback () {
+  return (e: any) => { }
+}
+
+/**
+ * If a callback is required for a link or button but is not defined, then this
+ * method will provide a dummy one.
+ */
+export function dummyCallback (redux: IRedux) {
+  return (e: any) => { }
+}
+
+/**
+ * If a link was not provided a callback, this one should be called
+ * automatically.
+ *
+ * The app page will be updated based on the URL change triggered by the link.
+ */
+export function defaultCallback ({store, actions, route}:IRedux) {
+  return (e: any) => {
+    if (route) {
+      store.dispatch(actions.app.urlUpdatePage(route))
+    }
+  }
+}
+
+/**
+ * Get data from the parent component state.
+ * 
+ * @param delegation 
+ * @param key 
+ */
+export function delegatedState(delegation: IDelegated, key?: string) {
+  try {
+    if (key) {
+      return delegation.state[key]
+    } else if (delegation.state) {
+      return delegation.state
+    }
+  } catch (e) {
+    // TODO Display this error in the error table view
+  }
+  return null
+}
+
+/**
+ * Get the `setState()` function of the parent component.
+ *
+ * @param delegation
+ */
+export function delegatedSetState(delegation: IDelegated) {
+  return delegation.setState || getDudEventCallback()
+}
+
+/**
+ * Format a string value to be compared to a string constant.
+ *
+ * We need a way to format a string value so that it can be compared or
+ * be equivalent to the value of a string constant.
+ * Generally, the value of a string constant should be all uppercase.
+ */
+export function toConstantStr(value: string) {
+  return value.trim().toUpperCase()
+}
+
+/**
+ * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
+ * element.
+ *
+ * e.g.
+ * 
+ * ```tsx
+ * const iconDefinition = '<icon_type>, <icon_name>'
+ * const validIconArgument = getFontAwesomeIconProp(iconDefinition)
+ *
+ * <FontAwesomeIcon icon={validIconArgument} />
+ * ```
+ *
+ * Icon types are, "fas, far, fab"
+ *
+ * @param iconDef 
+ */
+export function getFontAwesomeIconProp(iconDef: string): string[]|string {
+  const pieces = iconDef.replace(/\s+/,'').split(',')
+  if (pieces.length === 2) {
+    return pieces
+  } else if (pieces.length === 1) {
+    return ['fas', iconDef]
+  }
+  throw new Error('bad icon definition. Check your JSON.')
+}
+
+/**
+ * Applies background style in a way that preserves other styles
+ *
+ * This is done by merging.
+ *
+ * @param css 
+ * @param background 
+ */
+export function getBackgroundCss(background?: IStateBackground): string | number | undefined {
+  if (background) {
+    switch (background.type) {
+    case 'color':
+    case 'gradient':
+    case 'image':
+      return background.value
+    case 'none':
+      return 'none'
+    }
+  }
+  return 'inherit'
+}
+
+/**
+ * Use this method to convert an array (of objects) to an object containing
+ * nested objects.
+ *
+ * The array must contain entities object. This means, every single object
+ * within the array have the same properties.
+ * Then, you must choose an existing property of the entities as the key
+ * which will be used to access the object.
+ *
+ * e.g.
+ *  var array = [ {_id: 'abc'}, {_id: 'abcd'} ]
+ *
+ * using:
+ *  var object = arrayToObject(array, '_id')
+ *
+ * yields:
+ *  object = { abc: {_id: 'abc'}, abcd: {_id: 'abcd'} }
+ *
+ * @param array 
+ * @param key 
+ */
+export function arrayToEntities(array: any[], key: string) {
+  if (key in array[0]) {
+    const object: any = {}
+    for (const obj of array) {
+      object[obj[key]] = obj
+    }
+    return object
+  }
+  return null
+}
+
+/**
+ * Get viewport size.
+ *
+ * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
+ */
+export function getViewportSize()
+{
+  let e: any = window, a = 'inner'
+  if ( !( 'innerWidth' in window ) ) {
+    a = 'client';
+    e = document.documentElement || document.body;
+  }
+  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+}
+
+/**
+ * Get a height in pixels that can help you strech an HTML element vertically
+ * to fit the remaining screen space.
+ *
+ * @param bottom margin between the bottom of the viewport and the streched
+ *               element.
+ *               e.g. How much space do you want between the bottom of the
+ *                    viewport and your element
+ */
+export function stretchToBottom(bottom: number) {
+  const height = getViewportSize().height
+
+  return height - bottom
+}
+
+/**
+ * Get the query string part of a URI.
+ *
+ * e.i with http://domain.com?page=1
+ *     you will get the "?page=1" part
+ *
+ * @param uri
+ */
+export function getUriQuery(uri: string) {
+  const i = uri.indexOf('?')
+  if (i > 3) {
+    return uri.substring(i)
+  }
+  return ''
+}
+
+
+/**
+ * Removes leading and ending forward and back slashes.
+ *
+ * @param str 
+ */
+export function trimSlashes(str: string) {
+  let s = str
+  while(s.charAt(0) === '/' || s.charAt(0) === '\\')
+  {
+    s = s.substring(1);
+  }
+  while (s.charAt(s.length - 1) === '/' || s.charAt(s.length - 1) === '\\')
+  {
+    s = s.substring(0, s.length - 1)
+  }
+  return s
+}
+
+/**
+ * Extracts the endpoint from the pathname.
+ *
+ * The pathname can include a query string e.g. `name1/name2?q=123`
+ *
+ * This function will not work with whole URL that includes the domain name
+ * and/or the protocol.
+ *
+ * @param pathname 
+ */
+export function getEndpoint(pathname: string) {
+  let pname = trimSlashes(pathname);
+  const argsIndex = pathname.indexOf('?')
+  if (argsIndex >= 0) {
+    pname = pathname.substring(0, argsIndex)
+  }
+  const params = pname.split(/\/|\\/)
+
+  return params[params.length - 1]
+}
+
+/**
+ * Find nested values in object using a string of dot-separated object keys.
+ *
+ * e.i.
+ * ```ts
+ * const obj = {
+ *    account: {
+ *      user: {
+ *        lastname: 'Foo'
+ *      }
+ *    }
+ * };
+ * const lastname = getVal(obj, 'account.user.lastname')
+ * ```
+ *
+ * @param obj 
+ * @param path dot-separated object (nested) keys
+ */
+export function getVal(obj: any, path: string) {
+  const paths = path.split('.')
+  let o = { ...obj },
+      candidate: any,
+      i = 0
+  do {
+    let key = paths[i]
+    candidate = o[key]
+    if (!candidate) {
+      break
+    } else if (i >= paths.length - 1) {
+      return candidate
+    }
+    o = candidate
+    i++
+  } while (i < paths.length)
+
+  return null
+}
+
+/**
+ * Adds a new property and value to an object.
+ *
+ * @param data an object
+ * @param prop new property name of object
+ * @param val the value at that object property
+ */
+const createWritableProperty = (data: any, prop: string, val: any) => {
+  Object.defineProperty(data, prop, {
+    value: val,
+    writable: true
+  })
+}
+
+/**
+ * Set a value within an object.
+ *
+ * @param obj arbitrary object
+ * @param path dot-separated list of properties
+ *              e.g. "pagination.users.limit"
+ * @param val value to be assigned
+ *
+ * @todo NOT TESTED, please test
+ */
+export function setVal(obj: any, path: string, val: any) {
+  const propArray = path.split('.')
+  let o = obj,
+      candidate: any,
+      j = 0
+
+  do {
+    let prop = propArray[j]
+    candidate = o[prop]
+
+    // if this is the last property
+    if (j >= (propArray.length - 1)) {
+      createWritableProperty(o, prop, val)
+      return
+
+    // if the property does not exist but a value was provided
+    } else if (!candidate) {
+      createWritableProperty(o, prop, {})
+    }
+
+    o = o[prop]
+    j++
+  } while (1)
+}
+
+/**
+ * Format routes
+ *
+ * **dev**
+ * This function was created because I did not want to be force to include
+ * the starting forwardslash in the route when defining buttons and links.
+ * I believe it is much cleaner (in terms of naming convension) to keep the
+ * forwardslash out of the definition.
+ * Although an entire function is not necessary but you never know, the
+ * route formatting process might grow in complexity in the furture.
+ *
+ * @todo This function could be moved to `links.controller.ts` file once it is
+ *       created OR if there is a need to create it.
+ *
+ * @param route
+ */
+export function getFormattedRoute(def: IStateLink, href?: string) {
+  const has = def.has || {}
+  const route = has.route
+  if (route) {
+    return route.charAt(0) !== '/' ? `/${route}` : route
+  }
+  return href || ''
+}
+
+/**
+ * Converts an endpoint which contains hyphens to a camel case
+ * version.
+ *
+ * @param endpoint
+ */
+export function camelize(endpoint: string) {
+  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase())
+}
+
+/**
+ * Generates a mongodb ObjectId
+ *
+ * @see https://gist.github.com/solenoid/1372386
+ */
+export function mongoObjectId() {
+  const timestamp = (new Date().getTime() / 1000 | 0).toString(16)
+  return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function() {
+      return (Math.random() * 16 | 0).toString(16)
+  }).toLowerCase()
+}
+
+/**
+ * Safely get a value from the given object.
+ *
+ * This function will prevent exceptions or catch them so they can be store and
+ * viewed later without crashing the app.
+ *
+ * @param obj 
+ * @param path an existing property of object
+ * @param _default value to return if `obj[key]` is undefined
+ */
+export function safelyGet(obj: any, path: string, _default?: any) {
+  const value = getVal(obj, path)
+
+  if (value !== null) { 
+    return value
+  }
+
+  if (Config.DEBUG) {
+    // TODO implement logic to save the error here so that it can be viewed later
+    // e.g. Create a view where all error that occurred in the app will be displayed
+    //      in a table
+  }
+
+  if (_default) {
+    return _default
+  }
+
+  return null
+}
+
+/**
+ * Given a URL, it will return the content as a string.
+ *
+ * Note: This function is NOT used anywhere. Most likely, it is safe to remove.
+ *
+ * @param theUrl 
+ *
+ * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
+ */
+export function httpGet(theUrl: string)
+{
+  // code for IE7+, Firefox, Chrome, Opera, Safari
+  const xmlhttp = new XMLHttpRequest()
+
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+      return xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET", theUrl, false);
+  xmlhttp.send();    
+}
