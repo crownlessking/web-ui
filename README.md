@@ -1,9 +1,13 @@
 
 # web-ui
-Define a web interface for an API using JSON or javaScript object literals.
+
+The purpose of this project is to quickly put together a single-page web app for an arbitrary REST API located at a specific URL.
+With _web-ui_ you can put together several forms (as a single-page app) to gather information which can then be sent to your API.
+
+Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
 
 ## First things first
-Give the web interface the URL at which your server is located. In the `index.html` file, do:
+Give your app the URL at which your API is located. In the `index.html` file, do:
 
 ```html
 <html>
@@ -18,10 +22,10 @@ Give the web interface the URL at which your server is located. In the `index.ht
 </html>
 ```
 
-**NOTE**: The URL must end with a forward slash.
+**CAREFUL**: The URL must end with a forward slash.
 
 ## How to define a page
-In the `index.html` create variable called `appPages`
+In the `index.html`, using JavaScript, create a variable called `appPages`
 
 ```html
 <html>
