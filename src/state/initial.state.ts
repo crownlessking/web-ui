@@ -1,4 +1,5 @@
 import { IState } from '../interfaces'
+import info from './info.state'
 import forms from './forms.state'
 import pages from './pages.state'
 import dialogs from './dialogs.state'
@@ -38,29 +39,10 @@ const DEFAULT_BACKGROUND_COLOR = '#af74b0'
  */
 export default {
 
-  'app': _.extend({
-
-    /**
-     * URI of the server to which the app will make requests and receive
-     * responses
-     */
-    'origin': '',
-
-    /**
-     * The page that is currently displayed.
-     *
-     * **How it works**
-     * When this member is set, to a value, e.g. `login` the app will look for an
-     * equivalent `loginPage` property from `pages.state.ts`. If found, the
-     * definition from the `loginPage` will be used to apply modifications to the
-     * UI, like transitioning from one page to another but without loading anything
-     * from the server.
-     */
-    'route': 'login',
-
-    'title': 'web-ui',
-
-  }, appInfo),
+  /**
+   * @see info.state.ts
+   */
+  'app': _.extend({}, info, appInfo),
 
   /**
    * The `meta` member is used to apply rules as to how the data is

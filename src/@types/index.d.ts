@@ -22,11 +22,6 @@ declare var appForms
 declare var appInfo
 
 /**
- * URL of server
- */
-// declare var appOrigin
-
-/**
  * dialogs definition
  */
 declare var appDialogs

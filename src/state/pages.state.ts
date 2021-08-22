@@ -1,9 +1,5 @@
-import {
-  LAYOUT_CENTERED_NO_SCROLL,
-} from '../controllers'
-import {
-  IStateAllPages,
-} from '../interfaces'
+import { LAYOUT_CENTERED_NO_SCROLL } from '../controllers'
+import { IStateAllPages } from '../interfaces'
 
 // const DEFAULT_BACKGROUND_COLOR = '#af74b0'
 

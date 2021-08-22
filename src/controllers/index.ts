@@ -398,13 +398,14 @@ export function mongoObjectId() {
  * viewed later without crashing the app.
  *
  * @param obj 
- * @param path an existing property of object
+ * @param path     an existing property of `obj` or a dot-separated list of
+ *                 properties.
  * @param _default value to return if `obj[key]` is undefined
  */
-export function safelyGet(obj: any, path: string, _default?: any) {
-  const value = getVal(obj, path)
+export function safelyGet(obj: any, path?: string, _default?: any) {
+  const value = getVal(obj, path || '')
 
-  if (value !== null) { 
+  if (value !== null) {
     return value
   }
 
@@ -414,11 +415,25 @@ export function safelyGet(obj: any, path: string, _default?: any) {
     //      in a table
   }
 
-  if (_default) {
+  switch (_default) {
+
+  // force function to return undefined
+  case 'undefined':
+    return undefined
+
+  case undefined:
+
+    // If a path was not provided, we can safely assume that the object is being
+    // tested for a valid value
+    if (!path) return {}
+
+    return null
+
+  default:
     return _default
+
   }
 
-  return null
 }
 
 /**

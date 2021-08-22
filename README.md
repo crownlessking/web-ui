@@ -7,7 +7,7 @@ With _web-ui_ you can put together several forms (as a single-page app) to gathe
 Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
 
 ## First things first
-Give your app the URL at which your API is located. In the `index.html` file, do:
+Give your app the URL at which your API is located. In the `index.html` file, add:
 
 ```html
 <html>

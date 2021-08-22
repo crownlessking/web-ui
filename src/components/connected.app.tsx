@@ -45,11 +45,10 @@ class App extends Component<IProps> {
   public render() {
     const root = new State(this.props.state)
     const page = root.allPages.pageAt(root.app.route)
-    const background = page.background
     const { classes } = this.props
     return (
       <React.Fragment>
-        <Background def={background} />
+        <Background def={page.background} />
         <div className={classes.root}>
           <CssBaseline />
           <Navigation def={page} />
