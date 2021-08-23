@@ -1,8 +1,5 @@
 import { IState } from '../interfaces'
-import info from './info.state'
-import forms from './forms.state'
-import pages from './pages.state'
-import dialogs from './dialogs.state'
+import { getGlobalVar } from '../controllers'
 import _ from 'lodash'
 
 const DEFAULT_BACKGROUND_COLOR = '#af74b0'
@@ -42,7 +39,29 @@ export default {
   /**
    * @see info.state.ts
    */
-  'app': _.extend({}, info, appInfo),
+  'app': _.extend({
+
+    /**
+     * URI of the server to which the app will make requests and receive
+     * responses
+     */
+    'origin': '',
+
+    /**
+     * The page that is currently displayed.
+     *
+     * **How it works**
+     * When this member is set, to a value, e.g. `login` the app will look for an
+     * equivalent `loginPage` property from `pages.state.ts`. If found, the
+     * definition from the `loginPage` will be used to apply modifications to the
+     * UI, like transitioning from one page to another but without loading anything
+     * from the server.
+     */
+    'route': 'default',
+
+    'title': 'web-ui',
+  
+  }, getGlobalVar('appInfo')),
 
   /**
    * The `meta` member is used to apply rules as to how the data is
@@ -90,7 +109,7 @@ export default {
   'typography': { },
 
   'dialog': {
-    'title': 'Maison Ikkoku',
+    'title': 'Dialog Title',
     'label': '',
     'contentText': '',
     'content': '',
@@ -101,7 +120,7 @@ export default {
   /**
    * Object containing all dialog definitions
    */
-  'dialogs': _.extend({}, dialogs, appDialogs),
+  'dialogs': _.extend({}, getGlobalVar('appDialogs')),
 
   /**
    * Drawer general state
@@ -125,18 +144,20 @@ export default {
    *
    * @see forms.state.ts
    */
-  'forms': _.extend({}, forms, appForms), // forms,
+  'forms': _.extend({}, getGlobalVar('appForms')), // forms,
 
   /**
    * Object containing all page definitions.
    *
-   * **How his works**
-   * Pages are defined in the `pages.state.ts`. Then, they are merged into this
-   * object as `allPages`.
-   *
    * @see pages.state.ts
    */
-  'pages': _.extend({}, pages, appPages), // pages,
+  'pages': _.extend({
+
+    '/default': {
+      'content': '$html : default.html : n/a',
+    }
+
+  }, getGlobalVar('appPages')), // pages,
 
   /**
    * All resources acquired from the server will be stored in this object. The

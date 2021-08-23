@@ -345,6 +345,46 @@ export function setVal(obj: any, path: string, val: any) {
 }
 
 /**
+ * Get global variable value.
+ *
+ * Since there's a number of global variables that are defined by clients,
+ * there's a strong chance that some or all of them may be undefined.
+ * This function is a solution to that problem.
+ *
+ * @param varName string representation of in-code variable identifier.
+ * @returns object or throws an exception
+ * @throws an exception if the global variable name is invalid.
+ */
+export function getGlobalVar (varName: string) {
+
+  switch (varName) {
+
+  case 'appInfo':
+    try {
+      return appInfo
+    } catch (e) { return {} }
+
+  case 'appDialogs':
+    try {
+      return appDialogs
+    } catch (e) { return {} }
+
+  case 'appForms':
+    try {
+      return appForms
+    } catch (e) { return {} }
+
+  case 'appPages':
+    try {
+      return appPages
+    } catch (e) { return {} }
+
+  }
+
+  throw new Error (`"${varName}" does not exist.`)
+}
+
+/**
  * Format routes
  *
  * **dev**

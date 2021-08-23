@@ -20,50 +20,6 @@ import StateSnackbar from '../material/snackbar/snackbar.controller'
 import StateTmp from './tmp/controller'
 import StateTopLevelLinks from './links.toplevel/controller'
 
-/**
- * Sets the background of a page definition.
- *
- * A page is customizable. Which means, it is possible for it to not have a
- * background, inherit a background from another page, or use a default
- * background defined at the `state` root.
- *
- * @param statePage 
- * @param _default 
- */
-export const setStatePageBackground = (
-  statePage?: IStatePage,
-  _default?: IStateBackground
-): IStateBackground => {
-  const EMPTY_STATE_BACKGROUND: IStateBackground = { type: 'none' }
-
-  if (statePage) {
-    let stateBackground: IStateBackground = EMPTY_STATE_BACKGROUND
-
-    if (statePage.useDefaultBackground === true) {
-      stateBackground = _.merge<IStateBackground, IStateBackground|undefined>(
-        EMPTY_STATE_BACKGROUND,
-        _default
-      )
-    } if (statePage.backgroundInherited) {
-      // TODO Implement inheriting the background of another page here.
-    }
-
-    statePage.background = _.merge(stateBackground, statePage.background)
-  
-    return statePage.background
-  }
-
-  return EMPTY_STATE_BACKGROUND
-}
-
-export function patchStatePageAppBarTypography (page: IStatePage) {
-  const fontColor = getVal(page, 'appBar.typography.color')
-
-  if (!fontColor) {
-    setVal(page, 'appBar.typography.color', 'inherit')
-  }
-}
-
 export default class State extends StateController {
 
   /**
@@ -290,3 +246,47 @@ export default class State extends StateController {
   }
 
 } // END class ----------------------------------------------------------------
+
+/**
+ * Sets the background of a page definition.
+ *
+ * A page is customizable. Which means, it is possible for it to not have a
+ * background, inherit a background from another page, or use a default
+ * background defined at the `state` root.
+ *
+ * @param statePage 
+ * @param _default 
+ */
+ export const setStatePageBackground = (
+  statePage?: IStatePage,
+  _default?: IStateBackground
+): IStateBackground => {
+  const EMPTY_STATE_BACKGROUND: IStateBackground = { type: 'none' }
+
+  if (statePage) {
+    let stateBackground: IStateBackground = EMPTY_STATE_BACKGROUND
+
+    if (statePage.useDefaultBackground === true) {
+      stateBackground = _.merge<IStateBackground, IStateBackground|undefined>(
+        EMPTY_STATE_BACKGROUND,
+        _default
+      )
+    } if (statePage.backgroundInherited) {
+      // TODO Implement inheriting the background of another page here.
+    }
+
+    statePage.background = _.merge(stateBackground, statePage.background)
+  
+    return statePage.background
+  }
+
+  return EMPTY_STATE_BACKGROUND
+}
+
+export function patchStatePageAppBarTypography (page: IStatePage) {
+  const fontColor = getVal(page, 'appBar.typography.color')
+
+  if (!fontColor) {
+    setVal(page, 'appBar.typography.color', 'inherit')
+  }
+}

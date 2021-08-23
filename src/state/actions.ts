@@ -33,7 +33,7 @@ export default {
 
   // non-redux-actions inclusion
   // Didn't want to but don't have a choice.
-  // We need a way to give pure javascript
+  // We needed a way to give pure javascript
   // access.
   ui
 }
