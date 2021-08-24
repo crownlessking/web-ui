@@ -11,6 +11,8 @@ interface IProps {
 
 /**
  * Application `AppBar`
+ *
+ * Also updates the browser's tab title
  */
 export default class extends Component<IProps> {
 
@@ -20,10 +22,13 @@ export default class extends Component<IProps> {
   render() {
     const page = this.props.def
 
+    // Udates the browser's tab title
+    document.title = page.getTabTitle()
+
     if (page.hideAppBar) {
       return ( null )
     }
-  
+
     if (page.hasAppBar) {
       lastStateAppBar = page.appBar.state
 

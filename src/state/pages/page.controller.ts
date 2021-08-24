@@ -80,6 +80,9 @@ export default class StatePage extends StateController implements IStatePage {
    */
   get id() { return this._id || (this._id = mongoObjectId()) }
 
+  get title() { return this.page.title || '' }
+  get forcedTitle() { return this.page.forcedTitle || '' }
+
   /**
    * Chain-access to the page appbar definition.
    */
@@ -252,6 +255,23 @@ export default class StatePage extends StateController implements IStatePage {
       }
     }
     throw new Error('Invalid `page` content definition')
+  }
+
+  /**
+   * Get browser tab's title
+   */
+  getTabTitle = () => {
+    if (this.forcedTitle) {
+      return this.forcedTitle
+    }
+
+    const appTitle = this.parent.parent.app.title
+
+    if (this.title) {
+      return `${appTitle} | ${this.title}`
+    }
+
+    return appTitle
   }
 
   /**

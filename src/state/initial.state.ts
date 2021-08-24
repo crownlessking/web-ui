@@ -154,6 +154,7 @@ export default {
   'pages': _.extend({
 
     '/default': {
+      'title': 'default page',
       'content': '$html : default.html : n/a',
     }
 
