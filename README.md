@@ -1,13 +1,47 @@
 
 # web-ui
 
-The purpose of this project is to quickly put together a single-page web app for an arbitrary REST API located at a specific URL.
-With _web-ui_ you can put together several forms (as a single-page app) to gather information which can then be sent to your API.
+The purpose of this project is to quickly put together a single-page web app for an arbitrary REST API.
+With _web-ui_ you could create several forms (as a single-page app) to gather information which can then be sent to your API.
 
 Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
 
 ## First things first
 Give your app the URL at which your API is located. In the `index.html` file, add:
+
+```js
+var appOrigin = "http://www.mydomain.com/"; // URL of your API
+```
+
+**Inline JavaScript Example**
+```html
+<html>
+  <head />
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" class="root"></div>
+
+    <!-- Your own custom script tag -->
+    <script>
+      var appOrigin = "http://www.mydomain.com/";
+    </script>
+
+    <!-- Don't insert any code below this comment -->
+    <script>!function (e) { function r(r) { ... }}</script>
+    <script src="static/js/2...chunk.js"></script>
+    <script src="static/js/main...chunk.js"></script>
+  </body>
+</html>
+```
+
+**JavaScript From File Example**
+```javascript
+// In your file you could do:
+
+(function (win) {
+  win.appOrigin = "http://www.mydomain.com/";
+}(window));
+```
 
 ```html
 <html>
@@ -15,14 +49,21 @@ Give your app the URL at which your API is located. In the `index.html` file, ad
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="root"></div>
-    <script>
-      var appOrigin = "http://www.mydomain.com/";
-    </script>
+
+    <!-- Your own custom script tag -->
+    <script src="js/mycustomfile.js"></script>
+
+    <!-- Don't insert any code below this comment -->
+    <script>!function (e) { function r(r) { ... }}</script>
+    <script src="static/js/2...chunk.js"></script>
+    <script src="static/js/main...chunk.js"></script>
   </body>
 </html>
 ```
 
 **CAREFUL**: The URL must end with a forward slash.
+
+**NOTE**: From here on out, we will use the custom file example
 
 ## How to define a page
 In the `index.html`, using JavaScript, create a variable called `appPages`

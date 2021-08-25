@@ -316,8 +316,14 @@ export interface IStateForm {
 export interface IStatePage {
   /** Page title */
   title?: string
-  /** Forced page title */
+
+  /**
+   * Forced page title
+   * 
+   * Only the title of the page will be displayed in the browser tab.
+   */
   forcedTitle?: string
+  
   /** Page appbar */
   appBar?: IStateAppBar
   /** Page background */
