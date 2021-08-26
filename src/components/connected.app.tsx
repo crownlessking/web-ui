@@ -42,9 +42,10 @@ const mapStateToProps = (state: IState) => ({ state })
  */
 class App extends Component<IProps> {
 
-  public render() {
+  render() {
     const root = new State(this.props.state)
     const page = root.allPages.pageAt(root.app.route)
+    page.setTabTitle()
     const { classes } = this.props
     return (
       <React.Fragment>

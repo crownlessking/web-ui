@@ -275,6 +275,13 @@ export default class StatePage extends StateController implements IStatePage {
   }
 
   /**
+   * Set the browser tab's title
+   */
+  setTabTitle = () => {
+    document.title = this.getTabTitle()
+  }
+
+  /**
    * Ensures the page has the correct appbar.
    */
   private initPageAppBar = (): IStateAppBar => {
