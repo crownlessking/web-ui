@@ -63,39 +63,26 @@ var appOrigin = "http://www.mydomain.com/"; // URL of your API
 
 **CAREFUL**: The URL must end with a forward slash.
 
-**NOTE**: From here on out, we will use the custom file example
+**NOTE**: From here on out, we will use the custom file example.
 
 ## How to define a page
 In the `index.html`, using JavaScript, create a variable called `appPages`
 
-```html
-<html>
-    <head />
-    <body>
-      <noscript>You need to enable JavaScript to run this app.</noscript>
-      <div id="root" class="root"></div>
-      <script>
-        var appOrigin = "http://www.mydomain.com/";
-        var appPages = {}; // <-- there it is
-      </script>
-    </body>
-</html>
+```javascript
+(function (win) {
+  win.appOrigin = "http://www.mydomain.com/";
+
+  win.appPages = {}; // <-- there it is
+
+})(window);
 ```
 
 `appPages` is an object where each property is a page.
 
 ```js
-var appPages = {
-  loginPage: {}
-};
-```
-
-**NOTE**: All `appPages` properties must end with the suffix `Page`.
-
-```js
-var appPages = {
-  loginPage: {},
-  frontPage: {},
+win.appPages = {
+  'login': {}, // login page
+  'front': {}, // front page
 
   // ...more pages
 };
@@ -105,39 +92,35 @@ The _login page_ is currently empty let's use it to display a form that users ca
 To do that, we need to set the `content` property of the login page:
 
 ```js
-var appPages = {
-  loginPage: {
+win.appPages = {
+  'login': {
     content: "$form: login: users"
   }
 };
 ```
 
-Currently, there are three parts to the content property of `loginPage`. The first one, `$form` indicates that the purpose of `loginPage` is to display a form. The second part, `login` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
+There are three parts to the `content` property of `login` page. The first one, `$form: ` indicates that the purpose of the page is to display a form. The second part, `login: ` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
 <br>
 Ok, we have the name of the form but we have not created it yet.
 
 ## How to define a form
+To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
-To create the `login` form, open your `index.html` file and look for the variable `appForms`. If it does not exist, create it.
+```javascript
+(function (win) {
 
-```html
-<html>
-  <head />
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script>
-      var appForms = {};
-    </script>
-    <div id="root" class="root"></div>
-  </body>
-</html>
+win.appForms = {}; // there it is!
+
+})(window);
 ```
 
 Now, let's add a form to it:
 
 ```js
-var appForms = {
+win.appForms = {
+
   loginForm: {}
+
 };
 ```
 
@@ -146,30 +129,39 @@ var appForms = {
 The _login form_ is currently empty. Let's add some fields:
 
 ```js
-var appForms = {
+win.appForms = {
+
   loginForm: {
     items: [ ] // array of fields
   }
+
 };
 ```
 
 The property `items` is an array containing the fields definition.
+
 ```js
-var appForms = {
+win.appForms = {
   loginForm: {
     items: [
+
+      // Object defining the username textfield
       {
-        type: 'text',
+        type: 'textfield',
         label: 'Username',
         name: 'username',
         margin: 'normal',
       },
+
+      // Object defining the password definition
       {
         type: 'password',
         label: 'Password',
         name: 'password',
         margin: 'normal',
       },
+
+      // Object defining the form's submit button
       {
         type: 'submit',
         has: {
@@ -184,18 +176,18 @@ var appForms = {
   }
 };
 ```
+
 ### Form field definition
 To add a field to your form, just insert a new `object` into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
 
-
 ```js
-var appForms = {
+win.appForms = {
   loginForm:{
     items: [
 
       // username input field
       {
-        type: "text",
+        type: "textfield",
         name: "username",
         value: "foo"
       }
