@@ -103,7 +103,7 @@ There are three parts to the `content` property of `login` page. The first one, 
 <br>
 Ok, we have the name of the form but we have not created it yet.
 
-## How to define a form
+## How to create a form
 To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
 ```javascript
@@ -177,7 +177,7 @@ win.appForms = {
 };
 ```
 
-### Form field definition
+### Add field to form
 To add a field to your form, just insert a new `object` into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
 
 ```js
