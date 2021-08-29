@@ -11,7 +11,7 @@ import JsonTextfield from './json.textfield'
 import JsonPicker from './json.picker'
 import {
   BREAK_LINE, BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
-  CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATETIME, 
+  CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATETIME, TEXT, 
 } from '../form.controller'
 import { connect } from 'react-redux'
 import {
@@ -156,6 +156,7 @@ class BuildForm extends Component<IProps> {
        */
       case NUMBER:
       case PASSWORD:
+      case TEXT:
       case TEXTFIELD:
         itemDef.onChange = this.onUpdateFormData(form)
         return <JsonTextfield key={index} def={itemDef} />

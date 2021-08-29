@@ -1,5 +1,5 @@
 
-import Config from '../configuration'
+import Config from '../../common/configuration'
 
 test('Configuration.set()', done => {
 

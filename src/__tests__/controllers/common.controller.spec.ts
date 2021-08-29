@@ -1,4 +1,4 @@
-import * as common from '..'
+import * as common from '../../controllers'
 
 test('getVal()', (done) => {
   const obj = {
