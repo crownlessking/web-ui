@@ -31,8 +31,9 @@ export function parsePageContentDef(def: string | undefined) {
         args: options[3] || ''
       }
     }
+    throw new Error('Invalid `page` content definition')
   }
-  throw new Error('Invalid `page` content definition')
+  throw new Error('`def` is undefined.')
 }
 
 export default class StateAllPages extends StateController {

@@ -187,9 +187,8 @@ win.appForms = {
 
       // username input field
       {
-        type: "textfield",
-        name: "username",
-        value: "foo"
+        type: "text",
+        name: "username"
       }
     ]
   }
@@ -200,11 +199,29 @@ is equivalent to:
 
 ```html
 <form>
-  <input type="text" name="username" value="foo" />
+  <input type="text" name="username" />
 </form>
 ```
 
-**NOTE**: That does not work for every field though.
+**WARNING**: That does not work for every field though and some attribute cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute. 
+
+#### Set field's default value
+
+Use the `has` property of the field object.
+
+```javascript
+win.loginForms = {
+  items: [
+    {
+      type: "text",
+      name: "",
+      has: {
+        defaultValue: "" // <-- this
+      }
+    }
+  ]
+}
+```
 
 #### Properties of field definition object
 - __`type`__ the type of field. Think of it as the value of the `<input>` tag `type` attribute
