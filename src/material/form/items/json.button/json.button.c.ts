@@ -21,7 +21,7 @@ import { ButtonProps } from '@material-ui/core/Button'
  * @param def 
  */
 export function getButtonProps(def: IStateFormItem) {
-  const copyDef = { ...def }
+  const copyDef = { ...def } as ButtonProps
 
   // onClick is removed because it is defined as returning a function
   //
@@ -32,8 +32,9 @@ export function getButtonProps(def: IStateFormItem) {
   // the materia-ui ButtonProp.onClick version
   // Plus we need to supply the "Redux" object to it.
   delete copyDef.onClick
-  delete copyDef.has
-  delete copyDef.type
 
-  return copyDef as ButtonProps
+  // delete copyDef.has
+  // copyDef.type = ''
+
+  return copyDef
 }

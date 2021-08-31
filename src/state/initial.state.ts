@@ -152,9 +152,6 @@ export default {
           label: 'UserID',
           name: 'username',
           margin: 'normal',
-          has: {
-            defaultValue: 'Riviere'
-          }
         },
         { type: 'br' },
         {

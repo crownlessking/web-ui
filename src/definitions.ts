@@ -495,6 +495,14 @@ export interface ILinkDef {
   [attr: string]: any
 }
 
+/**
+ * Use when component receives its parent state
+ */
+export interface IParentState {
+  state: any
+  setState: Function
+}
+
 // [Rules]
 // 1) If the value of a constant is a string, it must be in all uppercase.
 //    Otherwise, crashes and bugs will occur.

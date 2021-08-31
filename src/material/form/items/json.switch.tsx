@@ -4,22 +4,10 @@ import {
 } from '@material-ui/core'
 import { getBoolValue } from '../form.controller'
 import { RadioProps } from '@material-ui/core/Radio'
-import { IStateFormItemCustom, IState } from '../../../interfaces'
+import { IState } from '../../../interfaces'
 import StateFormItem, { getStoredValue, getLocallyStoredValue } from './items.controller'
 import { connect } from 'react-redux'
-
-interface IJsonSwitch {
-  disabled?: boolean
-  has: IStateFormItemCustom
-  name: string
-  value?: any
-  onHandleSwitch: (name: string, value: any) => (e: any) => void
-}
-
-interface IParentState {
-  state: any
-  setState: Function
-}
+import { IParentState } from '../../../definitions'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

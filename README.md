@@ -145,15 +145,15 @@ win.appForms = {
   loginForm: {
     items: [
 
-      // Object defining the username textfield
+      // Object defining the username field
       {
-        type: 'textfield',
+        type: 'text',
         label: 'Username',
         name: 'username',
         margin: 'normal',
       },
 
-      // Object defining the password definition
+      // Object defining the password field
       {
         type: 'password',
         label: 'Password',
@@ -203,7 +203,7 @@ is equivalent to:
 </form>
 ```
 
-**WARNING**: That does not work for every field though and some attribute cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute. 
+**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute. 
 
 #### Set field's default value
 
@@ -229,7 +229,7 @@ win.loginForms = {
 - __`name`__ when field value is sent to the server, this will be the JSON key which will contain the value of the form field.
 - __`margin`__ optional, increases the margin to the field.
 - __`has`__ more field settings. It is used to further customize the field.
-  * __`content`__ adds some HTML content to the form
+  * __`content`__ adds some HTML content to the form e.g.
     - ```ts
         {
           has: {
@@ -264,7 +264,7 @@ win.loginForms = {
         }
       }
       ```
-  * __`icon`__ display a material-ui icon in button
+  * __`icon`__ displays a material-ui icon in button
     - ```ts
       {
         has: {
@@ -307,6 +307,9 @@ var appForm = {
       {
         type: "button",
         value: "Click me!",
+        has: {
+          onClick: () => { }
+        }
       }
     ]
   }

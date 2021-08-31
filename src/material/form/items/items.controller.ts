@@ -11,6 +11,7 @@ import StateController from '../../../controllers/state.controller'
 import StateFormItemCustom from './custom.controller'
 import { defaultCallback } from '../../../controllers'
 import { updateFormData } from '../../../state/forms/data/actions'
+import { IParentState } from '../../../definitions'
 
 /**
  * Prevents the app from throwing an exception because of the missing `name`
@@ -79,6 +80,13 @@ export function getLocallyStoredValue(formData: any, item: IStateFormItem) {
   return (name && formData[name] !== undefined)
     ? formData[name]
     : (copyItem.value || defaultValue || '')
+}
+
+export function getValueFromParent(def: StateFormItem, parentState?: IParentState) {
+  if (parentState) {
+    return getLocallyStoredValue(parentState.state.formData, def)
+  }
+  return null
 }
 
 /**

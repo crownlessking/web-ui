@@ -1,6 +1,6 @@
 import store from '../../../state'
 import {
-  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT
+  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT, TEXT
 } from '../form.controller'
 import { IStateFormItem } from '../../../interfaces'
 import {
@@ -56,6 +56,7 @@ function setDefaultValue(field: IStateFormItem, formName: string) {
     case NUMBER:
     case TEXTFIELD:
     case TEXTAREA:
+    case TEXT:
     case RADIO_BUTTONS:
     case SWITCH:
       saveFormData({formName, name, value})
