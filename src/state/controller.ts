@@ -257,7 +257,7 @@ export default class State extends StateController {
  * @param statePage 
  * @param _default 
  */
- export const setStatePageBackground = (
+export const setStatePageBackground = (
   statePage?: IStatePage,
   _default?: IStateBackground
 ): IStateBackground => {

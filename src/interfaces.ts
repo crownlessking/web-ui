@@ -410,10 +410,14 @@ export interface IStateApp {
   route: string
   showSpinner?: boolean
   status?: string
+
   /** web page title: It will be displayed if a logo was NOT provided. */
   title: string
+
   /** Image src of appbar logo */
   logo?: string
+
+  lastRoute?: string
 }
 
 /**
@@ -706,4 +710,12 @@ export interface IStateLink {
   onClick?: (redux: IRedux) => (e: any) => void
   has?: IStateFormItemCustom
   [attr: string]: any
+}
+
+/**
+ * Use when component receives its parent state
+ */
+ export interface IParentState {
+  state: any
+  setState: Function
 }

@@ -157,4 +157,6 @@ export default class StateApp extends StateController implements IStateApp {
   get title() { return this.app.title }
 
   get logo() { return this.app.logo || ''}
+
+  get lastRoute() { return this.app.lastRoute || ''}
 }

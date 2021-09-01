@@ -11,7 +11,7 @@ import StateController from '../../../controllers/state.controller'
 import StateFormItemCustom from './custom.controller'
 import { defaultCallback } from '../../../controllers'
 import { updateFormData } from '../../../state/forms/data/actions'
-import { IParentState } from '../../../definitions'
+import { IParentState } from '../../../interfaces'
 
 /**
  * Prevents the app from throwing an exception because of the missing `name`
@@ -275,7 +275,7 @@ export function getCheckboxesStatus(has: IStateFormItemCustom, checkedValues: st
  * @param checked 
  */
 export function updateCheckboxes(checkedValues: string[], value: string, checked: boolean) {
-  let newValues = [ ...checkedValues ]
+  const newValues = [ ...checkedValues ]
   const valueIndex = newValues.indexOf(value)
   const containsValue = (valueIndex >= 0)
   if (containsValue && !checked) {

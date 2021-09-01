@@ -7,7 +7,7 @@ import { RadioProps } from '@material-ui/core/Radio'
 import { IState } from '../../../interfaces'
 import StateFormItem, { getStoredValue, getLocallyStoredValue } from './items.controller'
 import { connect } from 'react-redux'
-import { IParentState } from '../../../definitions'
+import { IParentState } from '../../../interfaces'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
