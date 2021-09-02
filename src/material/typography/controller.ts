@@ -20,11 +20,11 @@ export function getAppBarFontFamily(page: IStatePage) {
     || undefined
 }
 
-export default class StateTypography<T = State>
+export default class StateTypography<P = State>
     extends StateController implements IStateTypography {
 
   protected typography: IStateTypography
-  protected parentDef: T
+  protected parentDef: P
 
   /**
    * Constructor
@@ -33,7 +33,7 @@ export default class StateTypography<T = State>
    */
   constructor(
     typography: IStateTypography,
-    parent: T
+    parent: P
   ) {
     super()
     this.typography = typography //  || { color: 'inherit' }
@@ -55,7 +55,7 @@ export default class StateTypography<T = State>
   /**
    * Chain-access to (root or page or appBar) definition.
    */
-  get parent(): T { return this.parentDef }
+  get parent(): P { return this.parentDef }
 
   get color() { return this.typography.color }
 

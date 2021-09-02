@@ -28,18 +28,18 @@ export function getAppBarBackgroundStyle(page: IStatePage) {
     || 'inherit'
 }
 
-export default class StateBackground<T = State>
+export default class StateBackground<P = State>
     extends StateController implements IStateBackground {
 
   private background: IStateBackground
-  private parentDef: T
+  private parentDef: P
 
   /**
    * Background state.
    *
    * @param background 
    */
-  constructor(background: IStateBackground, parent: T) {
+  constructor(background: IStateBackground, parent: P) {
     super()
     this.background = background
     this.parentDef = parent

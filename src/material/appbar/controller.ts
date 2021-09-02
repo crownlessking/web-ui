@@ -39,25 +39,25 @@ export function getPageAppbarBackground (page: StatePage, route: string) {
   return page.parent.pageAt(route).background
 }
 
-export default class StateAppBar<T = State>
+export default class StateAppBar<P = State>
     extends StateController implements IStateAppBar {
 
   static EMPTY_APPBAR_BACKGROUND: IStateBackground = { type: 'none' }
   static EMPTY_APPBAR_TYPOGRAPHY: IStateTypography = {  }
 
-  protected parentDef: T
+  protected parentDef: P
   protected appBar: IStateAppBar
   protected appBarTypography: IStateTypography
-  protected appBarTypographyDef?: StateAppBarTypography<T>
+  protected appBarTypographyDef?: StateAppBarTypography<P>
   protected appBarBackground: IStateBackground
-  protected appBarBackgroundDef?: StateAppBarBackground<T>
+  protected appBarBackgroundDef?: StateAppBarBackground<P>
 
   /**
    * Constructor for .
    *
    * @param appBar
    */
-  constructor(appBar: IStateAppBar, parent: T) {
+  constructor(appBar: IStateAppBar, parent: P) {
     super()
     this.parentDef = parent
     this.appBar = appBar
@@ -96,7 +96,7 @@ export default class StateAppBar<T = State>
    */
   get background() {
     return this.appBarBackgroundDef
-      || (this.appBarBackgroundDef = new StateAppBarBackground<T>(
+      || (this.appBarBackgroundDef = new StateAppBarBackground<P>(
           this.appBarBackground,
           this
         ))
@@ -107,7 +107,7 @@ export default class StateAppBar<T = State>
    */
   get typography() {
     return this.appBarTypographyDef
-      || (this.appBarTypographyDef = new StateAppBarTypography<T>(
+      || (this.appBarTypographyDef = new StateAppBarTypography<P>(
           this.appBarTypography,
           this
         ))

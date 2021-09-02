@@ -1,17 +1,16 @@
 import { IStateFormItemCustom, IRedux } from '../../../interfaces'
 import StateController from '../../../controllers/state.controller'
-import StateFormItem from './items.controller'
 
-export default class StateFormItemCustom<T = any>
+export default class StateFormItemCustom<P, T = any>
     extends StateController implements IStateFormItemCustom {
 
   private has: IStateFormItemCustom<T>
-  private parentDef: StateFormItem
+  private parentDef: P
   private hasItems: T[]
   private hasCallback?: ((redux:IRedux)=>(e:any)=>void)
   private hasClasses: any
 
-  constructor (has: IStateFormItemCustom<T>, parent: StateFormItem) {
+  constructor (has: IStateFormItemCustom<T>, parent: P) {
     super()
     this.parentDef = parent
     this.has = has

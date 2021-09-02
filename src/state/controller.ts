@@ -33,7 +33,7 @@ export default class State extends StateController {
   private storeDataDef?: StateData
   private storeDialogDef?: StateDialog
   private storeAllDialogsDef?: StateAllDialogs
-  private storeDrawerDef?: StateDrawer
+  private storeDrawerDef?: StateDrawer<this>
   private storeAllErrorsDef?: StateAllErrors
   private storeAllFormsDef?: StateAllForms
   private storeFormsDataDef?: StateFormsData

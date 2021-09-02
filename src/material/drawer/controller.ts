@@ -2,6 +2,7 @@ import store from '../../state'
 import { IStateLink, IRedux, IStateDrawer } from '../../interfaces'
 import { dummyCallback } from '../../controllers'
 import StateController from '../../controllers/state.controller'
+import StateLink from '../link/controller'
 
 /**
  * Get the default drawer width.
@@ -28,13 +29,14 @@ export function getListItemCallback(def: IStateLink, redux: IRedux) {
   return newDef.onClick(redux)
 }
 
-export default class StateDrawer<T = any>
+export default class StateDrawer<P>
     extends StateController implements IStateDrawer {
 
   private drawer: IStateDrawer
-  private parentDef: T
+  private parentDef: P
+  private drawerItemsDef?: StateLink<this>[]
 
-  constructor (drawer: IStateDrawer, parent: T) {
+  constructor (drawer: IStateDrawer, parent: P) {
     super()
     this.drawer = drawer
     this.parentDef = parent
@@ -49,9 +51,14 @@ export default class StateDrawer<T = any>
   get parent () { return this.parentDef }
 
   /**
-   * Get a copy of the drawer's list of icons state.
+   * Get the drawer's list of icon links.
    */
-  get items () { return this.drawer.items }
+  get items() {
+    return this.drawerItemsDef
+    || (this.drawerItemsDef = this.drawer.items.map(item => {
+      return new StateLink<this>(item, this)
+    }))
+  }
 
   /**
    * Whether the drawer is open or not.

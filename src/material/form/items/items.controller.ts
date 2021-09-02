@@ -336,20 +336,20 @@ export function onUpdateFormData(
 }
 
 
-export default class StateFormItem<T = any, U = any>
+export default class StateFormItem<P = any, T = any>
     extends StateController implements IStateFormItem {
 
   private item: IStateFormItem
-  private parentDef: T
+  private parentDef: P
   private itemHas: IStateFormItemCustom
-  private itemHasDef?: StateFormItemCustom
+  private itemHasDef?: StateFormItemCustom<this>
   private itemDisabled: boolean
   private noOnClickCallback: boolean
   private itemOnClick: (redux: IRedux) => (e: any) => void
   private noOnChangeCallback: boolean
   private itemOnChange: Function
 
-  constructor (item: IStateFormItem, parent: T) {
+  constructor (item: IStateFormItem, parent: P) {
     super()
     this.item = item
     this.parentDef = parent
@@ -384,9 +384,9 @@ export default class StateFormItem<T = any, U = any>
   /**
    * Get the current form field custom definition.
    */
-  get has(): StateFormItemCustom<U> {
+  get has(): StateFormItemCustom<this, T> {
     return this.itemHasDef
-      || (this.itemHasDef = new StateFormItemCustom<U>(
+      || (this.itemHasDef = new StateFormItemCustom(
           this.itemHas,
           this
         ))

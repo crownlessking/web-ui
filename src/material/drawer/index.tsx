@@ -171,31 +171,5 @@ export function JsonDrawerIcon ({ json }: { json: IStateLink }) {
   )
 }
 
-// export function JsonDrawerIcon (props: any) {
-//   const def: ILinkDef = props.def
-//   const has = def.has || {}
-//   if (has.icon) {
-//     return (
-//       <ListItemIcon
-//         color='inherit'
-//         aria-label={has.label}
-//       >
-//         <Icon>{ has.icon }</Icon>
-//       </ListItemIcon>
-//     )
-//   } else if (has.faIcon) {
-//     const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
-//     return (
-//       <ListItemIcon
-//         color='inherit'
-//         aria-label={has.label}
-//       >
-//         <FontAwesomeIcon icon={icon} size='lg' />
-//       </ListItemIcon>
-//     )
-//   }
-//   return ( null )
-// }
-
 export default connect(mapStateToProps, mapDispatchToProps)
                   (withStyles(styles, { withTheme: true })(MiniDrawer))
