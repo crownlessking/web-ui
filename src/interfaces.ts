@@ -282,6 +282,15 @@ export interface IStateDrawer {
 }
 
 /**
+ * TEMPORARY You can delete this if it's not in use.
+ */
+export interface IStatePageDrawer {
+  items: IStateLink[]
+  open?: boolean
+  width?: number
+}
+
+/**
  * Background color, image, gradient... etc. Any valid CSS background.
  */
 export interface IStateBackground {
@@ -571,7 +580,7 @@ interface IFormChoices {
 }
 
 export interface IFormCheckbox extends IFormChoices { }
-export interface IFormRadio extends IFormChoices { }
+export interface IStateFormItemRadio extends IFormChoices { }
 
 /**
  * Type for textfield adornment, e.g.

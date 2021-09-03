@@ -79,7 +79,7 @@ class BuildForm extends Component<IProps> {
     const form = this.getFormDef()
 
     return form.items.map((item, index) => {
-      const itemDef: StateFormItem<StateForm> = item
+      const itemDef: StateFormItem = item
       itemDef.has.classes = this.props.classes
 
       switch (itemDef.notMissingNameExDef()) {

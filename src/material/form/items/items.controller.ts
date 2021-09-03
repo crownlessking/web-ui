@@ -3,7 +3,7 @@ import {
   SWITCH, SELECT
 } from '../form.controller'
 import {
-  IStateFormItem, IFormRadio, IStateFormItemCustom, IFormCheckbox, IRedux
+  IStateFormItem, IStateFormItemRadio, IStateFormItemCustom, IFormCheckbox, IRedux
 } from '../../../interfaces'
 import Config from '../../../config'
 // import _ from 'lodash'
@@ -12,6 +12,7 @@ import StateFormItemCustom from './custom.controller'
 import { defaultCallback } from '../../../controllers'
 import { updateFormData } from '../../../state/forms/data/actions'
 import { IParentState } from '../../../interfaces'
+import StateForm from '../../../state/forms/form.controller'
 
 /**
  * Prevents the app from throwing an exception because of the missing `name`
@@ -162,25 +163,12 @@ export function options(has: IStateFormItemCustom) {
  *
  * @deprecated
  */
-export function radioValue(item: IFormRadio) {
+export function radioValue(item: IStateFormItemRadio) {
 
   // TODO Use this function to implement logic when retrieving a form radio
   // value from the definition.
  
   return item.value
-}
-
-/**
- * Getter function for form radio button label.
- *
- * @param item
- */
-export function radioLabel(item: IFormRadio) {
-
-  // TODO Implement additional logic for form radio label here.
-  // e.g. filtering and proccessing
-
-  return item.label || item.value
 }
 
 /**
@@ -336,7 +324,7 @@ export function onUpdateFormData(
 }
 
 
-export default class StateFormItem<P = any, T = any>
+export default class StateFormItem<P = StateForm, T = any>
     extends StateController implements IStateFormItem {
 
   private item: IStateFormItem

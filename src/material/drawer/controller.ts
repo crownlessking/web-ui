@@ -3,6 +3,7 @@ import { IStateLink, IRedux, IStateDrawer } from '../../interfaces'
 import { dummyCallback } from '../../controllers'
 import StateController from '../../controllers/state.controller'
 import StateLink from '../link/controller'
+import State from '../../state/controller'
 
 /**
  * Get the default drawer width.
@@ -29,7 +30,7 @@ export function getListItemCallback(def: IStateLink, redux: IRedux) {
   return newDef.onClick(redux)
 }
 
-export default class StateDrawer<P>
+export default class StateDrawer<P = State>
     extends StateController implements IStateDrawer {
 
   private drawer: IStateDrawer

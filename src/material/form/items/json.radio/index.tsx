@@ -1,12 +1,12 @@
 import React from 'react'
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
 import StateFormItem, {
-  radioLabel, getProps, getStoredValue, getLocallyStoredValue
-} from './items.controller'
-import { IFormRadio, IState } from '../../../interfaces'
-import { RadioProps } from '@material-ui/core/Radio'
+  getProps, getStoredValue, getLocallyStoredValue
+} from '../items.controller'
+import { IState } from '../../../../interfaces'
 import { connect } from 'react-redux'
-import StateForm from '../../../state/forms/form.controller'
+import StateForm from '../../../../state/forms/form.controller'
+import StateFormItemRadio from './controller'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -18,7 +18,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<StateForm, IFormRadio>
+  def: StateFormItem<StateForm, StateFormItemRadio>
   formsData: any
   state?: IParentState
 }
@@ -55,13 +55,11 @@ function({ def: radio, formsData, state }: IProps) {
             key={index}
             value={radioButton.value}
             control={
-              <Radio color={
-                radioButton.color || (radio.has.color as RadioProps['color'])
-              } />
+              <Radio color={radioButton.radioColor()} />
             }
-            label={radioLabel(radioButton)}
+            label={radioButton.radioLabel()}
             checked={radioButton.value === value}
-            disabled={radioButton.disabled === true}
+            disabled={radioButton.disabled}
           />
         ))}
       </RadioGroup>

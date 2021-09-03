@@ -33,7 +33,7 @@ export default class StateFormItemCustom<P, T = any>
   
   get content() { return this.has.content || '' }
 
-  get color() { return this.has.color }
+  get color() { return this.has.color || '' }
 
   get defaultValue() { return this.has.defaultValue || '' }
 
