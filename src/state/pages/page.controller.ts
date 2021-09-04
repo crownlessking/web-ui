@@ -9,6 +9,7 @@ import StatePageBackground from './background.c'
 import StatePageTypography from './typography.c'
 import StatePageDrawer from './drawer.c'
 import { mongoObjectId } from '../../controllers'
+import _ from 'lodash'
 
 const EMPTY_APPBAR: IStateAppBar = { items: [] }
 
@@ -48,12 +49,12 @@ export default class StatePage extends StateController implements IStatePage {
     this.parentDef = parent
     this.page = page
     this.noPageAppBar = !this.page.appBar
-    this.pageAppBar = this.page.appBar || this.initPageAppBar()
+    this.pageAppBar = this.initPageAppBar()
     this.noPageDrawer = !this.page.drawer
-    this.pageDrawer = this.page.drawer || this.initPageDrawer()
+    this.pageDrawer = this.initPageDrawer()
     this.pageContent = this.parseContent()
     this.noPageBackground = !this.page.background
-    this.pageBackground = this.page.background || this.initPageBackground()
+    this.pageBackground = this.initPageBackground()
     this.pageTypography = this.page.typography || { }
   }
 
@@ -65,7 +66,7 @@ export default class StatePage extends StateController implements IStatePage {
   /**
    * Get the patched version of the page state.
    */
-  get patched(): IStatePage {
+  get patched() {
     throw new Error(`'Patched page state' NOT implemented.`)
   }
 
@@ -285,14 +286,15 @@ export default class StatePage extends StateController implements IStatePage {
    * Ensures the page has the correct appbar.
    */
   private initPageAppBar = (): IStateAppBar => {
-    if (this.noPageAppBar) {
-      if (this.page.useDefaultAppBar) {
-        return this.parent.parent.appBar.state
-      }
-      if (this.page.appBarInherited) {
-        const route = this.page.appBarInherited
-        return this.parent.pageAt(route).appBar.state
-      }
+    if (this.page.appBar) {
+      return _.extend(EMPTY_APPBAR, this.page.appBar)
+    }
+    if (this.page.useDefaultAppBar) {
+      return this.parent.parent.appBar.state
+    }
+    if (this.page.appBarInherited) {
+      const route = this.page.appBarInherited
+      return this.parent.pageAt(route).appBar.state
     }
     return EMPTY_APPBAR
   }
@@ -301,6 +303,9 @@ export default class StatePage extends StateController implements IStatePage {
    * Initializes and ensures that the page has the correct drawer.
    */
   private initPageDrawer = (): IStateDrawer => {
+    if (this.page.drawer) {
+      return _.extend(EMPTY_DRAWER, this.page.drawer)
+    }
     if (this.noPageDrawer && this.page.drawerInherited) {
       const route = this.page.drawerInherited
       return this.parent.pageAt(route).drawer.state
@@ -315,6 +320,9 @@ export default class StatePage extends StateController implements IStatePage {
    * Initializes and ensures that the page has the correct background.
    */
   private initPageBackground = (): IStateBackground => {
+    if (this.page.background) {
+      return _.extend(EMPTY_BACKGROUND, this.page.background)
+    }
     if (this.noPageBackground && this.page.backgroundInherited) {
       const route = this.page.backgroundInherited
       return this.parent.pageAt(route).background.state

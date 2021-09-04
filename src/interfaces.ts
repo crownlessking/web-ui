@@ -269,10 +269,16 @@ export interface IStateAppBarSearches {
   [pageName: string]: string
 }
 
+interface IAbstractStateDrawer {
+  items?: IStateLink[],
+  open?: boolean
+  width?: number
+}
+
 /**
  * Default drawer state. Contains icons and descriptions.
  */
-export interface IStateDrawer {
+export interface IStateDrawer extends IAbstractStateDrawer {
   /** List of icons with the descriptions */
   items: IStateLink[]
   /** Whether the drawer is open or not. */
@@ -284,11 +290,7 @@ export interface IStateDrawer {
 /**
  * TEMPORARY You can delete this if it's not in use.
  */
-export interface IStatePageDrawer {
-  items: IStateLink[]
-  open?: boolean
-  width?: number
-}
+export interface IStatePageDrawer extends IAbstractStateDrawer {  }
 
 /**
  * Background color, image, gradient... etc. Any valid CSS background.
@@ -341,7 +343,7 @@ export interface IStatePage {
   typography?: IStateTypography
   /** Content of page represented as a symbolic string. */
   content?: string
-  drawer?: IStateDrawer
+  drawer?: IStatePageDrawer
   /** A valid layout constant. */
   layout?: string
   /** If `true`, the current page appbar will be hidden. */
