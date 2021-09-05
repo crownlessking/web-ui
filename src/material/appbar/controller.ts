@@ -53,7 +53,7 @@ export default class StateAppBar<P = State>
   protected appBarBackgroundDef?: StateAppBarBackground<P>
 
   /**
-   * Constructor for .
+   * Constructor
    *
    * @param appBar
    */
