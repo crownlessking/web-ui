@@ -57,7 +57,7 @@ export default {
      * UI, like transitioning from one page to another but without loading anything
      * from the server.
      */
-    'route': 'login',
+    'route': 'default',
 
     'title': 'web-ui',
   
@@ -120,7 +120,7 @@ export default {
   /**
    * Object containing all dialog definitions
    */
-  'dialogs': _.extend({}, getGlobalVar('appDialogs')),
+  'dialogs': _.extend({ }, getGlobalVar('appDialogs')),
 
   /**
    * Drawer general state
@@ -144,39 +144,7 @@ export default {
    *
    * @see forms.state.ts
    */
-  'forms': _.extend({
-    loginForm: {
-      items: [
-        {
-          type: 'text',
-          label: 'UserID',
-          name: 'username',
-          margin: 'normal',
-        },
-        { type: 'br' },
-        {
-          type: 'password',
-          label: 'Password',
-          name: 'password',
-          margin: 'normal'
-        },
-        { type: 'br' },
-        {
-          type: 'submit',
-          has: {
-            color: 'secondary',
-            variant: 'contained',
-            icon: 'vpn_key',
-            iconPosition: 'right',
-            title: 'login',
-            // 'callback': callbacks.loginForm,
-          }
-        }
-      ],
-
-      paperBackground: true,
-    },
-  }, getGlobalVar('appForms')), // forms,
+  'forms': _.extend({ }, getGlobalVar('appForms')), // forms,
 
   /**
    * Object containing all page definitions.
@@ -188,13 +156,6 @@ export default {
     '/default': {
       'title': 'default page',
       'content': '$html : default.html : n/a',
-    },
-
-    '/login': {
-      'title': 'Login',
-      'content': '$form : login : users',
-      'useDefaultBackground': true,
-      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
     },
 
   }, getGlobalVar('appPages')), // pages,
