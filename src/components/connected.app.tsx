@@ -13,6 +13,7 @@ import Drawer from './drawer.component'
 import State from '../state/controller'
 import Spinner from './spinner.component'
 import Snackbar from '../material/snackbar'
+import StatePage from '../state/pages/page.controller'
 
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({
@@ -35,6 +36,8 @@ const styles = ({ spacing }: Theme) => createStyles({
 
 interface IProps extends WithStyles<typeof styles> { state: IState }
 
+interface IAppPage {}
+
 const mapStateToProps = (state: IState) => ({ state })
 
 /**
@@ -45,6 +48,12 @@ class App extends Component<IProps> {
   render() {
     const root = new State(this.props.state)
     const page = root.allPages.pageAt(root.app.route)
+    const { LocalPage } = this
+
+    return <LocalPage page = {page} />
+  }
+
+  LocalPage = ({ page }:{ page: StatePage }) => {
     page.setTabTitle()
     const { classes } = this.props
     return (
@@ -64,6 +73,9 @@ class App extends Component<IProps> {
       </React.Fragment>
     )
   }
+
+  /** Coming soon! */
+  RemotePage = () => { }
 
 }  // END App class
 

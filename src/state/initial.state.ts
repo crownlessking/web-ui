@@ -57,10 +57,10 @@ export default {
      * UI, like transitioning from one page to another but without loading anything
      * from the server.
      */
-    'route': 'default',
+    'route': 'none',
 
     'title': 'web-ui',
-  
+
   }, getGlobalVar('appInfo')),
 
   /**
@@ -149,16 +149,21 @@ export default {
   /**
    * Object containing all page definitions.
    *
+   * You can manually insert pages in that empty object.
+   *
+   * e.g.
+   * ```javascript
+   * '/default': {
+   *   'title': 'Default page',
+   *   'content': '$html : default.html : n/a',
+   * }
+   * ```
+   *
+   * However, these pages will be transpiled in the resulting JavaScript.
+   *
    * @see pages.state.ts
    */
-  'pages': _.extend({
-
-    '/default': {
-      'title': 'default page',
-      'content': '$html : default.html : n/a',
-    },
-
-  }, getGlobalVar('appPages')), // pages,
+  'pages': _.extend({ }, getGlobalVar('appPages')), // pages,
 
   /**
    * All resources acquired from the server will be stored in this object. The

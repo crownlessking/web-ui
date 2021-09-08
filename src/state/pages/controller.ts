@@ -73,7 +73,14 @@ export default class StateAllPages extends StateController {
   pageAt = (route: string): StatePage => {
     const statePage = this.getStatePage(route)
 
-    return new StatePage(statePage, this)
+    if (statePage !== null) {
+      return new StatePage(statePage, this)
+    }
+
+    return new StatePage({
+      'title': 'Default page',
+      'content': '$html : default.html : n/a',
+    }, this)
   }
 
   /**
@@ -95,6 +102,9 @@ export default class StateAllPages extends StateController {
 
       // Yup! The route is bad.  We'll just juse the default rout then.
       || this.allPages[initialState.app.route]
+
+      // Oops! No default page.
+      || null
   }
 
 } // END class AllPages -------------------------------------------------------

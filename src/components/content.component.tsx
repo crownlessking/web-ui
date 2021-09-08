@@ -83,8 +83,19 @@ export default class extends Component<IProps> {
     // TODO add more cases here for different types of content
 
     case APP_CONTENT_HTML:
-      currentContentJsx = contentJsx = ( null )
-      break
+      const domElement = document.getElementById(page.contentName)
+
+      if (domElement) {
+        currentContentJsx = contentJsx = (
+          <div dangerouslySetInnerHTML={{
+            __html: domElement.innerHTML
+          }} />
+        )
+      } else {
+        currentContentJsx = contentJsx = ( null )
+      }
+
+      break // END of APP_CONTENT_HTML ----------------------------------------
 
     default:
       contentJsx = currentContentJsx
