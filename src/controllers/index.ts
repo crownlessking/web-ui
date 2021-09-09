@@ -364,6 +364,11 @@ export function getGlobalVar (varName: string) {
       return appInfo
     } catch (e) { return {} }
 
+  case 'appBackground':
+    try {
+      return appBackground
+    } catch (e) { return {} }
+
   case 'appDialogs':
     try {
       return appDialogs

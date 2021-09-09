@@ -11,6 +11,8 @@ import StatePageDrawer from './drawer.c'
 import { mongoObjectId } from '../../controllers'
 import _ from 'lodash'
 
+export const HARD_CODED_PAGE = '613a6550a5cf801a95fb23c8'
+
 const EMPTY_APPBAR: IStateAppBar = { items: [] }
 
 const EMPTY_DRAWER: IStateDrawer = {
@@ -23,9 +25,9 @@ const EMPTY_BACKGROUND: IStateBackground = { type: 'none' }
 
 export default class StatePage extends StateController implements IStatePage {
 
-  private _id?: string
   private parentDef: StateAllPages
   private page: IStatePage
+  private _pageId?: string
   private pageAppBar: IStateAppBar
   private pageAppBarDef?: StatePageAppBar
   private noPageAppBar: boolean
@@ -48,6 +50,7 @@ export default class StatePage extends StateController implements IStatePage {
     super()
     this.parentDef = parent
     this.page = page
+    this._pageId = this.page._id
     this.noPageAppBar = !this.page.appBar
     this.pageAppBar = this.initPageAppBar()
     this.noPageDrawer = !this.page.drawer
@@ -79,7 +82,7 @@ export default class StatePage extends StateController implements IStatePage {
    * A unique id is assigned if you would like to use an identifier for the
    * page besides its title.
    */
-  get id() { return this._id || (this._id = mongoObjectId()) }
+  get _id() { return this._pageId || (this._pageId = mongoObjectId()) }
 
   get title() { return this.page.title || '' }
   get forcedTitle() { return this.page.forcedTitle || '' }

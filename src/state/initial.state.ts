@@ -98,10 +98,10 @@ export default {
   /**
    * Application background color
    */
-  'background': {
+  'background': _.extend({
     'type': 'color',
     'value': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
-  },
+  }, getGlobalVar('appBackground')),
 
   /**
    * Application `font-family` and `color`

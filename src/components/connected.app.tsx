@@ -13,7 +13,8 @@ import Drawer from './drawer.component'
 import State from '../state/controller'
 import Spinner from './spinner.component'
 import Snackbar from '../material/snackbar'
-import StatePage from '../state/pages/page.controller'
+import StatePage, { HARD_CODED_PAGE } from '../state/pages/page.controller'
+import { postReqState } from '../state/net'
 
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({
@@ -34,26 +35,50 @@ const styles = ({ spacing }: Theme) => createStyles({
   },
 })
 
-interface IProps extends WithStyles<typeof styles> { state: IState }
-
-interface IAppPage {}
-
 const mapStateToProps = (state: IState) => ({ state })
+
+const mapDispatchToProps = {
+  onPostReqState: postReqState
+}
+
+interface IProps extends WithStyles<typeof styles> {
+  state: IState
+  onPostReqState: (endpoint: string, body: RequestInit['body']) => void
+}
 
 /**
  * Redux connected App
  */
 class App extends Component<IProps> {
 
-  render() {
-    const root = new State(this.props.state)
-    const page = root.allPages.pageAt(root.app.route)
-    const { LocalPage } = this
+  private pageID?: string
+  private root?: State
 
-    return <LocalPage page = {page} />
+  /**
+   * TODO Perform a successful post request to origin to retrieve a valid page
+   *      if one was not provided as default.
+   *      that means that the action `postReqState` has to be working as
+   *      intended.
+   */
+  onPostReqHomePageState = () => {
+    this.props.onPostReqState('', '{}')
   }
 
-  LocalPage = ({ page }:{ page: StatePage }) => {
+  componentDidMount() {
+    if (this.root) {
+      const app = this.root.app
+
+      // Get a page from server if none was provided.
+      if (app.originIsValid() && this.pageID === HARD_CODED_PAGE) {
+        this.onPostReqHomePageState()
+      }
+    }
+  }
+
+  render() {
+    this.root = new State(this.props.state)
+    const page = this.root.allPages.pageAt(this.root.app.route)
+    this.pageID = page._id
     page.setTabTitle()
     const { classes } = this.props
     return (
@@ -74,9 +99,11 @@ class App extends Component<IProps> {
     )
   }
 
-  /** Coming soon! */
-  RemotePage = () => { }
+  LocalPage = ({ page }:{ page: StatePage }) => { }
 
 }  // END App class
 
-export default connect(mapStateToProps)(withStyles(styles)(App))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(App))

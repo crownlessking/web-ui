@@ -22,6 +22,11 @@ declare var appForms
 declare var appInfo
 
 /**
+ * default page background
+ */
+declare var appBackground
+
+/**
  * dialogs definition
  */
 declare var appDialogs

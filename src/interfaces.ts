@@ -325,8 +325,8 @@ export interface IStateForm {
  * Page with content, an appbar, background, drawer... etc.
  */
 export interface IStatePage {
-  /** Page title */
-  title?: string
+  _id?: string
+  title?: string /** Page title */
 
   /**
    * Forced page title

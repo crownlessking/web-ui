@@ -1,5 +1,5 @@
 import { IStateAllPages, IStatePage } from '../../interfaces'
-import StatePage from './page.controller'
+import StatePage, { HARD_CODED_PAGE } from './page.controller'
 import State from '../controller'
 import StateController from '../../controllers/state.controller'
 import initialState from '../initial.state'
@@ -78,8 +78,10 @@ export default class StateAllPages extends StateController {
     }
 
     return new StatePage({
-      'title': 'Default page',
-      'content': '$html : default.html : n/a',
+      _id: HARD_CODED_PAGE,
+      title: 'Default page',
+      content: '$html : default.html : n/a',
+      useDefaultBackground: true
     }, this)
   }
 

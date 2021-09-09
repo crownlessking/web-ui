@@ -122,11 +122,14 @@ export default class StateApp extends StateController implements IStateApp {
 
   private app: IStateApp
   private parentDef: State
+  private originValidation: boolean
 
   constructor(app: IStateApp, parent: State) {
     super()
     this.app = app
     this.parentDef = parent
+    this.originValidation = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
+        .test(this.app.origin)
   }
 
   /**
@@ -159,4 +162,12 @@ export default class StateApp extends StateController implements IStateApp {
   get logo() { return this.app.logo || ''}
 
   get lastRoute() { return this.app.lastRoute || ''}
+
+  /**
+   * @returns returns `true` if origin is a valid URL.
+   */
+  originIsValid = () => {
+    return this.originValidation
+  }
+
 }
