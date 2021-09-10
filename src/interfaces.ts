@@ -59,6 +59,7 @@ RESPONSE SPECIFICATION
 
 export interface IResponseRequirement {
   driver?: string
+  state?: INetState
 }
 
 /* ----------------------------------------------------------------------------
@@ -537,6 +538,33 @@ export interface IState {
   tmp: { [x: string]: any }
 
   topLevelLinks: IStateTopLevelLinks
+}
+
+/**
+ * Type for state retrieved remotely.
+ *
+ * It is similar to `IState` except that properties are optional to keep
+ * the payload minimal.
+ */
+export interface INetState {
+  app?: IStateApp
+  appBar?: IStateAppBar
+  appBarSearches?: IStateAppBarSearches
+  background?: IStateBackground
+  typography?: IStateTypography
+  data?: any
+  dialog?: IStateDialog
+  dialogs?: IStateAllDialogs
+  drawer?: IStateDrawer
+  errors?: IJsonapiError[]
+  forms?: IStateAllForms
+  formsData?: any
+  meta?: any
+  pages?: IStateAllPages
+  pagesData?: any
+  snackbar?: IStateSnackbar
+  tmp?: { [x: string]: any }
+  topLevelLinks?: IStateTopLevelLinks
 }
 
 // ----------------------------------------------------------------------------

@@ -23,6 +23,7 @@ export default (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) =
   }
 
   if (doc.data) {
+
     // [TODO] The json contains, `data`, `meta`, and `included` keys. And they
     //        all need to be stored.
     //        - the json.meta will be stored in the `meta` state.
@@ -46,7 +47,7 @@ export default (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) =
     //      entity ID is the key. You can put the logic in a controller called,
     //      `data.controller.ts` then import the function that makes the
     //      conversion.
-    // insertIndexes(endpoint, json)
+    //      insertIndexes(endpoint, json)
 
   } else if (doc.errors) {
     dispatch(addError({
@@ -56,7 +57,15 @@ export default (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) =
     }))
   }
 
-  if (!!(doc.meta || doc.data || doc.links)) {
+  // This if-condition handles redux state loaded from the server (remote).
+  //
+  // [TODO] You need to do either a replace or a merge of the existing state.
+  //        I'd say, the default behavior should be a merge. For example,
+  //        existing pages are preserved when newer ones are loaded from the
+  //        server.
+  if (doc.state) { }
+
+  if (!!(doc.meta || doc.data || doc.links || doc.state)) {
     dispatch(requestSuccess())
   } else {
     dispatch(requestFailed())

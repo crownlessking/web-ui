@@ -55,13 +55,13 @@ class App extends Component<IProps> {
   private root?: State
 
   /**
-   * TODO Perform a successful post request to origin to retrieve a valid page
-   *      if one was not provided as default.
-   *      that means that the action `postReqState` has to be working as
-   *      intended.
+   * [TODO] Perform a successful post request to origin to retrieve a valid page
+   *        if one was not provided as default.
+   *        that means that the action `postReqState` has to be working as
+   *        intended.
    */
   onPostReqHomePageState = () => {
-    this.props.onPostReqState('', '{}')
+    this.props.onPostReqState('', '')
   }
 
   componentDidMount() {
