@@ -460,7 +460,7 @@ export default class StateFormItem<P = StateForm, T = any>
       }
     }
 
-    if (Config.DEBUG === true) {
+    if (Config.DEBUG) {
       throw new Error('`formItem.name` is NOT defined.')
     }
 

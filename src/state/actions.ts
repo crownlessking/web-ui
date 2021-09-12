@@ -14,6 +14,13 @@ import * as net from '../state/net'
 import * as snackbar from '../material/snackbar/actions'
 import * as topLevelLinks from '../state/links.toplevel/actions'
 import ui from '../material/ui'
+import { IReduxAction, INetState } from '../interfaces'
+
+export const NET_PATCH_STATE = 'NET_PATCH_STATE'
+export const netPatchState = (payload: INetState): IReduxAction<INetState> => ({
+  type: NET_PATCH_STATE,
+  payload
+})
 
 export default {
   app,

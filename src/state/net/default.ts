@@ -5,12 +5,18 @@ import { setTopLevelLinks } from '../links.toplevel/actions'
 import { requestSuccess, requestFailed } from './controller'
 import { addError } from '../../state/errors/actions'
 import { _cancelSpinner } from '../../state/app/controller'
-import { IAbstractResponse, IJsonapiRespoonse } from '../../interfaces'
+import { IAbstractResponse, IJsonapiRespoonse, IState } from '../../interfaces'
+import { netPatchState } from '../actions'
 
 /**
  * Once the server response is received, this function can be used to process it.
  */
-export default (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) => {
+export default (
+  dispatch: Dispatch,
+  getState: ()=>IState,
+  endpoint: string,
+  json: IAbstractResponse
+) => {
   _cancelSpinner()
   const doc = json as IJsonapiRespoonse
 
@@ -63,7 +69,9 @@ export default (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) =
   //        I'd say, the default behavior should be a merge. For example,
   //        existing pages are preserved when newer ones are loaded from the
   //        server.
-  if (doc.state) { }
+  if (doc.state) {     
+    dispatch(netPatchState(doc.state))
+  }
 
   if (!!(doc.meta || doc.data || doc.links || doc.state)) {
     dispatch(requestSuccess())

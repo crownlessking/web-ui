@@ -61,7 +61,7 @@ class App extends Component<IProps> {
    *        intended.
    */
   onPostReqHomePageState = () => {
-    this.props.onPostReqState('', '')
+    this.props.onPostReqState('portal', '')
   }
 
   componentDidMount() {

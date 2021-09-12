@@ -59,7 +59,7 @@ export default class State extends StateController {
    */
   get state(): IState {
     throw new Error(`Access to the root state is NOT a good idea.`)
-    // return { ...this.store }
+    // return this.store
   }
 
   /**

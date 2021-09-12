@@ -5,14 +5,16 @@ import {
   APP_IS_FETCHING,
   APP_IS_BOOTSTRAPPED,
   APP_SWITCHED_PAGE,
-  APP_UPDATE_TITLE,
+  APP_UPDATE_APP_TITLE,
   UI_HIDE_SPINNER,
   APP_UPDATE_STATUS,
   APP_UPDATE_PAGE,
-  APP_UPDATE_ORIGIN,
+  APP_UPDATE_APP_ORIGIN,
   APP_TASK_COMPLETED,
   APP_URL_UPDATE_PAGE,
-  BROWSER_SWITCHED_PAGE
+  BROWSER_SWITCHED_PAGE,
+  APP_UPDATE_APP_ROUTE,
+  APP_UPDATE_APP_LOGO
 } from './actions'
 
 import { 
@@ -42,11 +44,17 @@ export default function (app = INIT, {payload, type}: IReduxAction): IStateApp {
   case APP_URL_UPDATE_PAGE:
     return { ...app, status: BROWSER_SWITCHED_PAGE, route: payload }
 
-  case APP_UPDATE_TITLE:
+  case APP_UPDATE_APP_TITLE:
     return { ...app, title: payload }
 
-  case APP_UPDATE_ORIGIN:
+  case APP_UPDATE_APP_ORIGIN:
     return { ...app, origin: payload }
+
+  case APP_UPDATE_APP_ROUTE:
+    return { ...app, route: payload }
+
+  case APP_UPDATE_APP_LOGO:
+    return { ...app, logo: payload }
 
   case APP_UPDATE_STATUS:
     return { ...app, status: payload }

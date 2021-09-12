@@ -2,10 +2,11 @@ import {
   applyMiddleware, combineReducers, createStore
 } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import appReducers from './reducers'
+import appReducers, { mergeState } from './reducers'
 import thunk from 'redux-thunk'
 import initialState from './initial.state'
-import { IState } from '../interfaces'
+import { IReduxAction, IState } from '../interfaces'
+import { NET_PATCH_STATE } from './actions'
 
 export const USER_LOGOUT = 'USER_LOGOUT'
 
@@ -17,9 +18,13 @@ const allReducers = combineReducers({
 })
 
 // more info: https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
-const rootReducer = (state: IState | undefined, action: any) => {
+const rootReducer = (state: IState | undefined, action: IReduxAction) => {
   if (action.type === USER_LOGOUT) {
     state = undefined
+  }
+
+  if (action.type === NET_PATCH_STATE) {
+    mergeState(state, action.payload)
   }
 
   return allReducers(state, action)

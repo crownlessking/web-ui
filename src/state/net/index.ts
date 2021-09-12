@@ -55,7 +55,12 @@ const delegateErrorHandling = (dispatch: Dispatch, error: any) => {
  * @param endpoint 
  * @param json 
  */
-const delegateDataHandling = (dispatch: Dispatch, endpoint: string, json: IAbstractResponse) => {
+const delegateDataHandling = (
+  dispatch: Dispatch,
+  getState: ()=>IState,
+  endpoint: string,
+  json: IAbstractResponse
+) => {
 
   // We need to apply the right drivers to the JSON response
   try {
@@ -64,7 +69,7 @@ const delegateDataHandling = (dispatch: Dispatch, endpoint: string, json: IAbstr
       runGnscDriver(dispatch, endpoint, json)
       break
     default:
-      runDefaultDriver(dispatch, endpoint, json)
+      runDefaultDriver(dispatch, getState, endpoint, json)
     }
     return
   } catch (e) {
@@ -158,7 +163,7 @@ export const postReqState = (endpoint: string, body: RequestInit['body']) => {
         response => response.json(),
         error => delegateErrorHandling(dispatch, error)
       )
-      .then(json => delegateDataHandling(dispatch, endpoint, json))
+      .then(json => delegateDataHandling(dispatch, getState, endpoint, json))
   }
 }
 
@@ -181,7 +186,7 @@ export const getReqState = (endpoint: string, args = '') => {
         response => response.json(),
         error => delegateErrorHandling(dispatch, error)
       )
-      .then(json => delegateDataHandling(dispatch, endpoint, json))
+      .then(json => delegateDataHandling(dispatch, getState, endpoint, json))
   }
 }
 
@@ -219,7 +224,7 @@ export const originPost = (
       .then(
         json => success
             ? success(json, endpoint)
-            : delegateDataHandling(dispatch, endpoint, json)
+            : delegateDataHandling(dispatch, getState, endpoint, json)
       )
   }
 }
@@ -252,7 +257,7 @@ export const originGet = (
       .then(
         json => success
             ? success(endpoint, json)
-            : delegateDataHandling(dispatch, endpoint, json)
+            : delegateDataHandling(dispatch, getState, endpoint, json)
       )
   }
 }

@@ -7,20 +7,32 @@ export const APP_IS_READY = 'APP_IS_READY'
 export const APP_SWITCHED_PAGE = 'APP_SWITCHED_PAGE'
 export const BROWSER_SWITCHED_PAGE = 'BROWSER_SWITCHED_PAGE'
 
-export const APP_UPDATE_TITLE = 'APP_UPDATE_TITLE'
+export const APP_UPDATE_APP_TITLE = 'APP_UPDATE_TITLE'
 export const updateAppTitle = (title: string) => ({
   payload: title,
-  type: APP_UPDATE_TITLE
+  type: APP_UPDATE_APP_TITLE
 })
 
-export const APP_UPDATE_ORIGIN = 'APP_UPDATE_ORIGIN'
-export const updateOrigin = (origin: string): IReduxAction => ({
+export const APP_UPDATE_APP_ORIGIN = 'APP_UPDATE_ORIGIN'
+export const updateAppOrigin = (origin: string): IReduxAction => ({
   payload: origin,
-  type: APP_UPDATE_ORIGIN,
+  type: APP_UPDATE_APP_ORIGIN,
+})
+
+export const APP_UPDATE_APP_ROUTE = 'APP_UPDATE_APP_ROUTE'
+export const updateAppRoute = (payload: string): IReduxAction => ({
+  payload,
+  type: APP_UPDATE_APP_ROUTE
+})
+
+export const APP_UPDATE_APP_LOGO = 'APP_UPDATE_APP_LOGO'
+export const updateAppLogo = (payload?: string): IReduxAction => ({
+  payload,
+  type: APP_UPDATE_APP_LOGO
 })
 
 export const UI_UPDATE_LAYOUT = 'UI_UPDATE_LAYOUT'
-export const updateLayout = (layout: any): IReduxAction => ({
+export const updateAppLayout = (layout: any): IReduxAction => ({
   payload: layout,
   type: UI_UPDATE_LAYOUT
 })

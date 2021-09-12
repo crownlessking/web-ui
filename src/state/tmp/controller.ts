@@ -25,7 +25,7 @@ export default class StateTmp extends StateController {
     try {
       const m = member || ''
       return this.tmp[key] && this.tmp[key][m]
-    } catch (e) {
+    } catch (e: any) {
       if (!$default && Config.DEBUG) {
         console.error(`IState.tmp[${key}][${member}] does NOT exist.`)
         console.error(e.stack)

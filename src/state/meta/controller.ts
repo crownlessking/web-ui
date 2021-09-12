@@ -38,7 +38,7 @@ export default class StateMeta extends StateController {
   get = (endpoint: string, key: string) => {
     try {
       return this.meta[endpoint][key]
-    } catch (e) {
+    } catch (e: any) {
       if (Config.DEBUG) {
         console.error(`Bad values passed to State.meta:
           either endpoint: '${endpoint}' or key: '${key}' or the data does not

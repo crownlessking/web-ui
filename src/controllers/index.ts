@@ -114,7 +114,10 @@ export function getFontAwesomeIconProp(iconDef: string): string[]|string {
   } else if (pieces.length === 1) {
     return ['fas', iconDef]
   }
-  throw new Error('bad icon definition. Check your JSON.')
+
+  if (Config.DEBUG) throw new Error('bad icon definition. Check your JSON.')
+
+  return ''
 }
 
 /**

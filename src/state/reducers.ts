@@ -16,8 +16,51 @@ import dialogs from './dialogs/reducer'
 import drawer from '../material/drawer/reducer'
 import forms from './forms/reducer'
 import snackbar from '../material/snackbar/reducer'
+import Config from '../config'
 
-// TODO Export all reducers in one object
+/**
+ * Merges fragment state received from server into the current redux state.
+ *
+ * @param state current redux state
+ * @param fragment fragment state received from server
+ *
+ * @returns void
+ */
+export function mergeState(state: any, fragment: any): void {
+
+  try {
+    for (const prop in fragment) {
+  
+      if (prop in state) {
+        const oldStateVal = state[prop]
+        const newStateVal     = fragment[prop]
+  
+        switch (typeof oldStateVal) {
+  
+        case 'object':
+          state[prop] = { ...oldStateVal }
+          return mergeState(state[prop], newStateVal)
+  
+        case 'symbol':
+        case 'bigint':
+        case 'number':
+        case 'function':
+        case 'string':
+        case 'boolean':
+          state[prop] = newStateVal
+        }
+      }
+
+    }
+  } catch (e: any) {
+    if (Config.DEBUG) {
+      console.error(e.stack)
+    }
+  }
+
+}
+
+// Export all reducers in one object
 export default {
   app,
   appBar,
