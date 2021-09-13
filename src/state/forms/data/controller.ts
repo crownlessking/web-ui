@@ -33,7 +33,7 @@ export default class StateFormsData extends StateController {
         return this.formsData[formName][name]
       }
       return this.formsData[formName]
-    } catch (e) {
+    } catch (e: any) {
 
       // TODO Implement logic to save error and view it later
 

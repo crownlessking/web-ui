@@ -176,7 +176,7 @@ export const postReqState = (endpoint: string, body: RequestInit['body']) => {
  *             It must be a valid query string therefore, the interrogation
  *             point is required.
  */
-export const getReqState = (endpoint: string, args = '') => {
+export const _getReqState = (endpoint: string, args = '') => {
   return (dispatch: Dispatch, getState: ()=>IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
@@ -187,6 +187,21 @@ export const getReqState = (endpoint: string, args = '') => {
         error => delegateErrorHandling(dispatch, error)
       )
       .then(json => delegateDataHandling(dispatch, getState, endpoint, json))
+  }
+}
+
+export const getReqState = (endpoint: string, args = '') => {
+  return async (dispatch: Dispatch, getState: ()=>IState) => {
+    dispatch(startRequest())
+    _scheduleSpinner()
+    const uri = getState().app.origin + endpoint + args
+    try {
+      const response = await fetch(uri)
+      const json = await response.json()
+      delegateDataHandling(dispatch, getState, endpoint, json)
+    } catch (error) {
+      delegateErrorHandling(dispatch, error)
+    }
   }
 }
 

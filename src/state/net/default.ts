@@ -64,11 +64,6 @@ export default (
   }
 
   // This if-condition handles redux state loaded from the server (remote).
-  //
-  // [TODO] You need to do either a replace or a merge of the existing state.
-  //        I'd say, the default behavior should be a merge. For example,
-  //        existing pages are preserved when newer ones are loaded from the
-  //        server.
   if (doc.state) {     
     dispatch(netPatchState(doc.state))
   }

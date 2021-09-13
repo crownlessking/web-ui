@@ -45,7 +45,7 @@ export function getData(endpoint: string): any[] {
   try {
     return store.getState().data[endpoint]
       || []
-  } catch (e) {
+  } catch (e: any) {
     if (Config.debug) {
       addError({
         code: getErrorCode(),

@@ -39,7 +39,7 @@ export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) 
       container={true}
       spacing={0}
       alignItems='center'
-      justify='center'
+      justifyContent='center'
     >
       { children }
     </Grid>
@@ -83,7 +83,7 @@ const LayoutCenteredFactory = (mHeight?: number) => {
           container
           spacing={0}
           alignItems='center'
-          justify='center'
+          justifyContent='center'
         >
           { children }
         </Grid>

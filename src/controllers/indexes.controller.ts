@@ -66,7 +66,7 @@ export function removeIndexes(endpoint: string, data: any) {
 export function select(endpoint: string, id: string) {
   try {
     return indexes[endpoint][id]
-  } catch (e) {
+  } catch (e: any) {
     store.dispatch(addError({
       'code': getErrorCode(),
       'title': e.message,

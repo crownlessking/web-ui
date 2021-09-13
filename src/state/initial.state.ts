@@ -57,7 +57,7 @@ export default {
      * UI, like transitioning from one page to another but without loading anything
      * from the server.
      */
-    'route': 'none',
+    'route': '',
 
     'title': 'web-ui',
 

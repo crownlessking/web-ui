@@ -33,7 +33,7 @@ export function mergeState(state: any, fragment: any): void {
   
       if (prop in state) {
         const oldStateVal = state[prop]
-        const newStateVal     = fragment[prop]
+        const newStateVal = fragment[prop]
   
         switch (typeof oldStateVal) {
   
@@ -53,9 +53,7 @@ export function mergeState(state: any, fragment: any): void {
 
     }
   } catch (e: any) {
-    if (Config.DEBUG) {
-      console.error(e.stack)
-    }
+    if (Config.DEBUG) console.error(e.stack)
   }
 
 }

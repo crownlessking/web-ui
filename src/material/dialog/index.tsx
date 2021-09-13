@@ -6,7 +6,6 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { IState } from '../../interfaces'
 import { closeDialog } from './actions'
 import { dummyCallback } from '../../controllers'
@@ -52,12 +51,8 @@ const mapDispachToProps = {
 
 interface IProps extends WithStyles<typeof styles> {
   pageDef: StatePage
-  // def: IStateDialog
-  // stateForms: IStateAllForms
-  // formsData: any // Data from Redux store
   onUpdateFormData: (payload: IFormDataPayload) => void
   onPostReqState: (endpoint: string, body: RequestInit['body']) => void
-  fullScreen: boolean
   onCloseDialog: () => void
 }
 
@@ -107,7 +102,7 @@ class ResponsiveDialog extends React.Component<IProps> {
    */
   dialogWithFormContent = () => {
     const {
-      props: { pageDef, classes, fullScreen },
+      props: { pageDef, classes },
       dialogActions: DialogActions
     } =  this
     const { open, contentText, title, content } = pageDef.parent.parent.dialog
@@ -116,7 +111,6 @@ class ResponsiveDialog extends React.Component<IProps> {
 
     return (
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={this.onCloseDialog}
         aria-labelledby='responsive-dialog-title'
@@ -149,14 +143,13 @@ class ResponsiveDialog extends React.Component<IProps> {
    * `stateForm`.
    */
   dialogWithArbitraryContent = () => {
-    const { fullScreen, pageDef, classes } = this.props
+    const { pageDef, classes } = this.props
     const dialogDef = pageDef.parent.parent.dialog
     const { open, content, contentText, title } = dialogDef
     const { dialogActions: DialogActions } = this
 
     return (
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={this.onCloseDialog}
         aria-labelledby='responsive-dialog-title'
@@ -285,6 +278,6 @@ export default connect(mapStateToProps, mapDispachToProps)
 (
   withStyles(styles)
   (
-    withMobileDialog()(ResponsiveDialog)
+    ResponsiveDialog
   )
 )
