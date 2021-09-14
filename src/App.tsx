@@ -23,6 +23,6 @@ library.add(fab, fas, far)
 
 export default class extends Component {
 
-  public render = () => <AppStyledConnected />
+  render() { return <AppStyledConnected /> }
 
 }
