@@ -50,16 +50,6 @@ export default class extends Component<IProps> {
           <FormItems def={page} />
         </Form>
       )
-
-      // try {
-      // } catch (e) {
-
-      //   // TODO Implement logic to save error so it can be viewed later.
-
-      //   contentJsx = ( null )
-      // }
-
-      // currentContentJsx = contentJsx
       break
 
     case APP_CONTENT_VIEW: // Content type to display data
