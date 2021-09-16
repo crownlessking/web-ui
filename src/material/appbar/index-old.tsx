@@ -20,7 +20,6 @@ const styles = ({transitions, zIndex, breakpoints}: Theme) => createStyles({
     flexGrow: 1,
   },
   appBar: {
-    // background: getBackgroundColor(),
     zIndex: zIndex.drawer + 1,
     transition: transitions.create(['width', 'margin'], {
       easing: transitions.easing.sharp,
