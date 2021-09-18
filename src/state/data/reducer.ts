@@ -8,7 +8,10 @@ import { listMergeNew } from './controller'
 
 const INIT = initialState.data
 
-export default function (state = INIT, {payload, type}: IReduxAction) {
+export default function stateDataReducer (
+  state = INIT,
+  {payload, type}: IReduxAction
+) {
   const collection: IStateCollection = payload
   const p = payload
 

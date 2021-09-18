@@ -9,7 +9,7 @@ import {
   ReportOutlined, ReportProblemOutlined, SearchOutlined, SettingsOutlined
 } from '@material-ui/icons'
 
-export default function (iconName: string, props?: any) {
+export default function getImportedSvgIcon (iconName: string, props?: any) {
 
   switch (iconName.toLowerCase()) {
 

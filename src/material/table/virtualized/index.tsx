@@ -49,11 +49,10 @@ import TableDialog from './dialog'
 import { writeSuccess, writeError } from '../../snackbar/actions'
 import StatePage from '../../../state/pages/page.controller'
 
-const styles = ({ mixins, palette }: Theme) => createStyles({
-  root: mixins.gutters({
-    paddingBottom: 16,
-    paddingTop: 16,
-  }),
+const styles = ({ spacing, palette }: Theme) => createStyles({
+  root: {
+    padding: spacing(2, 3, 2, 3)
+  },
   centeredText: {
     color: palette.text.secondary,
     position: 'absolute',

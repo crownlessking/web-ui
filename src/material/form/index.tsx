@@ -4,16 +4,15 @@ import {
 } from '@material-ui/core'
 import StatePage from '../../state/pages/page.controller'
 
-const styles = ({ mixins }: Theme) => createStyles({
+const styles = ({ spacing }: Theme) => createStyles({
   container: {
     // fontWeight: 'bold',
     display: 'table',
     // flexFlow: 'column',
   },
-  root: mixins.gutters({
-    paddingBottom: 16,
-    paddingTop: 16,
-  }),
+  root: {
+    padding: spacing(2, 3, 2, 3)
+  }
 })
 
 const Form = ({ children, classes }: any) => (

@@ -3,7 +3,7 @@ import Table from '../material/table/virtualized'
 import SuccessPage from './pages/success'
 import StatePage from '../state/pages/page.controller'
 
-export default function ({ def: page }: { def: StatePage }) {
+export default function View ({ def: page }: { def: StatePage }) {
   const view = (page.contentName + 'View').toUpperCase()
 
   switch (view) {

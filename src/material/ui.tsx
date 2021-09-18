@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from '@material-ui/core/Link'
 
-export default {
+const materialUI = {
   createElement: React.createElement,
 
   Link: ({ children, ...other}: any) => (
@@ -12,3 +12,5 @@ export default {
 
   preventDefault: (event: React.SyntheticEvent) => event.preventDefault()
 }
+
+export default materialUI

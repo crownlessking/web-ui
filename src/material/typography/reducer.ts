@@ -3,7 +3,10 @@ import { IReduxAction } from '../../interfaces'
 
 const INIT = initialState.typography
 
-export default function (typography = INIT, { type }: IReduxAction) {
+export default function typographyReducer (
+  typography = INIT,
+  { type }: IReduxAction
+) {
 
   switch (type) {
     default:

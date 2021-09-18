@@ -33,7 +33,10 @@ function updateFormDataReducer (formsData: any, { payload }: IReduxAction) {
   return { ...formsData, [formName]: newFormData }
 }
 
-export default function (formsData = INIT, {payload, type}: IReduxAction) {
+export default function stateFormsDataReducer (
+  formsData = INIT,
+  {payload, type}: IReduxAction
+) {
 
   switch (type) {
 

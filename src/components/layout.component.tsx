@@ -18,7 +18,7 @@ interface IProps {
 /**
  * Application layout
  */
-export default class extends Component<IProps> {
+export default class Layout extends Component<IProps> {
 
   render() {
     const { children, def: pageDef } = this.props

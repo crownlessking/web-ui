@@ -34,7 +34,10 @@ import { _cancelSpinner } from './controller'
 
 const INIT: IStateApp = state.app
 
-export default function (app = INIT, {payload, type}: IReduxAction): IStateApp {
+export default function stateAppReducer (
+  app = INIT,
+  {payload, type}: IReduxAction
+): IStateApp {
 
   switch (type) {
 

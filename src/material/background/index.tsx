@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { IStateBackground } from '../../interfaces'
 import { createStyles, Fade, withStyles } from '@material-ui/core'
 import { WithStyles } from '@material-ui/styles'
@@ -31,11 +31,12 @@ interface IProps extends WithStyles<typeof styles> {
   def: StateBackground<StatePage>
 }
 
-class BackgroundDiv extends Component<IProps> {
+class BackgroundDiv extends React.Component<IProps> {
 
   public render() {
     const { children, classes, def: background } = this.props
     const style = getBackgroundCss(background.state)
+
     return (
       <Fade in={true}>
         <div className={classes.background} style={style}>

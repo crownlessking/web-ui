@@ -1,6 +1,10 @@
 
 import { Dispatch } from 'redux'
 
-export default (dispatch: Dispatch, endpoint: string, json: any) => {
+export default function stateNetGnsc (
+  dispatch: Dispatch,
+  endpoint: string,
+  json: any
+) {
 
 }

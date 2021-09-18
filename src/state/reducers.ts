@@ -59,7 +59,7 @@ export function mergeState(state: any, fragment: any): void {
 }
 
 // Export all reducers in one object
-export default {
+const allReducers = {
   app,
   appBar,
   appBarSearches,
@@ -79,3 +79,5 @@ export default {
   topLevelLinks,
   typography
 }
+
+export default allReducers

@@ -4,7 +4,10 @@ import { IReduxAction } from '../../../interfaces'
 
 const INIT = initialState.pagesData
 
-export default function (state = INIT, { type, payload }: IReduxAction) {
+export default function statePagesDataReducer (
+  state = INIT,
+  { type, payload }: IReduxAction
+) {
 
   switch (type) {
 

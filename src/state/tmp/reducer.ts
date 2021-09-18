@@ -1,7 +1,10 @@
 import { IReduxAction } from '../../interfaces'
 import { APP_STORE_VOLATILE } from './actions'
 
-export default (tmp = {} as any, { payload, type }: IReduxAction) => {
+export default function stateTmpReducer (
+  tmp = {} as any,
+  { payload, type }: IReduxAction
+) {
 
   switch (type) {
 

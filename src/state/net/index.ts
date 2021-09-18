@@ -57,7 +57,7 @@ const delegateErrorHandling = (dispatch: Dispatch, error: any) => {
  */
 const delegateDataHandling = (
   dispatch: Dispatch,
-  getState: ()=>IState,
+  getState: () => IState,
   endpoint: string,
   json: IAbstractResponse
 ) => {
@@ -65,11 +65,11 @@ const delegateDataHandling = (
   // We need to apply the right drivers to the JSON response
   try {
     switch (json.driver) {
-    case GNSC_RESPONSE_DRIVER:
-      runGnscDriver(dispatch, endpoint, json)
-      break
-    default:
-      runDefaultDriver(dispatch, getState, endpoint, json)
+      case GNSC_RESPONSE_DRIVER:
+        runGnscDriver(dispatch, endpoint, json)
+        break
+      default:
+        runDefaultDriver(dispatch, getState, endpoint, json)
     }
     return
   } catch (e) {
@@ -89,15 +89,15 @@ const delegateDataHandling = (
 export const postRequest = (
   endpoint: string,
   body: RequestInit['body'],
-  success?: (json: Promise<any>, dispatch?: Dispatch, state?: ()=>IState)=>void,
-  failure?: (error: any, dispatch?: Dispatch, state?: ()=>IState)=>void
+  success?: (json: Promise<any>, dispatch?: Dispatch, state?: () => IState) => void,
+  failure?: (error: any, dispatch?: Dispatch, state?: () => IState) => void
 ) => {
-  return (dispatch: Dispatch, getState: ()=>IState) => {
+  return (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     return fetch(
-        getState().app.origin + endpoint,
-        { ...DEFAULT_POST_PAYLOAD, ...{ body } }
-      )
+      getState().app.origin + endpoint,
+      { ...DEFAULT_POST_PAYLOAD, ...{ body } }
+    )
       .then(
         response => {
           dispatch(requestSuccess())
@@ -127,7 +127,7 @@ export const getRequest = (
   success: (json: any) => void,
   failure?: (error: any) => void
 ) => {
-  return (dispatch: Dispatch, getState: ()=>IState) => {
+  return (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     return fetch(getState().app.origin + endpoint + args)
       .then(
@@ -152,13 +152,32 @@ export const getRequest = (
  * @param args the data you want to send to the server. e.g, a form data.
  */
 export const postReqState = (endpoint: string, body: RequestInit['body']) => {
-  return (dispatch: Dispatch, getState: ()=>IState) => {
+  return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
-    return fetch(
-        getState().app.origin + endpoint,
-        { ...DEFAULT_POST_PAYLOAD, ...{ body }} as RequestInit
+    const uri = getState().app.origin + endpoint
+    try {
+      const response = await fetch(
+        uri,
+        { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
       )
+      const json = await response.json()
+      delegateDataHandling(dispatch, getState, endpoint, json)
+    } catch (error: any) {
+      delegateErrorHandling(dispatch, error)
+    }
+  }
+}
+
+export const _postReqState = (endpoint: string, body: RequestInit['body']) => {
+  return (dispatch: Dispatch, getState: () => IState) => {
+    dispatch(startRequest())
+    _scheduleSpinner()
+    const uri = getState().app.origin + endpoint
+    return fetch(
+      uri,
+      { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
+    )
       .then(
         response => response.json(),
         error => delegateErrorHandling(dispatch, error)
@@ -177,7 +196,7 @@ export const postReqState = (endpoint: string, body: RequestInit['body']) => {
  *             point is required.
  */
 export const _getReqState = (endpoint: string, args = '') => {
-  return (dispatch: Dispatch, getState: ()=>IState) => {
+  return (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
     const uri = getState().app.origin + endpoint + args
@@ -191,7 +210,7 @@ export const _getReqState = (endpoint: string, args = '') => {
 }
 
 export const getReqState = (endpoint: string, args = '') => {
-  return async (dispatch: Dispatch, getState: ()=>IState) => {
+  return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
     const uri = getState().app.origin + endpoint + args
@@ -218,28 +237,28 @@ export const getReqState = (endpoint: string, args = '') => {
 export const originPost = (
   route: string,
   payload: RequestInit['body'],
-  success?: (json: any, endpoint: string)=>void,
-  failure?: (error: any)=>void
+  success?: (json: any, endpoint: string) => void,
+  failure?: (error: any) => void
 ) => {
   const endpoint = getEndpoint(route)
-  return (dispatch: Dispatch, getState: ()=>IState) => {
+  return (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
     const body = JSON.stringify(payload)
     return fetch(
       getState().app.origin + route,
-      { ...DEFAULT_POST_PAYLOAD, ...{ body }} as RequestInit
+      { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
     )
       .then(
         response => response.json(),
         error => failure
-            ? failure(error)
-            : delegateErrorHandling(dispatch, error)
+          ? failure(error)
+          : delegateErrorHandling(dispatch, error)
       )
       .then(
         json => success
-            ? success(json, endpoint)
-            : delegateDataHandling(dispatch, getState, endpoint, json)
+          ? success(json, endpoint)
+          : delegateDataHandling(dispatch, getState, endpoint, json)
       )
   }
 }
@@ -266,13 +285,13 @@ export const originGet = (
       .then(
         response => response.json(),
         error => failure
-            ? failure(error)
-            : delegateErrorHandling(dispatch, error)
+          ? failure(error)
+          : delegateErrorHandling(dispatch, error)
       )
       .then(
         json => success
-            ? success(endpoint, json)
-            : delegateDataHandling(dispatch, getState, endpoint, json)
+          ? success(endpoint, json)
+          : delegateDataHandling(dispatch, getState, endpoint, json)
       )
   }
 }

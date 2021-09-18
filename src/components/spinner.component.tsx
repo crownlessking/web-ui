@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { createStyles, CircularProgress, Theme, withStyles } from '@material-ui/core'
 import { WithStyles } from '@material-ui/styles'
 import { LayoutCenteredNoScroll } from '../material/layouts'
@@ -32,7 +32,7 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 export default connect(mapStateToProps)
-(withStyles(styles)(class extends Component<IProps> {
+(withStyles(styles)(class extends React.Component<IProps> {
 
   render() {
     const { classes, open } = this.props

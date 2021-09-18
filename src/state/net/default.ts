@@ -11,12 +11,12 @@ import { netPatchState } from '../actions'
 /**
  * Once the server response is received, this function can be used to process it.
  */
-export default (
+export default function stateNetDefault (
   dispatch: Dispatch,
   getState: ()=>IState,
   endpoint: string,
   json: IAbstractResponse
-) => {
+) {
   _cancelSpinner()
   const doc = json as IJsonapiRespoonse
 

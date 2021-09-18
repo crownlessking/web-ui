@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { IStateAppBar } from '../interfaces'
 import AppBar from '../material/appbar'
 import StatePage from '../state/pages/page.controller'
@@ -14,7 +14,7 @@ interface IProps {
  *
  * Also updates the browser's tab title
  */
-export default class extends Component<IProps> {
+export default class Navigation extends React.Component<IProps> {
 
   /**
    * render

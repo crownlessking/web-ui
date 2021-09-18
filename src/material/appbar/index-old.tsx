@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
 import { IState } from '../../interfaces'
 import AppBarIcon from '../link'
@@ -19,6 +20,7 @@ const styles = ({transitions, zIndex, breakpoints}: Theme) => createStyles({
     flexGrow: 1,
   },
   appBar: {
+    // background: getBackgroundColor(),
     zIndex: zIndex.drawer + 1,
     transition: transitions.create(['width', 'margin'], {
       easing: transitions.easing.sharp,

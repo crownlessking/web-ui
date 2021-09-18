@@ -23,7 +23,10 @@ function removePages(allPages: any, pageNamesList: string[]) {
   return updatedAllPages
 }
 
-export default function (allPages = INIT, {payload, type}: IReduxAction): IStateAllPages {
+export default function stateAllPagesReducer (
+  allPages = INIT,
+  {payload, type}: IReduxAction
+): IStateAllPages {
 
   switch (type) {
 

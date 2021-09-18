@@ -23,7 +23,10 @@ function removeForms(allForms: any, formNamesList: string[]) {
   return allForms
 }
 
-export default function (allForms = INIT, {payload, type}: IReduxAction): IStateAllForms {
+export default function stateFormsReducer (
+  allForms = INIT,
+  {payload, type}: IReduxAction
+): IStateAllForms {
 
   switch (type) {
   case CONTENT_FORMS_ADD:

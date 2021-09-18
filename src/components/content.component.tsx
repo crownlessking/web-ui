@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   APP_CONTENT_FORM, APP_CONTENT_WEBAPP, APP_CONTENT_VIEW, APP_CONTENT_HTML
 } from '../controllers'
@@ -30,7 +30,7 @@ interface IProps {
 /**
  * Application content
  */
-export default class extends Component<IProps> {
+export default class Content extends React.Component<IProps> {
 
   render() {
     const { def: page } = this.props
@@ -50,6 +50,16 @@ export default class extends Component<IProps> {
           <FormItems def={page} />
         </Form>
       )
+
+      // try {
+      // } catch (e) {
+
+      //   // TODO Implement logic to save error so it can be viewed later.
+
+      //   contentJsx = ( null )
+      // }
+
+      // currentContentJsx = contentJsx
       break
 
     case APP_CONTENT_VIEW: // Content type to display data

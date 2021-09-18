@@ -31,7 +31,9 @@ interface IProps {
  * ```
  * @param param0 
  */
-export default function({ json, svgProps, muiProps, faProps }: IProps) {
+export default function getJsonIcon (
+  { json, svgProps, muiProps, faProps }: IProps
+) {
   const has = json.has || {}
   const props = has.props
   if (has.icon) {

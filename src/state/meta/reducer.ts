@@ -1,7 +1,10 @@
 import { IReduxAction } from '../../interfaces'
 import { SET_META } from './actions'
 
-export default (meta = {} as any, {payload, type}: IReduxAction) => {
+export default function stateMetaReducer (
+  meta = {} as any,
+  {payload, type}: IReduxAction
+) {
 
   switch (type) {
 

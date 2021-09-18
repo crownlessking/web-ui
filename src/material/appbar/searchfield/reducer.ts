@@ -5,7 +5,7 @@ import { IStateAppBarSearches } from '../../../interfaces'
 
 const INIT = initialState.appBarSearches
 
-export default function (
+export default function SearchfieldReducer (
   searches = INIT,
   { type, payload }: IReduxAction
 ): IStateAppBarSearches {

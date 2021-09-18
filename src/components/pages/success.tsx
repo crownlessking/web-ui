@@ -40,7 +40,7 @@ interface IProps {
  *
  * Tags: `success`, `page`, `message`
  */
-export default function ({ def: page }: IProps) {
+export default function PageSuccess ({ def: page }: IProps) {
   const classes = useStyles()
   const route = page.parent.parent.app.route
   const pageName = getPageName(route)

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { 
   Theme,
-  makeStyles,
   Snackbar,
   SnackbarContent,
-  IconButton
+  IconButton,
+  createStyles,
+  WithStyles,
+  withStyles
 } from '@material-ui/core'
 import clsx from 'clsx'
 import CloseIcon from '@material-ui/icons/Close'
@@ -24,7 +26,7 @@ const variantIcon = {
   info: InfoIcon
 }
 
-const useStyles1 = makeStyles((theme: Theme) => ({
+const styles = (theme: Theme) => createStyles({
   success: {
     backgroundColor: green[600]
   },
@@ -51,7 +53,7 @@ const useStyles1 = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center'
   }
-}))
+})
 
 const mapStateToProps = (state: IState) => ({
   anchorOrigin: state.snackbar.anchorOrigin,
@@ -71,7 +73,7 @@ const mapDispatchToProps = {
   clearMessage
 }
 
-interface IProps {
+interface IProps extends WithStyles<typeof styles> {
   anchorOrigin: IStateAnchorOrigin
   autoHideDuration: number
   message?: string
@@ -95,7 +97,7 @@ interface ISnackbarProps {
  * @see https://material-ui.com/components/snackbars/
  */
 export default connect(mapStateToProps, mapDispatchToProps)
-(class extends Component<IProps> {
+(withStyles(styles)(class extends Component<IProps> {
 
   handleClick = () => {
     this.setOpen(true)
@@ -126,9 +128,8 @@ export default connect(mapStateToProps, mapDispatchToProps)
     )
   }
 
-  snackbarContent = (props: ISnackbarProps) => {
-    const classes = useStyles1();
-    const { className, ...other } = props;
+  snackbarContent (props: ISnackbarProps) {
+    const { className, classes, ...other } = props
     const { id, actions, message, content, variant } = this.props
     const { closeAction: CloseAction, messageWrapper: MessageWrapper } = this
 
@@ -183,4 +184,4 @@ export default connect(mapStateToProps, mapDispatchToProps)
   setOpen = (val: boolean) => val ? this.props.onOpen() : this.props.onClose()
 
   clearMessage = () => this.props.clearMessage()
-})
+}))

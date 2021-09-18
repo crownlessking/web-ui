@@ -22,7 +22,7 @@ export const netPatchState = (payload: INetState): IReduxAction<INetState> => ({
   payload
 })
 
-export default {
+const allActions = {
   app,
   appbar,
   background,
@@ -44,3 +44,5 @@ export default {
   // access.
   ui
 }
+
+export default allActions

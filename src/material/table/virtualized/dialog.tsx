@@ -13,7 +13,7 @@ import {
   getMetaDialogContentText, ISingleRow, getMetaDialogTitle,
   getMetaDialogShowActions, getMetaDialogOnSubmit, getMetaDialogActions
 } from './controller'
-import { IStatePage, IDelegated, IStateFormItem } from '../../../interfaces'
+import { IDelegated, IStateFormItem } from '../../../interfaces'
 import Items from '../../form/items/local'
 import { delegatedSetState, delegatedState, safelyGet, getDudEventCallback } from '../../../controllers'
 import dateFormat from 'dateformat'
@@ -27,7 +27,7 @@ interface IProps {
   classes?: any
 }
 
-export default class extends Component<IProps> {
+export default class MaterialTableVirtualizedDialog extends Component<IProps> {
 
   render() {
     const {
@@ -145,6 +145,7 @@ export default class extends Component<IProps> {
                 </Button>
               )
             }
+            return ( null )
           })}
         </DialogActions>
       )

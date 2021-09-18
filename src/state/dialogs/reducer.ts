@@ -17,7 +17,10 @@ function removeDialogs(allDialogs: any, dialogNamesList: string[]) {
   return updatedAllDialogs
 }
 
-export default function (allDialogs = INIT, {payload, type}: IReduxAction) {
+export default function stateDialogsReducer (
+  allDialogs = INIT,
+  {payload, type}: IReduxAction
+) {
 
   switch (type) {
   case APP_INSERT_DIALOGS:

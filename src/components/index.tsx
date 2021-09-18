@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import StatePage from '../state/pages/page.controller'
 
 interface IProps {
   def: StatePage
 }
 
-export default class extends Component<IProps> {
+export default class WebApp extends React.Component<IProps> {
 
   render() {
     const name = this.props.def.contentName.toUpperCase()

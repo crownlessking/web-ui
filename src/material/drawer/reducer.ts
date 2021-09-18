@@ -6,7 +6,10 @@ import initialState from '../../state/initial.state'
 
 const INIT = initialState.drawer
 
-export default function (stateDrawer = INIT, {payload, type}: IReduxAction): IStateDrawer {
+export default function DrawerReducer (
+  stateDrawer = INIT,
+  {payload, type}: IReduxAction
+): IStateDrawer {
 
   switch (type) {
 

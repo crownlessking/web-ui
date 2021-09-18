@@ -4,7 +4,7 @@ import { IReduxAction, IStateAppBar } from "../../interfaces";
 
 const INIT = initialState.appBar
 
-export default function (appBar = INIT, {payload, type}: IReduxAction): IStateAppBar {
+export default function AppbarReducer (appBar = INIT, {payload, type}: IReduxAction): IStateAppBar {
 
   switch (type) {
   case UI_UPDATE_APPBAR:

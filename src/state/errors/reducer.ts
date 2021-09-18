@@ -5,7 +5,10 @@ import { setDateErrorCode } from './controller'
 
 const INIT: IJsonapiError[] = state.errors
 
-export default (errors = INIT, {payload, type}: IReduxAction): IJsonapiError[] => {
+export default function stateErrorsReducer (
+  errors = INIT,
+  {payload, type}: IReduxAction
+): IJsonapiError[] {
 
   switch (type) {
 

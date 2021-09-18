@@ -14,7 +14,10 @@ import {
 
 const INIT = initialState.snackbar
 
-export default function (state = INIT, { type, payload }: IReduxAction): IStateSnackbar {
+export default function snackbarReducer (
+  state = INIT,
+  { type, payload }: IReduxAction
+): IStateSnackbar {
 
   switch (type) {
   case SNACKBAR_OPEN:

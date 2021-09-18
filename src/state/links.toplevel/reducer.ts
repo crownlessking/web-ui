@@ -18,7 +18,10 @@ const INIT = initialState.topLevelLinks
  *
  * @param state
  */
-export default function (state = INIT, { payload, type}: IReduxAction) {
+export default function stateToplevelLinksReducer (
+  state = INIT,
+  { payload, type}: IReduxAction
+) {
 
   switch (type) {
 

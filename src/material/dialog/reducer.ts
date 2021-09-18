@@ -8,7 +8,10 @@ import state from '../../state/initial.state'
 
 const INIT: IStateDialog = state.dialog
 
-export default function (dialog = INIT, {payload, type}: IReduxAction): IStateDialog {
+export default function DialogReducer (
+  dialog = INIT,
+  {payload, type}: IReduxAction
+): IStateDialog {
 
   switch (type) {
   case UI_CLOSE_DIALOG:

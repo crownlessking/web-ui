@@ -40,7 +40,7 @@ function noFormDataExist (formName: string, name?: string) {
  * @param field 
  * @param formName 
  */
-function setDefaultValue(field: IStateFormItem, formName: string) {
+function _setDefaultValue(field: IStateFormItem, formName: string) {
   const name = field.name || ''
   if (noFormDataExist(formName, name)
     && field.has
@@ -73,9 +73,9 @@ function setDefaultValue(field: IStateFormItem, formName: string) {
  * @param form form definition
  * @param formName 
  */
-export default function (form: StateForm) {
+export default function setDefaultValue (form: StateForm) {
   const { items: formFields } = form
   for (const field of formFields) {
-    setDefaultValue(field, form.name)
+    _setDefaultValue(field, form.name)
   }
 }

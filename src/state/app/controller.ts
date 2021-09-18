@@ -3,6 +3,7 @@ import { APP_SWITCHED_PAGE, showSpinner } from './actions'
 import { IStateAllForms, IStateApp } from '../../interfaces'
 import StateController from '../../controllers/state.controller'
 import State from '../controller'
+import Config from '../../config'
 
 /**
  * Temporarily holds the handle id of a `setTimeout` function which has been
@@ -167,6 +168,9 @@ export default class StateApp extends StateController implements IStateApp {
    * @returns returns `true` if origin is a valid URL.
    */
   originIsValid = () => {
+    if (Config.DEBUG) {
+      return true
+    }
     return this.originValidation
   }
 

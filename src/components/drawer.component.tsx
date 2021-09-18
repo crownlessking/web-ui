@@ -5,7 +5,7 @@ import StatePage from '../state/pages/page.controller'
 
 let lastStateDrawer: IStateDrawer | undefined
 
-export default function ({ def: page }: { def: StatePage }) {
+export default function Drawer ({ def: page }: { def: StatePage }) {
 
     if (page.hideDrawer) {
       return ( null )

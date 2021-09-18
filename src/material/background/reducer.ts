@@ -16,7 +16,10 @@ import { setStatePageBackground } from '../../state/controller'
 
 const INIT: IStateBackground = setStatePageBackground()
 
-export default function (background = INIT, {type, payload}: IReduxAction): IStateBackground {
+export default function BackgroundReducer (
+  background = INIT,
+  {type, payload}: IReduxAction
+): IStateBackground {
 
   switch (type) {
   case UI_SET_BACKGROUND_COLOR:
