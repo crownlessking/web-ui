@@ -4,21 +4,17 @@ import { IStateTopLevelLinks } from '../../interfaces'
 
 export default class StateTopLevelLinks extends StateController {
 
-  private parentDef: State
-  private topLevelLinks: IStateTopLevelLinks
+  private parentObj: State
+  private topLevelLinksJson: IStateTopLevelLinks
 
-  constructor(topLevelLinks: IStateTopLevelLinks, parent: State) {
+  constructor(topLevelLinksJson: IStateTopLevelLinks, parent: State) {
     super()
-    this.parentDef = parent
-    this.topLevelLinks = topLevelLinks
+    this.parentObj = parent
+    this.topLevelLinksJson = topLevelLinksJson
   }
 
-  get state(): IStateTopLevelLinks { return this.topLevelLinks }
+  get json(): IStateTopLevelLinks { return this.topLevelLinksJson }
 
-  get patched(): IStateTopLevelLinks {
-    throw new Error(`'Patched top level link state' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
 }

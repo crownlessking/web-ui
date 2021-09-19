@@ -52,7 +52,7 @@ function Adornment(
             onMouseDown={handleMouseDown}
             {...buttonProps}
           >
-            <JsonIcon json={def.state} />
+            <JsonIcon json={def.json} />
           </IconButton>
         </InputAdornment>
       )
@@ -85,12 +85,12 @@ function ({ def, formsData, state }: IProps) {
   const has = def.has
   const noAdornment = !has.adornment
   const classes = has.classes
-  const props = getProps(def.state)
+  const props = getProps(def.json)
   const { fullWidth } = props
 
   const getValueFromParent = () => {
     if (state) {
-      const localValue = getLocallyStoredValue(state.state.formData, def.state)
+      const localValue = getLocallyStoredValue(state.state.formData, def.json)
       return localValue
     }
   }

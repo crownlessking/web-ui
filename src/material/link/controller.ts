@@ -14,35 +14,31 @@ export function getLinkProps(def: IStateLink) {
 export default class StateLink<P>
     extends StateController implements IStateLink {
 
-  private link: IStateLink
-  private parentDef: P
-  private linkHas: IStateFormItemCustom
-  private linkHasDef?: StateFormItemCustom<this>
+  private linkJson: IStateLink
+  private parentObj: P
+  private linkHasJson: IStateFormItemCustom
+  private linkHas?: StateFormItemCustom<this>
 
-  constructor (link: IStateLink, parent: P) {
+  constructor (linkJson: IStateLink, parent: P) {
     super()
-    this.link = link
-    this.parentDef = parent
-    this.linkHas = this.link.has || { }
+    this.linkJson = linkJson
+    this.parentObj = parent
+    this.linkHasJson = this.linkJson.has || { }
   }
 
-  get state() { return this.link }
+  get json() { return this.linkJson }
 
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
-  get patched () {
-    throw new Error(`'Patched state link' NOT implemented.`)
-  }
-
-  get type() { return this.link.type }
+  get type() { return this.linkJson.type }
 
   get has() {
-    return this.linkHasDef
-    || (this.linkHasDef = new StateFormItemCustom(
-      this.linkHas, this
+    return this.linkHas
+    || (this.linkHas = new StateFormItemCustom(
+      this.linkHasJson, this
     ))
   }
 
-  get(prop: string) { return this.link[prop] }
+  get(prop: string) { return this.linkJson[prop] }
 
 }

@@ -9,20 +9,20 @@ export default class StatePageAppBar extends StateAppBar<StatePage> {
   protected noAppBarBackground: boolean
   protected noAppBarTypography: boolean
   protected pageAppBarBackgroundDef?: StatePageAppBarBackground
-  protected appBarTypographyDef?: StatePageAppBarTypography
+  protected appBarTypography?: StatePageAppBarTypography
 
   constructor(appBar: IStateAppBar, parent: StatePage) {
     super(appBar, parent)
-    this.noAppBarBackground = !this.appBar.background
-    this.appBarBackground = this.appBar.background || this.initBackground()
-    this.noAppBarTypography = !this.appBar.typography
-    this.appBarTypography = this.appBar.typography || this.initTypography()
+    this.noAppBarBackground = !this.appBarJson.background
+    this.appBarBackgroundJson = this.appBarJson.background || this.initBackground()
+    this.noAppBarTypography = !this.appBarJson.typography
+    this.appBarTypographyJson = this.appBarJson.typography || this.initTypography()
   }
 
   get background(): StatePageAppBarBackground {
     return this.pageAppBarBackgroundDef
       || (this.pageAppBarBackgroundDef = new StatePageAppBarBackground(
-        this.appBarBackground,
+        this.appBarBackgroundJson,
         this
       ))
   }
@@ -31,23 +31,23 @@ export default class StatePageAppBar extends StateAppBar<StatePage> {
    * Chain-access to typography definition.
    */
   get typography(): StatePageAppBarTypography {
-    return this.appBarTypographyDef
-      || (this.appBarTypographyDef = new StatePageAppBarTypography(
-          this.appBarTypography,
+    return this.appBarTypography
+      || (this.appBarTypography = new StatePageAppBarTypography(
+          this.appBarTypographyJson,
           this
         ))
   }
 
   /** if `true`, a search field will be available in the appbar. */
-  get hasSearchField () { return !!this.appBar.hasSearchField }
+  get hasSearchField () { return !!this.appBarJson.hasSearchField }
 
   private initBackground = () => {
     if (this.noAppBarBackground) {
-      if (this.appBar.useDefaultBackground) {
+      if (this.appBarJson.useDefaultBackground) {
         return this.parent.parent.parent.appBar.background
       }
-      if (this.appBar.backgroundInherited) {
-        const route = this.appBar.backgroundInherited
+      if (this.appBarJson.backgroundInherited) {
+        const route = this.appBarJson.backgroundInherited
         return this.parent.parent.pageAt(route).appBar.background
       }
     }
@@ -56,11 +56,11 @@ export default class StatePageAppBar extends StateAppBar<StatePage> {
 
   private initTypography = () => {
     if (this.noAppBarTypography) {
-      if (this.appBar.useDefaultTypography) {
+      if (this.appBarJson.useDefaultTypography) {
         return this.parent.parent.parent.appBar.typography
       }
-      if (this.appBar.typographyInherited) {
-        const route = this.appBar.typographyInherited
+      if (this.appBarJson.typographyInherited) {
+        const route = this.appBarJson.typographyInherited
         return this.parent.parent.pageAt(route).appBar.typography
       }
     }

@@ -3,21 +3,17 @@ import State from '../controller'
 
 export default class StateAllDialogs extends StateController {
 
-  private parentDef: State
-  private allDialogs: any
+  private parentObj: State
+  private allDialogsJson: any
 
-  constructor(allDialogs: any, parent: State) {
+  constructor(allDialogsJson: any, parent: State) {
     super()
-    this.parentDef = parent
-    this.allDialogs = allDialogs
+    this.parentObj = parent
+    this.allDialogsJson = allDialogsJson
   }
 
-  get state() { return this.allDialogs }
+  get json() { return this.allDialogsJson }
 
-  get patched() {
-    throw new Error(`'Patched allDialogs state' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
 }

@@ -28,7 +28,7 @@ export default connect(mapStateToProps)(
 function ({ def, formsData, stateMeta, state }: IProps) {
   const { id, name, has, onChange } = def
   const classes = has.classes
-  const props = getProps(def.state)
+  const props = getProps(def.json)
   const getValueFromParent = () => {
     if (state) {
       return getLocallyStoredValue(state.state.formData, def)

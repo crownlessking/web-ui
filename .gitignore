@@ -7,3 +7,5 @@ build01.tar.gz
 public01.tar.gz
 yarn-error.log
 yarn.lock
+yarn-tutorial.md
+public/app.js

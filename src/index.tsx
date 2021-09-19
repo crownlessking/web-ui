@@ -7,14 +7,16 @@ import { MuiThemeProvider } from '@material-ui/core'
 import { Provider } from 'react-redux'
 import store from './state'
 import theme from './material/theme'
-// import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { urlUpdatePage } from './state/app/actions'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <Router>
+          <Route component={App} />
+        </Router>
       </MuiThemeProvider>
     </Provider>
   </React.StrictMode>,

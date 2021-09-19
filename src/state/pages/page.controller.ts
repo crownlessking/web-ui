@@ -25,58 +25,51 @@ const EMPTY_BACKGROUND: IStateBackground = { type: 'none' }
 
 export default class StatePage extends StateController implements IStatePage {
 
-  private parentDef: StateAllPages
-  private page: IStatePage
+  private parentObj: StateAllPages
+  private pageJson: IStatePage
   private _pageId?: string
-  private pageAppBar: IStateAppBar
-  private pageAppBarDef?: StatePageAppBar
+  private pageAppBarJson: IStateAppBar
+  private pageAppBar?: StatePageAppBar
   private noPageAppBar: boolean
-  private pageDrawer: IStateDrawer
+  private pageDrawerJson: IStateDrawer
   private noPageDrawer: boolean
-  private pageContent: IStatePageContent
-  private pageBackground: IStateBackground
-  private pageBackgroundDef?: StatePageBackground
+  private pageContentJson: IStatePageContent
+  private pageBackgroundJson: IStateBackground
+  private pageBackground?: StatePageBackground
   private noPageBackground: boolean
-  private pageTypography: IStateTypography
-  private pageTypographyDef?: StatePageTypography
-  private pageDrawerDef?: StatePageDrawer
+  private pageTypographyJson: IStateTypography
+  private pageTypography?: StatePageTypography
+  private pageDrawer?: StatePageDrawer
 
   /**
    * Constructor
    *
-   * @param page 
+   * @param pageJson 
    */
-  constructor(page: IStatePage, parent: StateAllPages) {
+  constructor(pageJson: IStatePage, parent: StateAllPages) {
     super()
-    this.parentDef = parent
-    this.page = page
-    this._pageId = this.page._id
-    this.noPageAppBar = !this.page.appBar
-    this.pageAppBar = this.initPageAppBar()
-    this.noPageDrawer = !this.page.drawer
-    this.pageDrawer = this.initPageDrawer()
-    this.pageContent = this.parseContent()
-    this.noPageBackground = !this.page.background
-    this.pageBackground = this.initPageBackground()
-    this.pageTypography = this.page.typography || { }
+    this.parentObj = parent
+    this.pageJson = pageJson
+    this._pageId = this.pageJson._id
+    this.noPageAppBar = !this.pageJson.appBar
+    this.pageAppBarJson = this.initPageAppBar()
+    this.noPageDrawer = !this.pageJson.drawer
+    this.pageDrawerJson = this.initPageDrawer()
+    this.pageContentJson = this.parseContent()
+    this.noPageBackground = !this.pageJson.background
+    this.pageBackgroundJson = this.initPageBackground()
+    this.pageTypographyJson = this.pageJson.typography || { }
   }
 
   /**
    * Get a copy of the page state.
    */
-  get state() { return this.page }
-
-  /**
-   * Get the patched version of the page state.
-   */
-  get patched() {
-    throw new Error(`'Patched page state' NOT implemented.`)
-  }
+  get json() { return this.pageJson }
 
   /**
    * Chain-access to parent (all pages) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * A unique id is assigned if you would like to use an identifier for the
@@ -84,16 +77,16 @@ export default class StatePage extends StateController implements IStatePage {
    */
   get _id() { return this._pageId || (this._pageId = mongoObjectId()) }
 
-  get title() { return this.page.title || '' }
-  get forcedTitle() { return this.page.forcedTitle || '' }
+  get title() { return this.pageJson.title || '' }
+  get forcedTitle() { return this.pageJson.forcedTitle || '' }
 
   /**
    * Chain-access to the page appbar definition.
    */
   get appBar() {
-    return this.pageAppBarDef
-      || (this.pageAppBarDef = new StatePageAppBar(
-          this.pageAppBar,
+    return this.pageAppBar
+      || (this.pageAppBar = new StatePageAppBar(
+          this.pageAppBarJson,
           this
         ))
   }
@@ -102,9 +95,9 @@ export default class StatePage extends StateController implements IStatePage {
    * Chain-access to the page background definition.
    */
   get background() {
-    return this.pageBackgroundDef
-      || (this.pageBackgroundDef = new StatePageBackground(
-        this.pageBackground,
+    return this.pageBackground
+      || (this.pageBackground = new StatePageBackground(
+        this.pageBackgroundJson,
         this
       ))
   }
@@ -113,9 +106,9 @@ export default class StatePage extends StateController implements IStatePage {
    * Get font family and color of the currently displayed page.
    */
   get typography() {
-    return this.pageTypographyDef
-      || (this.pageTypographyDef = new StatePageTypography(
-          this.pageTypography,
+    return this.pageTypography
+      || (this.pageTypography = new StatePageTypography(
+          this.pageTypographyJson,
           this
         ))
   }
@@ -123,42 +116,42 @@ export default class StatePage extends StateController implements IStatePage {
   /**
    * Chain-access to the page content definition.
    */
-  get content() { return this.page.content || '' }
+  get content() { return this.pageJson.content || '' }
 
   /**
    * The type of the page content represented by a special symbol.
    */
-  get contentType() { return this.pageContent.type }
+  get contentType() { return this.pageContentJson.type }
 
   /**
    * Identifier for a a specific content.  
    * e.g. name of a form, a page... etc.
    */
-  get contentName() { return this.pageContent.name }
+  get contentName() { return this.pageContentJson.name }
 
   /**
    * Endpoint to which data may be sent or retrieve for the page.
    */
-  get contentEndpoint() { return this.pageContent.endpoint }
+  get contentEndpoint() { return this.pageContentJson.endpoint }
 
   /**
    * Miscellanous URL arguments to be inserted when making a server request
    * at the endpoint specified in the page definition.
    */
-  get contentArgs() { return this.pageContent.args }
+  get contentArgs() { return this.pageContentJson.args }
 
   /**
    * 
    */
-  get view() { return this.pageContent.name + 'View' }
+  get view() { return this.pageContentJson.name + 'View' }
 
   /**
    * Chain-access to the page drawer definition.
    */
   get drawer() {
-    return this.pageDrawerDef
-      || (this.pageDrawerDef = new StatePageDrawer(
-          this.pageDrawer,
+    return this.pageDrawer
+      || (this.pageDrawer = new StatePageDrawer(
+          this.pageDrawerJson,
           this
         ))
   }
@@ -166,43 +159,43 @@ export default class StatePage extends StateController implements IStatePage {
   /**
    * Chain-access to the page's layout definition
    */
-  get layout() { return this.page.layout || '' }
+  get layout() { return this.pageJson.layout || '' }
 
-  get hideAppBar() { return this.page.hideAppBar === true }
+  get hideAppBar() { return this.pageJson.hideAppBar === true }
 
-  get hideDrawer() { return this.page.hideDrawer === true }
+  get hideDrawer() { return this.pageJson.hideDrawer === true }
 
-  get useDefaultAppBar() { return !!this.page.useDefaultAppBar }
+  get useDefaultAppBar() { return !!this.pageJson.useDefaultAppBar }
 
-  get useDefaultDrawer() { return !!this.page.useDefaultDrawer }
+  get useDefaultDrawer() { return !!this.pageJson.useDefaultDrawer }
 
-  get useDefaultBackground() { return !!this.page.useDefaultBackground }
+  get useDefaultBackground() { return !!this.pageJson.useDefaultBackground }
 
-  get useDefaultTypography() { return !!this.page.useDefaultTypography }
+  get useDefaultTypography() { return !!this.pageJson.useDefaultTypography }
 
-  get inherit() { return this.page.inherited || '' }
+  get inherit() { return this.pageJson.inherited || '' }
 
-  get appBarInherited() { return this.page.appBarInherited || '' }
+  get appBarInherited() { return this.pageJson.appBarInherited || '' }
 
-  get drawerInherited() { return this.page.drawerInherited || '' }
+  get drawerInherited() { return this.pageJson.drawerInherited || '' }
 
-  get contentInherited() { return this.page.contentInherited || '' }
+  get contentInherited() { return this.pageJson.contentInherited || '' }
 
-  get backgroundInherited() { return this.page.backgroundInherited || '' }
+  get backgroundInherited() { return this.pageJson.backgroundInherited || '' }
 
-  get data() { return this.page.data || {} }
+  get data() { return this.pageJson.data || {} }
 
-  get meta() { return this.page.meta || {} }
+  get meta() { return this.pageJson.meta || {} }
 
-  get links() { return this.page.links || {} }
+  get links() { return this.pageJson.links || {} }
 
   /**
    * Check if an appbar was defined for the current page.
    */
   get hasAppBar() {
     return !this.noPageAppBar
-      || !!this.page.appBarInherited
-      || !!this.page.useDefaultAppBar
+      || !!this.pageJson.appBarInherited
+      || !!this.pageJson.useDefaultAppBar
   }
 
   /**
@@ -210,15 +203,15 @@ export default class StatePage extends StateController implements IStatePage {
    */
   get hasDrawer() {
     return !this.noPageDrawer
-      || !!this.page.drawerInherited
-      || !!this.page.useDefaultDrawer
+      || !!this.pageJson.drawerInherited
+      || !!this.pageJson.useDefaultDrawer
   }
 
   /**
    * Define an appbar for the current page.
    */
   setAppBar = (appBar: IStateAppBar) => {
-    this.pageAppBar = appBar
+    this.pageAppBarJson = appBar
     this.noPageAppBar = !appBar
   }
 
@@ -228,7 +221,7 @@ export default class StatePage extends StateController implements IStatePage {
    * @param drawer
    */
   setDrawer = (drawer: IStateDrawer) => {
-    this.pageDrawer = drawer
+    this.pageDrawerJson = drawer
     this.noPageDrawer = !drawer
   }
 
@@ -289,15 +282,15 @@ export default class StatePage extends StateController implements IStatePage {
    * Ensures the page has the correct appbar.
    */
   private initPageAppBar = (): IStateAppBar => {
-    if (this.page.appBar) {
-      return _.extend(EMPTY_APPBAR, this.page.appBar)
+    if (this.pageJson.appBar) {
+      return _.extend(EMPTY_APPBAR, this.pageJson.appBar)
     }
-    if (this.page.useDefaultAppBar) {
-      return this.parent.parent.appBar.state
+    if (this.pageJson.useDefaultAppBar) {
+      return this.parent.parent.appBar.json
     }
-    if (this.page.appBarInherited) {
-      const route = this.page.appBarInherited
-      return this.parent.pageAt(route).appBar.state
+    if (this.pageJson.appBarInherited) {
+      const route = this.pageJson.appBarInherited
+      return this.parent.pageAt(route).appBar.json
     }
     return EMPTY_APPBAR
   }
@@ -306,15 +299,15 @@ export default class StatePage extends StateController implements IStatePage {
    * Initializes and ensures that the page has the correct drawer.
    */
   private initPageDrawer = (): IStateDrawer => {
-    if (this.page.drawer) {
-      return _.extend(EMPTY_DRAWER, this.page.drawer)
+    if (this.pageJson.drawer) {
+      return _.extend(EMPTY_DRAWER, this.pageJson.drawer)
     }
-    if (this.noPageDrawer && this.page.drawerInherited) {
-      const route = this.page.drawerInherited
-      return this.parent.pageAt(route).drawer.state
+    if (this.noPageDrawer && this.pageJson.drawerInherited) {
+      const route = this.pageJson.drawerInherited
+      return this.parent.pageAt(route).drawer.json
     }
-    if (this.noPageDrawer && this.page.useDefaultDrawer) {
-      return this.parent.parent.drawer.state
+    if (this.noPageDrawer && this.pageJson.useDefaultDrawer) {
+      return this.parent.parent.drawer.json
     }
     return EMPTY_DRAWER
   }
@@ -323,15 +316,15 @@ export default class StatePage extends StateController implements IStatePage {
    * Initializes and ensures that the page has the correct background.
    */
   private initPageBackground = (): IStateBackground => {
-    if (this.page.background) {
-      return _.extend(EMPTY_BACKGROUND, this.page.background)
+    if (this.pageJson.background) {
+      return _.extend(EMPTY_BACKGROUND, this.pageJson.background)
     }
-    if (this.noPageBackground && this.page.backgroundInherited) {
-      const route = this.page.backgroundInherited
-      return this.parent.pageAt(route).background.state
+    if (this.noPageBackground && this.pageJson.backgroundInherited) {
+      const route = this.pageJson.backgroundInherited
+      return this.parent.pageAt(route).background.json
     }
-    if (this.noPageBackground && this.page.useDefaultBackground) {
-      return this.parent.parent.background.state
+    if (this.noPageBackground && this.pageJson.useDefaultBackground) {
+      return this.parent.parent.background.json
     }
     return EMPTY_BACKGROUND
   }

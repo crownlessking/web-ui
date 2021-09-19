@@ -4,48 +4,42 @@ import StateController from '../../../controllers/state.controller'
 export default class StateFormItemCustom<P, T = any>
     extends StateController implements IStateFormItemCustom {
 
-  private has: IStateFormItemCustom<T>
-  private parentDef: P
-  private hasItems: T[]
+  private hasJson: IStateFormItemCustom<T>
+  private parentObj: P
   private hasCallback?: ((redux:IRedux)=>(e:any)=>void)
   private hasClasses: any
 
-  constructor (has: IStateFormItemCustom<T>, parent: P) {
+  constructor (hasJson: IStateFormItemCustom, parent: P) {
     super()
-    this.parentDef = parent
-    this.has = has
-    this.hasItems = this.has.items || []
-    this.hasCallback = this.has.callback
-    this.hasClasses = this.has.classes || {}
+    this.parentObj = parent
+    this.hasJson = hasJson
+    this.hasCallback = this.hasJson.callback
+    this.hasClasses = this.hasJson.classes || {}
   }
 
-  get state () { return this.has }
+  get json () { return this.hasJson }
 
-  get patched (): IStateFormItemCustom {
-    throw new Error(`'Patched custom form item' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   get callback() { return this.hasCallback }
 
   get classes() { return this.hasClasses }
   
-  get content() { return this.has.content || '' }
+  get content() { return this.hasJson.content || '' }
 
-  get color() { return this.has.color || '' }
+  get color() { return this.hasJson.color || '' }
 
-  get defaultValue() { return this.has.defaultValue || '' }
+  get defaultValue() { return this.hasJson.defaultValue || '' }
 
-  get faIcon() { return this.has.faIcon || '' }
+  get faIcon() { return this.hasJson.faIcon || '' }
 
-  get icon() { return this.has.icon || '' }
+  get icon() { return this.hasJson.icon || '' }
 
-  get iconPosition() { return this.has.iconPosition }
+  get iconPosition() { return this.hasJson.iconPosition }
 
-  get items() { return this.hasItems }
+  get items() { return this.hasJson.items || [] }
 
-  get label() { return this.has.label || '' }
+  get label() { return this.hasJson.label || '' }
 
   /**
    * 
@@ -60,7 +54,7 @@ export default class StateFormItemCustom<P, T = any>
    * #3 phone    -- returns a regular expression that matches a phone number
    */
   get regex() {
-    const regex = this.has.regex || ''
+    const regex = this.hasJson.regex || ''
     switch (regex.toLowerCase()) {
 
     case 'username':
@@ -80,17 +74,17 @@ export default class StateFormItemCustom<P, T = any>
     }
   }
 
-  get route() { return this.has.route || '' }
+  get route() { return this.hasJson.route || '' }
 
-  get text() { return this.has.text || '' }
+  get text() { return this.hasJson.text || '' }
 
-  get title() { return this.has.title || '' }
+  get title() { return this.hasJson.title || '' }
 
   /**
    * Material UI component attribute.  
    * __Note__: Can be undefined on purpose.
    */
-  get variant() { return this.has.variant }
+  get variant() { return this.hasJson.variant }
 
   /**
    * to be used with `load` when loading `meta`. e.g.
@@ -98,12 +92,12 @@ export default class StateFormItemCustom<P, T = any>
    * const meta = stateMeta['load']['key']
    * ```
    */
-  get key() { return this.has.key || '' }
+  get key() { return this.hasJson.key || '' }
 
   /**
    * Name of internally defined callback to be executed
    */
-  get handle() { return this.has.handle || '' }
+  get handle() { return this.hasJson.handle || '' }
 
   /**
    * Load metadata into field from `state.meta`. The metadata will be
@@ -113,14 +107,14 @@ export default class StateFormItemCustom<P, T = any>
    * const meta = stateMeta['load']['key']
    * ```
    */
-  get load() { return this.has.load || '' }
+  get load() { return this.hasJson.load || '' }
 
   /**
    * Material UI adornments.
    *
    * This field should be ignored if using another lib.
    */
-  get adornment() { return this.has.adornment }
+  get adornment() { return this.hasJson.adornment }
 
   set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb }
 
@@ -142,7 +136,7 @@ export default class StateFormItemCustom<P, T = any>
    *          fails.
    */
   public regexError(value: string) {
-    if (!this.has.regex) {
+    if (!this.hasJson.regex) {
       return false
     } else if (!value) {
       return false

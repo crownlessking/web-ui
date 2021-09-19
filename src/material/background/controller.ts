@@ -10,9 +10,9 @@ import State from '../../state/controller'
  * e.g. #ffffff
  */
 export function getBackgroundColor() {
-  const background = store.getState().background
-  if (background.type === 'color') {
-    return store.getState().background.value
+  const backgroundJson = store.getState().background
+  if (backgroundJson.type === 'color') {
+    return backgroundJson.value
   }
   return 'inherit'
 }
@@ -20,10 +20,10 @@ export function getBackgroundColor() {
 /**
  * Get the background color of the appbar
  */
-export function getAppBarBackgroundStyle(page: IStatePage) {
+export function getAppBarBackgroundStyle(pageJson: IStatePage) {
   const state = store.getState()
 
-  return getVal(page, 'appBar.background.value')
+  return getVal(pageJson, 'appBar.background.value')
     || getVal(state, 'appBar.background.value')
     || 'inherit'
 }
@@ -31,33 +31,29 @@ export function getAppBarBackgroundStyle(page: IStatePage) {
 export default class StateBackground<P = State>
     extends StateController implements IStateBackground {
 
-  private background: IStateBackground
-  private parentDef: P
+  private backgroundJson: IStateBackground
+  private parentObj: P
 
   /**
-   * Background state.
+   * Background
    *
-   * @param background 
+   * @param backgroundJson 
    */
-  constructor(background: IStateBackground, parent: P) {
+  constructor(backgroundJson: IStateBackground, parent: P) {
     super()
-    this.background = background
-    this.parentDef = parent
+    this.backgroundJson = backgroundJson
+    this.parentObj = parent
   }
 
   /**
-   * Get a copy of the background state.
+   * Get a copy of the background json.
    */
-  get state(): IStateBackground { return this.background }
+  get json(): IStateBackground { return this.backgroundJson }
 
-  get patched(): IStateBackground {
-    throw new Error(`'Patched background state' not implemented yet.`)
-  }
+  get parent() { return this.parentObj }
 
-  get parent() { return this.parentDef }
+  get type() { return this.backgroundJson.type }
 
-  get type() { return this.background.type }
-
-  get value() { return this.background.value }
+  get value() { return this.backgroundJson.value }
 
 }

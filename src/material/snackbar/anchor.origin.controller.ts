@@ -5,25 +5,21 @@ import StateController from '../../controllers/state.controller'
 export default class StateAnchorOrigin
     extends StateController implements IStateAnchorOrigin {
 
-  private parentDef: StateSnackbar
-  private anchorOrigin: IStateAnchorOrigin
+  private parentObj: StateSnackbar
+  private anchorOriginJson: IStateAnchorOrigin
 
-  constructor(anchorOrigin: IStateAnchorOrigin, parent: StateSnackbar) {
+  constructor(anchorOriginJson: IStateAnchorOrigin, parent: StateSnackbar) {
     super()
-    this.parentDef = parent
-    this.anchorOrigin = anchorOrigin
+    this.parentObj = parent
+    this.anchorOriginJson = anchorOriginJson
   }
 
-  get state(): IStateAnchorOrigin { return this.anchorOrigin }
+  get json(): IStateAnchorOrigin { return this.anchorOriginJson }
 
-  get patched(): IStateAnchorOrigin {
-    throw new Error(`'Patched anchor orgin state' NOT implemented.`)
-  }
+  get parent() { return this.parentObj }
 
-  get parent() { return this.parentDef }
+  get vertical() { return this.anchorOriginJson.vertical }
 
-  get vertical() { return this.anchorOrigin.vertical }
-
-  get horizontal() { return this.anchorOrigin.horizontal }
+  get horizontal() { return this.anchorOriginJson.horizontal }
 
 }

@@ -14,20 +14,18 @@ export function getMeta(stateMeta: any, endpoint: string, key?: string) {
 
 export default class StateMeta extends StateController {
 
-  private meta: any
-  private parentDef: State
+  private metaJson: any
+  private parentObj: State
 
-  constructor (meta: any, parent: State) {
+  constructor (metaJson: any, parent: State) {
     super()
-    this.meta = meta
-    this.parentDef = parent
+    this.metaJson = metaJson
+    this.parentObj = parent
   }
 
-  get state() { return this.meta }
+  get json() { return this.metaJson }
 
-  get patched() { throw new Error(`'Patched meta' NOT implemented.`) }
-
-  get parent () { return this.parentDef }
+  get parent () { return this.parentObj }
 
   /**
    * Get the metadata retrieved form the server.
@@ -37,7 +35,7 @@ export default class StateMeta extends StateController {
    */
   get = (endpoint: string, key: string) => {
     try {
-      return this.meta[endpoint][key]
+      return this.metaJson[endpoint][key]
     } catch (e: any) {
       if (Config.DEBUG) {
         console.error(`Bad values passed to State.meta:
@@ -46,7 +44,7 @@ export default class StateMeta extends StateController {
         )
         console.error(e.stack)
 
-        // TODO Implement logic to save error so it can be viewed later.
+        // [TODO] Implement logic to save error so it can be viewed later.
       }
     }
     return null

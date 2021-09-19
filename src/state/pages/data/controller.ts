@@ -3,24 +3,20 @@ import State from '../../controller'
 
 export default class StatePagesData extends StateController {
 
-  private parentDef: State
-  private pagesData: any
+  private parentObj: State
+  private pagesDataJson: any
 
-  constructor(pagesData: any, parent: State) {
+  constructor(pagesDataJson: any, parent: State) {
     super()
-    this.parentDef = parent
-    this.pagesData = pagesData
+    this.parentObj = parent
+    this.pagesDataJson = pagesDataJson
   }
 
-  get state() { return this.pagesData }
-
-  get patched() {
-    throw new Error(`'Patched pages data state' NOT implemented.`)
-  }
+  get json() { return this.pagesDataJson }
 
   /**
    * Chain-access to parent (root) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
 }

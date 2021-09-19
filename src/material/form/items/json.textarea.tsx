@@ -27,7 +27,7 @@ function ({ def, formsData, state }: IProps) {
   const { name, onChange } = def
   const has = def.has
   const classes = has.classes
-  const props = getProps(def.state)
+  const props = getProps(def.json)
   const { fullWidth } = props
 
   const getValueFromParent = () => {

@@ -5,30 +5,26 @@ import StateForm from './form.controller'
 
 export default class StateAllForms extends Controller {
 
-  private allForms: IStateAllForms
-  private parentDef: State
+  private allFormsJson: IStateAllForms
+  private parentObj: State
   private lastFormName: string
 
-  constructor (allForms: IStateAllForms, parent: State) {
+  constructor (allFormsJson: IStateAllForms, parent: State) {
     super()
-    this.parentDef = parent
-    this.allForms = allForms
+    this.parentObj = parent
+    this.allFormsJson = allFormsJson
     this.lastFormName = ''
   }
 
   /**
    * Get a copy of all forms state.
    */
-  get state() { return this.allForms }
-
-  get patched() {
-    throw new Error(`'Patched all forms' NOT implemented yet.`)
-  }
+  get json() { return this.allFormsJson }
 
   /**
    * Chain-access to parent (root) state definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * Get (chain-access to) the form definition.
@@ -44,7 +40,7 @@ export default class StateAllForms extends Controller {
    */
   getForm = (name: string) => {
     const formName = this.getStateFormName(name)
-    const stateForm = this.allForms[formName]
+    const stateForm = this.allFormsJson[formName]
 
     if (stateForm) {
       this.lastFormName = formName

@@ -16,13 +16,13 @@ export function getPageName(name: string) {
 /**
  * Parses the definition `string` found in `pageState.content`
  *
- * @param def
+ * @param content
  *
  * @deprecated
  */
-export function parsePageContentDef(def: string | undefined) {
-  if (def) {
-    const options = def.replace(/\s+/g,'').split(':')
+export function parsePageContent(content: string | undefined) {
+  if (content) {
+    const options = content.replace(/\s+/g,'').split(':')
     if (options.length >= 3) {
       return {
         type: options[0],
@@ -38,31 +38,24 @@ export function parsePageContentDef(def: string | undefined) {
 
 export default class StateAllPages extends StateController {
 
-  private allPages: IStateAllPages
-  private parentDef: State
+  private allPagesJson: IStateAllPages
+  private parentObj: State
 
-  constructor(allPages: IStateAllPages, parent: State) {
+  constructor(allPagesJson: IStateAllPages, parent: State) {
     super()
-    this.allPages = allPages
-    this.parentDef = parent
+    this.allPagesJson = allPagesJson
+    this.parentObj = parent
   }
 
   /**
    * Get a copy of all pages state.
    */
-  get state() { return this.allPages }
-
-  /**
-   * Get a patched copy of the entire (Redux store) state.
-   */
-  get patched() {
-    throw new Error(`'Patched all pages' NOT implemented.`)
-  }
+  get json() { return this.allPagesJson }
 
   /**
    * Chain-access to parent (root) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * Get a page definition.
@@ -97,13 +90,13 @@ export default class StateAllPages extends StateController {
    */
   getStatePage = (route: string): IStatePage => {
                       // Try with the forwardslash first
-    return this.allPages[`/${route}`]
+    return this.allPagesJson[`/${route}`]
 
       // Okay, that did not work. Let's omit the forwardslash this time.
-      || this.allPages[route]
+      || this.allPagesJson[route]
 
       // Yup! The route is bad.  We'll just juse the default rout then.
-      || this.allPages[initialState.app.route]
+      || this.allPagesJson[initialState.app.route]
 
       // Oops! No default page.
       || null

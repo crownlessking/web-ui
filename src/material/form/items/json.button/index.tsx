@@ -34,11 +34,11 @@ export default withStyles(styles)(class extends Component<IProps> {
     const redux = {
       store,
       actions: allActions,
-      route: button.state.href
+      route: button.json.href
     }
     const onClick = button.onClick || button.has.callback
   
-    const props = getButtonProps(button.state)
+    const props = getButtonProps(button.json)
     return (
       <Button
         className={classes.button}
@@ -53,7 +53,7 @@ export default withStyles(styles)(class extends Component<IProps> {
   }
 
   private buttonContent(props: any) {
-    const has: IStateFormItemCustom = props.has.state
+    const has: IStateFormItemCustom = props.has.json
     if (props.value || has.title) {
       switch (has.iconPosition) {
 

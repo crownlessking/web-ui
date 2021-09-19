@@ -24,12 +24,12 @@ import StateForm from '../../../state/forms/form.controller'
  * exception.
  *
  * @param type form item type
- * @param state
+ * @param json
  *
  * @deprecated
  */
-export function notMissingNameExDef(type: string, state: IStateFormItem) {
-  if (state.name) {
+export function notMissingNameExDef(type: string, json: IStateFormItem) {
+  if (json.name) {
     return type
   } else {
     switch (type) {
@@ -144,59 +144,59 @@ export function getProps<T extends IStateFormItem>(item: T, removalList?: string
 /**
  * Get list of `<option>` definition.
  *
- * @param has
+ * @param hasJson
  *
  * @deprecated
  */
-export function options(has: IStateFormItemCustom) {
+export function options(hasJson: IStateFormItemCustom) {
 
   // Implement additional logic here
   // e.g. filtering or verification
 
-  return has.items ? has.items : []
+  return hasJson.items ? hasJson.items : []
 }
 
 /**
  * Getter function for the radio value.
  *
- * @param item
+ * @param itemJson
  *
  * @deprecated
  */
-export function radioValue(item: IStateFormItemRadio) {
+export function radioValue(itemJson: IStateFormItemRadio) {
 
   // TODO Use this function to implement logic when retrieving a form radio
   // value from the definition.
  
-  return item.value
+  return itemJson.value
 }
 
 /**
  * Get list of radio buttons.
  *
- * @param has
+ * @param hasJson
  */
-export function radioButtons(has: IStateFormItemCustom) {
+export function radioButtons(hasJson: IStateFormItemCustom) {
 
   // Implement logic additional logic needed for radio buttons here.
   // e.g. filtering and verifications
 
-  return has.items ? has.items : []
+  return hasJson.items ? hasJson.items : []
 }
 
 /**
  * Get list of checkboxes.
  *
- * @param has
+ * @param hasJson
  *
  * @deprecated
  */
-export function checkboxes(has: IStateFormItemCustom) {
+export function checkboxes(hasJson: IStateFormItemCustom) {
 
-  // Implement logic additional logic needed for radio buttons here.
-  // e.g. filtering and verifications
+  // [TODO] Implement logic additional logic needed for radio buttons here.
+  //        e.g. filtering and verifications
 
-  return has.items ? has.items : []
+  return hasJson.items ? hasJson.items : []
 }
 
 /**
@@ -204,10 +204,10 @@ export function checkboxes(has: IStateFormItemCustom) {
  *
  * Takes all checkbox defintion values and gather them into an array.
  *
- * @param has
+ * @param hasJson
  */
-function getCheckboxValues(has: IStateFormItemCustom<IFormCheckbox>) {
-  return has.items ? has.items.map(item => item.value) : []
+function getCheckboxValues(hasJson: IStateFormItemCustom<IFormCheckbox>) {
+  return hasJson.items ? hasJson.items.map(item => item.value) : []
 }
 
 /**
@@ -239,11 +239,14 @@ function setCheckedValue(obj: any, value: string, checkedValues: string[]) {
  * we need a way to load that array (of checked values) to restore the form
  * checkboxes and the boxes which were checked.
  *
- * @param has
+ * @param hasJson
  * @param checkedValues array of checkboxes values that are checked
  */
-export function getCheckboxesStatus(has: IStateFormItemCustom, checkedValues: string[]) {
-  const allValues = getCheckboxValues(has)
+export function getCheckboxesStatus(
+  hasJson: IStateFormItemCustom,
+  checkedValues: string[]
+) {
+  const allValues = getCheckboxValues(hasJson)
   const obj: any = {}
   for (const value of allValues) {
     setCheckedValue(obj, value, checkedValues)
@@ -323,59 +326,54 @@ export function onUpdateFormData(
   })}
 }
 
-
 export default class StateFormItem<P = StateForm, T = any>
     extends StateController implements IStateFormItem {
 
-  private item: IStateFormItem
-  private parentDef: P
-  private itemHas: IStateFormItemCustom
-  private itemHasDef?: StateFormItemCustom<this>
+  private itemJson: IStateFormItem
+  private parentObj: P
+  private itemHasJson: IStateFormItemCustom
+  private itemHas?: StateFormItemCustom<this>
   private itemDisabled: boolean
   private noOnClickCallback: boolean
   private itemOnClick: (redux: IRedux) => (e: any) => void
   private noOnChangeCallback: boolean
   private itemOnChange: Function
 
-  constructor (item: IStateFormItem, parent: P) {
+  constructor (itemJson: IStateFormItem, parent: P) {
     super()
-    this.item = item
-    this.parentDef = parent
-    this.itemHas = item.has || { }
-    this.itemDisabled = this.item.disabled
-    this.noOnClickCallback = !!this.item.onClick
-    this.itemOnClick = this.item.onClick || defaultCallback
-    this.noOnChangeCallback = !!this.item.onChange
-    this.itemOnChange = this.item.onChange || defaultCallback
+    this.itemJson = itemJson
+    this.parentObj = parent
+    this.itemHasJson = itemJson.has || { }
+    this.itemDisabled = this.itemJson.disabled
+    this.noOnClickCallback = !!this.itemJson.onClick
+    this.itemOnClick = this.itemJson.onClick || defaultCallback
+    this.noOnChangeCallback = !!this.itemJson.onChange
+    this.itemOnChange = this.itemJson.onChange || defaultCallback
   }
 
-  get state(): IStateFormItem { return this.item }
-
-  get patched() {
-    throw new Error(`'Patched form item state' NOT implemented.`)
-  }
+  get json(): IStateFormItem { return this.itemJson }
 
   /**
    * Chain-access to parent (form) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
-  get type() { return this.item.type || '' }
+  get type() { return this.itemJson.type || '' }
 
-  get id() { return this.item.id || '' }
+  get id() { return this.itemJson.id || '' }
 
   /**
    * Get the current form field name.
    */
-  get name() { return this.item.name || '' }
+  get name() { return this.itemJson.name || '' }
 
   /**
    * Get the current form field custom definition.
    */
   get has(): StateFormItemCustom<this, T> {
-    return this.itemHasDef
-      || (this.itemHasDef = new StateFormItemCustom(
-          this.itemHas,
+    return this.itemHas
+      || (this.itemHas = new StateFormItemCustom(
+          this.itemHasJson,
           this
         ))
   }
@@ -384,7 +382,7 @@ export default class StateFormItem<P = StateForm, T = any>
    * Get the current form field `href` attribute.
    */
   get href() {
-    return this.item.href
+    return this.itemJson.href
   }
 
   /**
@@ -411,22 +409,22 @@ export default class StateFormItem<P = StateForm, T = any>
 
   get disabled() { return this.itemDisabled }
 
-  get label(): string { return this.item.label || '' }
+  get label(): string { return this.itemJson.label || '' }
 
-  get language(): string { return this.item.highlight }
+  get language(): string { return this.itemJson.highlight }
  
   /**
    * Set form field `onClick` attribute
    */
   set onClick (cb: (redux: IRedux) => (e: any) => void) {
-    this.itemOnClick = this.item.onClick || cb
+    this.itemOnClick = this.itemJson.onClick || cb
   }
 
   /**
    * Set the 'onChange' attribute of the form field.
    */
   set onChange (cb: Function) {
-    this.itemOnChange = this.item.onChange || cb
+    this.itemOnChange = this.itemJson.onChange || cb
   }
 
   set disabled(b: boolean) { this.itemDisabled = b }
@@ -448,8 +446,8 @@ export default class StateFormItem<P = StateForm, T = any>
    * exception.
    */
   notMissingNameExDef = () => {
-    const type = this.item.type.toUpperCase()
-    if (this.item.name) {
+    const type = this.itemJson.type.toUpperCase()
+    if (this.itemJson.name) {
       return type
     } else {
       switch (type) {

@@ -114,7 +114,7 @@ class BuildForm extends Component<IProps> {
           <div
             key={index}
             dangerouslySetInnerHTML={{__html: itemDef.has.content}}
-            {...getProps(itemDef.state, ['value','type'])}
+            {...getProps(itemDef.json, ['value','type'])}
           />
         )
 

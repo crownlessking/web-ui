@@ -35,7 +35,7 @@ class BackgroundDiv extends React.Component<IProps> {
 
   public render() {
     const { children, classes, def: background } = this.props
-    const style = getBackgroundCss(background.state)
+    const style = getBackgroundCss(background.json)
 
     return (
       <Fade in={true}>

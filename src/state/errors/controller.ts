@@ -43,28 +43,22 @@ export function toJsonapiError(error: any): IJsonapiError {
   }
 }
 
-
-
 export default class StateAllErrors extends StateController {
 
-  private parentDef: State
-  private allErrors: IJsonapiError[]
+  private parentObj: State
+  private allErrorsJson: IJsonapiError[]
 
-  constructor(allErrors: IJsonapiError[], parent: State) {
+  constructor(allErrorsJson: IJsonapiError[], parent: State) {
     super()
-    this.parentDef = parent
-    this.allErrors = allErrors
+    this.parentObj = parent
+    this.allErrorsJson = allErrorsJson
   }
 
-  get state() { return this.allErrors }
-
-  get patched() {
-    throw new Error(`'Patched errors state' NOT implemented.`)
-  }
+  get json() { return this.allErrorsJson }
 
   /**
    * Chain-access to parent (root) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
 }

@@ -4,39 +4,33 @@ import StateForm from '../forms/form.controller'
 
 export default class StateDialogForm extends StateForm implements IStateDialogForm {
 
-  private dialogForm: IStateDialogForm
-  private dialogFormOnSubmit: IStateDialogForm['onSubmit']
+  private dialogFormJson: IStateDialogForm
+  private dialogFormOnSubmitJson: IStateDialogForm['onSubmit']
 
-  constructor(dialogForm: IStateDialogForm, parent: StatePage) {
-    super(dialogForm, parent.parent.parent.forms)
-    this.dialogForm = dialogForm
-    this.dialogFormOnSubmit = this.dialogForm.onSubmit || (() => {})
+  constructor(dialogFormJson: IStateDialogForm, parent: StatePage) {
+    super(dialogFormJson, parent.parent.parent.forms)
+    this.dialogFormJson = dialogFormJson
+    this.dialogFormOnSubmitJson = this.dialogFormJson.onSubmit || (() => {})
   }
 
-  // get state() { return this.dialogForm }
+  get title() { return this.dialogFormJson.title || '' }
 
-  // get patched() {
-  //   throw new Error(`'Patched dialog form state' NOT implemented.`)
-  // }
+  get label() { return this.dialogFormJson.label || '' }
 
-  get title() { return this.dialogForm.title || '' }
+  get contentType() { return this.dialogFormJson.contentType }
 
-  get label() { return this.dialogForm.label || '' }
+  get contentText() { return this.dialogFormJson.contentText || '' }
 
-  get contentType() { return this.dialogForm.contentType }
+  get content() { return this.dialogFormJson.content }
 
-  get contentText() { return this.dialogForm.contentText || '' }
+  get actions() { return this.dialogFormJson.actions || [] }
 
-  get content() { return this.dialogForm.content }
+  get showActions() { return !(this.dialogFormJson.showActions === false) }
 
-  get actions() { return this.dialogForm.actions || [] }
-
-  get showActions() { return !(this.dialogForm.showActions === false) }
-
-  get onSubmit() { return this.dialogFormOnSubmit }
+  get onSubmit() { return this.dialogFormOnSubmitJson }
 
   set onSubmit(cb: any) {
-    this.dialogFormOnSubmit = this.dialogForm.onSubmit || cb
+    this.dialogFormOnSubmitJson = this.dialogFormJson.onSubmit || cb
   }
 
 }

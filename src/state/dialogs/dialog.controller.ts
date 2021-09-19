@@ -6,49 +6,45 @@ import { getDudEventCallback } from '../../controllers'
 
 export default class StateDialog extends StateController implements IStateDialog {
 
-  private parentDef: State
-  private dialog: IStateDialog
-  private dialogActions: IStateFormItem[]
-  private dialogActionsDef?: StateFormItem<StateDialog>[]
+  private parentObj: State
+  private dialogJson: IStateDialog
+  private dialogActionsJson: IStateFormItem[]
+  private dialogActions?: StateFormItem<StateDialog>[]
 
-  constructor(dialog: IStateDialog, parent: State) {
+  constructor(dialogJson: IStateDialog, parent: State) {
     super()
-    this.parentDef = parent
-    this.dialog = dialog
-    this.dialogActions = this.dialog.actions || []
+    this.parentObj = parent
+    this.dialogJson = dialogJson
+    this.dialogActionsJson = this.dialogJson.actions || []
   }
 
-  get state() { return this.dialog }
+  get json() { return this.dialogJson }
 
-  get patched() {
-    throw new Error(`'Patched dialog state' NOT implemented.`)
-  }
+  get parent() { return this.parentObj }
 
-  get parent() { return this.parentDef }
+  get title() { return this.dialogJson.title || '' }
 
-  get title() { return this.dialog.title || '' }
+  get label() { return this.dialogJson.label || '' }
 
-  get label() { return this.dialog.label || '' }
+  get contentType() { return this.dialogJson.contentType }
 
-  get contentType() { return this.dialog.contentType }
+  get contentText() { return this.dialogJson.contentText || '' }
 
-  get contentText() { return this.dialog.contentText || '' }
-
-  get content() { return this.dialog.content }
+  get content() { return this.dialogJson.content }
 
   get actions() {
-    return this.dialogActionsDef
-      || (this.dialogActionsDef = this.dialogActions.map(
+    return this.dialogActions
+      || (this.dialogActions = this.dialogActionsJson.map(
           item => new StateFormItem<StateDialog>(item, this)
         ))
   }
 
-  get showActions() { return this.dialog.showActions }
+  get showActions() { return this.dialogJson.showActions }
 
-  get onSubmit() { return this.dialog.onSubmit || getDudEventCallback }
+  get onSubmit() { return this.dialogJson.onSubmit || getDudEventCallback }
 
-  get items() { return this.dialog.items || [] }
+  get items() { return this.dialogJson.items || [] }
 
-  get open() { return this.dialog.open }
+  get open() { return this.dialogJson.open }
 
 }

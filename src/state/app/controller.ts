@@ -18,13 +18,13 @@ let handle: any
  * Parses the definition `string` found in `pageState.content`
  * e.g. the page definition object
  *
- * @param def
+ * @param content
  *
  * @deprecated
  */
-export function parseContentDef(def: string | undefined) {
-  if (def) {
-    const options = def.replace(/\s+/g,'').split(':')
+export function parseContent(content?: string) {
+  if (content) {
+    const options = content.replace(/\s+/g,'').split(':')
     if (options.length >= 3) {
       return {
         type: options[0],
@@ -121,48 +121,44 @@ export function getRoute(stateRoute: string, pathname: string, status?: string) 
 
 export default class StateApp extends StateController implements IStateApp {
 
-  private app: IStateApp
-  private parentDef: State
+  private appJson: IStateApp
+  private parentObj: State
   private originValidation: boolean
 
   constructor(app: IStateApp, parent: State) {
     super()
-    this.app = app
-    this.parentDef = parent
+    this.appJson = app
+    this.parentObj = parent
     this.originValidation = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
-        .test(this.app.origin)
+        .test(this.appJson.origin)
   }
 
   /**
    * Get a copy of the app definition.
    */
-  get state() { return this.app }
-
-  get patched() {
-    throw new Error(`'Patched app state' NOT implemented.`)
-  }
+  get json() { return this.appJson }
 
   /**
    * Chain-access to parent (root) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
-  get origin() { return this.app.origin }
+  get origin() { return this.appJson.origin }
 
   /**
    * Chain-access to the current page route.
    */
-  get route() { return this.app.route }
+  get route() { return this.appJson.route }
 
-  get showSpinner() { return this.app.showSpinner }
+  get showSpinner() { return this.appJson.showSpinner }
 
-  get status() { return this.app.status || '' }
+  get status() { return this.appJson.status || '' }
 
-  get title() { return this.app.title }
+  get title() { return this.appJson.title }
 
-  get logo() { return this.app.logo || ''}
+  get logo() { return this.appJson.logo || ''}
 
-  get lastRoute() { return this.app.lastRoute || ''}
+  get lastRoute() { return this.appJson.lastRoute || ''}
 
   /**
    * @returns returns `true` if origin is a valid URL.

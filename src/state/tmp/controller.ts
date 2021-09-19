@@ -4,27 +4,23 @@ import Config from '../../config'
 
 export default class StateTmp extends StateController {
 
-  private parentDef: State
-  private tmp: any
+  private parentObj: State
+  private tmpJson: any
 
-  constructor(tmp: any, parent: State) {
+  constructor(tmpJson: any, parent: State) {
     super()
-    this.parentDef = parent
-    this.tmp = tmp
+    this.parentObj = parent
+    this.tmpJson = tmpJson
   }
 
-  get state() { return this.tmp }
+  get json() { return this.tmpJson }
 
-  get patched() {
-    throw new Error(`'Patched tmp state' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   get = (key: string, member?: string, $default?: string) => {
     try {
       const m = member || ''
-      return this.tmp[key] && this.tmp[key][m]
+      return this.tmpJson[key] && this.tmpJson[key][m]
     } catch (e: any) {
       if (!$default && Config.DEBUG) {
         console.error(`IState.tmp[${key}][${member}] does NOT exist.`)

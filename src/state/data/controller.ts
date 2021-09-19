@@ -80,22 +80,18 @@ export function saveData(endpoint: string, doc: any) {
 
 export default class StateData extends StateController {
 
-  private data: any
-  private parentDef: State
+  private dataJson: any
+  private parentObj: State
 
-  constructor(data: any, parent: State) {
+  constructor(dataJson: any, parent: State) {
     super()
-    this.parentDef = parent
-    this.data = data
+    this.parentObj = parent
+    this.dataJson = dataJson
   }
 
-  get state() { return this.data }
+  get json() { return this.dataJson }
 
-  get patched() {
-    throw new Error(`'Patched data state' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * Get a collection or a single document in a collection.
@@ -104,7 +100,7 @@ export default class StateData extends StateController {
    * @param index
    */
   get = (endpoint: string, index?: number) => {
-    const collection = this.data[endpoint]
+    const collection = this.dataJson[endpoint]
 
     if (index && index >= 0) {
       return collection[index]

@@ -79,7 +79,7 @@ class AppBarCustomized extends Component<IProps> {
 // <Toolbar variant='dense' disableGutters={!open}>
   render() {
     const {def: page, classes, open} = this.props
-    const app = page.parent.parent.app.state
+    const app = page.parent.parent.app.json
     return (
       <AppBar
         position='fixed'

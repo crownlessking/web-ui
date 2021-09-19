@@ -12,7 +12,7 @@ export default function Drawer ({ def: page }: { def: StatePage }) {
     }
 
     if (page.hasDrawer) {
-      lastStateDrawer = page.drawer.state
+      lastStateDrawer = page.drawer.json
 
       return <MiniDrawer def={page} />
     }

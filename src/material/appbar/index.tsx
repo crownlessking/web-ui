@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  fade, Theme, makeStyles, createStyles, Menu, IconButton, AppBar, Toolbar,
+  alpha, Theme, makeStyles, createStyles, Menu, IconButton, AppBar, Toolbar,
   InputBase
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -31,9 +31,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius * 7,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,

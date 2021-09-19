@@ -45,59 +45,50 @@ export default class StateAppBar<P = State>
   static EMPTY_APPBAR_BACKGROUND: IStateBackground = { type: 'none' }
   static EMPTY_APPBAR_TYPOGRAPHY: IStateTypography = {  }
 
-  protected parentDef: P
-  protected appBar: IStateAppBar
-  protected appBarTypography: IStateTypography
-  protected appBarTypographyDef?: StateAppBarTypography<P>
-  protected appBarBackground: IStateBackground
-  protected appBarBackgroundDef?: StateAppBarBackground<P>
+  protected parentObj: P
+  protected appBarJson: IStateAppBar
+  protected appBarTypographyJson: IStateTypography
+  protected appBarTypography?: StateAppBarTypography<P>
+  protected appBarBackgroundJson: IStateBackground
+  protected appBarBackground?: StateAppBarBackground<P>
 
   /**
    * Constructor
    *
-   * @param appBar
+   * @param appBarJson
    */
-  constructor(appBar: IStateAppBar, parent: P) {
+  constructor(appBarJson: IStateAppBar, parent: P) {
     super()
-    this.parentDef = parent
-    this.appBar = appBar
-    this.appBarTypography = this.appBar.typography
+    this.parentObj = parent
+    this.appBarJson = appBarJson
+    this.appBarTypographyJson = this.appBarJson.typography
         || StateAppBar.EMPTY_APPBAR_TYPOGRAPHY
-    this.appBarBackground = this.appBar.background
+    this.appBarBackgroundJson = this.appBarJson.background
         || StateAppBar.EMPTY_APPBAR_BACKGROUND
   }
 
   /**
-   * Get a copy of the `appBar` state.
+   * Get a copy of the `appBar` json.
    */
-  get state() { return this.appBar }
-
-  /**
-   * Get a patched version of the `appBar` state.
-   *
-   * __Warning__: Don't use! Not implemented yet.
-   */
-  get patched(): IStateAppBar {
-    throw new Error(`'Patched appBar state' NOT implemented.`)
-  }
+  get json() { return this.appBarJson }
 
   /**
    * Chain-access to parent (root) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
-   * Get appbar icon states.
+   * Get appbar icon json.
    */
-  get items() { return this.appBar.items }
+  get items() { return this.appBarJson.items }
 
   /**
    * Chain-access to appbar background definition.
    */
   get background() {
-    return this.appBarBackgroundDef
-      || (this.appBarBackgroundDef = new StateAppBarBackground<P>(
-          this.appBarBackground,
+    return this.appBarBackground
+      || (this.appBarBackground = new StateAppBarBackground<P>(
+          this.appBarBackgroundJson,
           this
         ))
   }
@@ -106,9 +97,9 @@ export default class StateAppBar<P = State>
    * Chain-access to typography definition.
    */
   get typography() {
-    return this.appBarTypographyDef
-      || (this.appBarTypographyDef = new StateAppBarTypography<P>(
-          this.appBarTypography,
+    return this.appBarTypography
+      || (this.appBarTypography = new StateAppBarTypography<P>(
+          this.appBarTypographyJson,
           this
         ))
   }

@@ -135,7 +135,7 @@ connect(mapStateToProps, mapDispatchToProps)
             <div
               key={key}
               dangerouslySetInnerHTML={{__html: formField.has.content}}
-              {...getProps(formField.state)}
+              {...getProps(formField.json)}
             />
           )
         }
@@ -162,7 +162,7 @@ connect(mapStateToProps, mapDispatchToProps)
               <span>{formField.label || formField.name}</span>
               <div className={classes.highlight}>
                 <Highlight language={formField.language}>
-                  { JSON.stringify(JSON.parse(formField.state.value), null, 2) }
+                  { JSON.stringify(JSON.parse(formField.json.value), null, 2) }
                 </Highlight>
               </div>
             </React.Fragment>
@@ -171,7 +171,7 @@ connect(mapStateToProps, mapDispatchToProps)
           return (
             <React.Fragment key={key}>
               <span>{formField.label || formField.name}</span>
-              <pre>{ formField.state.value }</pre>
+              <pre>{ formField.json.value }</pre>
             </React.Fragment>
           )
         }

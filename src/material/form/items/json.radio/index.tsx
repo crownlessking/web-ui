@@ -3,7 +3,7 @@ import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@ma
 import StateFormItem, {
   getProps, getStoredValue, getLocallyStoredValue
 } from '../items.controller'
-import { IState } from '../../../../interfaces'
+import { IState, IStateFormItemRadio } from '../../../../interfaces'
 import { connect } from 'react-redux'
 import StateForm from '../../../../state/forms/form.controller'
 import StateFormItemRadio from './controller'
@@ -18,7 +18,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<StateForm, StateFormItemRadio>
+  def: StateFormItem<StateForm, IStateFormItemRadio>
   formsData: any
   state?: IParentState
 }
@@ -46,22 +46,25 @@ function({ def: radio, formsData, state }: IProps) {
         &nbsp;
       </FormLabel>
       <RadioGroup
-        {...getProps(radio.state)}
+        {...getProps(radio.json)}
         aria-label={radio.has.label || radio.has.title}
         onChange={radio.onChange(radio.name)}
       >
-        {radio.has.items.map((radioButton, index) => (
-          <FormControlLabel
-            key={index}
-            value={radioButton.value}
-            control={
-              <Radio color={radioButton.radioColor()} />
-            }
-            label={radioButton.radioLabel()}
-            checked={radioButton.value === value}
-            disabled={radioButton.disabled}
-          />
-        ))}
+        {radio.has.items.map((json, index) => {
+          const radioButton = new StateFormItemRadio(json, radio)
+          return  (
+            <FormControlLabel
+              key={index}
+              value={radioButton.color}
+              control={
+                <Radio color={radioButton.radioColor()} />
+              }
+              label={radioButton.radioLabel()}
+              checked={radioButton.value === value}
+              disabled={radioButton.disabled}
+            />
+          )
+        })}
       </RadioGroup>
     </FormControl>
   )

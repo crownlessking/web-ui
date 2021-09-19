@@ -5,40 +5,36 @@ import StateFormItem from '../../material/form/items/items.controller'
 
 export default class StateForm extends StateController implements IStateForm {
 
-  private form: IStateForm
-  private parentDef: StateAllForms
-  private formItemsDef?: StateFormItem[]
+  private formJson: IStateForm
+  private parentObj: StateAllForms
+  private formItems?: StateFormItem[]
   private fName: string
 
-  constructor (form: IStateForm, parent: StateAllForms) {
+  constructor (formJson: IStateForm, parent: StateAllForms) {
     super()
-    this.parentDef = parent
-    this.form = form
-    this.fName = this.parentDef.getLastFormName()
+    this.parentObj = parent
+    this.formJson = formJson
+    this.fName = this.parentObj.getLastFormName()
   }
 
-  get state() { return this.form }
-
-  get patched() {
-    throw new Error(`'Patched state form' Not implemented.`)
-  }
+  get json() { return this.formJson }
 
   /**
    * Chain-access to parent (all forms) definition.
    */
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * Whether the form should have a paper background or not.
    */
-  get paperBackground() { return !!this.form.paperBackground }
+  get paperBackground() { return !!this.formJson.paperBackground }
 
   /**
    * Get (chain-access) list of form fields definition.
    */
   get items() {
-    return this.formItemsDef
-      || (this.formItemsDef = this.form.items.map(
+    return this.formItems
+      || (this.formItems = this.formJson.items.map(
           item => new StateFormItem(item, this
         )))
   }

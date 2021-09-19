@@ -27,7 +27,7 @@ export default class Navigation extends React.Component<IProps> {
     }
 
     if (page.hasAppBar) {
-      lastStateAppBar = page.appBar.state
+      lastStateAppBar = page.appBar.json
 
       return <AppBar def={page} />
     }

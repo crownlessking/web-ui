@@ -4,22 +4,18 @@ import Config from '../../../config'
 
 export default class StateFormsData extends StateController {
   
-  private formsData: any
-  private parentDef: State
+  private formsDataJson: any
+  private parentObj: State
 
-  constructor (formsData: any, parent: State) {
+  constructor (formsDataJson: any, parent: State) {
     super()
-    this.parentDef = parent
-    this.formsData = formsData
+    this.parentObj = parent
+    this.formsDataJson = formsDataJson
   }
 
-  get state() { return this.formsData }
+  get json() { return this.formsDataJson }
 
-  get patched() {
-    throw new Error(`'Patched version formsData' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   /**
    * Get form field value from redux store.
@@ -30,9 +26,9 @@ export default class StateFormsData extends StateController {
   getStoredValues = (formName: string, name?: string) => {
     try {
       if (name) {
-        return this.formsData[formName][name]
+        return this.formsDataJson[formName][name]
       }
-      return this.formsData[formName]
+      return this.formsDataJson[formName]
     } catch (e: any) {
 
       // TODO Implement logic to save error and view it later
@@ -41,7 +37,7 @@ export default class StateFormsData extends StateController {
         console.log(e.stack)
       }
     }
-  } // END getStoredValue
+  }
 
   /**
    * Alias for `getStoredValue()`

@@ -6,48 +6,44 @@ import StateAnchorOrigin from './anchor.origin.controller'
 export default class StateSnackbar
     extends StateController implements IStateSnackbar {
 
-  private parentDef: State
-  private snackbar:  IStateSnackbar
-  private snackbarAnchorOriginDef?: StateAnchorOrigin
+  private parentObj: State
+  private snackbarJson:  IStateSnackbar
+  private snackbarAnchorOrigin?: StateAnchorOrigin
 
-  constructor(snackbar: IStateSnackbar, parent: State) {
+  constructor(snackbarJson: IStateSnackbar, parent: State) {
     super()
-    this.parentDef = parent
-    this.snackbar = snackbar
+    this.parentObj = parent
+    this.snackbarJson = snackbarJson
   }
 
-  get state(): IStateSnackbar { return this.snackbar }
+  get json(): IStateSnackbar { return this.snackbarJson }
 
-  get patched(): IStateSnackbar {
-    throw new Error(`'Patched snackbar state' NOT implemented.`)
-  }
-
-  get parent() { return this.parentDef }
+  get parent() { return this.parentObj }
 
   get anchorOrigin() {
-    return this.snackbarAnchorOriginDef
-      || (this.snackbarAnchorOriginDef = new StateAnchorOrigin(
-          this.snackbar.anchorOrigin,
+    return this.snackbarAnchorOrigin
+      || (this.snackbarAnchorOrigin = new StateAnchorOrigin(
+          this.snackbarJson.anchorOrigin,
           this
         ))
   }
 
-  get autoHideDuration() { return this.snackbar.autoHideDuration }
+  get autoHideDuration() { return this.snackbarJson.autoHideDuration }
 
-  get open() { return this.snackbar.open || false }
+  get open() { return this.snackbarJson.open || false }
 
-  get content() { return this.snackbar.content }
+  get content() { return this.snackbarJson.content }
 
-  get message() { return this.snackbar.message || '' }
+  get message() { return this.snackbarJson.message || '' }
 
-  get actions() { return this.snackbar.actions || [] }
+  get actions() { return this.snackbarJson.actions || [] }
 
-  get id() { return this.snackbar.id || '' }
+  get id() { return this.snackbarJson.id || '' }
 
-  get defaultId() { return this.snackbar.defaultId }
+  get defaultId() { return this.snackbarJson.defaultId }
 
-  get type() { return this.snackbar.type }
+  get type() { return this.snackbarJson.type }
 
-  get variant() { return this.snackbar.variant }
+  get variant() { return this.snackbarJson.variant }
 
 }

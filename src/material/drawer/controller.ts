@@ -33,30 +33,26 @@ export function getListItemCallback(def: IStateLink, redux: IRedux) {
 export default class StateDrawer<P = State>
     extends StateController implements IStateDrawer {
 
-  private drawer: IStateDrawer
-  private parentDef: P
-  private drawerItemsDef?: StateLink<this>[]
+  private drawerJson: IStateDrawer
+  private parentObj: P
+  private drawerItems?: StateLink<this>[]
 
-  constructor (drawer: IStateDrawer, parent: P) {
+  constructor (drawerJson: IStateDrawer, parent: P) {
     super()
-    this.drawer = drawer
-    this.parentDef = parent
+    this.drawerJson = drawerJson
+    this.parentObj = parent
   }
 
-  get state(): IStateDrawer { return this.drawer }
+  get json(): IStateDrawer { return this.drawerJson }
 
-  get patched () {
-    throw new Error(`'Patched drawer state'NOT implemented yet.`)
-  }
-
-  get parent () { return this.parentDef }
+  get parent () { return this.parentObj }
 
   /**
    * Get the drawer's list of icon links.
    */
   get items() {
-    return this.drawerItemsDef
-    || (this.drawerItemsDef = this.drawer.items.map(item => {
+    return this.drawerItems
+    || (this.drawerItems = this.drawerJson.items.map(item => {
       return new StateLink<this>(item, this)
     }))
   }
@@ -64,11 +60,11 @@ export default class StateDrawer<P = State>
   /**
    * Whether the drawer is open or not.
    */
-  get open () { return this.drawer.open }
+  get open () { return this.drawerJson.open }
 
   /**
    * Drawer's width
    */
-  get width () { return this.drawer.width }
+  get width () { return this.drawerJson.width }
 
 }

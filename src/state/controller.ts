@@ -25,48 +25,41 @@ export default class State extends StateController {
   /**
    * The entire Redux Store.
    */
-  private store: IState
-  private storeAppDef?: StateApp
-  private storeAppBarDef?: StateAppBar
-  private storeBackgroundDef?: StateBackground
-  private storeTypographyDef?: StateTypography
-  private storeDataDef?: StateData
-  private storeDialogDef?: StateDialog
-  private storeAllDialogsDef?: StateAllDialogs
-  private storeDrawerDef?: StateDrawer<this>
-  private storeAllErrorsDef?: StateAllErrors
-  private storeAllFormsDef?: StateAllForms
-  private storeFormsDataDef?: StateFormsData
-  private storeMetaDef?: StateMeta
-  private storeAllPagesDef?: StateAllPages
-  private storePagesDataDef?: StatePagesData
-  private storeSnackbarDef?: StateSnackbar
-  private storeTmpDef?: StateTmp
-  private storeTopLevelLinksDef?: StateTopLevelLinks
+  private storeJson: IState
+  private storeApp?: StateApp
+  private storeAppBar?: StateAppBar
+  private storeBackground?: StateBackground
+  private storeTypography?: StateTypography
+  private storeData?: StateData
+  private storeDialog?: StateDialog
+  private storeAllDialogs?: StateAllDialogs
+  private storeDrawer?: StateDrawer<this>
+  private storeAllErrors?: StateAllErrors
+  private storeAllForms?: StateAllForms
+  private storeFormsData?: StateFormsData
+  private storeMeta?: StateMeta
+  private storeAllPages?: StateAllPages
+  private storePagesData?: StatePagesData
+  private storeSnackbar?: StateSnackbar
+  private storeTmp?: StateTmp
+  private storeTopLevelLinks?: StateTopLevelLinks
 
   /**
    * Constructor of the (store) root state.
    *
-   * @param store 
+   * @param storeJson 
    */
-  constructor(store: IState) {
+  constructor(storeJson: IState) {
     super()
-    this.store = store
+    this.storeJson = storeJson
   }
 
   /**
    * Get a copy of the (store) state.
    */
-  get state(): IState {
+  get json(): IState {
     throw new Error(`Access to the root state is NOT a good idea.`)
     // return this.store
-  }
-
-  /**
-   * Get a patched copy of the entire (Redux store) state.
-   */
-  get patched(): IState {
-    throw new Error(`'Patched root state' NOT implemented.`)
   }
 
   /**
@@ -80,9 +73,9 @@ export default class State extends StateController {
    * Chain-access to app definition.
    */
   get app() {
-    return this.storeAppDef
-      || (this.storeAppDef = new StateApp(
-          this.store.app,
+    return this.storeApp
+      || (this.storeApp = new StateApp(
+          this.storeJson.app,
           this
         ))
   }
@@ -91,9 +84,9 @@ export default class State extends StateController {
    * Get the default appbar definition.
    */
   get appBar() {
-    return this.storeAppBarDef
-      || (this.storeAppBarDef = new StateAppBar(
-          this.store.appBar,
+    return this.storeAppBar
+      || (this.storeAppBar = new StateAppBar(
+          this.storeJson.appBar,
           this
         ))
   }
@@ -102,41 +95,41 @@ export default class State extends StateController {
    * Get the default background definition.
    */
   get background() {
-    return this.storeBackgroundDef
-      || (this.storeBackgroundDef = new StateBackground(
-          this.store.background,
+    return this.storeBackground
+      || (this.storeBackground = new StateBackground(
+          this.storeJson.background,
           this
         ))
   }
 
   get typography() {
-    return this.storeTypographyDef
-      || (this.storeTypographyDef = new StateTypography(
-          this.store.typography,
+    return this.storeTypography
+      || (this.storeTypography = new StateTypography(
+          this.storeJson.typography,
           this
         ))
   }
 
   get data() {
-    return this.storeDataDef
-      || (this.storeDataDef = new StateData(
-          this.store.data,
+    return this.storeData
+      || (this.storeData = new StateData(
+          this.storeJson.data,
           this
         ))
   }
 
   get dialog() {
-    return this.storeDialogDef
-      || (this.storeDialogDef = new StateDialog(
-          this.store.dialog,
+    return this.storeDialog
+      || (this.storeDialog = new StateDialog(
+          this.storeJson.dialog,
           this
         ))
   }
 
   get allDialogs() {
-    return this.storeAllDialogsDef
-      || (this.storeAllDialogsDef = new StateAllDialogs(
-          this.store.dialogs,
+    return this.storeAllDialogs
+      || (this.storeAllDialogs = new StateAllDialogs(
+          this.storeJson.dialogs,
           this
         ))
     // throw new Error(`'Patched all dialogs' NOT implemented.`)
@@ -148,17 +141,17 @@ export default class State extends StateController {
    * Get the default drawer definition.
    */
   get drawer() {
-    return this.storeDrawerDef
-      || (this.storeDrawerDef = new StateDrawer(
-          this.store.drawer,
+    return this.storeDrawer
+      || (this.storeDrawer = new StateDrawer(
+          this.storeJson.drawer,
           this
         ))
   }
 
   get allErrors() {
-    return this.storeAllErrorsDef
-      || (this.storeAllErrorsDef = new StateAllErrors(
-          this.store.errors,
+    return this.storeAllErrors
+      || (this.storeAllErrors = new StateAllErrors(
+          this.storeJson.errors,
           this
         ))
   }
@@ -169,9 +162,9 @@ export default class State extends StateController {
    * Chain-access to all form definitions.
    */
   get allForms() {
-    return this.storeAllFormsDef
-      || (this.storeAllFormsDef = new StateAllForms(
-          this.store.forms,
+    return this.storeAllForms
+      || (this.storeAllForms = new StateAllForms(
+          this.storeJson.forms,
           this
         ))
   }
@@ -182,9 +175,9 @@ export default class State extends StateController {
    * Chain-access to forms data.
    */
   get formsData() {
-    return this.storeFormsDataDef
-      || (this.storeFormsDataDef = new StateFormsData(
-          this.store.formsData,
+    return this.storeFormsData
+      || (this.storeFormsData = new StateFormsData(
+          this.storeJson.formsData,
           this
         ))
   }
@@ -193,9 +186,9 @@ export default class State extends StateController {
    * Chain-access to metadata.
    */
   get meta() {
-    return this.storeMetaDef
-      || (this.storeMetaDef = new StateMeta(
-          this.store.meta,
+    return this.storeMeta
+      || (this.storeMeta = new StateMeta(
+          this.storeJson.meta,
           this
         ))
   }
@@ -204,9 +197,9 @@ export default class State extends StateController {
    * Chain-access to all page definitions.
    */
   get allPages() {
-    return this.storeAllPagesDef
-      || (this.storeAllPagesDef = new StateAllPages(
-          this.store.pages,
+    return this.storeAllPages
+      || (this.storeAllPages = new StateAllPages(
+          this.storeJson.pages,
           this
         ))
   }
@@ -214,33 +207,33 @@ export default class State extends StateController {
   get pages () { return this.allPages }
 
   get pagesData() {
-    return this.storePagesDataDef
-      || (this.storePagesDataDef = new StatePagesData(
-          this.store.pagesData,
+    return this.storePagesData
+      || (this.storePagesData = new StatePagesData(
+          this.storeJson.pagesData,
           this
         ))
   }
 
   get snackbar() {
-    return this.storeSnackbarDef
-      || (this.storeSnackbarDef = new StateSnackbar(
-          this.store.snackbar,
+    return this.storeSnackbar
+      || (this.storeSnackbar = new StateSnackbar(
+          this.storeJson.snackbar,
           this
         ))
   }
 
   get tmp() {
-    return this.storeTmpDef
-      || (this.storeTmpDef = new StateTmp(
-          this.store.tmp,
+    return this.storeTmp
+      || (this.storeTmp = new StateTmp(
+          this.storeJson.tmp,
           this
         ))
   }
 
   get topLevelLinks() {
-    return this.storeTopLevelLinksDef
-      || (this.storeTopLevelLinksDef = new StateTopLevelLinks(
-          this.store.topLevelLinks,
+    return this.storeTopLevelLinks
+      || (this.storeTopLevelLinks = new StateTopLevelLinks(
+          this.storeJson.topLevelLinks,
           this
         ))
   }
@@ -254,30 +247,30 @@ export default class State extends StateController {
  * background, inherit a background from another page, or use a default
  * background defined at the `state` root.
  *
- * @param statePage 
+ * @param pageJson 
  * @param _default 
  */
 export const setStatePageBackground = (
-  statePage?: IStatePage,
+  pageJson?: IStatePage,
   _default?: IStateBackground
 ): IStateBackground => {
   const EMPTY_STATE_BACKGROUND: IStateBackground = { type: 'none' }
 
-  if (statePage) {
-    let stateBackground: IStateBackground = EMPTY_STATE_BACKGROUND
+  if (pageJson) {
+    let backgroundJson: IStateBackground = EMPTY_STATE_BACKGROUND
 
-    if (statePage.useDefaultBackground === true) {
-      stateBackground = _.merge<IStateBackground, IStateBackground|undefined>(
+    if (pageJson.useDefaultBackground === true) {
+      backgroundJson = _.merge<IStateBackground, IStateBackground|undefined>(
         EMPTY_STATE_BACKGROUND,
         _default
       )
-    } if (statePage.backgroundInherited) {
-      // TODO Implement inheriting the background of another page here.
+    } if (pageJson.backgroundInherited) {
+      // [TODO] Implement inheriting the background of another page here.
     }
 
-    statePage.background = _.merge(stateBackground, statePage.background)
+    pageJson.background = _.merge(backgroundJson, pageJson.background)
   
-    return statePage.background
+    return pageJson.background
   }
 
   return EMPTY_STATE_BACKGROUND
