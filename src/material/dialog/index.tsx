@@ -195,14 +195,14 @@ class ResponsiveDialog extends React.Component<IProps> {
   private dialogActions = ({ def }: { def: StateDialog }) => {
     const actions = def.actions || []
     const actionsJsx = actions.map((action, index) => {
-      if (action.has && action.has.title) {
-        action.has.callback = action.has.callback || this.getDefaultCallback()
+      if (action.has.title) {
+        const callback = action.has.json.callback || this.getDefaultCallback()
         index += 2
         return (
           <Button
             key={index}
             color={action.has.color as PropTypes.Color || 'default'}
-            onClick={action.has.callback({store, actions: appActions})}
+            onClick={callback({store, actions: appActions})}
           >
             { action.has.title }
           </Button>

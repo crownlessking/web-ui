@@ -13,7 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { IState, IStateLink } from '../../interfaces'
 import { closeDrawer, openDrawer } from './actions'
 import { connect } from 'react-redux'
-import { getDrawerWidth, getListItemCallback as onClick } from './controller'
+import { getDrawerWidth } from './controller'
 import store from '../../state'
 import actions from '../../state/actions'
 import { getFormattedRoute } from '../../controllers'
@@ -136,14 +136,14 @@ class MiniDrawer extends React.Component<IProps, { open: boolean }> {
             <ListItem
               key={index + 1}
               button
-              onClick={onClick(item, {store, actions})}
+              onClick={item.onClick({store, actions})}
               component={RouterLink as any}
               to={getFormattedRoute(item)}
             >
               <ListItemIcon>
                 <JsonIcon json={item} faProps={{ size: 'lg' }} />
               </ListItemIcon>
-              <ListItemText primary={item.has ? item.has.text : undefined} />
+              <ListItemText primary={item.has.json.text} />
             </ListItem>
           )) }
         </List>

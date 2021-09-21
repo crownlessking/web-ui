@@ -86,9 +86,9 @@ export default class StatePage extends StateController implements IStatePage {
   get appBar() {
     return this.pageAppBar
       || (this.pageAppBar = new StatePageAppBar(
-          this.pageAppBarJson,
-          this
-        ))
+        this.pageAppBarJson,
+        this
+      ))
   }
 
   /**
@@ -108,9 +108,9 @@ export default class StatePage extends StateController implements IStatePage {
   get typography() {
     return this.pageTypography
       || (this.pageTypography = new StatePageTypography(
-          this.pageTypographyJson,
-          this
-        ))
+        this.pageTypographyJson,
+        this
+      ))
   }
 
   /**
@@ -151,9 +151,9 @@ export default class StatePage extends StateController implements IStatePage {
   get drawer() {
     return this.pageDrawer
       || (this.pageDrawer = new StatePageDrawer(
-          this.pageDrawerJson,
-          this
-        ))
+        this.pageDrawerJson,
+        this
+      ))
   }
 
   /**

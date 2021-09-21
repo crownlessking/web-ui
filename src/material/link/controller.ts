@@ -1,3 +1,4 @@
+import { dummyCallback } from '../../controllers'
 import StateController from '../../controllers/state.controller'
 import { IStateFormItemCustom, IStateLink } from '../../interfaces'
 import StateFormItemCustom from '../form/items/custom.controller'
@@ -34,9 +35,13 @@ export default class StateLink<P>
 
   get has() {
     return this.linkHas
-    || (this.linkHas = new StateFormItemCustom(
-      this.linkHasJson, this
-    ))
+      || (this.linkHas = new StateFormItemCustom(
+        this.linkHasJson, this
+      ))
+  }
+
+  get onClick() {
+    return this.linkJson.onClick || dummyCallback
   }
 
   get(prop: string) { return this.linkJson[prop] }

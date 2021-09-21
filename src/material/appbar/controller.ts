@@ -6,6 +6,7 @@ import State from '../../state/controller'
 import StatePage from '../../state/pages/page.controller'
 import StateAppBarBackground from './background.c'
 import StateAppBarTypography from './typography.c'
+import StateLink from '../link/controller'
 
 /**
  * Ports previous appBar state properties over to the newest if missing.
@@ -47,6 +48,7 @@ export default class StateAppBar<P = State>
 
   protected parentObj: P
   protected appBarJson: IStateAppBar
+  protected appBarItems?: StateLink<this>[]
   protected appBarTypographyJson: IStateTypography
   protected appBarTypography?: StateAppBarTypography<P>
   protected appBarBackgroundJson: IStateBackground
@@ -78,9 +80,15 @@ export default class StateAppBar<P = State>
   get parent() { return this.parentObj }
 
   /**
-   * Get appbar icon json.
+   * Get appbar icon objects.
    */
-  get items() { return this.appBarJson.items }
+  get items() {
+    return this.appBarItems || (
+      this.appBarItems = this.appBarJson.items.map(
+        item => new StateLink(item, this)
+      )
+    )
+  }
 
   /**
    * Chain-access to appbar background definition.
