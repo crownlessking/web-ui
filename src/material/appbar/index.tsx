@@ -13,6 +13,8 @@ import { updateAppbarSearchField } from '../appbar/searchfield/actions'
 import { IState } from '../../interfaces'
 import { connect } from 'react-redux'
 import AppBarIcon from '../link'
+import StateLink from '../link/controller'
+import StatePageAppBar from '../../state/pages/appbar.c'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -220,11 +222,11 @@ const PrimarySearchAppBar = connect(mapStateToProps, mapDispatchToProps)
             : (
                 <div className={classes.textLogoWrapper}>
                   <AppBarIcon
-                    def={{
+                    def={new StateLink<StatePageAppBar>({
                       type: 'textlogo',
                       href: '/',
                       has: {text: app.title},
-                    }}
+                    }, page.appBar)}
                   />
                 </div>
               )

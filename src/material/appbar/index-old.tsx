@@ -12,6 +12,7 @@ import { openDrawer } from '../drawer/actions'
 import { connect } from 'react-redux'
 import { getDrawerWidth } from '../drawer/controller'
 import StatePage from '../../state/pages/page.controller'
+import StateLink from '../link/controller'
 
 const drawerWidth = getDrawerWidth()
 
@@ -115,11 +116,11 @@ class AppBarCustomized extends Component<IProps> {
             : (
                 <div className={classes.textLogoWrapper}>
                   <AppBarIcon
-                    def={{
+                    def={new StateLink({
                       type: 'textlogo',
                       href: '/',
                       has: {text: app.title},
-                    }}
+                    }, this)}
                   />
                 </div>
               )

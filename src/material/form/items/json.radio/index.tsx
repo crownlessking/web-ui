@@ -55,11 +55,11 @@ function({ def: radio, formsData, state }: IProps) {
           return  (
             <FormControlLabel
               key={index}
-              value={radioButton.color}
+              value={radioButton.value}
               control={
-                <Radio color={radioButton.radioColor()} />
+                <Radio color={radioButton.color} />
               }
-              label={radioButton.radioLabel()}
+              label={radioButton.label}
               checked={radioButton.value === value}
               disabled={radioButton.disabled}
             />

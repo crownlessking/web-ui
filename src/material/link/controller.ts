@@ -12,7 +12,7 @@ export function getLinkProps(def: IStateLink) {
   return props
 }
 
-export default class StateLink<P>
+export default class StateLink<P = any>
     extends StateController implements IStateLink {
 
   private linkJson: IStateLink
@@ -44,6 +44,7 @@ export default class StateLink<P>
     return this.linkJson.onClick || dummyCallback
   }
 
-  get(prop: string) { return this.linkJson[prop] }
+
+  get(attr: string) { return this.linkJson[attr] }
 
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link, IconButton, Icon, Button, Typography } from '@material-ui/core'
-import { IStateLink } from '../../interfaces'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   getFontAwesomeIconProp,
@@ -10,21 +9,22 @@ import {
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import store from '../../state'
 import actions from '../../state/actions'
-import { getLinkProps } from './controller'
+import StateLink, { getLinkProps } from './controller'
 import { Link as RouterLink } from 'react-router-dom'
 
-interface IProps { def: IStateLink }
+interface IProps { def: StateLink }
 
 export default class JsonLink extends Component<IProps> {
 
   public render() {
     const { def } = this.props
-    const { type, href } = def
+    const { type } = def
+    const href: string = def.get('href')
     const redux = { store, actions, route: href }
     const has = def.has || {}
     const route = getFormattedRoute(def, href)
     const onClick = def.onClick || defaultCallback
-    const props = getLinkProps(def)
+    const props = getLinkProps(def.json)
 
     switch (type) {
 

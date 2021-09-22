@@ -18,7 +18,7 @@ import {
   updateFormData, IFormDataPayload
 } from '../../../state/forms/data/actions'
 import { postReqState } from '../../../state/net'
-import StateFormItem, { getProps, updateCheckboxes } from './items.controller'
+import { getProps, updateCheckboxes } from './items.controller'
 import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType
 } from '../form.controller'
@@ -79,10 +79,9 @@ class BuildForm extends Component<IProps> {
     const form = this.getFormDef()
 
     return form.items.map((item, index) => {
-      const itemDef: StateFormItem = item
-      itemDef.has.classes = this.props.classes
+      item.has.classes = this.props.classes
 
-      switch (itemDef.notMissingNameExDef()) {
+      switch (item.notMissingNameExDef()) {
 
       /**
        * use break line to put input fields in separate lines or to tweak their
@@ -92,11 +91,11 @@ class BuildForm extends Component<IProps> {
         return <br key={index} />
 
       case BUTTON:
-        return <JsonButton key={index} def={itemDef} />
+        return <JsonButton key={index} def={item} />
 
       case SUBMIT:
-        itemDef.onClick = this.onFormSubmitDefault(form)
-        return <JsonButton key={index} def={itemDef} />
+        item.onClick = this.onFormSubmitDefault(form)
+        return <JsonButton key={index} def={item} />
 
       /**
        * `HTML` type example
@@ -113,8 +112,8 @@ class BuildForm extends Component<IProps> {
         return (
           <div
             key={index}
-            dangerouslySetInnerHTML={{__html: itemDef.has.content}}
-            {...getProps(itemDef.json, ['value','type'])}
+            dangerouslySetInnerHTML={{__html: item.has.content}}
+            {...getProps(item.json, ['value','type'])}
           />
         )
 
@@ -139,8 +138,8 @@ class BuildForm extends Component<IProps> {
        * ```
        */
       case SELECT:
-        itemDef.onChange = this.onUpdateFormData(form)
-        return <JsonSelect key={index} def={itemDef} />
+        item.onChange = this.onUpdateFormData(form)
+        return <JsonSelect key={index} def={item} />
 
       /**
        * 
@@ -158,8 +157,8 @@ class BuildForm extends Component<IProps> {
       case PASSWORD:
       case TEXT:
       case TEXTFIELD:
-        itemDef.onChange = this.onUpdateFormData(form)
-        return <JsonTextfield key={index} def={itemDef} />
+        item.onChange = this.onUpdateFormData(form)
+        return <JsonTextfield key={index} def={item} />
 
       /**
        * 
@@ -173,8 +172,8 @@ class BuildForm extends Component<IProps> {
        * ```
        */
       case TEXTAREA:
-        itemDef.onChange = this.onUpdateFormData(form)
-        return <JsonTextarea key={index} def={itemDef} />
+        item.onChange = this.onUpdateFormData(form)
+        return <JsonTextarea key={index} def={item} />
 
       /**
        * 
@@ -205,8 +204,8 @@ class BuildForm extends Component<IProps> {
        * @see https://material-ui.com/components/radio-buttons/
        */ 
       case RADIO_BUTTONS:
-        itemDef.onChange = this.onUpdateFormData(form)
-        return <JsonRadio key={index} def={itemDef} />
+        item.onChange = this.onUpdateFormData(form)
+        return <JsonRadio key={index} def={item} />
 
       /**
        * Checkboxes
@@ -241,8 +240,8 @@ class BuildForm extends Component<IProps> {
        * @see https://material-ui.com/components/checkboxes/#checkboxes
        */
       case CHECKBOXES:
-        itemDef.onChange = this.onHandleCheckbox(form)
-        return <JsonCheckboxes key={index} def={itemDef} />
+        item.onChange = this.onHandleCheckbox(form)
+        return <JsonCheckboxes key={index} def={item} />
 
       /**
        * Example switch:
@@ -261,15 +260,15 @@ class BuildForm extends Component<IProps> {
        * ```
        */
       case SWITCH:
-        itemDef.onChange = this.onHandleSwitch(form)
-        return <JsonSwitch key={index} def={itemDef} />
+        item.onChange = this.onHandleSwitch(form)
+        return <JsonSwitch key={index} def={item} />
 
       /**
        * 
        */
       case DATETIME:
-        itemDef.onChange = this.onUpdateFormDatetime(form)
-        return <JsonPicker key={index} def={itemDef} />
+        item.onChange = this.onUpdateFormDatetime(form)
+        return <JsonPicker key={index} def={item} />
 
       } // switch END
 
