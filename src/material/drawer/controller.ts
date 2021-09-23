@@ -16,7 +16,7 @@ export default class StateDrawer<P = State>
 
   protected drawerJson: IStateDrawer
   protected parentObj: P
-  protected drawerItems?: StateLink<this>[]
+  protected drawerItems?: StateLink<StateDrawer<P>>[]
 
   constructor (drawerJson: IStateDrawer, parent: P) {
     super()

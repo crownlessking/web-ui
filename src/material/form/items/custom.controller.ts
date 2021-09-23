@@ -4,15 +4,17 @@ import StateController from '../../../controllers/state.controller'
 export default class StateFormItemCustom<P, T = any>
     extends StateController implements IStateFormItemCustom {
 
-  private hasJson: IStateFormItemCustom<T>
-  private parentObj: P
-  private hasCallback?: ((redux:IRedux)=>(e:any)=>void)
-  private hasClasses: any
+  protected hasJson: IStateFormItemCustom<T>
+  protected hasItemsJson: T[]
+  protected parentObj: P
+  protected hasCallback?: ((redux:IRedux)=>(e:any)=>void)
+  protected hasClasses: any
 
   constructor (hasJson: IStateFormItemCustom, parent: P) {
     super()
     this.parentObj = parent
     this.hasJson = hasJson
+    this.hasItemsJson = this.hasJson.items || []
     this.hasCallback = this.hasJson.callback
     this.hasClasses = this.hasJson.classes || {}
   }
@@ -37,7 +39,7 @@ export default class StateFormItemCustom<P, T = any>
 
   get iconPosition() { return this.hasJson.iconPosition }
 
-  get items() { return this.hasJson.items || [] }
+  get items() { return this.hasItemsJson }
 
   get label() { return this.hasJson.label || '' }
 

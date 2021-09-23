@@ -3,7 +3,7 @@ import {
   SWITCH, SELECT
 } from '../form.controller'
 import {
-  IStateFormItem, IStateFormItemRadio, IStateFormItemCustom, IFormCheckbox, IRedux
+  IStateFormItem, IStateFormItemRadioButton, IStateFormItemCustom, IFormCheckbox, IRedux
 } from '../../../interfaces'
 import Config from '../../../config'
 // import _ from 'lodash'
@@ -163,7 +163,7 @@ export function options(hasJson: IStateFormItemCustom) {
  *
  * @deprecated
  */
-export function radioValue(itemJson: IStateFormItemRadio) {
+export function radioValue(itemJson: IStateFormItemRadioButton) {
 
   // TODO Use this function to implement logic when retrieving a form radio
   // value from the definition.
@@ -326,20 +326,20 @@ export function onUpdateFormData(
   })}
 }
 
-export default class StateFormItem<P = StateForm, T = any>
+export default class StateFormItem<T = any>
     extends StateController implements IStateFormItem {
 
-  private itemJson: IStateFormItem
-  private parentObj: P
-  private itemHasJson: IStateFormItemCustom
-  private itemHas?: StateFormItemCustom<this>
-  private itemDisabled: boolean
-  private noOnClickCallback: boolean
-  private itemOnClick: (redux: IRedux) => (e: any) => void
-  private noOnChangeCallback: boolean
-  private itemOnChange: Function
+  protected itemJson: IStateFormItem
+  protected parentObj: StateForm
+  protected itemHasJson: IStateFormItemCustom
+  protected itemHas?: StateFormItemCustom<StateFormItem<T>, T>
+  protected itemDisabled: boolean
+  protected noOnClickCallback: boolean
+  protected itemOnClick: (redux: IRedux) => (e: any) => void
+  protected noOnChangeCallback: boolean
+  protected itemOnChange: Function
 
-  constructor (itemJson: IStateFormItem, parent: P) {
+  constructor (itemJson: IStateFormItem, parent: StateForm) {
     super()
     this.itemJson = itemJson
     this.parentObj = parent
@@ -370,7 +370,7 @@ export default class StateFormItem<P = StateForm, T = any>
   /**
    * Get the current form field custom definition.
    */
-  get has(): StateFormItemCustom<this, T> {
+  get has() {
     return this.itemHas
       || (this.itemHas = new StateFormItemCustom(
           this.itemHasJson,

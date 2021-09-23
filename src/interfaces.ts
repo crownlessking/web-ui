@@ -610,7 +610,7 @@ interface IFormChoices {
 }
 
 export interface IFormCheckbox extends IFormChoices { }
-export interface IStateFormItemRadio extends IFormChoices { }
+export interface IStateFormItemRadioButton extends IFormChoices { }
 
 /**
  * Type for textfield adornment, e.g.

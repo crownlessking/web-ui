@@ -17,7 +17,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<any, IStateFormSelectOption>
+  def: StateFormItem<IStateFormSelectOption>
   formsData: any
   stateMeta: any
   state?: IParentState
@@ -57,7 +57,7 @@ function ({ def, formsData, stateMeta, state }: IProps) {
           onChange={onChange(name)}
           inputProps={{ name, id }}
         >
-          <option key={-1} value=''></option>
+          <option key={-1} value='' />
           {meta ? Object.keys(meta).map((key, index) => (
             <option value={key} key={code + '-' + index}>
               { meta[key] }
