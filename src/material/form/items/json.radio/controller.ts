@@ -2,32 +2,32 @@ import StateController from '../../../../controllers/state.controller'
 import { IStateFormItemRadioButton } from '../../../../interfaces'
 import StateFormItem from '../items.controller'
 import StateFormItemCustom from '../custom.controller'
+import StateForm from '../../../../state/forms/form.controller'
+
+/**
+ * Radio button.
+ *
+ * A customized version of `StateFormItem`.
+ */
+export type StateFormItemRadio = StateFormItem<
+ StateForm,
+ IStateFormItemRadioButton
+>
 
 /**
  * A custom version of the `StateFormItemCustom` class defined to be used with
  * radio buttons (`StateFormItemRadio`)
  */
-export class StateFormItemRadioCustom
-  extends StateFormItemCustom<StateFormItemRadio, IStateFormItemRadioButton>
-{
-
-  private hasItems?: StateFormItemRadioButton[]
-
-  get items() {
-    return this.hasItems || (
-      this.hasItems = this.hasItemsJson.map(
-        item => new StateFormItemRadioButton(item, this)
-      )
-    )
-  }
-
-}
+export type StateFormItemRadioCustom = StateFormItemCustom<
+  StateFormItemRadio,
+  IStateFormItemRadioButton
+>
 
 /**
  * If a set of radio buttons is a *single form item (`StateFormItemRadio`) then
  * this class represents a single radio button in the set.
  */
-export class StateFormItemRadioButton
+export default class StateFormItemRadioButton
   extends StateController
   implements IStateFormItemRadioButton
 {
@@ -54,21 +54,6 @@ export class StateFormItemRadioButton
 
   get disabled() {
     return this.radioButtonJson.disabled === true
-  }
-
-}
-
-/**
- * Radio button.
- *
- * A customized version of `StateFormItem`.
- */
-export default class StateFormItemRadio extends StateFormItem {
-
-  get has(): StateFormItemRadioCustom {
-    return this.itemHas || (
-      this.itemHas = new StateFormItemRadioCustom(this.itemHasJson, this)
-    )
   }
 
 }

@@ -2,7 +2,7 @@ import { IStateFormItemCustom, IRedux } from '../../../interfaces'
 import StateController from '../../../controllers/state.controller'
 
 export default class StateFormItemCustom<P, T = any>
-    extends StateController implements IStateFormItemCustom {
+    extends StateController implements IStateFormItemCustom<T> {
 
   protected hasJson: IStateFormItemCustom<T>
   protected hasItemsJson: T[]

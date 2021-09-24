@@ -326,20 +326,20 @@ export function onUpdateFormData(
   })}
 }
 
-export default class StateFormItem<T = any>
+export default class StateFormItem<P = StateForm, T = any>
     extends StateController implements IStateFormItem {
 
   protected itemJson: IStateFormItem
-  protected parentObj: StateForm
-  protected itemHasJson: IStateFormItemCustom
-  protected itemHas?: StateFormItemCustom<StateFormItem<T>, T>
+  protected parentObj: P
+  protected itemHasJson: IStateFormItemCustom<T>
+  protected itemHas?: StateFormItemCustom<StateFormItem<P, T>, T>
   protected itemDisabled: boolean
   protected noOnClickCallback: boolean
   protected itemOnClick: (redux: IRedux) => (e: any) => void
   protected noOnChangeCallback: boolean
   protected itemOnChange: Function
 
-  constructor (itemJson: IStateFormItem, parent: StateForm) {
+  constructor (itemJson: IStateFormItem, parent: P) {
     super()
     this.itemJson = itemJson
     this.parentObj = parent
@@ -354,7 +354,7 @@ export default class StateFormItem<T = any>
   get json(): IStateFormItem { return this.itemJson }
 
   /**
-   * Chain-access to parent (form) definition.
+   * Chain-access to parent object (form).
    */
   get parent() { return this.parentObj }
 

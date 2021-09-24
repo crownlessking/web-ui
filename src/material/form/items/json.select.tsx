@@ -5,6 +5,7 @@ import { IStateFormSelectOption, IState } from '../../../interfaces'
 import { getErrorCode } from '../../../state/errors/controller'
 import { getMeta } from '../../../state/meta/controller'
 import { connect } from 'react-redux'
+import StateForm from '../../../state/forms/form.controller'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData,
@@ -17,7 +18,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<IStateFormSelectOption>
+  def: StateFormItem<StateForm, IStateFormSelectOption>
   formsData: any
   stateMeta: any
   state?: IParentState
