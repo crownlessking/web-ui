@@ -382,6 +382,7 @@ class BuildForm extends Component<IProps> {
    * A default form submission callback if none was provided
    */
   onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
+    e.preventDefault()
     const page = this.props.def
     const formsData = page.parent.parent.formsData
     const endpoint = page.contentEndpoint
