@@ -57,7 +57,7 @@ export function analyzeTableData(data: any) {
  * Use the above example if you want to implement the column labels
  * server-side,
  *
- * __TODO__: Move to ./material/table/index.ts
+ * __TODO__: Move to ./mui4/table/index.ts
  *         Including all helper functions.
  *
  * @param obj

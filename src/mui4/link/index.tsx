@@ -1,11 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link, IconButton, Icon, Button, Typography } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  getFontAwesomeIconProp,
-  getFormattedRoute,
-  defaultCallback
-} from '../../controllers'
+import { getFontAwesomeIconProp, getFormattedRoute } from '../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import store from '../../state'
 import actions from '../../state/actions'
@@ -14,16 +10,14 @@ import { Link as RouterLink } from 'react-router-dom'
 
 interface IProps { def: StateLink }
 
-export default class JsonLink extends Component<IProps> {
+export default class JsonLink extends React.Component<IProps> {
 
   public render() {
     const { def } = this.props
-    const { type } = def
+    const { type, has, onClick } = def
     const href: string = def.get('href')
     const redux = { store, actions, route: href }
-    const has = def.has || {}
     const route = getFormattedRoute(def, href)
-    const onClick = def.onClick || defaultCallback
     const props = getLinkProps(def.json)
 
     switch (type) {

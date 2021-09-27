@@ -8,7 +8,7 @@ import {
 } from '../controllers'
 import {
   LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout
-} from '../material/layouts'
+} from '../mui4/layouts'
 import StatePage from '../state/pages/page.controller'
 
 interface IProps {

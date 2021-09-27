@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals'
 import { MuiThemeProvider } from '@material-ui/core'
 import { Provider } from 'react-redux'
 import store from './state'
-import theme from './material/theme'
+import theme from './mui4/theme'
 import { urlUpdatePage } from './state/app/actions'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 

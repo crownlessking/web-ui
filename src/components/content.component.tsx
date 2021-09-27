@@ -5,8 +5,8 @@ import {
 import {
   IStatePage, IStateAllForms, IStateApp,
 } from '../interfaces'
-import Form from '../material/form'
-import { FormItems } from '../material/form/items'
+import Form from '../mui4/form'
+import { FormItems } from '../mui4/form/items'
 import WebApp from '.'
 import View from './view.component'
 import StatePage from '../state/pages/page.controller'

@@ -1,4 +1,4 @@
-import StateTypography from '../../material/typography/controller'
+import StateTypography from '../../mui4/typography/controller'
 import StatePage from './page.controller'
 // import { IStateTypography } from '../../interfaces'
 

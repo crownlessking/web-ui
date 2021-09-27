@@ -1,7 +1,7 @@
 import { IStateDialog, IStateFormItem } from '../../interfaces'
 import StateController from '../../controllers/state.controller'
 import State from '../controller'
-import StateFormItem from '../../material/form/items/items.controller'
+import StateFormItem from '../../mui4/form/items/items.controller'
 import { getDudEventCallback } from '../../controllers'
 
 export default class StateDialog extends StateController implements IStateDialog {

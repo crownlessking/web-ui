@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '../material/table/virtualized'
+import Table from '../mui4/table/virtualized'
 import SuccessPage from './pages/success'
 import StatePage from '../state/pages/page.controller'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStyles, CircularProgress, Theme, withStyles } from '@material-ui/core'
 import { WithStyles } from '@material-ui/styles'
-import { LayoutCenteredNoScroll } from '../material/layouts'
+import { LayoutCenteredNoScroll } from '../mui4/layouts'
 import { IState } from '../interfaces'
 import { connect } from 'react-redux'
 

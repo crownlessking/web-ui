@@ -46,7 +46,7 @@ function ({ def, formsData, state }: IProps) {
               checked={getBoolValue(getValue())}
               onChange={onChange(name, getValue())}
               value={name}
-              color={has.color as RadioProps['color']}
+              color={has.json.color as RadioProps['color']}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           }
