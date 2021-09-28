@@ -129,8 +129,8 @@ export default connect(mapStateToProps, mapDispatchToProps)
   }
 
   snackbarContent = (props: ISnackbarProps) => {
-    const { className, classes, ...other } = props
-    const { id, actions, message, content, variant } = this.props
+    const { className, ...other } = props
+    const { id, actions, message, content, variant, classes } = this.props
     const { closeAction: CloseAction, messageWrapper: MessageWrapper } = this
 
     return (

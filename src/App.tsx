@@ -25,8 +25,6 @@ import AppStyledConnected from './components/connected.app'
 
  export default class App extends React.Component {
  
-  public render() {
-    return <AppStyledConnected />
-  }
+  public render() { return <AppStyledConnected /> }
  
  }
