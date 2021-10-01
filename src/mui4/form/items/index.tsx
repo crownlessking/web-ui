@@ -283,8 +283,9 @@ class BuildForm extends Component<IProps> {
   getFormDef = () => {
     const store = this.props.def.parent.parent
     const contentName = this.props.def.contentName
+    const form = store.allForms.getForm(contentName)
 
-    return store.allForms.getForm(contentName)
+    return form
   }
 
   /**

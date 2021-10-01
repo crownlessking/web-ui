@@ -26,32 +26,34 @@ import Config from '../config'
  *
  * @returns void
  */
- export function getNetMergedState(state: any, fragment: any): any {
+ export function getNetMergedState(state: any, fragment: any) {
   try {
     for (const prop in fragment) {
-  
-      if (prop in state) {
-        const oldStateVal = state[prop]
-        const newStateVal = fragment[prop]
-  
-        if (typeof oldStateVal === typeof newStateVal) {
-          switch (typeof oldStateVal) {
-    
-          case 'object':
-            state[prop] = { ...oldStateVal }
-            getNetMergedState(state[prop], newStateVal)
-            console.log(newStateVal)
-            break
-    
-          case 'symbol':
-          case 'bigint':
-          case 'number':
-          case 'function':
-          case 'string':
-          case 'boolean':
-            state[prop] = newStateVal
-          }
+      const newStateVal = fragment[prop]
+
+      switch (typeof newStateVal) {
+
+      case 'object':
+        if (newStateVal === null) continue
+
+        if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
+          state[prop] = { ...state[prop] }
+          getNetMergedState(state[prop], newStateVal)
+        } else {
+
+          // arrays are never deeply copied
+          state[prop] = [ ...newStateVal ]
         }
+
+        break
+
+      case 'symbol':
+      case 'bigint':
+      case 'number':
+      case 'function':
+      case 'string':
+      case 'boolean':
+        state[prop] = newStateVal
       }
 
     }
