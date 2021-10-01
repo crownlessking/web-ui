@@ -26,8 +26,7 @@ import Config from '../config'
  *
  * @returns void
  */
-export function mergeState(state: any, fragment: any): void {
-
+ export function getNetMergedState(state: any, fragment: any): any {
   try {
     for (const prop in fragment) {
   
@@ -35,19 +34,23 @@ export function mergeState(state: any, fragment: any): void {
         const oldStateVal = state[prop]
         const newStateVal = fragment[prop]
   
-        switch (typeof oldStateVal) {
-  
-        case 'object':
-          state[prop] = { ...oldStateVal }
-          return mergeState(state[prop], newStateVal)
-  
-        case 'symbol':
-        case 'bigint':
-        case 'number':
-        case 'function':
-        case 'string':
-        case 'boolean':
-          state[prop] = newStateVal
+        if (typeof oldStateVal === typeof newStateVal) {
+          switch (typeof oldStateVal) {
+    
+          case 'object':
+            state[prop] = { ...oldStateVal }
+            getNetMergedState(state[prop], newStateVal)
+            console.log(newStateVal)
+            break
+    
+          case 'symbol':
+          case 'bigint':
+          case 'number':
+          case 'function':
+          case 'string':
+          case 'boolean':
+            state[prop] = newStateVal
+          }
         }
       }
 

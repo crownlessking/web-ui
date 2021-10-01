@@ -6,10 +6,10 @@ export interface IFormDataPayload {
   value: any
 }
 
-export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA'
+export const USER_UPDATE_FORM_DATA = 'USER_UPDATE_FORM_DATA'
 export const updateFormData = (payload: IFormDataPayload): IReduxAction => ({
   payload,
-  type: UPDATE_FORM_DATA
+  type: USER_UPDATE_FORM_DATA
 })
 
 export const CLEAR_FORM_DATA = 'CLEAR_FORM_DATA'

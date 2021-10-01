@@ -1,5 +1,5 @@
 import { IReduxAction } from '../../interfaces'
-import { SET_META } from './actions'
+import { APP_SET_META } from './actions'
 
 export default function stateMetaReducer (
   meta = {} as any,
@@ -8,7 +8,7 @@ export default function stateMetaReducer (
 
   switch (type) {
 
-  case SET_META:
+  case APP_SET_META:
     const { endpoint, info } = payload
     return { ...meta, [endpoint]: info }
 

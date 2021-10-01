@@ -1,7 +1,7 @@
 import { IReduxAction } from '../../interfaces'
 
-export const SET_META = 'SET_META'
+export const APP_SET_META = 'APP_SET_META'
 export const setMeta = (endpoint: string, info: any): IReduxAction => ({
-  type: SET_META,
+  type: APP_SET_META,
   payload: { endpoint, info }
 })

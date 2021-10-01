@@ -1,18 +1,18 @@
 import { IReduxAction } from '../../interfaces'
 
-export const START_REQUEST = 'START_REQUEST'
+export const APP_START_REQUEST = 'APP_START_REQUEST'
 export const startRequest = (): IReduxAction => ({
-  type: START_REQUEST
+  type: APP_START_REQUEST
 })
 
-export const REQUEST_FAILED = 'REQUEST_FAILED'
+export const APP_REQUEST_FAILED = 'APP_REQUEST_FAILED'
 export const requestFailed = () => ({
-  type: REQUEST_FAILED,
+  type: APP_REQUEST_FAILED,
 })
 
-export const REQUEST_SUCCESS = 'REQUEST_SUCCESS'
+export const APP_REQUEST_SUCCESS = 'APP_REQUEST_SUCCESS'
 export const requestSuccess = () => ({
-  type: REQUEST_SUCCESS
+  type: APP_REQUEST_SUCCESS
 })
 
 export const REQUEST_PROCESS_END = 'REQUEST_PROCESS_END'

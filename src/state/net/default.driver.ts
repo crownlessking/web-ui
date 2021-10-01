@@ -1,24 +1,24 @@
 import { Dispatch } from 'redux'
-import { setCollection } from '../../state/data/actions'
+import { setCollection } from '../data/actions'
 import { setMeta } from '../meta/actions'
 import { setTopLevelLinks } from '../links.toplevel/actions'
 import { requestSuccess, requestFailed } from './controller'
-import { addError } from '../../state/errors/actions'
-import { _cancelSpinner } from '../../state/app/controller'
-import { IAbstractResponse, IJsonapiRespoonse, IState } from '../../interfaces'
+import { addError } from '../errors/actions'
+import { _cancelSpinner } from '../app/controller'
+import { IAbstractResponse, IJsonapiResponse, IState } from '../../interfaces'
 import { netPatchState } from '../actions'
 
 /**
  * Once the server response is received, this function can be used to process it.
  */
-export default function stateNetDefault (
+export default function runDefaultDriver (
   dispatch: Dispatch,
   getState: ()=>IState,
   endpoint: string,
   json: IAbstractResponse
 ) {
   _cancelSpinner()
-  const doc = json as IJsonapiRespoonse
+  const doc = json as IJsonapiResponse
 
   if (doc.meta) {
     dispatch(setMeta(endpoint, doc.meta))

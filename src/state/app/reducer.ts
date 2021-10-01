@@ -18,9 +18,9 @@ import {
 } from './actions'
 
 import { 
-  START_REQUEST,
-  REQUEST_FAILED,
-  REQUEST_SUCCESS,
+  APP_START_REQUEST,
+  APP_REQUEST_FAILED,
+  APP_REQUEST_SUCCESS,
   REQUEST_PROCESS_END
 } from '../net/controller'
 
@@ -74,14 +74,14 @@ export default function stateAppReducer (
 
     return { ...app, showSpinner: false }
 
-  case START_REQUEST:
+  case APP_START_REQUEST:
     return { ...app, status: APP_IS_FETCHING }
 
-  case REQUEST_SUCCESS:
-    return { ...app, showSpinner: false, status: REQUEST_SUCCESS }
+  case APP_REQUEST_SUCCESS:
+    return { ...app, showSpinner: false, status: APP_REQUEST_SUCCESS }
 
-  case REQUEST_FAILED:
-    return { ...app, showSpinner: false, status: REQUEST_FAILED }
+  case APP_REQUEST_FAILED:
+    return { ...app, showSpinner: false, status: APP_REQUEST_FAILED }
 
   case REQUEST_PROCESS_END:
     return { ...app, status: APP_IS_BOOTSTRAPPED }

@@ -4,14 +4,14 @@ import { addError } from '../../state/errors/actions'
 import { IState, IAbstractResponse } from '../../interfaces'
 import { toJsonapiError } from '../../state/errors/controller'
 import { _cancelSpinner, _scheduleSpinner } from '../../state/app/controller'
-import runDefaultDriver from './default'
-import runGnscDriver from './gnsc'
+import runDefaultDriver from './default.driver'
+import runGnscDriver from './gnsc.driver'
 import { requestFailed, startRequest, requestSuccess } from './controller'
 import { getEndpoint } from '../../controllers'
 
 // Response identification constants ------------------------------------------
 
-const GNSC_RESPONSE_DRIVER = 'geniuscove'
+const DRIVER_GNSC_RESPONSE = 'geniuscove'
 
 // ----------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ const delegateDataHandling = (
   // We need to apply the right drivers to the JSON response
   try {
     switch (json.driver) {
-      case GNSC_RESPONSE_DRIVER:
+      case DRIVER_GNSC_RESPONSE:
         runGnscDriver(dispatch, endpoint, json)
         break
       default:

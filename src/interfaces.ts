@@ -223,7 +223,7 @@ export interface IJsonapiErrorResponse extends IJsonapiBaseResponse {
 /**
  * @see https://jsonapi.org/format/#document-top-level
  */
-export interface IJsonapiRespoonse extends IJsonapiBaseResponse {
+export interface IJsonapiResponse extends IJsonapiBaseResponse {
   data?: IJsonapiResource[] | IJsonapiResource | IJsonapiResourceLinkage | null
   errors?: IJsonapiError[]
   included?: any[]

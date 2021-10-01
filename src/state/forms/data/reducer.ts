@@ -4,7 +4,7 @@ import { IReduxAction } from '../../../interfaces'
 import { mongoObjectId } from '../../../controllers'
 import {
   IFormDataPayload,
-  UPDATE_FORM_DATA,
+  USER_UPDATE_FORM_DATA,
   CLEAR_FORM_DATA,
   SET_FORM_DEFAULT_DATA
 } from './actions'
@@ -40,7 +40,7 @@ export default function stateFormsDataReducer (
 
   switch (type) {
 
-  case UPDATE_FORM_DATA:
+  case USER_UPDATE_FORM_DATA:
     return updateFormDataReducer(formsData, { payload, type })
 
   case CLEAR_FORM_DATA:
