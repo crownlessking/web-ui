@@ -25,6 +25,8 @@ import Config from '../config'
  * @param fragment fragment state received from server
  *
  * @returns void
+ *
+ * [TODO] Write a unit test for this function
  */
  export function getNetMergedState(state: any, fragment: any) {
   try {

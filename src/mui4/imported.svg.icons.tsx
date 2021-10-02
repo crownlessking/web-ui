@@ -120,7 +120,6 @@ export default function getImportedSvgIcon (iconName: string, props?: any) {
   case 'settings_outline':
     return <SettingsOutlined {...props} />
 
-  
   // TODO Add more icons here to be exported if they are missing.
 
   default:

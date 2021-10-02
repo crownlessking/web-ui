@@ -123,6 +123,7 @@ export default class StateApp extends StateController implements IStateApp {
 
   private appJson: IStateApp
   private parentObj: State
+  private appOrigin?: string
   private originValidation: boolean
 
   constructor(app: IStateApp, parent: State) {
@@ -143,7 +144,28 @@ export default class StateApp extends StateController implements IStateApp {
    */
   get parent() { return this.parentObj }
 
-  get origin() { return this.appJson.origin }
+  /**
+   * Ensures the origin URL is valid and has an ending forward slash.
+   *
+   * @returns string
+   */
+  private getOriginEndingFixed() {
+    if (this.originIsValid()) {
+      const endingChar = this.appJson.origin.charAt(
+        this.appJson.origin.length - 1
+      )
+      return endingChar === '/'
+        ?  this.appJson.origin
+        : this.appJson.origin + '/'
+    }
+    return window.location.origin + '/'
+  }
+
+  get origin() {
+    return this.appOrigin || (
+      this.appOrigin = this.getOriginEndingFixed()
+    )
+  }
 
   /**
    * Chain-access to the current page route.
@@ -164,10 +186,7 @@ export default class StateApp extends StateController implements IStateApp {
    * @returns returns `true` if origin is a valid URL.
    */
   originIsValid = () => {
-    if (Config.DEBUG) {
-      return true
-    }
-    return this.originValidation
+    return this.originValidation || Config.DEBUG
   }
 
 }

@@ -43,7 +43,11 @@ const mapDispatchToProps = {
 
 interface IProps extends WithStyles<typeof styles> {
   state: IState
-  onPostReqState: (endpoint: string, body: RequestInit['body']) => void
+  onPostReqState: (
+    origin: string,
+    endpoint: string,
+    body: RequestInit['body']
+  ) => void
 }
 
 /**
@@ -54,14 +58,8 @@ class App extends Component<IProps> {
   private pageID?: string
   private root?: State
 
-  /**
-   * [TODO] Perform a successful post request to origin to retrieve a valid page
-   *        if one was not provided as default.
-   *        that means that the action `postReqState` has to be working as
-   *        intended.
-   */
-  onPostReqHomePageState = () => {
-    this.props.onPostReqState('portal', '{}')
+  onPostReqHomePageState = (origin: string) => {
+    this.props.onPostReqState(origin, 'portal', '{}')
   }
 
   componentDidMount() {
@@ -70,7 +68,7 @@ class App extends Component<IProps> {
 
       // Get a page from server if none was provided.
       if (app.originIsValid() && this.pageID === HARD_CODED_PAGE) {
-        this.onPostReqHomePageState()
+        this.onPostReqHomePageState(app.origin)
       }
     }
   }

@@ -52,7 +52,11 @@ const mapDispachToProps = {
 interface IProps extends WithStyles<typeof styles> {
   pageDef: StatePage
   onUpdateFormData: (payload: IFormDataPayload) => void
-  onPostReqState: (endpoint: string, body: RequestInit['body']) => void
+  onPostReqState: (
+    origin: string,
+    endpoint: string,
+    body: RequestInit['body']
+  ) => void
   onCloseDialog: () => void
 }
 
@@ -249,8 +253,8 @@ class ResponsiveDialog extends React.Component<IProps> {
    * @param endpoint
    * @param body
    */
-  onPostReqState = (endpoint: string, body: RequestInit['body']) => {
-    this.props.onPostReqState(endpoint, body)
+  onPostReqState = (origin: string, endpoint: string, body: RequestInit['body']) => {
+    this.props.onPostReqState(origin, endpoint, body)
   }
 
   /**
@@ -258,14 +262,15 @@ class ResponsiveDialog extends React.Component<IProps> {
    */
   getDefaultCallback = () => {
     const { pageDef: page } = this.props
+    const origin = page.parent.parent.app.origin
     const { dialog: { content }, formsData } = page.parent.parent
-    
+
     // assumes that the dialog contains a form if both these fields are set.
     if (content && (typeof content === 'string')) {
       return () => (e: any) => {
         const formName = getStateFormName(page.contentName)
         const body = formsData.get(formName) // this.props.formsData[formName]
-        this.onPostReqState(page.contentEndpoint, body)
+        this.onPostReqState(origin, page.contentEndpoint, body)
       }
     } else {
       return dummyCallback

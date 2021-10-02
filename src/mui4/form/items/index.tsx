@@ -67,7 +67,11 @@ interface IProps extends WithStyles<typeof styles> {
   onUpdateFormData: (payload: IFormDataPayload) => void
 
   /** Redux action (don't use directly) */
-  onPostReqState: (endpoint: string, body: RequestInit['body']) => void
+  onPostReqState: (
+    origin: string,
+    endpoint: string,
+    body: RequestInit['body']
+  ) => void
 }
 
 /**
@@ -385,10 +389,11 @@ class BuildForm extends Component<IProps> {
   onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
     e.preventDefault()
     const page = this.props.def
+    const origin = page.parent.parent.app.origin
     const formsData = page.parent.parent.formsData
     const endpoint = page.contentEndpoint
     const body = formsData.getStoredValues(form.name)
-    this.onPostReqState(endpoint, body)
+    this.onPostReqState(origin, endpoint, body)
   }
 
   /**
@@ -397,8 +402,12 @@ class BuildForm extends Component<IProps> {
    * @param endpoint
    * @param body
    */
-  onPostReqState = (endpoint: string, body: RequestInit['body']) => {
-    this.props.onPostReqState(endpoint, body)
+  onPostReqState = (
+    origin: string,
+    endpoint: string,
+    body: RequestInit['body']
+  ) => {
+    this.props.onPostReqState(origin, endpoint, body)
   }
 
   componentDidMount = () => {

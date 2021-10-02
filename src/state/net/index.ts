@@ -151,11 +151,16 @@ export const getRequest = (
  *                 e.g. `users`
  * @param args the data you want to send to the server. e.g, a form data.
  */
-export const postReqState = (endpoint: string, body: RequestInit['body']) => {
+export const postReqState = (
+  origin: string,
+  endpoint: string,
+  body: RequestInit['body']
+) => {
   return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
-    const uri = getState().app.origin + endpoint
+    const uri = `${origin}${endpoint}`
+    console.log(`uri: ${uri}`) // DEBUG
     try {
       const response = await fetch(
         uri,
@@ -166,23 +171,6 @@ export const postReqState = (endpoint: string, body: RequestInit['body']) => {
     } catch (error: any) {
       delegateErrorHandling(dispatch, error)
     }
-  }
-}
-
-export const _postReqState = (endpoint: string, body: RequestInit['body']) => {
-  return (dispatch: Dispatch, getState: () => IState) => {
-    dispatch(startRequest())
-    _scheduleSpinner()
-    const uri = getState().app.origin + endpoint
-    return fetch(
-      uri,
-      { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
-    )
-      .then(
-        response => response.json(),
-        error => delegateErrorHandling(dispatch, error)
-      )
-      .then(json => delegateDataHandling(dispatch, getState, endpoint, json))
   }
 }
 

@@ -1,7 +1,7 @@
 
 # web-ui
 
-Why bother using HTML and CSS and even JavaScript when you can just use JSON to quickly put a nice page together.
+Why bother using HTML, CSS or even JavaScript when you can just use JSON to quickly put a nice page together.
 The purpose of this project is to create a single-page app for an arbitrary REST API.
 With _web-ui_ you could create several forms (as a single-page app) to gather information which can then be sent to your API.
 
