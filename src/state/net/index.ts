@@ -160,7 +160,6 @@ export const postReqState = (
     dispatch(startRequest())
     _scheduleSpinner()
     const uri = `${origin}${endpoint}`
-    console.log(`uri: ${uri}`) // DEBUG
     try {
       const response = await fetch(
         uri,
@@ -197,11 +196,15 @@ export const _getReqState = (endpoint: string, args = '') => {
   }
 }
 
-export const getReqState = (endpoint: string, args = '') => {
+export const getReqState = (
+  origin: string,
+  endpoint: string,
+  args = ''
+) => {
   return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
-    const uri = getState().app.origin + endpoint + args
+    const uri = `${origin}${endpoint}`
     try {
       const response = await fetch(uri)
       const json = await response.json()
