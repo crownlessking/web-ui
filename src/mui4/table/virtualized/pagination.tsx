@@ -6,8 +6,13 @@ import {
   ArrowBackIos, ArrowForwardIos, FirstPage, LastPage
 } from '@material-ui/icons'
 import { connect } from 'react-redux'
-import { IState, IStateTopLevelLinks, IJsonapiLink, IJsonapiPaginationLinks } from '../../../interfaces'
-import { getLinkUri } from './controller'
+import {
+  IState,
+  IStateTopLevelLinks,
+  IJsonapiLink,
+  IJsonapiPaginationLinks,
+} from '../../../interfaces'
+import { getLinkUri, getOriginEndingFixed } from './controller'
 import { getReqState } from '../../../state/net'
 import { getVal, getDudEventCallback, getUriQuery } from '../../../controllers'
 
@@ -29,18 +34,18 @@ const styles = ({ mixins }: Theme) => createStyles({
 })
 
 const mapStateToProps = (state: IState) => ({
+  origin: state.app.origin,
   topLevelLinks: state.topLevelLinks,
   meta: state.meta
 })
 
-const mapDispatchToProps = {
-  getReqState: getReqState
-}
+const mapDispatchToProps = { getReqState }
 
 interface IProps extends WithStyles<typeof styles> {
+  origin: string,
   endpoint: string,
   topLevelLinks: IStateTopLevelLinks
-  getReqState: (endpoint: string, args?: string) => void
+  getReqState: (origin: string, endpoint: string, args?: string) => void
   meta: any
 }
 
@@ -126,11 +131,12 @@ export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)
 
   updateListing = (link?: IJsonapiLink | string) => (e: any) => {
     const args = getUriQuery(getLinkUri(link))
-    this.onGetRequest(this.props.endpoint, args)
+    const origin = getOriginEndingFixed(this.props.origin)
+    this.onGetRequest(origin, this.props.endpoint, args)
   }
 
-  onGetRequest(endpoint: string, args?: string) {
-    this.props.getReqState(endpoint, args)
+  onGetRequest(origin: string, endpoint: string, args?: string) {
+    this.props.getReqState(origin, endpoint, args)
   }
 
 }))

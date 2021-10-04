@@ -53,10 +53,19 @@ import Config from '../config'
       case 'bigint':
       case 'number':
       case 'function':
-      case 'string':
       case 'boolean':
         state[prop] = newStateVal
-      }
+        break
+      case 'string':
+        if (prop.toLowerCase() === 'onclick'
+          || 'callback' === prop.toLowerCase()
+        ) {
+          state[prop] = eval(`(${newStateVal})`)
+        } else {
+          state[prop] = newStateVal
+        }
+        break
+      } // END switch
 
     }
   } catch (e: any) {

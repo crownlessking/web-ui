@@ -5,6 +5,7 @@ import { getDudEventCallback } from '../../../controllers'
 import dateFormat from 'dateformat'
 import StatePage from '../../../state/pages/page.controller'
 import StateDialogForm from '../../../state/dialogs/form.dialog.controller'
+import Config from '../../../config'
 
 /**
  * Represents the type of the row object provided by `onRowClick` attribute on
@@ -34,6 +35,21 @@ export function getLinkUri(link?: IJsonapiLink | string) {
     return link.href
   }
   return ''
+}
+
+/**
+ * Ensures the trailing slash is present on the origin URL.
+ *
+ * @param origin url
+ * @returns string
+ */
+export function getOriginEndingFixed(origin: string) {
+  if (origin) {
+    const endingChar = origin.charAt(origin.length - 1)
+    return endingChar === '/' ? origin : origin + '/'
+  }
+  if (Config.DEBUG) console.log('origin is empty.')
+  return '/'
 }
 
 /**
