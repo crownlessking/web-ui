@@ -57,13 +57,14 @@ import Config from '../config'
         state[prop] = newStateVal
         break
       case 'string':
-        if (prop.toLowerCase() === 'onclick'
-          || 'callback' === prop.toLowerCase()
-        ) {
-          state[prop] = eval(`(${newStateVal})`)
-        } else {
-          state[prop] = newStateVal
-        }
+        // if (prop.toLowerCase() === 'onclick'
+        //   || 'callback' === prop.toLowerCase()
+        // ) {
+        //   state[prop] = eval(`(${newStateVal})`)
+        // } else {
+        //   state[prop] = newStateVal
+        // }
+        state[prop] = newStateVal
         break
       } // END switch
 

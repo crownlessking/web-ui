@@ -1,7 +1,7 @@
 import { IReduxAction } from '../../../interfaces'
 
-export const UPDATE_APPBAR_SEARCHFIELD_VALUE = 'UPDATE_APPBAR_SEARCHFIELD'
+export const APP_UPDATE_APPBAR_SEARCHFIELD = 'APP_UPDATE_APPBAR_SEARCHFIELD'
 export const updateAppbarSearchField = (route: string, text: string): IReduxAction => ({
-  type: UPDATE_APPBAR_SEARCHFIELD_VALUE,
+  type: APP_UPDATE_APPBAR_SEARCHFIELD,
   payload: { route, text }
 })
