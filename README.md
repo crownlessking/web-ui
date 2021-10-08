@@ -8,10 +8,12 @@ With _web-ui_ you could create several forms (as a single-page app) to gather in
 Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
 
 ## First things first
-Give your app the URL at which your API is located. In the `index.html` file, add:
+Give your app the URL at which your API is located. In the `index.html` define the object `appInfo`. It has a property called `origin`. You can use it to set the URL of your API:
 
 ```js
-var appOrigin = "http://www.mydomain.com/"; // URL of your API
+var appInfo = {
+  origin: "http://www.mydomain.com/" // URL of your API
+}
 ```
 
 **Inline JavaScript Example**
@@ -24,7 +26,9 @@ var appOrigin = "http://www.mydomain.com/"; // URL of your API
 
     <!-- Your own custom script tag -->
     <script>
-      var appOrigin = "http://www.mydomain.com/";
+      var appInfo = {
+        origin: "http://www.mydomain.com/"
+      };
     </script>
 
     <!-- Don't insert any code below this comment -->
@@ -36,13 +40,20 @@ var appOrigin = "http://www.mydomain.com/"; // URL of your API
 ```
 
 **JavaScript From File Example**
+
+You can also define `appInfo.origin` in a separate JavaScript file. For example, create a custom JavaScript file and add the following code:
+
 ```javascript
-// In your file you could do:
+// In your custom js file do:
 
 (function (win) {
-  win.appOrigin = "http://www.mydomain.com/";
+  win.appInfo = {
+    origin: "http://www.mydomain.com/"
+  };
 }(window));
 ```
+
+Then, import your custom javascript file:
 
 ```html
 <html>
@@ -62,16 +73,20 @@ var appOrigin = "http://www.mydomain.com/"; // URL of your API
 </html>
 ```
 
-**CAREFUL**: The URL must end with a forward slash.
-
 **NOTE**: From here on out, we will use the custom file example.
 
 ## How to define a page
-In the `index.html`, using JavaScript, create a variable called `appPages`
+
+In your custom JavaScript file, define a variable called `appPages`.
 
 ```javascript
+// Inside custom js file.
+
 (function (win) {
-  win.appOrigin = "http://www.mydomain.com/";
+
+  win.appInfo = {
+    origin: "http://www.mydomain.com/"
+  };
 
   win.appPages = {}; // <-- there it is
 
@@ -95,12 +110,12 @@ To do that, we need to set the `content` property of the login page:
 ```js
 win.appPages = {
   'login': {
-    content: "$form: login: users"
+    content: "$form : login : users"
   }
 };
 ```
 
-There are three parts to the `content` property of `login` page. The first one, `$form: ` indicates that the purpose of the page is to display a form. The second part, `login: ` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
+There are three parts to the `content` property of `login` page. The first one, `$form` indicates that the purpose of the page is to display a form. The second part, `login` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
 <br>
 Ok, we have the name of the form but we have not created it yet.
 
@@ -108,9 +123,11 @@ Ok, we have the name of the form but we have not created it yet.
 To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
 ```javascript
+// Inside your custom js file!
+
 (function (win) {
 
-win.appForms = {}; // there it is!
+win.appForms = {}; // <-- there it is!
 
 })(window);
 ```
@@ -204,7 +221,7 @@ is equivalent to:
 </form>
 ```
 
-**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute. 
+**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
 
 #### Set field's default value
 
@@ -268,20 +285,21 @@ win.loginForms = {
   * __`icon`__ displays a material-ui icon in button
     - ```ts
       {
+        type: 'button',
         has: {
           icon: 'vpn_key'
         }
       }
       ```
-  * __`iconPosition`__ whether the button icon should be to the left or right of the title
+  * __`iconPosition`__ whether the button icon should be to the left or right of the title.
     - If the button is configured to show both the title and the icon, then this option can be
       used to customize the icon position.
   * __`items`__ if your field is a `<select>`, that key would be used to define the `<option>`s.
-  * __`label`__ human-readable decription
+  * __`label`__ human-readable decription.
   * __`variant`__ button styles: `text` | `outlined` | `contained`
-  * __`regex`__ regular expression test for an input field or textarea
+  * __`regex`__ regular expression test for an input field or textarea.
   * __`title`__ text displayed on button
-  * __`callback`__ piece of code executed when field is interacted with
+  * __`callback`__ piece of code executed when field is interacted with.
 
 ### Form field examples
 
@@ -308,9 +326,7 @@ var appForm = {
       {
         type: "button",
         value: "Click me!",
-        has: {
-          onClick: () => { }
-        }
+        onClick: () => { }
       }
     ]
   }
@@ -318,7 +334,7 @@ var appForm = {
 ```
 
 #### Form submit example:
-Similar to _form button_ except that a default callback is provided one was not implemented.
+Similar to _form button_ except that a default callback is provided if one was not implemented.
 ```ts
 var appForm = {
   loginForm: {
