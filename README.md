@@ -413,6 +413,9 @@ For more information on theming, visit:
 ### Navigation
 This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
 
+Appbars are defined in the page object.
+
+
 ### Drawer
 This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
 
