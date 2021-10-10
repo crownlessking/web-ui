@@ -1,8 +1,7 @@
 
 # web-ui
 
-Why bother using HTML, CSS or even JavaScript when you can just use JSON to quickly put a nice page together.
-The purpose of this project is to create a single-page app for an arbitrary REST API.
+The purpose of this project is to quickly put together a single-page app for making request to an arbitrary REST API.
 With _web-ui_ you could create several forms (as a single-page app) to gather information which can then be sent to your API.
 
 Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
@@ -48,7 +47,7 @@ You can also define `appInfo.origin` in a separate JavaScript file. For example,
 
 (function (win) {
   win.appInfo = {
-    origin: "http://www.mydomain.com/"
+    'origin': 'http://www.mydomain.com/'
   };
 }(window));
 ```
@@ -75,9 +74,9 @@ Then, import your custom javascript file:
 
 **NOTE**: From here on out, we will use the custom file example.
 
-## How to define a page
+## How to create a page
 
-In your custom JavaScript file, define a variable called `appPages`.
+In your custom JavaScript file, create a global variable called `appPages`.
 
 ```javascript
 // Inside custom js file.
@@ -110,12 +109,12 @@ To do that, we need to set the `content` property of the login page:
 ```js
 win.appPages = {
   'login': {
-    content: "$form : login : users"
+    'content': '$form : login : users'
   }
 };
 ```
 
-There are three parts to the `content` property of `login` page. The first one, `$form` indicates that the purpose of the page is to display a form. The second part, `login` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
+There are three parts to the `content` property. The first one, `$form` indicates that the page will display a form. The second part, `login` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
 <br>
 Ok, we have the name of the form but we have not created it yet.
 
@@ -137,7 +136,7 @@ Now, let's add a form to it:
 ```js
 win.appForms = {
 
-  loginForm: {}
+  'loginForm': {}
 
 };
 ```
@@ -149,8 +148,8 @@ The _login form_ is currently empty. Let's add some fields:
 ```js
 win.appForms = {
 
-  loginForm: {
-    items: [ ] // array of fields
+  'loginForm': {
+    'items': [ ] // array of fields
   }
 
 };
@@ -160,33 +159,33 @@ The property `items` is an array containing the fields definition.
 
 ```js
 win.appForms = {
-  loginForm: {
-    items: [
+  'loginForm': {
+    'items': [
 
       // Object defining the username field
       {
-        type: 'text',
-        label: 'Username',
-        name: 'username',
-        margin: 'normal',
+        'type': 'text',
+        'label': 'Username',
+        'name': 'username',
+        'margin': 'normal',
       },
 
       // Object defining the password field
       {
-        type: 'password',
-        label: 'Password',
-        name: 'password',
-        margin: 'normal',
+        'type': 'password',
+        'label': 'Password',
+        'name': 'password',
+        'margin': 'normal',
       },
 
       // Object defining the form's submit button
       {
-        type: 'submit',
-        has: {
-          color: 'secondary', // meterial-ui theme color
-          icon: 'vpn_key',
-          iconPosition: 'right',
-          title: 'Login',
+        'type': 'submit',
+        'has': {
+          'color': 'secondary', // meterial-ui theme color
+          'icon': 'vpn_key',
+          'iconPosition': 'right',
+          'title': 'Login',
           // 'callback': callbacks.loginForm,
         },
       },
@@ -200,13 +199,13 @@ To add a field to your form, just insert a new `object` into the array of `items
 
 ```js
 win.appForms = {
-  loginForm:{
-    items: [
+  'loginForm': {
+    'items': [
 
       // username input field
       {
-        type: "text",
-        name: "username"
+        'type': 'text',
+        'name': 'username'
       }
     ]
   }
@@ -229,12 +228,12 @@ Use the `has` property of the field object.
 
 ```javascript
 win.loginForms = {
-  items: [
+  'items': [
     {
-      type: "text",
-      name: "",
-      has: {
-        defaultValue: "" // <-- this
+      'type': 'text',
+      'name': '',
+      'has': {
+        'defaultValue': '' // <-- this
       }
     }
   ]
@@ -250,44 +249,44 @@ win.loginForms = {
   * __`content`__ adds some HTML content to the form e.g.
     - ```ts
         {
-          has: {
-            content: 'Some <strong>html</strong> examples',
+          'has': {
+            'content': 'Some <strong>html</strong> examples',
           },
-          type: 'html',
+          'type': 'html',
         }
       ```
   * __`color`__ (a valid material-ui theme variable name)
     - ```ts
         {
-          has: {
-            color: 'primary',
+          'has': {
+            'color': 'primary',
           },
-          type: 'button',
+          'type': 'button',
         }
       ```
   * __`defaultValue`__ the default value a field should have when it is rendered. (does not apply to all fields though)
   * __`faIcon`__ font-awesome icon to be displayed on button. There are three categories of icons, `fab` (brand), `fas` (solid), `far` (regular). To display a font-awesome icon, type the category, then a comma, then the icon name:
     - ```ts
       {
-        has: {
-          faIcon: 'fab, wpforms'
+        'has': {
+          'faIcon': 'fab, wpforms'
         }
       }
       ```
   You can omit the category which will default to `fas`.
     - ```ts
       {
-        has: {
-          faIcon: 'laptop-medical'
+        'has': {
+          'faIcon': 'laptop-medical'
         }
       }
       ```
   * __`icon`__ displays a material-ui icon in button
     - ```ts
       {
-        type: 'button',
-        has: {
-          icon: 'vpn_key'
+        'type': 'button',
+        'has': {
+          'icon': 'vpn_key'
         }
       }
       ```
@@ -305,13 +304,13 @@ win.loginForms = {
 
 #### Form textfield example:
 ```ts
-var appForms = {
-  loginForm: {
-    items: [
+win.appForms = {
+  'loginForm': {
+    'items': [
       {
-        type: "text",
-        name: "username",
-        label: "Username"
+        'type': 'text',
+        'name': 'username',
+        'label': 'Username'
       }
     ]
   }
@@ -320,13 +319,12 @@ var appForms = {
 
 #### Form button example:
 ```ts
-var appForm = {
-  loginForm: {
-    items: [
+win.appForm = {
+  'loginForm': {
+    'items': [
       {
-        type: "button",
-        value: "Click me!",
-        onClick: () => { }
+        'type': 'button',
+        'value': 'Click me!'
       }
     ]
   }
@@ -336,12 +334,12 @@ var appForm = {
 #### Form submit example:
 Similar to _form button_ except that a default callback is provided if one was not implemented.
 ```ts
-var appForm = {
-  loginForm: {
-    items: [
+win.appForm = {
+  'loginForm': {
+    'items': [
       {
-        type: "submit",
-        value: "Submit",
+        'type': 'submit',
+        'value': 'Submit',
       }
     ]
   }
@@ -350,14 +348,14 @@ var appForm = {
 
 #### Form select example:
 ```ts
-var appForms = {
-  loginForm: {
-    items: [
+win.appForms = {
+  'loginForm': {
+    'items': [
       {
-        type: "select",
-        name: "occupation",
-        has: {
-          items: [
+        'type': 'select',
+        'name': 'occupation',
+        'has': {
+          'items': [
             { 'title': 'Homeless', 'value': 'homeless' },
             { 'title': 'Bagger', 'value': 'bagger' },
             { 'title': 'Web developer', 'value': 'webdeveloper' },
@@ -369,6 +367,11 @@ var appForms = {
   }
 }
 ```
+
+## How to submit the data in your form
+
+A callback is supplied by default when you use the _submit_ button type. It will use the URL you have provided at `appInfo.origin` and the endpoint in the `content` property of the page to send the data in a POST request.
+However, it is possible to provide your own callback if you wish... [last edit]()
 
 ## Theming
 **How you style the application**
