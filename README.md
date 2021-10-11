@@ -370,8 +370,78 @@ win.appForms = {
 
 ## How to submit the data in your form
 
-A callback is supplied by default when you use the _submit_ button type. It will use the URL you have provided at `appInfo.origin` and the endpoint in the `content` property of the page to send the data in a POST request.
-However, it is possible to provide your own callback if you wish... [last edit]()
+A callback is supplied by default when you use the _submit_ button type. It will use the URL you have provided at `appInfo.origin` and the endpoint in the `content` property of the page to send the data as a POST request.
+However, it is possible to provide your own callback if you wish... There are several ways to do this. Using JavaScript, you can set the `onClick` or the `has.callback` property of the submit button definition object if the form is defined using JavaScript.
+
+1) Using the `onClick` property:
+  ```ts
+  win.appForms = {
+    'loginForm': {
+      'items': [
+
+        // Submit button definition object
+        {
+          'type': 'submit',
+          'onClick': function(redux: IRedux) {
+            return function (e) { }
+          }
+        }
+      ]
+    }
+  };
+  ```
+
+2) Using the `has.callback` property:
+  ```ts
+  win.appForms = {
+    'loginForm': {
+      'items': [
+
+        // Submit button definition object
+        {
+          'type': 'submit',
+          'has': {
+            'callback': function (redux: IRedux) {
+              return function (e) { }
+            }
+          }
+        }
+      ]
+    }
+  };
+  ```
+
+3) If your form is to be loaded from the server as JSON, you will need to provide your callback seperately. As JSON loaded from the server and converted as JavaScript object:
+  ```ts
+  win.appForms = {
+    'loginForm': {
+      'items': [
+
+        // Submit button definition as JSON
+        {
+          'type': 'submit',
+          'has': {
+            'handle': 'yourCustomFunc'
+          }
+        }
+      ]
+    }
+  }
+  ```
+Then, you need to create your function somewhere. In a separate file would be most likely.
+  ```ts
+  // Somewhere in your js files.
+
+  (function (win) {
+
+  win.yourCustomFunc = function (redux: IRedux) {
+    return function (e) { }
+  }
+
+  })(window);
+  ```
+
+[last edit]()
 
 ## Theming
 **How you style the application**
