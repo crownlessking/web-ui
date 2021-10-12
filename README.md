@@ -11,7 +11,7 @@ Give your app the URL at which your API is located. In the `index.html` define t
 
 ```js
 var appInfo = {
-  origin: "http://www.mydomain.com/" // URL of your API
+  'origin': "http://www.mydomain.com/" // URL of your API
 }
 ```
 
@@ -26,7 +26,7 @@ var appInfo = {
     <!-- Your own custom script tag -->
     <script>
       var appInfo = {
-        origin: "http://www.mydomain.com/"
+        'origin': "http://www.mydomain.com/"
       };
     </script>
 
@@ -84,7 +84,7 @@ In your custom JavaScript file, create a global variable called `appPages`.
 (function (win) {
 
   win.appInfo = {
-    origin: "http://www.mydomain.com/"
+    'origin': "http://www.mydomain.com/"
   };
 
   win.appPages = {}; // <-- there it is
