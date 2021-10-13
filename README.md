@@ -441,8 +441,6 @@ Then, you need to create your function somewhere. In a separate file would be mo
   })(window);
   ```
 
-[last edit]()
-
 ## Theming
 **How you style the application**
 e.g. if you want to change the main font, customize the overall look and feel of buttons, links... or change the background color... etc.
@@ -486,8 +484,23 @@ For more information on theming, visit:
 ### Navigation
 This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
 
-Appbars are defined in the page object.
+Appbars are defined in the page definition. If you want your page to have an appbar, define the `appBar` property:
 
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': { } // <-- there it is!
+  }
+};
+
+})(window);
+```
+[last edit]()
 
 ### Drawer
 This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
