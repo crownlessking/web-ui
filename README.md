@@ -484,7 +484,7 @@ For more information on theming, visit:
 ### Navigation
 This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
 
-Appbars are defined in the page definition. If you want your page to have an appbar, define the `appBar` property:
+If you want your page to have an appbar, define the `appBar` property in your page definition:
 
 ```ts
 // In your custom js file
@@ -500,6 +500,56 @@ win.appPages = {
 
 })(window);
 ```
+
+To add links to your appbar, define the `items` property in the `appBar` object.
+
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': {
+      'items': [] // <-- right here
+    }
+  }
+};
+
+})(window);
+```
+
+`items` is an array of links object. Let's define a link.
+
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': {
+      'items': [
+
+        // link object
+        {
+          'type': 'text',
+          'has': {
+            'text': 'Login',
+            'route': 'login'
+          }
+        }
+
+      ]
+    }
+  }
+};
+
+})(window);
+```
+
 [last edit]()
 
 ### Drawer
