@@ -535,7 +535,7 @@ win.appPages = {
 
         // link object
         {
-          'type': 'text',
+          'type': 'text', // icon or hybrid
           'has': {
             'text': 'Login',
             'route': 'login'
