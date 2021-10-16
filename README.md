@@ -535,7 +535,7 @@ win.appPages = {
 
         // link object
         {
-          'type': 'text', // icon or hybrid
+          'type': 'text',
           'has': {
             'text': 'Login',
             'route': 'login'
@@ -549,6 +549,26 @@ win.appPages = {
 
 })(window);
 ```
+
+#### Link object properties
+
+- `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
+- `onClick` can be use in non-JSON definition to set the callback of the link.  
+  **Link callback example:**
+  ```ts
+  {
+    'type': 'text',
+    'onClick': function (redux) {
+      return function (e) => { }
+    }
+  }
+  ```
+- `has` custom object that contains properties that are not compatible with HTML tag attributes.
+  - `text` human readable label
+  - `route` permalink value _e.g._ `#route` or relative path url
+    _e.g._ `/users/username`
+  - `icon` material-ui icon
+  - `faIcon` font awesome icon
 
 [last edit]()
 
