@@ -21,10 +21,10 @@ import AppStyledConnected from './components/connected.app'
  * @see https://www.npmjs.com/package/@fortawesome/react-fontawesome
  * for more info
  */
- library.add(fab, fas, far)
+library.add(fab, fas, far)
 
- export default class App extends React.Component {
- 
+export default class App extends React.Component {
+
   public render() { return <AppStyledConnected /> }
- 
- }
+
+}

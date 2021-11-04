@@ -157,6 +157,36 @@ win.appForms = {
 
 The property `items` is an array containing the fields definition.
 
+### Add field to form
+To add a field to your form, just insert a new `object` into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
+
+```js
+win.appForms = {
+  'loginForm': {
+    'items': [
+
+      // username input field
+      {
+        'type': 'text',
+        'name': 'username'
+      }
+    ]
+  }
+};
+```
+
+is equivalent to:
+
+```html
+<form>
+  <input type="text" name="username" />
+</form>
+```
+
+**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
+
+#### Complete _login_ form definition
+
 ```js
 win.appForms = {
   'loginForm': {
@@ -194,33 +224,24 @@ win.appForms = {
 };
 ```
 
-### Add field to form
-To add a field to your form, just insert a new `object` into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
+#### Default page
 
-```js
-win.appForms = {
-  'loginForm': {
-    'items': [
+Now that the login form is defined, we want to display the login page so we can see it. The login-page should be the first page to be displayed when we fire up the web app.  
+To do that, we need to tell the app the the login-page is the default page.  
+We can do that by setting the `route` property of `appInfo`.
 
-      // username input field
-      {
-        'type': 'text',
-        'name': 'username'
-      }
-    ]
-  }
+```ts
+(function (win) {
+
+win.appInfo = {
+  'origin': 'http://www.domain.com',
+  'route': 'login' // <-- right here
 };
+
+})(window);
 ```
 
-is equivalent to:
-
-```html
-<form>
-  <input type="text" name="username" />
-</form>
-```
-
-**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
+Give the `route` property the name of the page which is 'login' in our example and we are all set.
 
 #### Set field's default value
 
