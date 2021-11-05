@@ -430,6 +430,12 @@ export interface IStateApp {
   logo?: string
 
   lastRoute?: string
+
+  // [TODO] Finish improving the default page system.
+  //        I'm trying to no longer use the 'route' property to set the default
+  //        page.
+  //        We will use the 'defaultPage' property instead.
+  defaultPage?: string
 }
 
 /**
