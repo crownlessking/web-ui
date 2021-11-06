@@ -30,3 +30,11 @@ declare var appBackground
  * dialogs definition
  */
 declare var appDialogs
+
+/**
+ * typography definition
+ * 
+ * Defines the app's default typography object. This is concerned with defining
+ * the font of the app.
+ */
+declare var appTypography

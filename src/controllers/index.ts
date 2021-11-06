@@ -387,6 +387,12 @@ export function getGlobalVar (varName: string) {
       return appPages
     } catch (e) { return {} }
 
+  case 'appTypography':
+    try {
+      return appTypography
+    } catch (e) { return {} }
+
+  
   }
 
   throw new Error (`"${varName}" does not exist.`)

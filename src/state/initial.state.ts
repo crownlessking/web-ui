@@ -106,7 +106,7 @@ export default {
   /**
    * Application `font-family` and `color`
    */
-  'typography': { },
+  'typography': _.extend({ }, getGlobalVar('appTypography')),
 
   'dialog': {
     'title': 'Dialog Title',

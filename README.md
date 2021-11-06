@@ -15,7 +15,8 @@ var appInfo = {
 }
 ```
 
-**Inline JavaScript Example**
+### Inline JavaScript Example
+
 ```html
 <html>
   <head />
@@ -38,7 +39,18 @@ var appInfo = {
 </html>
 ```
 
-**JavaScript From File Example**
+#### Quick list of global variables that you can define
+
+- `appInfo`
+- `appBackground`
+- `appDialogs`
+- `appForms`
+- `appPages`
+- `appTypography`
+
+For more information, check the [global variable properties](#glogal-variable-properties) below.
+
+### JavaScript From File Example
 
 You can also define `appInfo.origin` in a separate JavaScript file. For example, create a custom JavaScript file and add the following code:
 
@@ -104,7 +116,10 @@ win.appPages = {
 ```
 
 The _login page_ is currently empty let's use it to display a form that users can use to login.
-To do that, we need to set the `content` property of the login page:
+
+### Page `content` property
+
+To display a form, we need to set the `content` property of the login page:
 
 ```js
 win.appPages = {
@@ -591,8 +606,6 @@ win.appPages = {
   - `icon` material-ui icon
   - `faIcon` font awesome icon
 
-[last edit]()
-
 ### Drawer
 This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
 
@@ -604,3 +617,281 @@ this is a [modal](https://material-ui.com/components/modal/#modal) popup
 
 ### Spinner
 an overlay with a spinner
+
+### Glogal variables
+
+#### Global variable `appInfo`
+
+```ts
+var appInfo = {
+  origin: '',
+  route:  '',
+  title:  ''
+};
+```
+
+##### `appInfo.origin`
+
+This property is optional and should only be specified if your app connects to a different URL from which it was served. e.g.
+The URL from which your single page app is loaded is not the same as the one where it saves and retrieves data.
+Which means, `origin` would most likely be used in a test environment. Provided that you have handled the CORS policy issue that could arise.
+
+##### `appInfo.route`
+
+This property is contains the name of the page that will be loaded next or the first page to be loaded.
+Note, the page name can be in a URL pathname format. i.e. /page/name
+
+##### `appInfo.title`
+
+This is the title of the app. It will show up in the browser tab title.
+
+#### Global variable `appPages` (allPages)
+
+```ts
+var appPages = { }
+```
+
+`appPages` is an object where each of its property contain a page object. The property is the name of the page which can take the form of a URL pathname.
+
+#### Page object
+
+```ts
+var page = {
+  _id: '', // optional
+  title: '', // optional
+  forcedTitle: '', // optional
+  appBar: {}, // optional
+  background: {}, // optional
+  typography: {}, // optinal
+  content: '', // optional
+  drawer: {}, // optional
+  layout: '', // optional
+  hideAppBar: false, // optional
+  hideDrawer: false, // optional
+  useDefaultAppBar: false, // optional
+  useDefaultDrawer: false, // optional
+  useDefaultBackground: false, // optional
+  useDefaultTypography: false, // optional
+  inherited: '', // optional
+  appBarInherited: '', // optional
+  drawerInherited: '', // optional
+  contentInherited: '', // optional
+  backgroundInherited: '', // optional
+  data: {}, // optional
+  meta: {}, // optional
+  links: {} // optional
+};
+```
+
+##### `page._id`
+
+`page._id` is an optional property of type string. Use it to give your page a unique id.
+
+##### `page.title`
+
+`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
+
+##### `page.forcedTitle`
+
+`page.forcedTitle` is an optional property of type string. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
+Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be.
+
+##### `page.appBar`
+
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property. [[back](#page-object)]
+
+##### `page.background`
+
+`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information. [[back](#page-object)]
+
+##### `page.typography`
+
+`page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.
+
+#### Global variable `appForms`
+
+**TODO:** Write doc for `appForms`
+
+#### Global variable `appBackground`
+
+```ts
+var appBackground = {
+  type: '', // 'none' | 'color' | 'gradient' | 'image'
+  value: ''
+};
+```
+
+**Warning**: The global variable `appBackground` only defines the default background for the entire app. Each app page can still define its own background or have no background unless specifically directed to make use of this default background.
+
+##### `appBackground.type`
+
+- _none_
+  ```ts
+  // use 'none' when there is no background I suppose. It doesn't do anything.
+  appBackground.type = 'none';
+  ```
+
+- _color_
+  ```ts
+  // The background is a color
+  appBackground.type = 'color';
+
+  // You can then set value to a color in CSS format.
+  appBackground.value = '#fff';
+
+  // or
+
+  appBackground.value = 'white';
+
+  // same thing
+  ```
+
+- _gradient_
+  ```ts
+  // The background is a gradiant
+  appBackground.type = 'gradient';
+
+  // You can then set value to a gradient in CSS format.
+  appBackground.value = 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)';
+  ```
+
+- _image_
+  ```ts  
+  // The background is an image
+  appBackground.type = 'image';
+
+  // You can then set the value to image filename
+  appBackground.value = '/img/image.jpg'
+  ```
+
+##### `appBackground.value`
+
+The _value_ that goes with the background _type_. See previous code examples.
+
+#### Global variable `appDialogs`
+
+**TODO:** Write doc for `appDialogs`
+
+#### Dialog object
+
+```ts
+var dialog = {
+  open: false,
+  items: [], // form items
+  title: '', // optional
+  label: '', // optional [not-in-use]
+  contentType: '', // 'form' | 'any'
+  contentText: '', // optional
+  content: '', // optional
+  actions: [], // optional
+  showActions: true, // optional
+  onSubmit: (redux: IRedux) => e => void // optional [not-in-use]
+}
+```
+
+**TODO** _Issue_: Currently, only one dialog can be defined at a time. We need to be able to define multiple dialog and store them in an object. Get to it. 
+
+##### `dialog.open`
+
+```ts
+dialog.open = true;
+```
+
+Whether the dialog is currently shown or not. That property is normally controlled by redux but giving it the value `true` will cause the dialog to appear immediately. [[back](#dialog-object)]
+
+##### `dialog.items`
+
+`dialog.items` is similar to `appForms.items`. It is an array of form field objects which is used to insert a form inside the dialog.
+
+```ts
+dialog.items = [
+  {
+    type: 'text',
+    label: 'Username',
+    name: 'username',
+    margin: 'normal'
+  }
+]
+```
+
+See section about [adding fields to a form](#add-field-to-form). [[back](#dialog-object)]
+
+##### `dialog.title`
+
+Use `dialog.title` to give your popup dialog a human-readable title. [[back](#dialog-object)]
+
+##### `dialog.label`
+
+Not in use yet. However, it might be in the near future. As of now, it considered to be similar to `dialog.title`. [[back](#dialog-object)]
+
+##### `dialog.contentType`
+
+- _form_
+  ```ts
+  dialog.contentType = 'form';
+  ```
+
+  'form' is a requirement if you intend to insert a form inside the dialog. That means, `dialog.contentType` must be equal to 'form' not _undefined_.
+
+- _any_
+  ```ts
+  dialog.contentType = 'any';
+  ```
+
+  Not a necessary value. If `dialog.contentType` is _undefined_, then its value is considered to be 'any'. [[back](#dialog-object)]
+
+##### `dialog.contentText`
+
+```ts
+dialog.contentText = ''; // description
+```
+
+`dialog.contentText` is a string. Use it to add a description to your dialog if you need one. [[back](#dialog-object)]
+
+##### `dialog.content`
+
+```ts
+dialog.content = '$form : login : users';
+```
+
+`dialog.content` is similar to the `content` property of a page object. See [page content property](#page-content-property) for more information.  
+With `dialog.content`, you can insert an already defined form inside the dialog. [[back](#dialog-object)]
+
+##### `dialog.actions`
+
+```ts
+dialog.actions = [
+  {
+    'has': {
+      'title': 'Save',
+      'color': 'primary',
+      'callback': (redux: IRedux) => e => void
+    }
+  }
+] 
+```
+
+Use `dialog.actions` to defined action buttons that can be found at the botton of the dialog box. These buttons can be use to close the dialog or process the data contained within dialog, somehow. For example, if the dialog contains a form, the dialog actions can be used to submit the form data.  
+Similar to `dialog.items`, `dialog.actions` is an array of form button object definitions. No other type of field is allowed.  
+These are special form button objects that do not require the `type` property since they are automatically assumed to of type 'button'. [[back](#dialog-object)]
+
+##### `dialog.showActions`
+
+```ts
+dialog.showActions = false;
+```
+
+Use `dialog.showActions` to hide the entire actions section of the dialog if it does not have any actions defined or you simply do not want those action buttons visible at this time. [[back](#dialog-object)]
+
+##### `dialog.onSubmit`
+
+```ts
+// not-in-use
+dialog.onSubmit = (redux: IRedux) => e => void
+```
+
+The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback. [[back](#dialog-object)]
+
+[[back to top](#web-ui)]
+
+#### Global variable `appTypography`
