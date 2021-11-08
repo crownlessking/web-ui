@@ -1,6 +1,8 @@
-import { IStateFormItem, IStateForm, IStatePage } from '../../interfaces'
+import { IStateFormItem, IStateForm, IStateDialog } from '../../interfaces'
 import StatePage from '../../state/pages/page.controller'
 import StateAllPages from '../../state/pages/controller'
+import store from '../../state'
+import Config from '../../config'
 
 /**
  * Get a `stateForm` object so that a form can be displayed in the dialog.
@@ -21,4 +23,52 @@ export function getStateDialogStatePageFromContent(
   parent: StateAllPages
 ): StatePage {
   return new StatePage({ content }, parent)
+}
+
+export function getDialogPropertyName(dialogName: string) {
+  return dialogName + 'Dialog'
+}
+
+function getDialogJson(dialogName: string, defaultDialog: IStateDialog) {
+  try {
+    const dialogPropertyName = getDialogPropertyName(dialogName)
+    return store.getState().dialogs[dialogPropertyName]
+  } catch (e: any) {
+    if (Config.DEBUG) {
+      const dpn = getDialogPropertyName(dialogName)
+      throw new Error(`the '${dpn}' does not exist`)
+    }
+  }
+  return defaultDialog
+}
+
+/**
+ * Loads an already define dialog from the list of all dialogs.
+ *
+ * @param dialogName 
+ * @param defaultDialog 
+ * @returns 
+ */
+export function uiLoadDialog(
+  dialogName: string,
+  defaultDialog: IStateDialog
+): IStateDialog {
+  const newDialog = getDialogJson(dialogName, defaultDialog)
+
+  return { ...defaultDialog, ...newDialog }
+}
+
+/**
+ * Loads an already define dialog from the list of all dialogs and opens it
+ * immediately.
+ *
+ * @param dialogName 
+ * @param defaultDialog 
+ * @returns 
+ */
+export function uiLoadOpenDialog(dialogName: string, defaultDialog: IStateDialog) {
+  const newDialog = uiLoadDialog(dialogName, defaultDialog)
+  newDialog.open = true // causes the dialog to open immediately
+
+  return newDialog
 }

@@ -48,7 +48,7 @@ var appInfo = {
 - `appPages`
 - `appTypography`
 
-For more information, check the [global variable properties](#glogal-variable-properties) below.
+For more information, check the [global variable properties](#glogal-variables) below.
 
 ### JavaScript From File Example
 
@@ -84,6 +84,9 @@ Then, import your custom javascript file:
 </html>
 ```
 
+**TIP**: You do not need to specify `appInfo.origin` unless you intend to connect to an API at a different URL address than your single-page app.  
+`appInfo.origin` is only mentioned for the sake of completion.
+
 **NOTE**: From here on out, we will use the custom file example.
 
 ## How to create a page
@@ -95,11 +98,7 @@ In your custom JavaScript file, create a global variable called `appPages`.
 
 (function (win) {
 
-  win.appInfo = {
-    'origin': "http://www.mydomain.com/"
-  };
-
-  win.appPages = {}; // <-- there it is
+win.appPages = {}; // <-- there it is
 
 })(window);
 ```
@@ -115,7 +114,7 @@ win.appPages = {
 };
 ```
 
-The _login page_ is currently empty let's use it to display a form that users can use to login.
+The _login page_ is currently empty let's use it to display a form that can be used to login.
 
 ### Page `content` property
 
@@ -134,6 +133,7 @@ There are three parts to the `content` property. The first one, `$form` indicate
 Ok, we have the name of the form but we have not created it yet.
 
 ## How to create a form
+
 To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
 ```javascript
@@ -173,7 +173,7 @@ win.appForms = {
 The property `items` is an array containing the fields definition.
 
 ### Add field to form
-To add a field to your form, just insert a new `object` into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
+To add a field to your form, just insert a new object into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
 
 ```js
 win.appForms = {
@@ -197,6 +197,8 @@ is equivalent to:
   <input type="text" name="username" />
 </form>
 ```
+
+The field object is also referred to as a `formItem` in code.
 
 **WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
 
@@ -241,7 +243,7 @@ win.appForms = {
 
 #### Default page
 
-Now that the login form is defined, we want to display the login page so we can see it. The login-page should be the first page to be displayed when we fire up the web app.  
+Now that the login form is defined, we want to display the login page so we can see the login form. The login-page should be the first page to be displayed when we fire up the web app.  
 To do that, we need to tell the app the the login-page is the default page.  
 We can do that by setting the `route` property of `appInfo`.
 
@@ -258,9 +260,11 @@ win.appInfo = {
 
 Give the `route` property the name of the page which is 'login' in our example and we are all set.
 
+When the app is launched, the login page will be shown if every is correct.
+
 #### Set field's default value
 
-Use the `has` property of the field object.
+If you want your form field to be rendered with a default value, you can do that using the `has` property of the field object.
 
 ```javascript
 win.loginForms = {
@@ -276,65 +280,276 @@ win.loginForms = {
 }
 ```
 
-#### Properties of field definition object
-- __`type`__ the type of field. Think of it as the value of the `<input>` tag `type` attribute
-- __`label`__ human-readable field description
-- __`name`__ when field value is sent to the server, this will be the JSON key which will contain the value of the form field.
-- __`margin`__ optional, increases the margin to the field.
-- __`has`__ more field settings. It is used to further customize the field.
-  * __`content`__ adds some HTML content to the form e.g.
-    - ```ts
-        {
-          'has': {
-            'content': 'Some <strong>html</strong> examples',
-          },
-          'type': 'html',
-        }
-      ```
-  * __`color`__ (a valid material-ui theme variable name)
-    - ```ts
-        {
-          'has': {
-            'color': 'primary',
-          },
-          'type': 'button',
-        }
-      ```
-  * __`defaultValue`__ the default value a field should have when it is rendered. (does not apply to all fields though)
-  * __`faIcon`__ font-awesome icon to be displayed on button. There are three categories of icons, `fab` (brand), `fas` (solid), `far` (regular). To display a font-awesome icon, type the category, then a comma, then the icon name:
-    - ```ts
-      {
-        'has': {
-          'faIcon': 'fab, wpforms'
-        }
+#### Form item (field) object properties
+
+```ts
+var formItem = {
+  type: '',
+  id: '', // optional
+  name: '',
+  value: '', // optional [not-in-use]
+  has: { }, // optional
+
+  // ... any other valid html attribute
+};
+```
+
+A `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem`. Quickly go back to [this section](#add-field-to-form) for a quick reminder.
+
+##### `formItem.type`
+
+The type of the field. Think of it as the value of the `<input>` tag `type` attribute.
+
+##### `formItem.label`
+
+Human-readable field description.
+
+##### `formItem.name`
+
+When field value is sent to the server, this will be the JSON key which will contain the value of the form field.
+
+##### `formItem.margin`
+
+This property is optional. It increases the margin to the field.
+
+##### `formItem.has`
+
+```ts
+formItem.has = {
+  content: '', // optional
+  color: '', // optional
+  defaultValue: '', // optional
+  faIcon: '', // optional
+  icon: '', // optional
+  iconPosition: '', // optional
+  items: [ ], // optional
+  label: '', // optional
+  regex: '', // optional
+  route: '', // optional
+  text: '', // optional
+  title: '', // otional
+  variant: '', // optional
+  key: '', // optional
+  handle: '', // optional
+  load: '', // optional
+  adornment: '', // optional
+  props: { } // optional
+};
+```
+
+Custom field settings. It is used to further customize the field.
+
+##### `formItem.has.content`
+
+```ts
+formItem = {
+  type: 'html',
+  has: {
+    'content': 'Some <strong>html</strong> examples',
+  }
+};
+```
+
+Use `formItem.has.content` to add some HTML content to the form.
+
+**Note:** The field type must be * *html* * for it to work.
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.color`
+
+```ts
+var formItem = {
+  type: 'button', // or submit
+  has: {
+    color: 'primary', // material-ui theme color name
+  }
+};
+```
+
+`formItem.has.color` is currently used to set the color of buttons. The value is any valid material-ui theme variable name. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.defaultValue`
+
+```ts
+var formItem = {
+  type: 'text',
+  has: {
+    defaultValue: 'Henry'
+  }
+};
+```
+
+The value a field should have when it is rendered. (applies to most fields but not all) [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.faIcon`
+
+Font-awesome icon to be displayed on a button. There are three categories of icons, `fab` (brand), `fas` (solid), `far` (regular). To display a font-awesome icon, type the category, then a comma, then the icon name:
+
+`fab` (brand) example:
+
+```ts
+var formItem = {
+  type: 'button',
+  has: {
+    faIcon: 'fab, wpforms'
+  }
+};
+```
+
+`fas` (solid) example, you can omit the category which will default to `fas`:
+
+```ts
+var formItem = {
+  type: 'button',
+  has: {
+    faIcon: 'laptop-medical'
+  }
+};
+```
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.icon`
+
+```ts
+var formItem = {
+  type: 'button',
+  has: {
+    icon: 'vpn_key'
+  }
+};
+```
+
+Use `formItem.has.icon` to display a material-ui icon in a button. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.iconPosition`
+
+```ts
+var formItem = {
+  type: 'button', // or 'submit'
+  has: {
+    icon: 'vpn_key',
+    iconPosition: 'right' // or left
+  }
+};
+```
+
+Use `formItem.has.iconPosition` to place the button icon on the left or right of the title. If the button is configured to show both the title and the icon, then this option can be
+used to customize the icon position. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.items`
+
+```ts
+var formItem = {
+  type: 'select',
+  has: {
+    items: [
+      { title: 'Homeless', value: 'homeless' },
+      { title: 'Bagger', value: 'bagger' },
+      { title: 'Web developer', value: 'webdeveloper' },
+      { title: 'Unemployed', value: 'unemployed' }
+    ]
+  }
+};
+```
+
+If your field is a `<select>`, `formItem.has.items` would be used to define the `<option>`s. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.label`
+
+```ts
+var formItem = {
+  type: 'radio_buttons',
+  has: {
+    label: 'Gender', // <-- there it is!
+    items: [
+      { label: 'Male', value: 'male' },
+      { label: 'Female', value: 'female' }
+    ]
+  }
+};
+```
+
+Human-readable title for more complex fields such as radio buttons. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.variant`
+
+```ts
+var formItem = {
+  type: 'button', // or 'submit'
+  has: {
+    variant: 'text' // or 'outlined' or 'contained'
+  }
+};
+```
+
+Use `formItem.has.variant` to give your button a different style.  
+button styles: `text` | `outlined` | `contained` [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.regex`
+
+```ts
+var formItem = {
+  type: 'text',
+  label: 'Password',
+  name: 'pwd',
+  has: {
+    regex: '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+  }
+};
+```
+
+Regular expression test for an input field or textarea. i.e. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.title`
+
+```ts
+var formItem = {
+  type: 'button', // or 'submit'
+  has: {
+    title: 'Login'
+  }
+};
+```
+
+Human-readable text to be displayed on the button i.e. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.key`
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.handle`
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.load`
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.adornment`
+
+```ts
+var formItem = {
+  type: 'text',
+  has: {
+    adornment: {
+      type: 'button',
+      position: 'start',
+      buttonProps: {
+        edge: 'start'
       }
-      ```
-  You can omit the category which will default to `fas`.
-    - ```ts
-      {
-        'has': {
-          'faIcon': 'laptop-medical'
-        }
-      }
-      ```
-  * __`icon`__ displays a material-ui icon in button
-    - ```ts
-      {
-        'type': 'button',
-        'has': {
-          'icon': 'vpn_key'
-        }
-      }
-      ```
-  * __`iconPosition`__ whether the button icon should be to the left or right of the title.
-    - If the button is configured to show both the title and the icon, then this option can be
-      used to customize the icon position.
-  * __`items`__ if your field is a `<select>`, that key would be used to define the `<option>`s.
-  * __`label`__ human-readable decription.
-  * __`variant`__ button styles: `text` | `outlined` | `contained`
-  * __`regex`__ regular expression test for an input field or textarea.
-  * __`title`__ text displayed on button
-  * __`callback`__ piece of code executed when field is interacted with.
+    },
+    icon: 'phone_outline',
+  }
+};
+```
+
+Use `formItem.has.adornment` to give further customize your textfield. [[back](#formitemhas)] [[top](#web-ui)]
+
+##### `formItem.has.props`
+
+[[back](#formitemhas)] [[top](#web-ui)]
 
 ### Form field examples
 
@@ -620,7 +835,11 @@ an overlay with a spinner
 
 ### Glogal variables
 
+The _global variables_ is where it all starts if you are using JavaScript to put your single-page app together. There's a variable to define a page, a form, a popup dialog, and much more.
+
 #### Global variable `appInfo`
+
+`appInfo` contains some general information about the app. Nothing fancy.  
 
 ```ts
 var appInfo = {
@@ -647,11 +866,16 @@ This is the title of the app. It will show up in the browser tab title.
 
 #### Global variable `appPages` (allPages)
 
-```ts
-var appPages = { }
-```
-
 `appPages` is an object where each of its property contain a page object. The property is the name of the page which can take the form of a URL pathname.
+
+```ts
+var appPages = {
+  login: { ... }, // page object
+  '/user/signup': { ... } // page object
+
+  // ... more page objects
+};
+```
 
 #### Page object
 
@@ -685,28 +909,29 @@ var page = {
 
 ##### `page._id`
 
-`page._id` is an optional property of type string. Use it to give your page a unique id.
+`page._id` is an optional property of type string. Use it to give your page a unique id. [[back](#page-object)] [[top](#web-ui)]
 
 ##### `page.title`
 
-`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
+`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title. [[back](#page-object)] [[top](#web-ui)]
 
 ##### `page.forcedTitle`
 
 `page.forcedTitle` is an optional property of type string. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
-Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be.
+Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be. [[back](#page-object)] [[top](#web-ui)]
 
 ##### `page.appBar`
 
-`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property. [[back](#page-object)]
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property. [[back](#page-object)] [[top](#web-ui)]
 
 ##### `page.background`
 
-`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information. [[back](#page-object)]
+`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information. [[back](#page-object)] [[top](#web-ui)]
 
 ##### `page.typography`
 
-`page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.
+`page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.  
+See the [global variable section](#global-variable-apptypography) for more information. [[back](#page-object)] [[top](#web-ui)]
 
 #### Global variable `appForms`
 
@@ -770,7 +995,18 @@ The _value_ that goes with the background _type_. See previous code examples.
 
 #### Global variable `appDialogs`
 
-**TODO:** Write doc for `appDialogs`
+`appDialogs` is an object where each property is a dialog object definition.
+
+```ts
+var appDialogs = {
+  loginDialog: { ... }, // dialog object
+  signupDialog: { ... }, // dialog object
+
+  // ... more dialog objects
+};
+```
+
+**Note:** The property name of the dialog object must end with the suffix _Dialog_.
 
 #### Dialog object
 
@@ -789,15 +1025,13 @@ var dialog = {
 }
 ```
 
-**TODO** _Issue_: Currently, only one dialog can be defined at a time. We need to be able to define multiple dialog and store them in an object. Get to it. 
-
 ##### `dialog.open`
 
 ```ts
 dialog.open = true;
 ```
 
-Whether the dialog is currently shown or not. That property is normally controlled by redux but giving it the value `true` will cause the dialog to appear immediately. [[back](#dialog-object)]
+Whether the dialog is currently shown or not. That property is normally controlled by redux but giving it the value `true` will cause the dialog to appear immediately. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.items`
 
@@ -814,15 +1048,15 @@ dialog.items = [
 ]
 ```
 
-See section about [adding fields to a form](#add-field-to-form). [[back](#dialog-object)]
+See section about [adding fields to a form](#add-field-to-form). [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.title`
 
-Use `dialog.title` to give your popup dialog a human-readable title. [[back](#dialog-object)]
+Use `dialog.title` to give your popup dialog a human-readable title. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.label`
 
-Not in use yet. However, it might be in the near future. As of now, it considered to be similar to `dialog.title`. [[back](#dialog-object)]
+Not in use yet. However, it might be in the near future. As of now, it considered to be similar to `dialog.title`. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.contentType`
 
@@ -831,14 +1065,14 @@ Not in use yet. However, it might be in the near future. As of now, it considere
   dialog.contentType = 'form';
   ```
 
-  'form' is a requirement if you intend to insert a form inside the dialog. That means, `dialog.contentType` must be equal to 'form' not _undefined_.
+  The 'form' value is a requirement if you intend to insert a form inside the dialog. That means, `dialog.contentType` must be equal to 'form' not _undefined_.
 
 - _any_
   ```ts
   dialog.contentType = 'any';
   ```
 
-  Not a necessary value. If `dialog.contentType` is _undefined_, then its value is considered to be 'any'. [[back](#dialog-object)]
+  Not a necessary value. If `dialog.contentType` is _undefined_, then its value is considered to be 'any'. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.contentText`
 
@@ -846,7 +1080,7 @@ Not in use yet. However, it might be in the near future. As of now, it considere
 dialog.contentText = ''; // description
 ```
 
-`dialog.contentText` is a string. Use it to add a description to your dialog if you need one. [[back](#dialog-object)]
+`dialog.contentText` is a string. Use it to add a description to your dialog if you need one. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.content`
 
@@ -855,7 +1089,7 @@ dialog.content = '$form : login : users';
 ```
 
 `dialog.content` is similar to the `content` property of a page object. See [page content property](#page-content-property) for more information.  
-With `dialog.content`, you can insert an already defined form inside the dialog. [[back](#dialog-object)]
+With `dialog.content`, you can insert an already defined form inside the dialog. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.actions`
 
@@ -871,9 +1105,9 @@ dialog.actions = [
 ] 
 ```
 
-Use `dialog.actions` to defined action buttons that can be found at the botton of the dialog box. These buttons can be use to close the dialog or process the data contained within dialog, somehow. For example, if the dialog contains a form, the dialog actions can be used to submit the form data.  
+Use `dialog.actions` to defined action buttons that can be found at the botton of the dialog box. These buttons can be used to close the dialog or process the data contained within dialog, somehow. For example, if the dialog contains a form, the dialog actions can be used to submit the form data.  
 Similar to `dialog.items`, `dialog.actions` is an array of form button object definitions. No other type of field is allowed.  
-These are special form button objects that do not require the `type` property since they are automatically assumed to of type 'button'. [[back](#dialog-object)]
+These are special form button objects that do not require the `type` property since they are automatically assumed to of type 'button'. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.showActions`
 
@@ -881,7 +1115,7 @@ These are special form button objects that do not require the `type` property si
 dialog.showActions = false;
 ```
 
-Use `dialog.showActions` to hide the entire actions section of the dialog if it does not have any actions defined or you simply do not want those action buttons visible at this time. [[back](#dialog-object)]
+Use `dialog.showActions` to hide the entire actions section of the dialog if it does not have any actions defined or you simply do not want those action buttons visible at this time. [[back](#dialog-object)] [[top](#web-ui)]
 
 ##### `dialog.onSubmit`
 
@@ -890,8 +1124,10 @@ Use `dialog.showActions` to hide the entire actions section of the dialog if it 
 dialog.onSubmit = (redux: IRedux) => e => void
 ```
 
-The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback. [[back](#dialog-object)]
-
-[[back to top](#web-ui)]
+The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback. [[back](#dialog-object)] [[top](#web-ui)]
 
 #### Global variable `appTypography`
+
+`appTypography` is meant helps you customize your single-page app fonts.
+
+**TODO:** `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.

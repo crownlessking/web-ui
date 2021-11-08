@@ -228,7 +228,7 @@ export default class StatePage extends StateController implements IStatePage {
   /**
    * Parses the definition string found in `pageState.content`.  
    *  
-   * Format: "<type> : <name> : <endpoint> : <args>"
+   * Format: "type : name : endpoint : args"
    *
    * **type**: Type of content found on the page.  
    * **name**: Identifier for a a specific content.  
@@ -288,10 +288,15 @@ export default class StatePage extends StateController implements IStatePage {
     if (this.pageJson.useDefaultAppBar) {
       return this.parent.parent.appBar.json
     }
+
+    // [TODO] Potential issue: route variable could be undefined.
+    //        Compensate with a try-catch statement where error messages
+    //        are printed if Config.DEBUG is true.
     if (this.pageJson.appBarInherited) {
       const route = this.pageJson.appBarInherited
       return this.parent.pageAt(route).appBar.json
     }
+
     return EMPTY_APPBAR
   }
 
@@ -302,10 +307,15 @@ export default class StatePage extends StateController implements IStatePage {
     if (this.pageJson.drawer) {
       return _.extend(EMPTY_DRAWER, this.pageJson.drawer)
     }
+
+    // [TODO] Potential issue: route variable could be undefined.
+    //        Compensate with a try-catch statement where error messages
+    //        are printed if Config.DEBUG is true.
     if (this.noPageDrawer && this.pageJson.drawerInherited) {
       const route = this.pageJson.drawerInherited
       return this.parent.pageAt(route).drawer.json
     }
+
     if (this.noPageDrawer && this.pageJson.useDefaultDrawer) {
       return this.parent.parent.drawer.json
     }
@@ -319,10 +329,15 @@ export default class StatePage extends StateController implements IStatePage {
     if (this.pageJson.background) {
       return _.extend(EMPTY_BACKGROUND, this.pageJson.background)
     }
+
+    // [TODO] Potential issue: route variable could be undefined.
+    //        Compensate with a try-catch statement where error messages
+    //        are printed if Config.DEBUG is true.
     if (this.noPageBackground && this.pageJson.backgroundInherited) {
       const route = this.pageJson.backgroundInherited
       return this.parent.pageAt(route).background.json
     }
+
     if (this.noPageBackground && this.pageJson.useDefaultBackground) {
       return this.parent.parent.background.json
     }
