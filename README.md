@@ -77,17 +77,17 @@ Then, import your custom javascript file:
     <script src="js/mycustomfile.js"></script>
 
     <!-- Don't insert any code below this comment -->
-    <script>!function (e) { function r(r) { ... }}</script>
+    <script>!function (e) { function r(r) { ... } }</script>
     <script src="static/js/2...chunk.js"></script>
     <script src="static/js/main...chunk.js"></script>
   </body>
 </html>
 ```
 
-**TIP**: You do not need to specify `appInfo.origin` unless you intend to connect to an API at a different URL address than your single-page app.  
+**NOTE**: You do not need to set `appInfo.origin` unless you intend to connect to an API at a different URL address than your single-page app.  
 `appInfo.origin` is only mentioned for the sake of completion.
 
-**NOTE**: From here on out, we will use the custom file example.
+From here on out, we will use the custom file example.
 
 ## How to create a page
 
@@ -198,9 +198,9 @@ is equivalent to:
 </form>
 ```
 
-The field object is also referred to as a `formItem` in code.
-
 **WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
+
+**NOTE:** The field object is also referred to as a `formItem` in code.
 
 #### Complete _login_ form definition
 
@@ -232,8 +232,7 @@ win.appForms = {
           'color': 'secondary', // meterial-ui theme color
           'icon': 'vpn_key',
           'iconPosition': 'right',
-          'title': 'Login',
-          // 'callback': callbacks.loginForm,
+          'title': 'Login'
         },
       },
     ]
@@ -251,16 +250,15 @@ We can do that by setting the `route` property of `appInfo`.
 (function (win) {
 
 win.appInfo = {
-  'origin': 'http://www.domain.com',
-  'route': 'login' // <-- right here
+  route: 'login' // <-- right here
 };
 
 })(window);
 ```
 
-Give the `route` property the name of the page which is 'login' in our example and we are all set.
+Give the `route` property the name of the page which is * *login* * in our example and we are all set.
 
-When the app is launched, the login page will be shown if every is correct.
+When the app is launched, the login page will be shown if every is correct. Just save the changes and refresh the browser tab.
 
 #### Set field's default value
 
@@ -268,16 +266,16 @@ If you want your form field to be rendered with a default value, you can do that
 
 ```javascript
 win.loginForms = {
-  'items': [
+  items: [
     {
-      'type': 'text',
-      'name': '',
-      'has': {
-        'defaultValue': '' // <-- this
+      type: 'text',
+      name: '',
+      has: {
+        defaultValue: '' // <-- this
       }
     }
   ]
-}
+};
 ```
 
 #### Form item (field) object properties
@@ -285,16 +283,16 @@ win.loginForms = {
 ```ts
 var formItem = {
   type: '',
-  id: '', // optional
+  label: '',
   name: '',
-  value: '', // optional [not-in-use]
+  margin: '',
   has: { }, // optional
 
   // ... any other valid html attribute
 };
 ```
 
-A `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem`. Quickly go back to [this section](#add-field-to-form) for a quick reminder.
+A `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem`. Go back to [this section](#add-field-to-form) for a quick reminder.
 
 ##### `formItem.type`
 
@@ -352,7 +350,7 @@ formItem = {
 
 Use `formItem.has.content` to add some HTML content to the form.
 
-**Note:** The field type must be * *html* * for it to work.
+**Note:** The field type must be * *html* * for this to work.
 
 [[back](#formitemhas)] [[top](#web-ui)]
 
@@ -414,7 +412,7 @@ var formItem = {
 
 ```ts
 var formItem = {
-  type: 'button',
+  type: 'button', // or 'submit'
   has: {
     icon: 'vpn_key'
   }
@@ -500,7 +498,7 @@ var formItem = {
 };
 ```
 
-Regular expression test for an input field or textarea. i.e. [[back](#formitemhas)] [[top](#web-ui)]
+Regular expression test for an input field or textarea. [[back](#formitemhas)] [[top](#web-ui)]
 
 ##### `formItem.has.title`
 
@@ -513,7 +511,7 @@ var formItem = {
 };
 ```
 
-Human-readable text to be displayed on the button i.e. [[back](#formitemhas)] [[top](#web-ui)]
+Human-readable text to be displayed on the button. [[back](#formitemhas)] [[top](#web-ui)]
 
 ##### `formItem.has.key`
 
