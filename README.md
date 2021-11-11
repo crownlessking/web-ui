@@ -8,40 +8,42 @@
   - [Inline JavaScript Example](#javascript-from-file-example)
   - [JavaScript From File Example](#javascript-from-file-example)
   - [Quick list of global variables that you can define](#quick-list-of-global-variables-that-you-can-define)
-- [How to create a page](#how-to-create-a-page)
-  - [Page `content` property](#page-content-property)
-- [How to create a form](#how-to-create-a-form)
-  - [Add field to form](#add-field-to-form)
-    - [Complete *login* form definition](#complete-login-form-definition)
-    - [Default page](#default-page)
-    - [Set field's default value](#set-fields-default-value)
-  - [Form, how to add a specific field type](#form-how-to-add-a-specific-field-type)
-    - [Add *textfield* to form](#add-textfield-to-form)
-    - [Add *button* to form](#add-button-to-form)
-    - [Add *submit button* to form](#add-submit-button-to-form)
-    - [Add *dropdown (select)* to form](#add-dropdown-select-to-form)
-    - [Add *radio bottons* to form](#add-radio-bottons-to-form)
-    - [Add *checkboxes* to your form](#add-checkboxes-to-your-form)
-    - [Add *material-ui switch* to form](#add-material-ui-switch-to-form)
-    - [Add *date & time* to form](#add-date--time-to-form)
-    - [Add *html* snippets to form](#add-html-snippets-to-form)
- - [How to submit the data in your form](#how-to-submit-the-data-in-your-form)
-    - [Form item (field) object properties](#form-item-field-object-properties)
-  - [Navigation](#navigation)
-    - [Link object properties](#link-object-properties)
-  - [Drawer](#drawer)
-  - [Layout](#layout)
-  - [Dialog](#dialog)
-  - [Spinner](#spinner)
-  - [Glogal variables](#glogal-variables)
-    - [Global variable `appInfo`](#global-variable-appinfo)
-    - [Global variable `appPages` (allPages)](#global-variable-apppages-allpages)
-    - [Page object](#page-object)
-    - [Global variable `appForms`](#global-variable-appforms)
-    - [Global variable `appBackground`](#global-variable-appbackground)
-    - [Global variable `appDialogs`](#global-variable-appdialogs)
-    - [Dialog object](#dialog-object)
-    - [Global variable `appTypography`](#global-variable-apptypography)
+  - [How to create a page](#how-to-create-a-page)
+    - [Page `content` property](#page-content-property)
+  - [How to create a form](#how-to-create-a-form)
+    - [Add field to form](#add-field-to-form)
+      - [Complete *login* form definition](#complete-login-form-definition)
+      - [Set field's default value](#set-fields-default-value)
+      - [Default page](#default-page)
+    - [Form, how to add a specific field type](#form-how-to-add-a-specific-field-type)
+      - [Add *textfield*, *numberfield*, or *textarea* to form](#add-textfield-numberfield-or-textarea-to-form)
+      - [Add *button* to form](#add-button-to-form)
+      - [Add *submit button* to form](#add-submit-button-to-form)
+      - [Add *dropdown (select)* to form](#add-dropdown-select-to-form)
+      - [Add *radio bottons* to form](#add-radio-bottons-to-form)
+      - [Add *checkboxes* to your form](#add-checkboxes-to-your-form)
+      - [Add *material-ui switch* to form](#add-material-ui-switch-to-form)
+      - [Add *date & time* to form](#add-date--time-to-form)
+      - [Add *html* snippets to form](#add-html-snippets-to-form)
+  - [How to submit the data in your form](#how-to-submit-the-data-in-your-form)
+  - [How to customize page background](#how-to-customize-page-background)
+- [Navigation](#navigation)
+  - [Link object properties](#link-object-properties)
+- [Drawer](#drawer)
+- [Layout](#layout)
+- [Dialog](#dialog)
+- [Spinner](#spinner)
+- [Glogal variables](#glogal-variables)
+  - [Global variable `appInfo`](#global-variable-appinfo)
+  - [Global variable `appPages` (allPages)](#global-variable-apppages-allpages)
+  - [Global variable `appForms`](#global-variable-appforms)
+  - [Global variable `appBackground`](#global-variable-appbackground)
+  - [Global variable `appDialogs`](#global-variable-appdialogs)
+  - [Global variable `appTypography`](#global-variable-apptypography)
+- [Objects and properties](#objects-and-properties)
+  - [Page object](#page-object)
+  - [Form item (field) object](#form-item-field-object)
+  - [Dialog object](#dialog-object)
 
 ## Purpose
 
@@ -53,12 +55,13 @@ Instead of HTML, you will use JSON and in some cases, JavaScript to define your 
 [[top](#web-ui)]
 
 ## First things first
+
 Give your app the URL at which your API is located. In the `index.html` define the object `appInfo`. It has a property called `origin`. You can use it to set the URL of your API:
 
 ```js
 var appInfo = {
-  'origin': "http://www.mydomain.com/" // URL of your API
-}
+  origin: "http://www.mydomain.com/" // URL of your API
+};
 ```
 
 [[top](#web-ui)]
@@ -143,7 +146,7 @@ For more information, check the [global variable properties](#glogal-variables) 
 
 [[top](#web-ui)]
 
-## How to create a page
+### How to create a page
 
 In your custom JavaScript file, create a global variable called `appPages`.
 
@@ -172,14 +175,14 @@ The _login page_ is currently empty let's use it to display a form that can be u
 
 [[top](#web-ui)]
 
-### Page `content` property
+#### Page `content` property
 
 To display a form, we need to set the `content` property of the login page:
 
 ```js
 win.appPages = {
-  'login': {
-    'content': '$form : login : users'
+  login: {
+    content: '$form : login : users'
   }
 };
 ```
@@ -190,7 +193,7 @@ Ok, we have the name of the form but we have not created it yet.
 
 [[top](#web-ui)]
 
-## How to create a form
+### How to create a form
 
 To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
@@ -221,8 +224,8 @@ The _login form_ is currently empty. Let's add some fields:
 ```js
 win.appForms = {
 
-  'loginForm': {
-    'items': [ ] // array of fields
+  loginForm: {
+    items: [ ] // array of fields
   }
 
 };
@@ -232,19 +235,19 @@ The property `items` is an array containing the fields definition.
 
 [[top](#web-ui)]
 
-### Add field to form
+#### Add field to form
 
 To add a field to your form, just insert a new object into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
 
 ```js
 win.appForms = {
-  'loginForm': {
-    'items': [
+  loginForm: {
+    items: [
 
       // username input field
       {
-        'type': 'text',
-        'name': 'username'
+        type: 'text',
+        name: 'username'
       }
     ]
   }
@@ -265,7 +268,7 @@ is equivalent to:
 
 [[top](#web-ui)]
 
-#### Complete _login_ form definition
+##### Complete _login_ form definition
 
 ```js
 win.appForms = {
@@ -305,6 +308,26 @@ win.appForms = {
 
 [[top](#web-ui)]
 
+##### Set field's default value
+
+If you want your form field to be rendered with a default value, you can do that using the `has` property of the field object.
+
+```javascript
+win.loginForms = {
+  items: [
+    {
+      type: 'text',
+      name: '',
+      has: {
+        defaultValue: '' // <-- this
+      }
+    }
+  ]
+};
+```
+
+[[top](#web-ui)]
+
 #### Default page
 
 Now that the login form is defined, we want to display the login page so we can see the login form. The login-page should be the first page to be displayed when we fire up the web app.  
@@ -327,31 +350,9 @@ When the app is launched, the login page will be shown if every is correct. Just
 
 [[top](#web-ui)]
 
-#### Set field's default value
+#### Form, how to add a specific field type
 
-If you want your form field to be rendered with a default value, you can do that using the `has` property of the field object.
-
-```javascript
-win.loginForms = {
-  items: [
-    {
-      type: 'text',
-      name: '',
-      has: {
-        defaultValue: '' // <-- this
-      }
-    }
-  ]
-};
-```
-
-[[top](#web-ui)]
-
-### Form, how to add a specific field type
-
-[[top](#web-ui)]
-
-#### Add *textfield* to form
+##### Add *textfield*, *numberfield*, or *textarea* to form
 
 ```ts
 win.appForms = {
@@ -367,11 +368,9 @@ win.appForms = {
 };
 ```
 
-**Similar types:** *number* | *textarea* | *password*
-
 [[top](#web-ui)]
 
-#### Add *button* to form
+##### Add *button* to form
 
 ```ts
 win.appForm = {
@@ -389,7 +388,7 @@ win.appForm = {
 
 [[top](#web-ui)]
 
-#### Add *submit button* to form
+##### Add *submit button* to form
 
 ```ts
 win.appForm = {
@@ -408,7 +407,7 @@ It's similar to a _button_ except that a default callback is provided if one was
 
 [[top](#web-ui)]
 
-#### Add *dropdown (select)* to form
+##### Add *dropdown (select)* to form
 
 ```ts
 win.appForms = {
@@ -433,7 +432,7 @@ win.appForms = {
 
 [[top](#web-ui)]
 
-#### Add *radio bottons* to form
+##### Add *radio bottons* to form
 
 ```ts
 win.appForms = {
@@ -470,7 +469,7 @@ Noticed the inner *items* property? It's an array of *options* object. As always
 
 [[top](#web-ui)]
 
-#### Add *checkboxes* to your form
+##### Add *checkboxes* to your form
 
 ```ts
 win.appForms = {
@@ -523,7 +522,7 @@ win.appForms = {
 
 [[top](#web-ui)]
 
-#### Add *material-ui switch* to form
+##### Add *material-ui switch* to form
 
 ```ts
 win.appForms = {
@@ -543,7 +542,7 @@ win.appForms = {
 
 [[top](#web-ui)]
 
-#### Add *date & time* to form
+##### Add *date & time* to form
 
 ```ts
 win.appForms = {
@@ -561,7 +560,7 @@ win.appForms = {
 
 [[top](#web-ui)]
 
-#### Add *html* snippets to form
+##### Add *html* snippets to form
 
 ```ts
 win.appForms = {
@@ -583,7 +582,7 @@ Here we display a title to in our login form. We also by using CSS and applying 
 
 [[top](#web-ui)]
 
-## How to submit the data in your form
+#### How to submit the data in your form
 
 A callback is supplied by default when you use the _submit_ button type. It will use the URL you have provided at `appInfo.origin` and the endpoint in the `content` property of the page to send the data as a POST request.
 However, it is possible to provide your own callback if you wish... There are several ways to do this. Using JavaScript, you can set the `onClick` or the `has.callback` property of the submit button definition object if the form is defined using JavaScript.
@@ -659,7 +658,400 @@ Then, you need to create your function somewhere. In a separate file would be mo
 
 [[top](#web-ui)]
 
-#### Form item (field) object properties
+#### How to customize page background
+
+By default, pages do no have a background but if you want to change that, you can.  
+If you did set a default background using the [`appBackground` global variable](#global-variable-appbackground), you can tell your page to use it.  
+
+With `page.useDefaultBackground` set to true:
+
+```ts
+(function (win) {
+
+win.appPages = {
+  login: {
+    useDefaultBackground: true // <-- here
+  }
+};
+
+})(window);
+```
+
+Your page will now use the default background if it was defined.
+
+[[top](#web-ui)]
+
+## Navigation
+
+This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
+
+If you want your page to have an appbar, define the `appBar` property in your page definition:
+
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': { } // <-- there it is!
+  }
+};
+
+})(window);
+```
+
+To add links to your appbar, define the `items` property in the `appBar` object.
+
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': {
+      'items': [] // <-- right here
+    }
+  }
+};
+
+})(window);
+```
+
+`items` is an array of links object. Let's define a link.
+
+```ts
+// In your custom js file
+
+(function (win) {
+
+win.appPages = {
+  '/my-page': {
+    'content': '$form : survey : my-page',
+    'appBar': {
+      'items': [
+
+        // link object
+        {
+          'type': 'text',
+          'has': {
+            'text': 'Login',
+            'route': 'login'
+          }
+        }
+
+      ]
+    }
+  }
+};
+
+})(window);
+```
+
+[[top](#web-ui)]
+
+### Link object properties
+
+- `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
+- `onClick` can be use in non-JSON definition to set the callback of the link.  
+  **Link callback example:**
+  ```ts
+  {
+    'type': 'text',
+    'onClick': function (redux) {
+      return function (e) => { }
+    }
+  }
+  ```
+- `has` custom object that contains properties that are not compatible with HTML tag attributes.
+  - `text` human readable label
+  - `route` permalink value _e.g._ `#route` or relative path url
+    _e.g._ `/users/username`
+  - `icon` material-ui icon
+  - `faIcon` font awesome icon
+
+[[top](#web-ui)]
+
+## Drawer
+
+This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
+
+[[top](#web-ui)]
+
+## Layout
+
+The layout of the page's content.
+
+[[top](#web-ui)]
+
+## Dialog
+
+this is a [modal](https://material-ui.com/components/modal/#modal) popup
+
+[[top](#web-ui)]
+
+## Spinner
+
+an overlay with a spinner
+
+[[top](#web-ui)]
+
+## Theming
+
+**How you style the application**
+e.g. if you want to change the main font, customize the overall look and feel of buttons, links... or change the background color... etc.
+Open the file, `./material/theme.ts` and edit it to style your application.
+
+In it, you will find an *object literal* passed to a function. That object is the only thing you should modify, add properties or change the existing ones:
+
+```ts
+createMuiTheme({
+  palette: {
+    primary: {
+      main: '#808000' // olive
+    },
+    secondary: {
+      main: orange[800]
+    },
+  },
+
+  // add new properties here or modify the existing ones.
+})
+```
+
+If you want a complete list of all available properties, visit the theme object [documentation](https://material-ui.com/customization/default-theme/#explore).
+
+For more information on theming, visit:
+- [What is theming?](https://material-ui.com/customization/themes/)
+- [react theming tutorial](https://material-ui.com/styles/advanced/#theming)
+
+## Files
+
+- `./src/index.tsx` This is the application entry point. In this file, the _redux store_ and the material _theme object_ is applied to the application.
+- `./src/App.tsx` In this file, the overall application implementation style can be swapped. Think of it as having multiple application in one or having different versions of the application. To make that happen, all you would need to do is create a _new component_ in `./src/components/` i.e. `new.app.component.tsx` and insert it in the `render()` of the exported class. Using a switch statement here would be a great idea. Different application implementations could be loaded based on the provided version or a passsed-in argument.
+- `./src/components/connected.app.tsx` You could consider this file as the real start of the application, (in some sense) since it contains the main logic of the application. I named it _connected app_ because it is a _Redux_ implementation and it is connected to the _store_. Yes, this does insinuate that a version of the app could have been implemented which does not use Redux.<br>
+**The main idea**: I wanted to be able to divide parts of the application in sections. Each section could be updated or modified without disturbing (so to speak) the others. Different sections could be swapped out on the fly. The sections are: 
+  * __Navigation__ (the appbar and its links)
+  * __Drawer__ (the sidebar)
+  * __Layout__ (the content layout. Switch the layout of the content anytime)
+  * __Dialog__ (popups such as modals... etc.)
+  * __Spinner__ (shows up when fetching from server)
+
+## Glogal variables
+
+The _global variables_ is where it all starts if you are using JavaScript to put your single-page app together. There's a variable to define a page, a form, a popup dialog, and much more.
+
+[[top](#web-ui)]
+
+### Global variable `appInfo`
+
+`appInfo` contains some general information about the app. Nothing fancy.  
+
+```ts
+var appInfo = {
+  origin: '',
+  route:  '',
+  title:  ''
+};
+```
+
+#### `appInfo.origin`
+
+This property is optional and should only be specified if your app connects to a different URL from which it was served. e.g.
+The URL from which your single page app is loaded is not the same as the one where it saves and retrieves data.
+Which means, `origin` would most likely be used in a test environment. Provided that you have handled the CORS policy issue that could arise.
+
+#### `appInfo.route`
+
+This property is contains the name of the page that will be loaded next or the first page to be loaded.
+Note, the page name can be in a URL pathname format. i.e. /page/name
+
+#### `appInfo.title`
+
+This is the title of the app. It will show up in the browser tab title.
+
+[[top](#web-ui)]
+
+### Global variable `appPages` (allPages)
+
+`appPages` is an object where each of its property contain a page object. The property is the name of the page which can take the form of a URL pathname.
+
+```ts
+var appPages = {
+  login: { ... }, // page object
+  '/user/signup': { ... } // page object
+
+  // ... more page objects
+};
+```
+
+### Global variable `appForms`
+
+**TODO:** Write doc for `appForms`
+
+[[top](#web-ui)]
+
+### Global variable `appBackground`
+
+```ts
+var appBackground = {
+  type: '', // 'none' | 'color' | 'gradient' | 'image'
+  value: ''
+};
+```
+
+**Warning**: The global variable `appBackground` only defines the default background for the entire app. Each app page can still define its own background or have no background unless specifically directed to make use of this default background.
+
+#### `appBackground.type`
+
+- _none_
+  ```ts
+  // use 'none' when there is no background I suppose. It doesn't do anything.
+  appBackground.type = 'none';
+  ```
+
+- _color_
+  ```ts
+  // The background is a color
+  appBackground.type = 'color';
+
+  // You can then set value to a color in CSS format.
+  appBackground.value = '#fff';
+
+  // or
+
+  appBackground.value = 'white';
+
+  // same thing
+  ```
+
+- _gradient_
+  ```ts
+  // The background is a gradiant
+  appBackground.type = 'gradient';
+
+  // You can then set value to a gradient in CSS format.
+  appBackground.value = 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)';
+  ```
+
+- _image_
+  ```ts  
+  // The background is an image
+  appBackground.type = 'image';
+
+  // You can then set the value to image filename
+  appBackground.value = '/img/image.jpg'
+  ```
+
+#### `appBackground.value`
+
+The _value_ that goes with the background _type_. See previous code examples.
+
+[[top](#web-ui)]
+
+### Global variable `appDialogs`
+
+`appDialogs` is an object where each property is a dialog object definition.
+
+```ts
+var appDialogs = {
+  loginDialog: { ... }, // dialog object
+  signupDialog: { ... }, // dialog object
+
+  // ... more dialog objects
+};
+```
+
+**Note:** The property name of the dialog object must end with the suffix _Dialog_.
+
+[[top](#web-ui)]
+
+### Global variable `appTypography`
+
+`appTypography` is meant helps you customize your single-page app fonts.
+
+**TODO:** `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.
+
+[[top](#web-ui)]
+
+## Objects and properties
+
+All definitions are objects, whether it is a page, a form, or anything else. In this section, the properties of these objects will be listed.
+
+[[top](#web-ui)]
+
+### Page object
+
+```ts
+var page = {
+  _id: '', // optional
+  title: '', // optional
+  forcedTitle: '', // optional
+  appBar: {}, // optional
+  background: {}, // optional
+  typography: {}, // optinal
+  content: '', // optional
+  drawer: {}, // optional
+  layout: '', // optional
+  hideAppBar: false, // optional
+  hideDrawer: false, // optional
+  useDefaultAppBar: false, // optional
+  useDefaultDrawer: false, // optional
+  useDefaultBackground: false, // optional
+  useDefaultTypography: false, // optional
+  inherited: '', // optional
+  appBarInherited: '', // optional
+  drawerInherited: '', // optional
+  contentInherited: '', // optional
+  backgroundInherited: '', // optional
+  data: {}, // optional
+  meta: {}, // optional
+  links: {} // optional
+};
+```
+
+#### `page._id`
+
+`page._id` is an optional property of type string. Use it to give your page a unique id.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.title`
+
+`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.forcedTitle`
+
+`page.forcedTitle` is an optional property of type string. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
+Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.appBar`
+
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.background`
+
+`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.typography`
+
+`page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.  
+See the [global variable section](#global-variable-apptypography) for more information.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+### Form item (field) object
 
 ```ts
 var formItem = {
@@ -930,363 +1322,7 @@ Use `formItem.has.adornment` to give further customize your textfield. [[back](#
 
 [[back](#formitemhas)] [[top](#web-ui)]
 
-## Theming
-
-**How you style the application**
-e.g. if you want to change the main font, customize the overall look and feel of buttons, links... or change the background color... etc.
-Open the file, `./material/theme.ts` and edit it to style your application.
-
-In it, you will find an *object literal* passed to a function. That object is the only thing you should modify, add properties or change the existing ones:
-
-```ts
-createMuiTheme({
-  palette: {
-    primary: {
-      main: '#808000' // olive
-    },
-    secondary: {
-      main: orange[800]
-    },
-  },
-
-  // add new properties here or modify the existing ones.
-})
-```
-
-If you want a complete list of all available properties, visit the theme object [documentation](https://material-ui.com/customization/default-theme/#explore).
-
-For more information on theming, visit:
-- [What is theming?](https://material-ui.com/customization/themes/)
-- [react theming tutorial](https://material-ui.com/styles/advanced/#theming)
-
-## Files
-
-- `./src/index.tsx` This is the application entry point. In this file, the _redux store_ and the material _theme object_ is applied to the application.
-- `./src/App.tsx` In this file, the overall application implementation style can be swapped. Think of it as having multiple application in one or having different versions of the application. To make that happen, all you would need to do is create a _new component_ in `./src/components/` i.e. `new.app.component.tsx` and insert it in the `render()` of the exported class. Using a switch statement here would be a great idea. Different application implementations could be loaded based on the provided version or a passsed-in argument.
-- `./src/components/connected.app.tsx` You could consider this file as the real start of the application, (in some sense) since it contains the main logic of the application. I named it _connected app_ because it is a _Redux_ implementation and it is connected to the _store_. Yes, this does insinuate that a version of the app could have been implemented which does not use Redux.<br>
-**The main idea**: I wanted to be able to divide parts of the application in sections. Each section could be updated or modified without disturbing (so to speak) the others. Different sections could be swapped out on the fly. The sections are: 
-  * __Navigation__ (the appbar and its links)
-  * __Drawer__ (the sidebar)
-  * __Layout__ (the content layout. Switch the layout of the content anytime)
-  * __Dialog__ (popups such as modals... etc.)
-  * __Spinner__ (shows up when fetching from server)
-
-### Navigation
-
-This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
-
-If you want your page to have an appbar, define the `appBar` property in your page definition:
-
-```ts
-// In your custom js file
-
-(function (win) {
-
-win.appPages = {
-  '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': { } // <-- there it is!
-  }
-};
-
-})(window);
-```
-
-To add links to your appbar, define the `items` property in the `appBar` object.
-
-```ts
-// In your custom js file
-
-(function (win) {
-
-win.appPages = {
-  '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': {
-      'items': [] // <-- right here
-    }
-  }
-};
-
-})(window);
-```
-
-`items` is an array of links object. Let's define a link.
-
-```ts
-// In your custom js file
-
-(function (win) {
-
-win.appPages = {
-  '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': {
-      'items': [
-
-        // link object
-        {
-          'type': 'text',
-          'has': {
-            'text': 'Login',
-            'route': 'login'
-          }
-        }
-
-      ]
-    }
-  }
-};
-
-})(window);
-```
-
-[[top](#web-ui)]
-
-#### Link object properties
-
-- `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
-- `onClick` can be use in non-JSON definition to set the callback of the link.  
-  **Link callback example:**
-  ```ts
-  {
-    'type': 'text',
-    'onClick': function (redux) {
-      return function (e) => { }
-    }
-  }
-  ```
-- `has` custom object that contains properties that are not compatible with HTML tag attributes.
-  - `text` human readable label
-  - `route` permalink value _e.g._ `#route` or relative path url
-    _e.g._ `/users/username`
-  - `icon` material-ui icon
-  - `faIcon` font awesome icon
-
-[[top](#web-ui)]
-
-### Drawer
-
-This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
-
-[[top](#web-ui)]
-
-### Layout
-
-The layout of the page's content.
-
-[[top](#web-ui)]
-
-### Dialog
-
-this is a [modal](https://material-ui.com/components/modal/#modal) popup
-
-[[top](#web-ui)]
-
-### Spinner
-
-an overlay with a spinner
-
-[[top](#web-ui)]
-
-### Glogal variables
-
-The _global variables_ is where it all starts if you are using JavaScript to put your single-page app together. There's a variable to define a page, a form, a popup dialog, and much more.
-
-[[top](#web-ui)]
-
-#### Global variable `appInfo`
-
-`appInfo` contains some general information about the app. Nothing fancy.  
-
-```ts
-var appInfo = {
-  origin: '',
-  route:  '',
-  title:  ''
-};
-```
-
-##### `appInfo.origin`
-
-This property is optional and should only be specified if your app connects to a different URL from which it was served. e.g.
-The URL from which your single page app is loaded is not the same as the one where it saves and retrieves data.
-Which means, `origin` would most likely be used in a test environment. Provided that you have handled the CORS policy issue that could arise.
-
-##### `appInfo.route`
-
-This property is contains the name of the page that will be loaded next or the first page to be loaded.
-Note, the page name can be in a URL pathname format. i.e. /page/name
-
-##### `appInfo.title`
-
-This is the title of the app. It will show up in the browser tab title.
-
-[[top](#web-ui)]
-
-#### Global variable `appPages` (allPages)
-
-`appPages` is an object where each of its property contain a page object. The property is the name of the page which can take the form of a URL pathname.
-
-```ts
-var appPages = {
-  login: { ... }, // page object
-  '/user/signup': { ... } // page object
-
-  // ... more page objects
-};
-```
-
-#### Page object
-
-```ts
-var page = {
-  _id: '', // optional
-  title: '', // optional
-  forcedTitle: '', // optional
-  appBar: {}, // optional
-  background: {}, // optional
-  typography: {}, // optinal
-  content: '', // optional
-  drawer: {}, // optional
-  layout: '', // optional
-  hideAppBar: false, // optional
-  hideDrawer: false, // optional
-  useDefaultAppBar: false, // optional
-  useDefaultDrawer: false, // optional
-  useDefaultBackground: false, // optional
-  useDefaultTypography: false, // optional
-  inherited: '', // optional
-  appBarInherited: '', // optional
-  drawerInherited: '', // optional
-  contentInherited: '', // optional
-  backgroundInherited: '', // optional
-  data: {}, // optional
-  meta: {}, // optional
-  links: {} // optional
-};
-```
-
-##### `page._id`
-
-`page._id` is an optional property of type string. Use it to give your page a unique id.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-##### `page.title`
-
-`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-##### `page.forcedTitle`
-
-`page.forcedTitle` is an optional property of type string. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
-Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-##### `page.appBar`
-
-`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-##### `page.background`
-
-`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-##### `page.typography`
-
-`page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.  
-See the [global variable section](#global-variable-apptypography) for more information.
-
-[[back](#page-object)] [[top](#web-ui)]
-
-#### Global variable `appForms`
-
-**TODO:** Write doc for `appForms`
-
-[[top](#web-ui)]
-
-#### Global variable `appBackground`
-
-```ts
-var appBackground = {
-  type: '', // 'none' | 'color' | 'gradient' | 'image'
-  value: ''
-};
-```
-
-**Warning**: The global variable `appBackground` only defines the default background for the entire app. Each app page can still define its own background or have no background unless specifically directed to make use of this default background.
-
-##### `appBackground.type`
-
-- _none_
-  ```ts
-  // use 'none' when there is no background I suppose. It doesn't do anything.
-  appBackground.type = 'none';
-  ```
-
-- _color_
-  ```ts
-  // The background is a color
-  appBackground.type = 'color';
-
-  // You can then set value to a color in CSS format.
-  appBackground.value = '#fff';
-
-  // or
-
-  appBackground.value = 'white';
-
-  // same thing
-  ```
-
-- _gradient_
-  ```ts
-  // The background is a gradiant
-  appBackground.type = 'gradient';
-
-  // You can then set value to a gradient in CSS format.
-  appBackground.value = 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)';
-  ```
-
-- _image_
-  ```ts  
-  // The background is an image
-  appBackground.type = 'image';
-
-  // You can then set the value to image filename
-  appBackground.value = '/img/image.jpg'
-  ```
-
-##### `appBackground.value`
-
-The _value_ that goes with the background _type_. See previous code examples.
-
-[[top](#web-ui)]
-
-#### Global variable `appDialogs`
-
-`appDialogs` is an object where each property is a dialog object definition.
-
-```ts
-var appDialogs = {
-  loginDialog: { ... }, // dialog object
-  signupDialog: { ... }, // dialog object
-
-  // ... more dialog objects
-};
-```
-
-**Note:** The property name of the dialog object must end with the suffix _Dialog_.
-
-[[top](#web-ui)]
-
-#### Dialog object
+### Dialog object
 
 ```ts
 var dialog = {
@@ -1303,7 +1339,7 @@ var dialog = {
 }
 ```
 
-##### `dialog.open`
+#### `dialog.open`
 
 ```ts
 dialog.open = true;
@@ -1313,7 +1349,7 @@ Whether the dialog is currently shown or not. That property is normally controll
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.items`
+#### `dialog.items`
 
 `dialog.items` is similar to `appForms.items`. It is an array of form field objects which is used to insert a form inside the dialog.
 
@@ -1332,19 +1368,19 @@ See section about [adding fields to a form](#add-field-to-form).
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.title`
+#### `dialog.title`
 
 Use `dialog.title` to give your popup dialog a human-readable title.
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.label`
+#### `dialog.label`
 
 Not in use yet. However, it might be in the near future. As of now, it considered to be similar to `dialog.title`.
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.contentType`
+#### `dialog.contentType`
 
 - _form_
   ```ts
@@ -1362,7 +1398,7 @@ Not in use yet. However, it might be in the near future. As of now, it considere
   
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.contentText`
+#### `dialog.contentText`
 
 ```ts
 dialog.contentText = ''; // description
@@ -1372,7 +1408,7 @@ dialog.contentText = ''; // description
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.content`
+#### `dialog.content`
 
 ```ts
 dialog.content = '$form : login : users';
@@ -1383,7 +1419,7 @@ With `dialog.content`, you can insert an already defined form inside the dialog.
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.actions`
+#### `dialog.actions`
 
 ```ts
 dialog.actions = [
@@ -1403,7 +1439,7 @@ These are special form button objects that do not require the `type` property si
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.showActions`
+#### `dialog.showActions`
 
 ```ts
 dialog.showActions = false;
@@ -1413,7 +1449,7 @@ Use `dialog.showActions` to hide the entire actions section of the dialog if it 
 
 [[back](#dialog-object)] [[top](#web-ui)]
 
-##### `dialog.onSubmit`
+#### `dialog.onSubmit`
 
 ```ts
 // not-in-use
@@ -1423,11 +1459,3 @@ dialog.onSubmit = (redux: IRedux) => e => void
 The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback.
 
 [[back](#dialog-object)] [[top](#web-ui)]
-
-#### Global variable `appTypography`
-
-`appTypography` is meant helps you customize your single-page app fonts.
-
-**TODO:** `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.
-
-[[top](#web-ui)]
