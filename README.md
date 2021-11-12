@@ -27,6 +27,7 @@
       - [Add *html* snippets to form](#add-html-snippets-to-form)
   - [How to submit the data in your form](#how-to-submit-the-data-in-your-form)
   - [How to customize page background](#how-to-customize-page-background)
+  - [How to customize `content` layout](#how-to-customize-content-layout)
 - [Navigation](#navigation)
   - [Link object properties](#link-object-properties)
 - [Drawer](#drawer)
@@ -212,7 +213,7 @@ Now, let's add a form to it:
 ```js
 win.appForms = {
 
-  'loginForm': {}
+  loginForm: {}
 
 };
 ```
@@ -272,33 +273,33 @@ is equivalent to:
 
 ```js
 win.appForms = {
-  'loginForm': {
-    'items': [
+  loginForm: {
+    items: [
 
       // Object defining the username field
       {
-        'type': 'text',
-        'label': 'Username',
-        'name': 'username',
-        'margin': 'normal',
+        type: 'text',
+        label: 'Username',
+        name: 'username',
+        margin: 'normal',
       },
 
       // Object defining the password field
       {
-        'type': 'password',
-        'label': 'Password',
-        'name': 'password',
-        'margin': 'normal',
+        type: 'password',
+        label: 'Password',
+        name: 'password',
+        margin: 'normal',
       },
 
       // Object defining the form's submit button
       {
-        'type': 'submit',
-        'has': {
-          'color': 'secondary', // meterial-ui theme color
-          'icon': 'vpn_key',
-          'iconPosition': 'right',
-          'title': 'Login'
+        type: 'submit',
+        has: {
+          color: 'secondary', // meterial-ui theme color
+          icon: 'vpn_key',
+          iconPosition: 'right',
+          title: 'Login'
         },
       },
     ]
@@ -417,11 +418,11 @@ win.appForms = {
         type: 'select',
         name: 'occupation',
         has: {
-          'items': [
-            { 'title': 'Homeless', 'value': 'homeless' },
-            { 'title': 'Bagger', 'value': 'bagger' },
-            { 'title': 'Web developer', 'value': 'webdeveloper' },
-            { 'title': 'Unemployed', 'value': 'unemployed' },
+          items: [
+            { title: 'Homeless', 'value': 'homeless' },
+            { title: 'Bagger', 'value': 'bagger' },
+            { title: 'Web developer', 'value': 'webdeveloper' },
+            { title: 'Unemployed', 'value': 'unemployed' },
           ]
         }
       }
@@ -590,13 +591,13 @@ However, it is possible to provide your own callback if you wish... There are se
 1) Using the `onClick` property:
   ```ts
   win.appForms = {
-    'loginForm': {
-      'items': [
+    loginForm: {
+      items: [
 
         // Submit button definition object
         {
-          'type': 'submit',
-          'onClick': function(redux: IRedux) {
+          type: 'submit',
+          onClick: function(redux: IRedux) {
             return function (e) { }
           }
         }
@@ -608,14 +609,14 @@ However, it is possible to provide your own callback if you wish... There are se
 2) Using the `has.callback` property:
   ```ts
   win.appForms = {
-    'loginForm': {
-      'items': [
+    loginForm: {
+      items: [
 
         // Submit button definition object
         {
-          'type': 'submit',
-          'has': {
-            'callback': function (redux: IRedux) {
+          type: 'submit',
+          has: {
+            callback: function (redux: IRedux) {
               return function (e) { }
             }
           }
@@ -628,14 +629,14 @@ However, it is possible to provide your own callback if you wish... There are se
 3) If your form is to be loaded from the server as JSON, you will need to provide your callback seperately. As JSON loaded from the server and converted as JavaScript object:
   ```ts
   win.appForms = {
-    'loginForm': {
-      'items': [
+    loginForm: {
+      items: [
 
         // Submit button definition as JSON
         {
-          'type': 'submit',
-          'has': {
-            'handle': 'yourCustomFunc'
+          type: 'submit',
+          has: {
+            handle: 'yourCustomFunc'
           }
         }
       ]
@@ -660,8 +661,8 @@ Then, you need to create your function somewhere. In a separate file would be mo
 
 #### How to customize page background
 
-By default, pages do no have a background but if you want to change that, you can.  
-If you did set a default background using the [`appBackground` global variable](#global-variable-appbackground), you can tell your page to use it.  
+By default, pages do not have a background but if you want to change that, you can.  
+If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, you can tell your page to use it.  
 
 With `page.useDefaultBackground` set to true:
 
@@ -677,9 +678,17 @@ win.appPages = {
 })(window);
 ```
 
-Your page will now use the default background if it was defined.
+Your page will now use the default background * *if* * it was defined.
+
+Maybe you want your page to have a unique background that won't be found on any other page? You can with [`page.background`](#pagebackground).
 
 [[top](#web-ui)]
+
+#### How to customize `content` layout
+
+Notice that the fields in your form are not as well aligned as you'd like them to be? You can reposition your form using the `layout` property of the page object.
+
+**TODO:** Finish this.
 
 ## Navigation
 
@@ -694,8 +703,8 @@ If you want your page to have an appbar, define the `appBar` property in your pa
 
 win.appPages = {
   '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': { } // <-- there it is!
+    content: '$form : survey : my-page',
+    appBar: { } // <-- there it is!
   }
 };
 
@@ -711,9 +720,9 @@ To add links to your appbar, define the `items` property in the `appBar` object.
 
 win.appPages = {
   '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': {
-      'items': [] // <-- right here
+    content: '$form : survey : my-page',
+    appBar: {
+      items: [] // <-- right here
     }
   }
 };
@@ -730,16 +739,16 @@ win.appPages = {
 
 win.appPages = {
   '/my-page': {
-    'content': '$form : survey : my-page',
-    'appBar': {
-      'items': [
+    content: '$form : survey : my-page',
+    appBar: {
+      items: [
 
         // link object
         {
-          'type': 'text',
-          'has': {
-            'text': 'Login',
-            'route': 'login'
+          type: 'text',
+          has: {
+            text: 'Login',
+            route: 'login'
           }
         }
 
@@ -890,7 +899,7 @@ var appPages = {
 
 ### Global variable `appForms`
 
-**TODO:** Write doc for `appForms`
+*TODO: Write doc for `appForms`*
 
 [[top](#web-ui)]
 
@@ -973,7 +982,7 @@ var appDialogs = {
 
 `appTypography` is meant helps you customize your single-page app fonts.
 
-**TODO:** `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.
+*TODO: `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.*
 
 [[top](#web-ui)]
 
@@ -1013,41 +1022,390 @@ var page = {
 };
 ```
 
+- [`page._id`](#page_id)
+- [`page.title`](#pagetitle)
+- [`page.forcedTitle`](#pageforcedtitle)
+- [`page.appBar`](#pageappbar)
+- [`page.background`](#pagebackground)
+- [`page.typography`](#pagetypography)
+- [`page.content`](#pagecontent)
+- [`page.drawer`](#pagedrawer)
+- [`page.layout`](#pagelayout)
+- [`page.hideAppBar`](#pagehideappbar)
+- [`page.hideDrawer`](#pagehidedrawer)
+- [`page.useDefaultAppBar`](#pageusedefaultappbar)
+- [`page.useDefaultDrawer`](#pageusedefaultdrawer)
+- [`page.useDefaultTypography`](#pageusedefaulttypography)
+- [`page.inherited`](#pageinherited)
+- [`page.appBarInherited`](#pageappbarinherited)
+- [`page.drawerInherited`](#pagedrawerinherited)
+- [`page.contentInherited`](#pagecontentinherited)
+- [`page.backgroundInherited`](#pagebackgroundinherited)
+- [`page.data`](#pagedata)
+- [`page.meta`](#pagemeta)
+- [`page.links`](#pagelinks)
+
+[[top](#web-ui)]
+
 #### `page._id`
 
-`page._id` is an optional property of type string. Use it to give your page a unique id.
+```ts
+win.appPages = {
+  '/login': {
+    '_id': '618e9c9504cc8212caccba17'
+  }
+};
+```
+
+`page._id` is an optional property. Use it to give your page a unique id.
 
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.title`
 
-`page.title` is an optional property of type string. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
+```ts
+win.appPages = {
+  '/login': {
+    title: 'Enter login info'
+  }
+};
+```
+
+`page.title` is an optional property. Use it to give your page a human readable title which will show up in the browser tab title after your app title.
 
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.forcedTitle`
 
-`page.forcedTitle` is an optional property of type string. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
+```ts
+win.appPages = {
+  '/login': {
+    forcedTitle: 'Enter login info'
+  }
+};
+```
+
+`page.forcedTitle` is an optional property. Use it when you want to set the browser tab title yourself for the page that is currently displayed of course.  
 Normally, the browser tab title is a merge of the app title, the page title, and other information pertinent to the page that is currently rendered. However, with `page.forcedTitle`, you can override that merge and set the tab title to be exactly what you want it to be.
 
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.appBar`
 
-`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own app using the `page.appBar` property.
+```ts
+win.appPages = {
+  '/login': {
+    appBar: { /* ... */ }
+  }
+};
+```
+
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own appBar using the `page.appBar` property.
 
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.background`
 
-`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable `appBackground`](#global-variable-appbackground) for more information.
+```ts
+win.appPages = {
+  '/login': {
+    background: { /* ... */ }
+  }
+};
+```
+
+`page.background` is an optional property which contains an object that defines the page background. Use it to give a page its own background. You can set the background color of a page or put an image in the background. See the [global variable section](#global-variable-appbackground) for more information.
 
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.typography`
 
+```ts
+win.appPages = {
+  '/login': {
+    typography: { /* ... */ }
+  }
+};
+```
+
 `page.typography` is an optional property which contains an object that defines the font for the specific page which can be different from other pages.  
 See the [global variable section](#global-variable-apptypography) for more information.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.content`
+
+```ts
+win.appPages = {
+  '/login': {
+    content: '$form : login : users'
+  }
+};
+```
+
+`page.content` is required if you want anything to be displayed on your page. A page is nothing without content.
+
+*TODO: Give a list of possible page content types here. As of now, the only valid one is $form but there may be more.*
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.drawer`
+
+```ts
+win.appPages = {
+  '/login': {
+    drawer: { /* ... */ }
+  }
+};
+```
+
+Use `page.drawer` to give your page its own unique drawer with its links. See the drawer object documentation.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.layout`
+
+```ts
+win.appPages = {
+  '/login': {
+    layout: 'LAYOUT_CENTERED_NO_SCROLL'
+  }
+};
+```
+
+Use `page.layout` to align the content of your page.
+
+Here is a list of possible values. It will most likely be updated in the future as more layout types are implemented.
+
+- LAYOUT_CENTERED_NO_SCROLL
+- LAYOUT_CENTERED
+- LAYOUT_DEFAULT
+- LAYOUT_TABLE_VIRTUALIZED
+- LAYOUT_NONE
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.hideAppBar`
+
+```ts
+win.appPages = {
+  '/login': {
+    hideAppBar: true
+  }
+};
+```
+
+If your page has an appBar but for some reason you do not want it to be rendered, use `page.hideAppBar` to hide it.  
+It is a good way to remove the appBar without actually deleting it.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.hideDrawer`
+
+```ts
+win.appPages = {
+  '/login': {
+    hideDrawer: true
+  }
+};
+```
+
+If your page has a drawer but for some reason you do not want it to be rendered, use `page.hideDrawer` to hide it. It is a good way to disable the drawer without actually deleting it.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.useDefaultAppBar`
+
+```ts
+win.appPages = {
+  '/login': {
+    useDefaultAppBar: true
+  }
+};
+```
+
+If the default appBar is defined, use `page.useDefaultAppBar` to cause your page to make use of it so that you don't have to give your page its own appBar.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.useDefaultDrawer`
+
+```ts
+win.appPages = {
+  '/login': {
+    useDefaultDrawer: true
+  }
+};
+```
+
+If the default drawer is defined, use `page.useDefaultDrawer` to cause your page to make use of it so that you don't have to give your page its own drawer.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.useDefaultBackground`
+
+```ts
+win.appPages = {
+  '/login': {
+    useDefaultBackground: true
+  }
+};
+```
+
+If the default background is defined, use `page.useDefaultBackground` to cause your page to make use of it so that you don't have to give it a background.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.useDefaultTypography`
+
+```ts
+win.appPages = {
+  '/login': {
+    useDefaultTypography: true
+  }
+};
+```
+
+If the default typography object is defined, use `page.useDefaultTypography` to cause your page to make use of it so you won't have to define its own typography object.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.inherited`
+
+```ts
+win.appPages = {
+  '/login': {
+    inherited: ''
+  }
+};
+```
+
+`page.inherited` might not be in use. There's a good chance that it can be removed in the near future.
+
+*TODO: Test this property to ensure that it does what its suppose to do or remove it.*
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.appBarInherited`
+
+```ts
+win.appPages = {
+  '/home': {
+    appBar: { /* ... */ }
+  },
+  '/login': {
+    appBarInherited: '/home' // <-- here
+  }
+};
+```
+
+If you want your page to inherit the appBar of a specific page, use `page.appBarInherited` to do it.
+In the code example, the '/login' page is inheriting the appBar of the '/home' page.
+
+**NOTE:** the '/home' page must have its own appBar defined for this to work.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.drawerInherited`
+
+```ts
+win.appPages = {
+  '/home': {
+    drawer: { /* ... */ }
+  },
+  '/login': {
+    drawerInherited: '/home' // <-- here
+  }
+};
+```
+
+If you want your page to inherit the drawer of a specific page, use `page.drawerInherited` to do it.
+In the code example, the '/login' page is inheriting the drawer of the '/home' page.
+
+**NOTE:** the '/home' page must have its own drawer defined for this to work.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.contentInherited`
+
+```ts
+win.appPages = {
+  '/home': {
+    content: ''
+  },
+  '/login': {
+    contentInherited: '/home' // <-- here
+  }
+};
+```
+
+**WARNING:** `page.contentInherited` might not be in use.
+
+*TODO: Ensure that `page.contentInherited` works as its suppose to or remove it.*
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.backgroundInherited`
+
+```ts
+win.appPages = {
+  '/home': {
+    background: { /* ... */ }
+  },
+  '/login': {
+    backgroundInherited: '/home' // <-- here
+  }
+};
+```
+
+If you want your page to inherit the background of a specific page, use `page.backgroundInherited` to do it.
+In the code example, the '/login' page is inheriting the background of the '/home' page.
+
+**NOTE:** the '/home' page must have its own background defined for this to work.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.data`
+
+```ts
+win.appPages = {
+  '/login': {
+    data: { /* ... */ }
+  }
+};
+```
+
+If you want to store data in a page, this is how to do it. `page.data` can contain anything.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.meta`
+
+```ts
+win.appPages = {
+  '/login': {
+    data: { /* ... */ }
+  }
+};
+```
+
+If you want to store metadata in a page, this is how to do it. `page.meta` can contain anything.
+
+[[back](#page-object)] [[top](#web-ui)]
+
+#### `page.links`
+
+```ts
+win.appPages = {
+  '/login': {
+    links: { /* ... */ }
+  }
+};
+```
+
+`page.links` might not be in use.
+
+*TODO: Ensure that page links does what its suppose to do.*
 
 [[back](#page-object)] [[top](#web-ui)]
 
