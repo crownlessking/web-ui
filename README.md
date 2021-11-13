@@ -27,7 +27,7 @@
       - [Add *html* snippets to form](#add-html-snippets-to-form)
   - [How to submit the data in your form](#how-to-submit-the-data-in-your-form)
   - [How to customize page background](#how-to-customize-page-background)
-  - [How to customize `content` layout](#how-to-customize-content-layout)
+  - [How to customize page `content` layout](#how-to-customize-page-content-layout)
 - [Navigation](#navigation)
   - [Link object properties](#link-object-properties)
 - [Drawer](#drawer)
@@ -387,6 +387,26 @@ win.appForm = {
 };
 ```
 
+*TODO: Update the `onClick` property so it would accept a string handle pointing to the callback to be used.*
+
+i.e.
+
+```ts
+win.appForm = {
+  loginForm: {
+    items: [
+      {
+        type: 'button',
+        value: 'Click me',
+        onClick: 'ffd7v199.loginForm.clickme' // <-- path to 
+      }
+    ]
+  }
+};
+```
+
+In the previous code example, `clickme()` is a callback located in an object named `loginForm` which is located in another object named `ffd7v199`.
+
 [[top](#web-ui)]
 
 ##### Add *submit button* to form
@@ -684,11 +704,23 @@ Maybe you want your page to have a unique background that won't be found on any 
 
 [[top](#web-ui)]
 
-#### How to customize `content` layout
+#### How to customize page `content` layout
 
-Notice that the fields in your form are not as well aligned as you'd like them to be? You can reposition your form using the `layout` property of the page object.
+```ts
+(function (win) {
 
-**TODO:** Finish this.
+win.appPages = {
+  login: {
+    layout: 'LAYOUT_CENTERED_NO_SCROLL'
+  }
+};
+
+})(window);
+```
+
+If you want to change the way your form is aligned on the page, you can use [`page.layout`](#pagelayout) to change the alignment.
+
+[[top](#web-ui)]
 
 ## Navigation
 
