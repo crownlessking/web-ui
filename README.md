@@ -31,6 +31,7 @@
 - [Navigation](#navigation)
   - [Link object properties](#link-object-properties)
 - [Drawer](#drawer)
+  - [How to define a drawer](#how-to-define-a-drawer)
 - [Layout](#layout)
 - [Dialog](#dialog)
 - [Spinner](#spinner)
@@ -818,7 +819,64 @@ win.appPages = {
 
 ## Drawer
 
-This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.
+Use `drawer` to give your page a sidebar. (This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.)
+
+Unlike `appBackground` there is no default drawer. However, you can define a drawer for a page then have other pages inherit it with the property `page.drawerInherited`.
+
+### How to define a drawer.
+
+To give your page a drawer, use the `page.drawer` property.
+
+```ts
+(function (win) {
+
+win.appPages = {
+
+  // page object
+  '/home': {
+    drawer: { } // <-- here
+  }
+
+};
+
+})(window);
+```
+
+Now, let's insert an icon link in the drawer. We use the `items` property to do that.
+
+```ts
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [ ]
+    }
+  }
+}
+```
+
+`items` is an array of link objects. An icon is a link object with the type set to * *icon* *.
+
+```ts
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [
+        {
+          type: 'icon',
+          onClick: (redux: IRedux) => e => void
+          has: {
+            text: 'Create a new user',
+            icon: 'person_add_outline',
+            route: '/debug/testForm/newUser'
+          }
+        }
+      ]
+    }
+  }
+};
+```
+
+*TODO: Something feels off. I'd recommend testing drawer icon as a refresher on how they work.*
 
 [[top](#web-ui)]
 
@@ -1141,7 +1199,10 @@ win.appPages = {
 ```ts
 win.appPages = {
   '/login': {
-    background: { /* ... */ }
+    background: {
+      type: 'color',
+      value: '#fafafa'
+    }
   }
 };
 ```
@@ -1155,7 +1216,9 @@ win.appPages = {
 ```ts
 win.appPages = {
   '/login': {
-    typography: { /* ... */ }
+    typography: {
+      color: '#606060'
+    }
   }
 };
 ```
