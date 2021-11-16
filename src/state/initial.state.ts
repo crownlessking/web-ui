@@ -41,6 +41,9 @@ export default {
    */
   'app': _.extend({
 
+    /** Whether the app is in debugging mode or not */
+    'inDebugMode': false,
+
     /**
      * URI of the server to which the app will make requests and receive
      * responses

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {
   APP_CONTENT_FORM, APP_CONTENT_WEBAPP, APP_CONTENT_VIEW, APP_CONTENT_HTML
 } from '../controllers'
@@ -10,6 +10,15 @@ import { FormItems } from '../mui4/form/items'
 import WebApp from '.'
 import View from './view.component'
 import StatePage from '../state/pages/page.controller'
+import {
+  createStyles, withStyles, WithStyles
+} from '@material-ui/core'
+
+const styles = () => createStyles({
+  htmlContent: {
+    width: '100%'
+  }
+})
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -23,21 +32,17 @@ export interface IContentState {
   statePage: IStatePage
 }
 
-interface IProps {
+interface IProps extends WithStyles<typeof styles> {
   def: StatePage
 }
 
 /**
  * Application content
  */
-export default class Content extends React.Component<IProps> {
+export default withStyles(styles)(class Content extends Component<IProps> {
 
   render() {
-    const { def: page } = this.props
-
-    if (!page.content) {
-      return ( null )
-    }
+    const { def: page, classes } = this.props
 
     const type = page.contentType.toLowerCase()
     let contentJsx: JSX.Element | null
@@ -70,16 +75,22 @@ export default class Content extends React.Component<IProps> {
       currentContentJsx = contentJsx
       break
 
-    // TODO add more cases here for different types of content
+    // [TODO] add more cases here for different types of content
 
+    /*
+     * [TODO] Implement a solution for loading html files from server
+     *        possible solution at:
+     *        https://stackoverflow.com/questions/3535055/load-html-file-contents-to-div-without-the-use-of-iframes/3535126        
+     */
     case APP_CONTENT_HTML:
       const domElement = document.getElementById(page.contentName)
 
       if (domElement) {
         currentContentJsx = contentJsx = (
-          <div dangerouslySetInnerHTML={{
-            __html: domElement.innerHTML
-          }} />
+          <div
+            dangerouslySetInnerHTML={{__html: domElement.innerHTML}}
+            className={classes.htmlContent}
+          />
         )
       } else {
         currentContentJsx = contentJsx = ( null )
@@ -95,4 +106,4 @@ export default class Content extends React.Component<IProps> {
     return contentJsx
   } // END render()
 
-}
+})

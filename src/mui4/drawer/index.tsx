@@ -132,11 +132,11 @@ class MiniDrawer extends React.Component<IProps, { open: boolean }> {
         ) :
         ( null ) }
         <List classes={{ root: classes.list }}>
-          { items.map((item, index) => (
+          { items.map((item, i) => (
             <ListItem
-              key={index + 1}
+              key={i + 1}
               button
-              onClick={item.onClick({store, actions})}
+              onClick={item.onClick({store, actions, route: item.has.route})}
               component={RouterLink as any}
               to={getFormattedRoute(item)}
             >

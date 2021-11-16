@@ -49,7 +49,7 @@ export default class StateAllForms extends Controller {
       return formDef
     }
 
-    throw new Error(`Form '${name}'Name does not exist.`)
+    throw new Error(`${formName} does not exist.`)
   }
 
   /**

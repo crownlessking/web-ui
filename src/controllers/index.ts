@@ -20,6 +20,7 @@ export const APP_CONTENT_HTML = '$html'
 // miscellanous
 
 export const DEFAULT = 'DEFAULT'
+export const CONTENT_PAGE_NOT_FOUND = 'CONTENT_PAGE_NOT_FOUND'
 
 /**
  * If a callback is required for a link or button but is not defined, then this

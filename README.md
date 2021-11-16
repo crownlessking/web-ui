@@ -863,7 +863,7 @@ win.appPages = {
       items: [
         {
           type: 'icon',
-          onClick: (redux: IRedux) => e => void
+          onClick: (redux: IRedux) => e => void,
           has: {
             text: 'Create a new user',
             icon: 'person_add_outline',
@@ -876,7 +876,16 @@ win.appPages = {
 };
 ```
 
-*TODO: Something feels off. I'd recommend testing drawer icon as a refresher on how they work.*
+`onClick` use it to set the callback to be executed when the link is clicked.
+
+`has` Custom property for inputing additional information when defining a links object.
+* `text` link text
+* `icon` link icon
+* `route` updates URL of the browser's global bar.
+
+
+
+*TODO: Something feels off. I'd recommend testing drawer icon as a refresher on how it work.*
 
 [[top](#web-ui)]
 

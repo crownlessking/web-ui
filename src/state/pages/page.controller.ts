@@ -8,8 +8,9 @@ import StatePageAppBar from './appbar.c'
 import StatePageBackground from './background.c'
 import StatePageTypography from './typography.c'
 import StatePageDrawer from './drawer.c'
-import { mongoObjectId } from '../../controllers'
+import { APP_CONTENT_HTML, mongoObjectId, CONTENT_PAGE_NOT_FOUND } from '../../controllers'
 import _ from 'lodash'
+import Config from '../../config'
 
 export const HARD_CODED_PAGE = '613a6550a5cf801a95fb23c8'
 
@@ -243,6 +244,7 @@ export default class StatePage extends StateController implements IStatePage {
    */
   parseContent = (content?: string): IStatePageContent => {
     const options = (content || this.content).replace(/\s+/g,'').split(':')
+
     if (options.length >= 3) {
       return {
         type: options[0],
@@ -251,6 +253,16 @@ export default class StatePage extends StateController implements IStatePage {
         args: options[3] || ''
       }
     }
+
+    if (!Config.DEBUG) { // if app not in debug mode
+      return {
+        type: APP_CONTENT_HTML,
+        name: CONTENT_PAGE_NOT_FOUND,
+        endpoint: 'n/a',
+        args: ''
+      }
+    }
+
     throw new Error('Invalid `page` content definition')
   }
 

@@ -15,29 +15,6 @@ import Config from '../../config'
 let handle: any
 
 /**
- * Parses the definition `string` found in `pageState.content`
- * e.g. the page definition object
- *
- * @param content
- *
- * @deprecated
- */
-export function parseContent(content?: string) {
-  if (content) {
-    const options = content.replace(/\s+/g,'').split(':')
-    if (options.length >= 3) {
-      return {
-        type: options[0],
-        name: options[1],
-        endpoint: options[2],
-        args: options[3] || ''
-      }
-    }
-  }
-  throw new Error('Invalid `page` content definition')
-}
-
-/**
  * Get the form state name
  *
  * __Problem__: We needed a way to get the `formName` without the use of any
@@ -159,6 +136,10 @@ export default class StateApp extends StateController implements IStateApp {
         : this.appJson.origin + '/'
     }
     return window.location.origin + '/'
+  }
+
+  get inDebugMode() {
+    return this.appJson.inDebugMode
   }
 
   get origin() {

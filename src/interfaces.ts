@@ -418,13 +418,18 @@ export interface IStateAllPages {
  * App information state.
  */
 export interface IStateApp {
+
+  /** If app is in debug mode or not */
+  inDebugMode: boolean
+
   origin: string
   route: string
-  showSpinner?: boolean
-  status?: string
 
   /** web page title: It will be displayed if a logo was NOT provided. */
   title: string
+
+  showSpinner?: boolean
+  status?: string
 
   /** Image src of appbar logo */
   logo?: string
