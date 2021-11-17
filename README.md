@@ -31,7 +31,12 @@
 - [Navigation](#navigation)
   - [Link object properties](#link-object-properties)
 - [Drawer](#drawer)
+  - [Drawer mechanics](#drawer-mechanics)
   - [How to define a drawer](#how-to-define-a-drawer)
+  - [Drawer link (icon) example](#drawer-link-icon-example)
+    - [Drawer link using `link.has.route`](#drawer-link-using-linkhasroute)
+    - [Drawer link using `link.onClick`](#drawer-link-using-linkonclick)
+    - [Drawer link using `link.has.handle`](#drawer-link-using-linkhashandle)
 - [Layout](#layout)
 - [Dialog](#dialog)
 - [Spinner](#spinner)
@@ -600,7 +605,7 @@ win.appForms = {
 };
 ```
 
-Here we display a title to in our login form. We also by using CSS and applying the `<h2>` tag.
+Here we display a title in our login form. We also use CSS to center the `<h2>` tag.
 
 [[top](#web-ui)]
 
@@ -819,9 +824,12 @@ win.appPages = {
 
 ## Drawer
 
-Use `drawer` to give your page a sidebar. (This is the sidepanel, the [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.)
+Use `drawer` to give your page a sidebar. (This is the sidepanel. The [minidrawer](https://material-ui.com/components/drawers/#mini-variant-drawer) has been implemented.)
 
-Unlike `appBackground` there is no default drawer. However, you can define a drawer for a page then have other pages inherit it with the property `page.drawerInherited`.
+### Drawer mechanics
+
+Pages will automatically inherit the drawer of the previous page, if they do not have their own drawer defined. As in, if you are currently on a page that has a drawer and you click on a link to load another page, if that other page does not have a drawer, then the drawer from the previous page will still be visible.  
+You can also define a drawer for a page then have other pages inherit it with the property [`page.drawerInherited`](#pagedrawerinherited).
 
 ### How to define a drawer.
 
@@ -851,41 +859,114 @@ win.appPages = {
       items: [ ]
     }
   }
-}
+};
 ```
 
-`items` is an array of link objects. An icon is a link object with the type set to * *icon* *.
+[[top](#web-ui)]
+
+### Drawer link (icon) example
+
+`items` is an array of link objects. An icon is a link object with its type set to * *icon* *.
+
+#### Drawer link using `link.has.route`
 
 ```ts
 win.appPages = {
   '/home': {
     drawer: {
       items: [
+
+        // link object
         {
           type: 'icon',
-          onClick: (redux: IRedux) => e => void,
           has: {
-            text: 'Create a new user',
-            icon: 'person_add_outline',
-            route: '/debug/testForm/newUser'
+            text: 'Create a new user', // link text
+            icon: 'person_add_outline', // link icon
+
+            // this page will be loaded when the link is clicked.
+            route: '/debug/testForm/newUser',
           }
-        }
+        },
+
+        // ...more link objects
       ]
     }
   }
 };
 ```
 
-`onClick` use it to set the callback to be executed when the link is clicked.
+`link.has.route` contains a page name. When the link is clicked, that page is automatically loaded if it exists. Also updates URL of the browser's omnibar.
 
-`has` Custom property for inputing additional information when defining a links object.
-* `text` link text
-* `icon` link icon
-* `route` updates URL of the browser's global bar.
+[[top](#web-ui)]
 
+#### Drawer link using `link.onClick`
 
+```ts
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [
 
-*TODO: Something feels off. I'd recommend testing drawer icon as a refresher on how it work.*
+        // link object
+        {
+          type: 'icon',
+
+          // callback to be executed when the link is clicked.
+          onClick: (redux: IRedux) => e => void,
+
+          has: {
+            text: 'Create a new user', // link text
+            icon: 'person_add_outline', // link icon
+          }
+        },
+
+        // ...more link objects
+      ]
+    }
+  }
+};
+```
+
+If you define your drawer using pure JavaScript, you can use `link.onClick` to set the callback to be executed when the link is clicked.
+
+However, if the link definition is loaded remotely, it should be sent from server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of property beginning with a global variable name.  
+
+**WARNING:** `link.onClick` will takes precedence over `link.has.route` if you define both.
+
+[[top](#web-ui)]
+
+#### Drawer link using `link.has.handle`
+
+```ts
+(function (win) {
+
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [
+
+        // link object
+        {
+          type: 'icon',
+          has: {
+            text: 'Create a new user', // link text
+            icon: 'person_add_outline', // link icon
+            handle: 'callbacks.createNewUser' // <-- over here
+          }
+        },
+
+        // ...more link objects
+      ]
+    }
+  }
+};
+
+})(window);
+```
+
+In the previous example, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
+
+**WARNING:** `link.onClick` will take precedence over `link.has.handle` which will takes precedence over `link.has.route` if all three are defined.
 
 [[top](#web-ui)]
 
