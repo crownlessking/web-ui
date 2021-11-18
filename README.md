@@ -51,19 +51,20 @@
   - [Page object](#page-object)
   - [Form item (field) object](#form-item-field-object)
   - [Dialog object](#dialog-object)
+- [Callback](#callback)
 
 ## Purpose
 
 The purpose of this project is to quickly put together a single-page app for making request to an arbitrary REST API.
 With _web-ui_ you could create several forms (as a single-page app) to gather information which can then be sent to your API.
 
-Instead of HTML, you will use JSON and in some cases, JavaScript to define your single-page app.
+Instead of HTML, you will use JSON and in some cases, JavaScript to create the single-page app.
 
 [[top](#web-ui)]
 
 ## First things first
 
-Give your app the URL at which your API is located. In the `index.html` define the object `appInfo`. It has a property called `origin`. You can use it to set the URL of your API:
+Give your app the URL at which your API is located. In the `index.html` define the global variable `appInfo`. It is an object and has a property called `origin`. You can use it to set the URL of your API:
 
 ```js
 var appInfo = {
@@ -74,6 +75,8 @@ var appInfo = {
 [[top](#web-ui)]
 
 ### Inline JavaScript Example
+
+You can define `appInfo` in your index.html file:
 
 ```html
 <html>
@@ -101,15 +104,17 @@ var appInfo = {
 
 ### JavaScript From File Example
 
-You can also define `appInfo.origin` in a separate JavaScript file. For example, create a custom JavaScript file and add the following code:
+You can also define `appInfo` in a separate JavaScript file. For example, create a custom JavaScript file and add the following code:
 
 ```javascript
 // In your custom js file do:
 
 (function (win) {
-  win.appInfo = {
-    'origin': 'http://www.mydomain.com/'
-  };
+
+win.appInfo = {
+  'origin': 'http://www.mydomain.com/'
+};
+
 }(window));
 ```
 
@@ -238,7 +243,7 @@ win.appForms = {
 };
 ```
 
-The property `items` is an array containing the fields definition.
+The property `items` is an array containing the field definitions.
 
 [[top](#web-ui)]
 
@@ -287,7 +292,7 @@ win.appForms = {
         type: 'text',
         label: 'Username',
         name: 'username',
-        margin: 'normal',
+        margin: 'normal', // material-ui margin
       },
 
       // Object defining the password field
@@ -324,7 +329,8 @@ win.loginForms = {
   items: [
     {
       type: 'text',
-      name: '',
+      label: 'Username',
+      name: 'username',
       has: {
         defaultValue: '' // <-- this
       }
@@ -337,8 +343,8 @@ win.loginForms = {
 
 #### Default page
 
-Now that the login form is defined, we want to display the login page so we can see the login form. The login-page should be the first page to be displayed when we fire up the web app.  
-To do that, we need to tell the app the the login-page is the default page.  
+Now that we have created the login form, we want to display the login page so we can see it. The login page should automatically be displayed when we fire up the web app.  
+To do that, we need to tell the app the the login page is the default page.  
 We can do that by setting the `route` property of `appInfo`.
 
 ```ts
@@ -353,7 +359,7 @@ win.appInfo = {
 
 Give the `route` property the name of the page which is * *login* * in our example and we are all set.
 
-When the app is launched, the login page will be shown if every is correct. Just save the changes and refresh the browser tab.
+When the app is launched, the login page will be shown if every is correct and you should see the login form. Save the changes and refresh the browser tab if you have to.
 
 [[top](#web-ui)]
 
@@ -393,25 +399,7 @@ win.appForm = {
 };
 ```
 
-*TODO: Update the `onClick` property so it would accept a string handle pointing to the callback to be used.*
-
-i.e.
-
-```ts
-win.appForm = {
-  loginForm: {
-    items: [
-      {
-        type: 'button',
-        value: 'Click me',
-        onClick: 'ffd7v199.loginForm.clickme' // <-- path to 
-      }
-    ]
-  }
-};
-```
-
-In the previous code example, `clickme()` is a callback located in an object named `loginForm` which is located in another object named `ffd7v199`.
+See the [callback](#callback) section to properly setup `onClick`.
 
 [[top](#web-ui)]
 
@@ -430,7 +418,7 @@ win.appForm = {
 };
 ```
 
-It's similar to a _button_ except that a default callback is provided if one was not implemented.
+Similar to a _button_ except that a default callback is provided if none was implemented.
 
 [[top](#web-ui)]
 
@@ -1608,7 +1596,7 @@ var formItem = {
 };
 ```
 
-A `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem`. Go back to [this section](#add-field-to-form) for a quick reminder.
+The `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem` objects. Go back to [this section](#add-field-to-form) for a quick reminder.  
 
 ##### `formItem.type`
 
@@ -2002,3 +1990,5 @@ dialog.onSubmit = (redux: IRedux) => e => void
 The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback.
 
 [[back](#dialog-object)] [[top](#web-ui)]
+
+## Callback
