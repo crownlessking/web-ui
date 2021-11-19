@@ -96,6 +96,47 @@ export function getRoute(stateRoute: string, pathname: string, status?: string) 
   return status === APP_SWITCHED_PAGE ? stateRoute : pathname
 }
 
+export function getOriginValidation(origin: string) {
+  return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
+      .test(origin)
+}
+
+/**
+ * Get location origin URL.
+ *
+ * @returns string
+ */
+export function getLocationOrigin() {
+  return window.location.origin + '/'
+}
+
+/**
+  * Ensures the origin URL is valid and has an ending forward slash.
+  *
+  * @returns string
+  */
+function getOriginEndingFixed(origin: string, originIsValid: boolean) {
+  if (originIsValid) {
+    const endingChar = origin.charAt(origin.length - 1)
+
+    return endingChar === '/' ?  origin : origin + '/'
+  }
+
+  return getLocationOrigin()
+}
+
+/**
+ * Get the origin URL determined to be valid.
+ *
+ * @returns string
+ */
+export function getOrigin() {
+  const userOrigin = store.getState().app.origin
+  const originIsValid = getOriginValidation(userOrigin)
+
+  return getOriginEndingFixed(userOrigin ,originIsValid)
+}
+
 export default class StateApp extends StateController implements IStateApp {
 
   private appJson: IStateApp
@@ -107,8 +148,7 @@ export default class StateApp extends StateController implements IStateApp {
     super()
     this.appJson = app
     this.parentObj = parent
-    this.originValidation = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
-        .test(this.appJson.origin)
+    this.originValidation = getOriginValidation(this.appJson.origin)
   }
 
   /**
@@ -121,30 +161,16 @@ export default class StateApp extends StateController implements IStateApp {
    */
   get parent() { return this.parentObj }
 
-  /**
-   * Ensures the origin URL is valid and has an ending forward slash.
-   *
-   * @returns string
-   */
-  private getOriginEndingFixed() {
-    if (this.originIsValid()) {
-      const endingChar = this.appJson.origin.charAt(
-        this.appJson.origin.length - 1
-      )
-      return endingChar === '/'
-        ?  this.appJson.origin
-        : this.appJson.origin + '/'
-    }
-    return window.location.origin + '/'
-  }
-
   get inDebugMode() {
     return this.appJson.inDebugMode
   }
 
   get origin() {
     return this.appOrigin || (
-      this.appOrigin = this.getOriginEndingFixed()
+      this.appOrigin = getOriginEndingFixed(
+        this.appJson.origin,
+        this.originValidation
+      )
     )
   }
 
@@ -167,6 +193,10 @@ export default class StateApp extends StateController implements IStateApp {
    * @returns returns `true` if origin is a valid URL.
    */
   originIsValid = () => {
+
+    // If you're running this project from localhost, the origin validation
+    // will always fail unless the app is in debugging mode hence the
+    // Config.DEBUG check.
     return this.originValidation || Config.DEBUG
   }
 

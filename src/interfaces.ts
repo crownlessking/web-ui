@@ -677,11 +677,14 @@ export interface IStateFormItemCustom<T = any> {
    */
   defaultValue?: string
 
+  /** Display a Material UI icon */
+  icon?: string
+
   /** Display a Font-Awesome icon */
   faIcon?: string
 
-  /** Display a Material UI icon */
-  icon?: string
+  /** Display a material design icon */
+  matIcon?: string
 
   /**
    * #1 Whether the icon within the button should be located to the left or

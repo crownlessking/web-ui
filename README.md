@@ -883,7 +883,9 @@ win.appPages = {
 };
 ```
 
-`link.has.route` contains a page name. When the link is clicked, that page is automatically loaded if it exists. Also updates URL of the browser's omnibar.
+`link.has.route` contains a page name. When the link is clicked, that page is automatically loaded if it exists. Also updates the URL in the browser's omnibar.
+
+That's all well and good but what if you want the icon link to do something else other than load another page?
 
 [[top](#web-ui)]
 
@@ -915,9 +917,12 @@ win.appPages = {
 };
 ```
 
-If you define your drawer using pure JavaScript, you can use `link.onClick` to set the callback to be executed when the link is clicked.
+If you define your drawer using JavaScript or TypeScript, you can use `link.onClick` to set the callback to be executed when the link is clicked.
 
-However, if the link definition is loaded remotely, it should be sent from server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of property beginning with a global variable name.  
+However, if the link definition is loaded remotely, it should be sent from the server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of properties beginning with a global variable name.  
+
+* See the [`callback`](#callback) section for information on how to create a proper callback function.
+* *TODO: After you have updated the code to make use of the [new material icon sets](https://mui.com/components/material-icons/), come back here and document on how to use these new icons.*
 
 **WARNING:** `link.onClick` will takes precedence over `link.has.route` if you define both.
 
@@ -1992,3 +1997,5 @@ The `dialog.onSubmit` property is currently not in use but it's intended purpose
 [[back](#dialog-object)] [[top](#web-ui)]
 
 ## Callback
+
+*TODO: When documenting this section, don't forget to give a list of all possible redux functions that can be used.*
