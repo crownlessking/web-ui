@@ -9,6 +9,7 @@ import { getDudEventCallback } from '../../../controllers'
 import JsonIcon from '../../json.icons'
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
+import Config from '../../../config'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -26,38 +27,44 @@ const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
 function Adornment(
   { def, reference }: { def: StateFormItem, reference: React.RefObject<any> }
 ) {
-  const the = def.has
-  const { adornment } = the
+  const { adornment } = def.has
 
   if (adornment) {
-    const { type, position } = adornment
+    try {
+      const { type, position } = adornment
+  
+      if (type === 'text') {
+        const { value } = adornment
+  
+        return (
+          <InputAdornment position={position}>
+            { value }
+          </InputAdornment>
+        )
+  
+      } else if (type === 'button') {
+        const { buttonProps } = adornment
+        const callback = adornment.callback || getDudEventCallback
+  
+        return (
+          <InputAdornment position={position}>
+            <IconButton
+              onClick={callback(reference.current)}
+              onMouseDown={handleMouseDown}
+              {...buttonProps}
+            >
+              <JsonIcon json={def} />
+            </IconButton>
+          </InputAdornment>
+        )
+      }
+    } catch (e: any) {
+      if (Config.DEBUG) {
+        console.error(e.stack)
+      }
 
-    if (type === 'text') {
-      const { value } = adornment
-
-      return (
-        <InputAdornment position={position}>
-          { value }
-        </InputAdornment>
-      )
-
-    } else if (type === 'button') {
-      const { buttonProps } = adornment
-      const callback = adornment.callback || getDudEventCallback
-
-      return (
-        <InputAdornment position={position}>
-          <IconButton
-            onClick={callback(reference.current)}
-            onMouseDown={handleMouseDown}
-            {...buttonProps}
-          >
-            <JsonIcon json={def.json} />
-          </IconButton>
-        </InputAdornment>
-      )
+      return ( null )
     }
-
   }
 
   return ( null )

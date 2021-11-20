@@ -118,6 +118,11 @@ export default class StateFormItemCustom<P, T = any>
    */
   get adornment() { return this.hasJson.adornment }
 
+  /**
+   * Icon component props.
+   */
+  get props() { return this.hasJson.props || {} }
+
   set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb }
 
   /**

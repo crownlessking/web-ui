@@ -169,7 +169,7 @@ export default class StateApp extends StateController implements IStateApp {
     return this.appOrigin || (
       this.appOrigin = getOriginEndingFixed(
         this.appJson.origin,
-        this.originValidation
+        this.originIsValid() // this.originValidation
       )
     )
   }

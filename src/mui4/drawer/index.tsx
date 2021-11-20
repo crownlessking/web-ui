@@ -10,7 +10,7 @@ import List from '@material-ui/core/List'
 // import Divider from '@material-ui/core/Divider'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { IState, IStateLink } from '../../interfaces'
+import { IState } from '../../interfaces'
 import { closeDrawer, openDrawer } from './actions'
 import { connect } from 'react-redux'
 import { getDrawerWidth } from './controller'
@@ -20,6 +20,7 @@ import { getFormattedRoute } from '../../controllers'
 import { Link as RouterLink } from 'react-router-dom'
 import JsonIcon from '../json.icons'
 import StatePage from '../../state/pages/page.controller'
+import StateLink from '../link/controller'
 
 const styles = (theme: Theme) => createStyles({
   drawer: {
@@ -159,12 +160,11 @@ class MiniDrawer extends React.Component<IProps, { open: boolean }> {
  * <JsonDrawerIcon key={index+1} json={item} />
  * @param props 
  */
-export function JsonDrawerIcon ({ json }: { json: IStateLink }) {
-  const has = json.has || {}
+export function JsonDrawerIcon ({ json }: { json: StateLink }) {
   return (
     <ListItemIcon
       color='inherit'
-      aria-label={has.label}
+      aria-label={json.has.json.label}
     >
       <JsonIcon json={json} />
     </ListItemIcon>

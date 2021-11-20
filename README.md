@@ -29,7 +29,7 @@
   - [How to customize page background](#how-to-customize-page-background)
   - [How to customize page `content` layout](#how-to-customize-page-content-layout)
 - [Navigation](#navigation)
-  - [Link object properties](#link-object-properties)
+  - [Appbar link](#appbar-link)
 - [Drawer](#drawer)
   - [Drawer mechanics](#drawer-mechanics)
   - [How to define a drawer](#how-to-define-a-drawer)
@@ -50,6 +50,7 @@
 - [Objects and properties](#objects-and-properties)
   - [Page object](#page-object)
   - [Form item (field) object](#form-item-field-object)
+  - [Link object](#link-object)
   - [Dialog object](#dialog-object)
 - [Callback](#callback)
 
@@ -199,15 +200,15 @@ win.appPages = {
 };
 ```
 
-There are three parts to the `content` property. The first one, `$form` indicates that the page will display a form. The second part, `login` is the name of the form. And the third, `users` is the endpoint at which the data will be sent.<br>
-<br>
+There are three parts to the `content` property. The first one, * $form * indicates that the page will display a form. The second part,  * login * is the name of the form. And the third, * users * is the endpoint at which the data will be sent.  
+
 Ok, we have the name of the form but we have not created it yet.
 
 [[top](#web-ui)]
 
 ### How to create a form
 
-To create the `login` form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
+To create the *login* form, open your custom JavaScript file and look for the variable `appForms`. If it does not exist, create it.
 
 ```javascript
 // Inside your custom js file!
@@ -219,19 +220,19 @@ win.appForms = {}; // <-- there it is!
 })(window);
 ```
 
-Now, let's add a form to it:
+Now, let's add the *login* form to it:
 
 ```js
 win.appForms = {
 
-  loginForm: {}
+  loginForm: {} // <-- here
 
 };
 ```
 
 **NOTE**: All properties of `appForms` must end with the suffix `Form`.
 
-The _login form_ is currently empty. Let's add some fields:
+The *login* form is currently empty. Let's add some fields:
 
 ```js
 win.appForms = {
@@ -274,7 +275,7 @@ is equivalent to:
 </form>
 ```
 
-**WARNING**: That does not work for every field though and some attributes cannot be defined so directly either. For example, it is not possible to set the default value of a field using the `value` attribute.
+**WARNING**: That does not work for every attribute. For example, it is not possible to set the default value of a field using the `value` attribute.
 
 **NOTE:** The field object is also referred to as a `formItem` in code.
 
@@ -322,7 +323,7 @@ win.appForms = {
 
 ##### Set field's default value
 
-If you want your form field to be rendered with a default value, you can do that using the `has` property of the field object.
+If you want your form field to be rendered with a default value, you can do that using the `defaultValue` property of the `has` object.
 
 ```javascript
 win.loginForms = {
@@ -332,20 +333,22 @@ win.loginForms = {
       label: 'Username',
       name: 'username',
       has: {
-        defaultValue: '' // <-- this
+        defaultValue: 'john doe' // <-- this
       }
     }
   ]
 };
 ```
 
+In the code example above, the username field will be rendered with "john doe" as its value.
+
 [[top](#web-ui)]
 
 #### Default page
 
-Now that we have created the login form, we want to display the login page so we can see it. The login page should automatically be displayed when we fire up the web app.  
+Now that we have created the *login* form, we want to display the *login* page so we can see it. The *login* page should automatically be displayed when we fire up the web app.  
 To do that, we need to tell the app the the login page is the default page.  
-We can do that by setting the `route` property of `appInfo`.
+This is done by setting the `route` property of `appInfo`.
 
 ```ts
 (function (win) {
@@ -718,7 +721,7 @@ If you want to change the way your form is aligned on the page, you can use [`pa
 
 ## Navigation
 
-This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link, at the very top of the page.
+This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link or the navigation bar at the very top of the page.
 
 If you want your page to have an appbar, define the `appBar` property in your page definition:
 
@@ -756,7 +759,9 @@ win.appPages = {
 })(window);
 ```
 
-`items` is an array of links object. Let's define a link.
+### Appbar link
+
+`items` is an array of link objects. Let's define a link.
 
 ```ts
 // In your custom js file
@@ -774,7 +779,7 @@ win.appPages = {
           type: 'text',
           has: {
             text: 'Login',
-            route: 'login'
+            route: 'login' // <-- jumps to login page
           }
         }
 
@@ -786,27 +791,9 @@ win.appPages = {
 })(window);
 ```
 
-[[top](#web-ui)]
+The `link.has.route` will cause the * *Login* * page to load when the link is clicked.
 
-### Link object properties
-
-- `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
-- `onClick` can be use in non-JSON definition to set the callback of the link.  
-  **Link callback example:**
-  ```ts
-  {
-    'type': 'text',
-    'onClick': function (redux) {
-      return function (e) => { }
-    }
-  }
-  ```
-- `has` custom object that contains properties that are not compatible with HTML tag attributes.
-  - `text` human readable label
-  - `route` permalink value _e.g._ `#route` or relative path url
-    _e.g._ `/users/username`
-  - `icon` material-ui icon
-  - `faIcon` font awesome icon
+Jump to the [link object section](#link-object) for more information on the link object.
 
 [[top](#web-ui)]
 
@@ -844,7 +831,7 @@ Now, let's insert an icon link in the drawer. We use the `items` property to do 
 win.appPages = {
   '/home': {
     drawer: {
-      items: [ ]
+      items: [ ] // <-- here
     }
   }
 };
@@ -885,7 +872,7 @@ win.appPages = {
 
 `link.has.route` contains a page name. When the link is clicked, that page is automatically loaded if it exists. Also updates the URL in the browser's omnibar.
 
-That's all well and good but what if you want the icon link to do something else other than load another page?
+That's all well and good but what if you want the icon link to do something else than load another page?
 
 [[top](#web-ui)]
 
@@ -922,7 +909,7 @@ If you define your drawer using JavaScript or TypeScript, you can use `link.onCl
 However, if the link definition is loaded remotely, it should be sent from the server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of properties beginning with a global variable name.  
 
 * See the [`callback`](#callback) section for information on how to create a proper callback function.
-* *TODO: After you have updated the code to make use of the [new material icon sets](https://mui.com/components/material-icons/), come back here and document on how to use these new icons.*
+* *TODO: Test the icon properties thoroughly and document how to use it in its own section.*
 
 **WARNING:** `link.onClick` will takes precedence over `link.has.route` if you define both.
 
@@ -957,7 +944,7 @@ win.appPages = {
 })(window);
 ```
 
-In the previous example, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
+In the previous example, to describe the value of `link.has.handle`, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
 
 **WARNING:** `link.onClick` will take precedence over `link.has.handle` which will takes precedence over `link.has.route` if all three are defined.
 
@@ -1857,6 +1844,28 @@ Use `formItem.has.adornment` to give further customize your textfield. [[back](#
 ##### `formItem.has.props`
 
 [[back](#formitemhas)] [[top](#web-ui)]
+
+### Link object
+
+- `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
+- `onClick` can be use in non-JSON definition to set the callback of the link.  
+  **Link callback example:**
+  ```ts
+  {
+    'type': 'text',
+    'onClick': function (redux) {
+      return function (e) => { }
+    }
+  }
+  ```
+- `has` custom object that contains properties that are not compatible with HTML tag attributes.
+  - `text` human readable label
+  - `route` permalink value _e.g._ `#route` or relative path url
+    _e.g._ `/users/username`
+  - `icon` material-ui icon
+  - `faIcon` font awesome icon
+
+[[top](#web-ui)]
 
 ### Dialog object
 

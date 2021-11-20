@@ -683,9 +683,6 @@ export interface IStateFormItemCustom<T = any> {
   /** Display a Font-Awesome icon */
   faIcon?: string
 
-  /** Display a material design icon */
-  matIcon?: string
-
   /**
    * #1 Whether the icon within the button should be located to the left or
    *    right of the label.
