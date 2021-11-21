@@ -3,7 +3,6 @@ import { APP_SWITCHED_PAGE, showSpinner } from './actions'
 import { IStateAllForms, IStateApp } from '../../interfaces'
 import StateController from '../../controllers/state.controller'
 import State from '../controller'
-import Config from '../../config'
 
 /**
  * Temporarily holds the handle id of a `setTimeout` function which has been
@@ -115,14 +114,10 @@ export function getLocationOrigin() {
   *
   * @returns string
   */
-function getOriginEndingFixed(origin: string, originIsValid: boolean) {
-  if (originIsValid) {
-    const endingChar = origin.charAt(origin.length - 1)
+function getOriginEndingFixed(origin: string) {
+  const endingChar = origin.charAt(origin.length - 1)
 
-    return endingChar === '/' ?  origin : origin + '/'
-  }
-
-  return getLocationOrigin()
+  return endingChar === '/' ?  origin : origin + '/'
 }
 
 /**
@@ -132,9 +127,8 @@ function getOriginEndingFixed(origin: string, originIsValid: boolean) {
  */
 export function getOrigin() {
   const userOrigin = store.getState().app.origin
-  const originIsValid = getOriginValidation(userOrigin)
 
-  return getOriginEndingFixed(userOrigin ,originIsValid)
+  return getOriginEndingFixed(userOrigin)
 }
 
 export default class StateApp extends StateController implements IStateApp {
@@ -142,13 +136,11 @@ export default class StateApp extends StateController implements IStateApp {
   private appJson: IStateApp
   private parentObj: State
   private appOrigin?: string
-  private originValidation: boolean
 
   constructor(app: IStateApp, parent: State) {
     super()
     this.appJson = app
     this.parentObj = parent
-    this.originValidation = getOriginValidation(this.appJson.origin)
   }
 
   /**
@@ -167,10 +159,7 @@ export default class StateApp extends StateController implements IStateApp {
 
   get origin() {
     return this.appOrigin || (
-      this.appOrigin = getOriginEndingFixed(
-        this.appJson.origin,
-        this.originIsValid() // this.originValidation
-      )
+      this.appOrigin = getOriginEndingFixed(this.appJson.origin)
     )
   }
 
@@ -188,16 +177,5 @@ export default class StateApp extends StateController implements IStateApp {
   get logo() { return this.appJson.logo || ''}
 
   get lastRoute() { return this.appJson.lastRoute || ''}
-
-  /**
-   * @returns returns `true` if origin is a valid URL.
-   */
-  originIsValid = () => {
-
-    // If you're running this project from localhost, the origin validation
-    // will always fail unless the app is in debugging mode hence the
-    // Config.DEBUG check.
-    return this.originValidation || Config.DEBUG
-  }
 
 }

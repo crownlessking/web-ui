@@ -3,6 +3,7 @@ import { SelectProps } from '@material-ui/core/Select'
 import { Store, Action } from 'redux'
 import appActions from './state/actions'
 import { RadioProps } from '@material-ui/core/Radio'
+import { IStateTheme } from './theme.interfaces'
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -549,6 +550,7 @@ export interface IState {
   tmp: { [x: string]: any }
 
   topLevelLinks: IStateTopLevelLinks
+  theme: IStateTheme
 }
 
 /**

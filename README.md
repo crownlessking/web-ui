@@ -34,9 +34,6 @@
   - [Drawer mechanics](#drawer-mechanics)
   - [How to define a drawer](#how-to-define-a-drawer)
   - [Drawer link (icon) example](#drawer-link-icon-example)
-    - [Drawer link using `link.has.route`](#drawer-link-using-linkhasroute)
-    - [Drawer link using `link.onClick`](#drawer-link-using-linkonclick)
-    - [Drawer link using `link.has.handle`](#drawer-link-using-linkhashandle)
 - [Layout](#layout)
 - [Dialog](#dialog)
 - [Spinner](#spinner)
@@ -53,6 +50,9 @@
   - [Link object](#link-object)
   - [Dialog object](#dialog-object)
 - [Callback](#callback)
+  - [Redux](#redux)
+    - [Redux store](#redux-store)
+    - [Redux actions](#redux-actions)
 
 ## Purpose
 
@@ -395,7 +395,7 @@ win.appForm = {
       {
         type: 'button',
         value: 'Click me!',
-        onClick: (redux: IRedux) => e => void
+        onClick: redux => e => void
       }
     ]
   }
@@ -602,19 +602,22 @@ Here we display a title in our login form. We also use CSS to center the `<h2>` 
 
 #### How to submit the data in your form
 
-A callback is supplied by default when you use the _submit_ button type. It will use the URL you have provided at `appInfo.origin` and the endpoint in the `content` property of the page to send the data as a POST request.
-However, it is possible to provide your own callback if you wish... There are several ways to do this. Using JavaScript, you can set the `onClick` or the `has.callback` property of the submit button definition object if the form is defined using JavaScript.
+A callback is supplied by default when you use the * *submit* * button type. It will use the endpoint in the [`page.content`](#pagecontent) property of the page and the URL from which the app was loaded to send the data as a POST request. e.g.
 
-1) Using the `onClick` property:
+If the app resides at http://www.domain-example.com and the endpoint is "users/signing", it will make the POST request to http://www.domain-example.com/users/signing.
+
+However, it is possible to provide your own callback if you wish... There are several ways to do this. You can set the [`formItem.onClick`](#formitemonclick) or the [`formItem.has.callback`](#formitemhascallback) property of the submit button definition object if the form is defined using JavaScript.
+
+1) Using the `formItem.onClick` property:
   ```ts
   win.appForms = {
     loginForm: {
       items: [
 
-        // Submit button definition object
+        // Submit button (formItem) definition object
         {
           type: 'submit',
-          onClick: function(redux: IRedux) {
+          onClick: function(redux) {
             return function (e) { }
           }
         }
@@ -623,17 +626,17 @@ However, it is possible to provide your own callback if you wish... There are se
   };
   ```
 
-2) Using the `has.callback` property:
+2) Using the `formItem.has.callback` property:
   ```ts
   win.appForms = {
     loginForm: {
       items: [
 
-        // Submit button definition object
+        // Submit button (formItem) definition object
         {
           type: 'submit',
           has: {
-            callback: function (redux: IRedux) {
+            callback: function (redux) {
               return function (e) { }
             }
           }
@@ -667,7 +670,7 @@ Then, you need to create your function somewhere. In a separate file would be mo
 
   (function (win) {
 
-  win.yourCustomFunc = function (redux: IRedux) {
+  win.yourCustomFunc = function (redux) {
     return function (e) { }
   }
 
@@ -843,8 +846,6 @@ win.appPages = {
 
 `items` is an array of link objects. An icon is a link object with its type set to * *icon* *.
 
-#### Drawer link using `link.has.route`
-
 ```ts
 win.appPages = {
   '/home': {
@@ -870,83 +871,9 @@ win.appPages = {
 };
 ```
 
-`link.has.route` contains a page name. When the link is clicked, that page is automatically loaded if it exists. Also updates the URL in the browser's omnibar.
+`link.has.route` contains the pathname of a page. When the link is clicked, that page is automatically loaded if it exists. Also updates the URL in the browser's omnibar.
 
-That's all well and good but what if you want the icon link to do something else than load another page?
-
-[[top](#web-ui)]
-
-#### Drawer link using `link.onClick`
-
-```ts
-win.appPages = {
-  '/home': {
-    drawer: {
-      items: [
-
-        // link object
-        {
-          type: 'icon',
-
-          // callback to be executed when the link is clicked.
-          onClick: (redux: IRedux) => e => void,
-
-          has: {
-            text: 'Create a new user', // link text
-            icon: 'person_add_outline', // link icon
-          }
-        },
-
-        // ...more link objects
-      ]
-    }
-  }
-};
-```
-
-If you define your drawer using JavaScript or TypeScript, you can use `link.onClick` to set the callback to be executed when the link is clicked.
-
-However, if the link definition is loaded remotely, it should be sent from the server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of properties beginning with a global variable name.  
-
-* See the [`callback`](#callback) section for information on how to create a proper callback function.
-* *TODO: Test the icon properties thoroughly and document how to use it in its own section.*
-
-**WARNING:** `link.onClick` will takes precedence over `link.has.route` if you define both.
-
-[[top](#web-ui)]
-
-#### Drawer link using `link.has.handle`
-
-```ts
-(function (win) {
-
-win.appPages = {
-  '/home': {
-    drawer: {
-      items: [
-
-        // link object
-        {
-          type: 'icon',
-          has: {
-            text: 'Create a new user', // link text
-            icon: 'person_add_outline', // link icon
-            handle: 'callbacks.createNewUser' // <-- over here
-          }
-        },
-
-        // ...more link objects
-      ]
-    }
-  }
-};
-
-})(window);
-```
-
-In the previous example, to describe the value of `link.has.handle`, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
-
-**WARNING:** `link.onClick` will take precedence over `link.has.handle` which will takes precedence over `link.has.route` if all three are defined.
+Go to the [link object section](#link-object) for more ways to use it.
 
 [[top](#web-ui)]
 
@@ -1582,34 +1509,49 @@ var formItem = {
   label: '',
   name: '',
   margin: '',
+  onClick: redux => e => void
   has: { }, // optional
 
-  // ... any other valid html attribute
+  // ... any other valid html attributes
 };
 ```
 
 The `formItem` object is typically found in a set as an array. `appForm.items` is an array of `formItem` objects. Go back to [this section](#add-field-to-form) for a quick reminder.  
 
-##### `formItem.type`
+[[top](#web-ui)]
 
-The type of the field. Think of it as the value of the `<input>` tag `type` attribute.
+#### `formItem.type`
 
-##### `formItem.label`
+The type of the field.
+
+#### `formItem.label`
 
 Human-readable field description.
 
-##### `formItem.name`
+#### `formItem.name`
 
 When field value is sent to the server, this will be the JSON key which will contain the value of the form field.
 
-##### `formItem.margin`
+#### `formItem.margin`
 
 This property is optional. It increases the margin to the field.
+
+#### `formItem.onClick`
+
+```ts
+var formItem = {
+  type: 'button', // or 'submit'
+  onClick: redux => e => void
+};
+```
+
+Use `formItem.onClick` to give your button a callback to run when it is clicked.
 
 ##### `formItem.has`
 
 ```ts
 formItem.has = {
+  callback: redux => e => void
   content: '', // optional
   color: '', // optional
   defaultValue: '', // optional
@@ -1633,13 +1575,28 @@ formItem.has = {
 
 Custom field settings. It is used to further customize the field.
 
+##### `formItem.has.callback`
+
+```ts
+var formItem = {
+  type: 'button', // or 'submit'
+  has: {
+    callback: redux => e => void
+  }
+};
+```
+
+Similar to `formItem.onClick`. They basically do the same thing, provide a callback to be executed when the button is clicked.
+
+[[back](#formitemhas)] [[top](#web-ui)]
+
 ##### `formItem.has.content`
 
 ```ts
-formItem = {
+var formItem = {
   type: 'html',
   has: {
-    'content': 'Some <strong>html</strong> examples',
+    content: 'Some <strong>html</strong> examples',
   }
 };
 ```
@@ -1807,17 +1764,25 @@ var formItem = {
 };
 ```
 
-Human-readable text to be displayed on the button. [[back](#formitemhas)] [[top](#web-ui)]
+Human-readable text to be displayed on the button.
+
+[[back](#formitemhas)] [[top](#web-ui)]
 
 ##### `formItem.has.key`
+
+*TODO: Write doc.*
 
 [[back](#formitemhas)] [[top](#web-ui)]
 
 ##### `formItem.has.handle`
 
+*TODO: Write doc.*
+
 [[back](#formitemhas)] [[top](#web-ui)]
 
 ##### `formItem.has.load`
+
+*TODO: Write doc.*
 
 [[back](#formitemhas)] [[top](#web-ui)]
 
@@ -1847,25 +1812,116 @@ Use `formItem.has.adornment` to give further customize your textfield. [[back](#
 
 ### Link object
 
+```ts
+var link = {
+  type: 'text', // or icon or textlogo or hybrid or link
+  onClick: redux => e => void,
+  has: {
+    text: 'Click me!', // human-readable link text
+    route: 'pathname-of-page-to-load',
+    icon: 'material-ui-icon',
+    faIcon: 'font-awesome-icon',
+    handle: 'dot-separated-name-of-function'
+  },
+
+  // ...more camel case form of valid html attributes
+};
+```
+
 - `type` of link, can be _text_, _textlogo_, _icon_, _hybrid_, or _link_.
-- `onClick` can be use in non-JSON definition to set the callback of the link.  
+- `onClick` can be use in JavaScript (non-JSON) definition to set the callback of the link.  
   **Link callback example:**
   ```ts
-  {
-    'type': 'text',
-    'onClick': function (redux) {
+  var link = {
+    type: 'text',
+    onClick: function (redux) {
       return function (e) => { }
     }
-  }
+  };
   ```
+  See the [callback section](#callback) for more information.
 - `has` custom object that contains properties that are not compatible with HTML tag attributes.
   - `text` human readable label
-  - `route` permalink value _e.g._ `#route` or relative path url
+  - `route` the URL pathname of the page to load.
     _e.g._ `/users/username`
   - `icon` material-ui icon
   - `faIcon` font awesome icon
 
-[[top](#web-ui)]
+[[back](#link-object)] [[top](#web-ui)]
+
+#### `link.onClick`
+
+```ts
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [
+
+        // link object
+        {
+          type: 'icon',
+
+          // callback to be executed when the link is clicked.
+          onClick: redux => e => void,
+
+          has: {
+            text: 'Create a new user', // link text
+            icon: 'person_add_outline', // link icon
+          }
+        },
+
+        // ...more link objects
+      ]
+    }
+  }
+};
+```
+
+If you define your drawer using JavaScript or TypeScript, you can use `link.onClick` to set the callback to be executed when the link is clicked.
+
+However, if the link definition is loaded remotely, it should be sent from the server as JSON. Since JSON cannot contain callback functions, we cannot rely on the `link.onClick` property. Use the `link.has.handle` instead. It is a string that takes a dot-seperated list of properties beginning with a global variable name.  
+
+* See the [`callback`](#callback) section for information on how to create a proper callback function.
+* *TODO: Test the icon properties thoroughly and document how to use it in its own section.*
+
+**WARNING:** `link.onClick` will takes precedence over `link.has.route` if you define both.
+
+[[back](#link-object)] [[top](#web-ui)]
+
+#### `link.has.handle`
+
+```ts
+(function (win) {
+
+win.appPages = {
+  '/home': {
+    drawer: {
+      items: [
+
+        // link object
+        {
+          type: 'icon',
+          has: {
+            text: 'Create a new user', // link text
+            icon: 'person_add_outline', // link icon
+            handle: 'callbacks.createNewUser' // <-- over here
+          }
+        },
+
+        // ...more link objects
+      ]
+    }
+  }
+};
+
+})(window);
+```
+
+In the previous example, to describe the value of `link.has.handle`, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
+
+**WARNING:** `link.onClick` will take precedence over `link.has.handle` which will takes precedence over `link.has.route` if all three are defined.
+
+[[back](#link-object)] [[top](#web-ui)]
 
 ### Dialog object
 
@@ -1880,7 +1936,7 @@ var dialog = {
   content: '', // optional
   actions: [], // optional
   showActions: true, // optional
-  onSubmit: (redux: IRedux) => e => void // optional [not-in-use]
+  onSubmit: redux => e => void // optional [not-in-use]
 }
 ```
 
@@ -1972,7 +2028,7 @@ dialog.actions = [
     'has': {
       'title': 'Save',
       'color': 'primary',
-      'callback': (redux: IRedux) => e => void
+      'callback': redux => e => void
     }
   }
 ] 
@@ -1998,7 +2054,7 @@ Use `dialog.showActions` to hide the entire actions section of the dialog if it 
 
 ```ts
 // not-in-use
-dialog.onSubmit = (redux: IRedux) => e => void
+dialog.onSubmit = redux => e => void
 ```
 
 The `dialog.onSubmit` property is currently not in use but it's intended purpose is to directly define a callback from which a submit button would automatically be defined in the actions section of the dialog. As in, no need to define any action button if you simply provide a callback.
@@ -2008,3 +2064,10 @@ The `dialog.onSubmit` property is currently not in use but it's intended purpose
 ## Callback
 
 *TODO: When documenting this section, don't forget to give a list of all possible redux functions that can be used.*
+
+### Redux
+
+#### Redux store
+
+#### Redux actions
+

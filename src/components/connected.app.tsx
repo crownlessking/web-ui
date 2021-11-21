@@ -67,7 +67,7 @@ class App extends Component<IProps> {
       const app = this.root.app
 
       // Get a page from server if none was provided.
-      if (app.originIsValid() && this.pageID === HARD_CODED_PAGE) {
+      if (this.pageID === HARD_CODED_PAGE) {
         this.onPostReqHomePageState(app.origin)
       }
     }
