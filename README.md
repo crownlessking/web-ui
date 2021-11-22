@@ -1948,7 +1948,7 @@ dialog.open = true;
 
 Whether the dialog is currently shown or not. That property is normally controlled by redux but giving it the value `true` will cause the dialog to appear immediately.
 
-[[back](#dialog-object)] [[top](#web-ui)]
+[[top](#web-ui)]
 
 #### `dialog.items`
 
