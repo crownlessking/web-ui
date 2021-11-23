@@ -1,6 +1,8 @@
 import { IState } from '../interfaces'
 import { getGlobalVar } from '../controllers'
+import { orange } from '@material-ui/core/colors'
 import _ from 'lodash'
+import { ThemeOptions } from '@material-ui/core'
 
 const DEFAULT_BACKGROUND_COLOR = '#af74b0'
 
@@ -211,6 +213,22 @@ export default {
    *
    * @see https://jsonapi.org/format/#document-resource-object-links
    */
-  'topLevelLinks': {}
+  'topLevelLinks': {},
+
+  /**
+   * For a complete structure of the theme object, visit:
+   *
+   * @link https://v4.mui.com/customization/default-theme/#default-theme
+   */
+  'theme': _.extend({
+    'palette': {
+      'primary': {
+        'main': '#318ee8' // '#808000' // olive
+      },
+      'secondary': {
+        'main': orange[800]
+      },
+    },
+  } as ThemeOptions, getGlobalVar('themeOptions'))
 
 } as IState

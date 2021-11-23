@@ -38,3 +38,10 @@ declare var appDialogs
  * the font of the app.
  */
 declare var appTypography
+
+/**
+ * App theme definition
+ * 
+ * Use it to change app color, font, styles... etc.
+ */
+declare var themeOptions

@@ -16,6 +16,7 @@ import dialogs from './dialogs/reducer'
 import drawer from '../mui4/drawer/reducer'
 import forms from './forms/reducer'
 import snackbar from '../mui4/snackbar/reducer'
+import theme from '../state/theme/theme.reducer'
 import Config from '../config'
 
 /**
@@ -92,6 +93,7 @@ const allReducers = {
   pagesData,
   pages,
   snackbar,
+  theme,
   tmp,
   topLevelLinks,
   typography

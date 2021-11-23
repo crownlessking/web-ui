@@ -389,7 +389,7 @@ win.appForms = {
 ##### Add *button* to form
 
 ```ts
-win.appForm = {
+win.appForms = {
   loginForm: {
     items: [
       {
@@ -401,6 +401,23 @@ win.appForm = {
   }
 };
 ```
+
+* Button variants: `formItem.has.variant`: *contained* | *outlined* | *text*
+  ```ts
+  win.appForms = {
+    loginForm: {
+      items: [
+        {
+          type: 'button',
+          value: 'Click me!',
+          has: {
+            variant: 'contained' // or 'outlined' or 'text'
+          }
+        }
+      ]
+    }
+  };
+  ```
 
 See the [callback](#callback) section to properly setup `onClick`.
 
@@ -549,8 +566,11 @@ win.appForms = {
       {
         type: 'switch',
         name: 'published',
+        disabled: false,
         has: {
-          label: 'Publish'
+          label: 'Publish',
+          color: '', // material-ui color... i think :|
+          text: ''   // switch description
         }
       }
     ]

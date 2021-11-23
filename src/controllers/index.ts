@@ -360,43 +360,14 @@ export function setVal(obj: any, path: string, val: any) {
  * @throws an exception if the global variable name is invalid.
  */
 export function getGlobalVar (varName: string) {
-
-  switch (varName) {
-
-  case 'appInfo':
-    try {
-      return appInfo
-    } catch (e) { return {} }
-
-  case 'appBackground':
-    try {
-      return appBackground
-    } catch (e) { return {} }
-
-  case 'appDialogs':
-    try {
-      return appDialogs
-    } catch (e) { return {} }
-
-  case 'appForms':
-    try {
-      return appForms
-    } catch (e) { return {} }
-
-  case 'appPages':
-    try {
-      return appPages
-    } catch (e) { return {} }
-
-  case 'appTypography':
-    try {
-      return appTypography
-    } catch (e) { return {} }
-
-  
+  try {
+    return (window as { [key: string]: any })[varName]
+  } catch (e: any) {
+    if (Config.DEBUG) {
+      throw new Error (`Global variable "${varName}" does not exist.`)
+    }
   }
-
-  throw new Error (`"${varName}" does not exist.`)
+  return { }
 }
 
 /**

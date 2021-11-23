@@ -6,14 +6,14 @@ import reportWebVitals from './reportWebVitals'
 import { MuiThemeProvider } from '@material-ui/core'
 import { Provider } from 'react-redux'
 import store from './state'
-import theme from './mui4/theme'
+import { createTheme } from '@material-ui/core/styles'
 import { urlUpdatePage } from './state/app/actions'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={createTheme(store.getState().theme)}>
         <Router>
           <Route component={App} />
         </Router>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   Button, Theme, createStyles, WithStyles, withStyles, Icon
 } from '@material-ui/core'
-import { IStateFormItemCustom } from '../../../../interfaces'
 import { getButtonProps } from './json.button.c'
 import { getFontAwesomeIconProp } from '../../../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
@@ -47,31 +46,30 @@ export default withStyles(styles)(class extends Component<IProps> {
         onClick={onClick(redux)}
         {...props}
       >
-        <ButtonContent has={button.has} />
+        <ButtonContent def={button} />
       </Button>
     )
   }
 
-  private buttonContent(props: any) {
-    const has: IStateFormItemCustom = props.has.json
-    if (props.value || has.title) {
-      switch (has.iconPosition) {
+  private buttonContent({ def: button }: { def: StateFormItem}) {
+    if (button.text) {
+      switch (button.has.iconPosition) {
 
       // icon is located on the right of the button title
       case 'right':
-        if (has.icon) {
+        if (button.has.icon) {
           return (
             <React.Fragment>
-              { has.title }
+              { button.text }
               &nbsp;
-              <Icon>{ has.icon }</Icon>
+              <Icon>{ button.has.icon }</Icon>
             </React.Fragment>
           )
-        } else if (has.faIcon) {
-          const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
+        } else if (button.has.faIcon) {
+          const icon = getFontAwesomeIconProp(button.has.faIcon) as IconProp
           return (
             <React.Fragment>
-              { has.title }
+              { button.value }
               &nbps;
               <FontAwesomeIcon icon={icon} />
             </React.Fragment>
@@ -82,33 +80,33 @@ export default withStyles(styles)(class extends Component<IProps> {
       // icon is located on the left of the button title
       case 'left':
       default:
-        if (has.icon) {
+        if (button.has.icon) {
           return (
             <React.Fragment>
-              <Icon>{ has.icon }</Icon>
+              <Icon>{ button.has.icon }</Icon>
               &nbsp;
-              { has.title }
+              { button.text }
             </React.Fragment>
           )
-        } else if (has.faIcon) {
-          const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
+        } else if (button.has.faIcon) {
+          const icon = getFontAwesomeIconProp(button.has.faIcon) as IconProp
           return (
             <React.Fragment>
               <FontAwesomeIcon icon={icon} />
               &nbsp;
-              { has.title }
+              { button.text }
             </React.Fragment>
           )
         }
 
       } // END switch
 
-      return <React.Fragment>{ has.title }</React.Fragment>
+      return <React.Fragment>{ button.text }</React.Fragment>
     } else {
-      if (has.icon) {
-        return <Icon>{ has.icon }</Icon>
-      } else if (has.faIcon) {
-        const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
+      if (button.has.icon) {
+        return <Icon>{ button.has.icon }</Icon>
+      } else if (button.has.faIcon) {
+        const icon = getFontAwesomeIconProp(button.has.faIcon) as IconProp
         return <FontAwesomeIcon icon={icon} />
       }
     }

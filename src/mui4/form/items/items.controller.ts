@@ -1,6 +1,6 @@
 import {
   TEXTFIELD, TEXTAREA, SUBMIT, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES,
-  SWITCH, SELECT
+  SWITCH, SELECT, BUTTON
 } from '../form.controller'
 import {
   IStateFormItem, IStateFormItemRadioButton, IStateFormItemCustom, IFormCheckbox, IRedux
@@ -385,6 +385,15 @@ export default class StateFormItem<P = StateForm, T = any>
     return this.itemJson.href
   }
 
+  get value() {
+    return this.itemJson.value
+  }
+
+  /** Get human-readable text. */
+  get text(): string {
+    return this.itemHasJson.title || this.itemJson.value || ''
+  }
+
   /**
    * Get form field `onClick` value.
    */
@@ -453,6 +462,7 @@ export default class StateFormItem<P = StateForm, T = any>
       switch (type) {
       case HTML:
       case SUBMIT:
+      case BUTTON:
       case BREAK_LINE:
         return type
       }

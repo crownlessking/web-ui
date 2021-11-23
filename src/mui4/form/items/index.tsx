@@ -26,7 +26,6 @@ import setFormDefaultValues from './defaultvalues'
 import StatePage from '../../../state/pages/page.controller'
 import StateForm from '../../../state/forms/form.controller'
 
-/** Material */
 const styles = ({ spacing }: Theme) => createStyles({
   formControl: {
     margin: spacing(1),
@@ -46,27 +45,14 @@ const styles = ({ spacing }: Theme) => createStyles({
   }
 })
 
-/* Redux */
 const mapDispatchToProps = {
   onUpdateFormData: updateFormData,
   onPostReqState: postReqState
 }
 
-/** React */
 interface IProps extends WithStyles<typeof styles> {
-
-  /**
-   * `formName` taken from `pageState.content`
-   * `formState` is taken out of the store based on the `formName`
-   * `pageState` is obtained from the page name given to the redux action
-   *             responsible for displaying pages.
-   */
   def: StatePage
-
-  /** Redux action (don't use directly) */
   onUpdateFormData: (payload: IFormDataPayload) => void
-
-  /** Redux action (don't use directly) */
   onPostReqState: (
     origin: string,
     endpoint: string,
@@ -74,9 +60,6 @@ interface IProps extends WithStyles<typeof styles> {
   ) => void
 }
 
-/**
- * 
- */
 class BuildForm extends Component<IProps> {
 
   render() {
@@ -87,10 +70,6 @@ class BuildForm extends Component<IProps> {
 
       switch (item.notMissingNameExDef()) {
 
-      /**
-       * use break line to put input fields in separate lines or to tweak their
-       * alignment
-       */
       case BREAK_LINE:
         return <br key={index} />
 
@@ -101,17 +80,6 @@ class BuildForm extends Component<IProps> {
         item.onClick = this.onFormSubmitDefault(form)
         return <JsonButton key={index} def={item} />
 
-      /**
-       * `HTML` type example
-       * ```javascript
-       * {
-       *    'has': {
-       *      'content': 'Some <strong>html</strong> examples',
-       *    },
-       *    'type': 'html',
-       * }
-       * ```
-       */
       case HTML:
         return (
           <div
@@ -121,42 +89,10 @@ class BuildForm extends Component<IProps> {
           />
         )
 
-      /**
-       * `<select />` example
-       * ```javascript
-       * {
-       *    'type': 'select', // [required]
-       *    'name': 'country', // [required] server will access data through this value
-       *    'id': '', // [required] can be the same as `name` or anything else
-       *    'label': '', // Human readable field title
-       *    'has': {
-       *        'items': [
-       *           {
-       *              'title': 'United States', // user-friendly text
-       *              'value': 'united_states' // internal value
-       *           },
-       *           // ...more items
-       *        ]
-       *    }
-       * }
-       * ```
-       */
       case SELECT:
         item.onChange = this.onUpdateFormData(form)
         return <JsonSelect key={index} def={item} />
 
-      /**
-       * 
-       * ```js
-       * {
-       *    'type': 'textfield', // [required]
-       *                         // can also be `password` and `number`
-       *    'name': 'firstname',
-       *    'label': 'Firstname',
-       *    'margin': 'normal'
-       * }
-       * ```
-       */
       case NUMBER:
       case PASSWORD:
       case TEXT:
@@ -164,112 +100,22 @@ class BuildForm extends Component<IProps> {
         item.onChange = this.onUpdateFormData(form)
         return <JsonTextfield key={index} def={item} />
 
-      /**
-       * 
-       * ```js
-       * {
-       *    'type': 'textarea',
-       *    'name': 'comment',
-       *    'label': 'Tell us more',
-       *    'margin': 'normal'
-       * },
-       * ```
-       */
       case TEXTAREA:
         item.onChange = this.onUpdateFormData(form)
         return <JsonTextarea key={index} def={item} />
 
-      /**
-       * 
-       * Example radio buttons:
-       * ```js
-       * {
-       * 'type': 'radio_buttons',
-       * 'name': 'gender',
-       * 'has': {
-       *   'label': 'Gender',
-       *   'items': [
-       *     {
-       *       'label': 'Male',
-       *       'value': 'male'
-       *     },
-       *     {
-       *       'label': 'Female',
-       *       'value': 'female'
-       *     },
-       *     {
-       *       'label': 'Other',
-       *       'value': 'other',
-       *       'disabled': true
-       *     }
-       *   ]
-       * }
-       * ```
-       * @see https://material-ui.com/components/radio-buttons/
-       */ 
       case RADIO_BUTTONS:
         item.onChange = this.onUpdateFormData(form)
         return <JsonRadio key={index} def={item} />
 
-      /**
-       * Checkboxes
-       * 
-       * The checkbox list label, `<FormLabel>` is not required.
-       * e.g. `has.label` and `has.title`
-       *
-       * This was done so that it is possible to have checkbox groups in
-       * multiple columns instead of an extremely-long continues list of
-       * checkboxes. You can feel the screen with checkboxes horizontally.
-       *
-       * Example checkbox:
-       * ```ts
-       * {
-       *    "type": "checkboxes", // [required] field type
-       *    "name": "", // [required] field name
-       *    "has": {
-       *      "label": "", // checkbox group title
-       *      "color": "", // checkbox group color
-       *      "items": [ // array of checkbox definitions
-       *        {
-       *          "label": "", // human-readable text
-       *          "value": "", // checkbox internal name
-       *          "color": "", // individual checkbox color
-       *          "disabled": {boolean}
-       *        },
-       *        // ... more checkbox definitions
-       *      ]
-       *    }
-       * }
-       * ```
-       * @see https://material-ui.com/components/checkboxes/#checkboxes
-       */
       case CHECKBOXES:
         item.onChange = this.onHandleCheckbox(form)
         return <JsonCheckboxes key={index} def={item} />
 
-      /**
-       * Example switch:
-       * ```ts
-       * {
-       *    "type": "switch",
-       *    "name": "", // field internal identifier
-       *    "disabled": {boolean},
-       *    "has": {
-       *      "label": "", // switch label
-       *      "title": "", // switch label
-       *      "color": "",
-       *      "text": ""   // switch description
-       *    }
-       * }
-       * ```
-       */
       case SWITCH:
         item.onChange = this.onHandleSwitch(form)
         return <JsonSwitch key={index} def={item} />
 
-      /**
-       * 
-       */
       case DATETIME:
         item.onChange = this.onUpdateFormDatetime(form)
         return <JsonPicker key={index} def={item} />
@@ -281,9 +127,7 @@ class BuildForm extends Component<IProps> {
 
   } // render() END
 
-  /**
-   * Get form definition
-   */
+  /** Get form definition */
   getFormDef = () => {
     const store = this.props.def.parent.parent
     const contentName = this.props.def.contentName
@@ -292,15 +136,7 @@ class BuildForm extends Component<IProps> {
     return form
   }
 
-  /**
-   * Saves the form field value to the store.
-   *
-   * Note: this process is automatic
-   *
-   * Redux action
-   *
-   * @param name
-   */
+  /** Saves the form field value to the store. */
   onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
     this.props.onUpdateFormData({
       formName: form.name,
@@ -308,14 +144,8 @@ class BuildForm extends Component<IProps> {
       value: e.target.value
     })
   }
-    
 
-  /**
-   * Save the date value to the store.
-   *
-   * @param name
-   * @param date
-   */
+  /** Saves the date value to the store. */
   onUpdateFormDatetime = (form: StateForm) => 
       (name: string, val: string) => (date: Date | null) => {
     if (date) {
@@ -327,12 +157,7 @@ class BuildForm extends Component<IProps> {
     }
   }
 
-  /**
-   * Saves checkboxes values to the Redux store
-   *
-   * @param name
-   * @param oldValue
-   */
+  /** Saves checkboxes values to the Redux store. */
   onHandleCheckbox = (form: StateForm) =>
       (name: string, oldValue: any) => (e: any) => {
     let value = oldValue ? oldValue : []
@@ -344,12 +169,7 @@ class BuildForm extends Component<IProps> {
     })
   }
 
-  /**
-   * Save switches value to the Redux store.
-   *
-   * @param name
-   * @param boolType
-   */
+  /** Save switches value to the Redux store. */
   onHandleSwitch = (form: StateForm) =>
       (name: string, value: any) => (e: any) => {
     switch (getBoolType(value)) {
@@ -396,12 +216,6 @@ class BuildForm extends Component<IProps> {
     this.onPostReqState(origin, endpoint, body)
   }
 
-  /**
-   * Redux dispatch function integration
-   *
-   * @param endpoint
-   * @param body
-   */
   onPostReqState = (
     origin: string,
     endpoint: string,
@@ -411,8 +225,6 @@ class BuildForm extends Component<IProps> {
   }
 
   componentDidMount = () => {
-
-    // applying default values if the content is a form
     setFormDefaultValues(this.getFormDef())
   }
 
