@@ -1,8 +1,9 @@
 import store from '..'
-import { APP_SWITCHED_PAGE, showSpinner } from './actions'
-import { IStateAllForms, IStateApp } from '../../interfaces'
+import { showSpinner } from './actions'
+import { IStateApp } from '../../interfaces'
 import StateController from '../../controllers/state.controller'
 import State from '../controller'
+import Config from '../../config'
 
 /**
  * Temporarily holds the handle id of a `setTimeout` function which has been
@@ -12,6 +13,20 @@ import State from '../controller'
  * been scheduled to do so via `setTimeout`
  */
 let handle: any
+
+export function getBootstrapKey() {
+  const key = document.querySelector('meta[name="source"]')
+
+  if (key) {
+    return (key as HTMLMetaElement).content
+  }
+
+  if (Config.DEBUG) {
+    throw new Error('Invalid bootstrap key')
+  }
+
+  return ''
+}
 
 /**
  * Get the form state name
@@ -25,24 +40,6 @@ let handle: any
  */
 export function getStateFormName(name: string) {
   return name + 'Form'
-}
-
-/**
- * Get the form state.
- *
- * __Problem__: We implemented a solution for applying default values to form
- * fields. However, although it worked, the solution caused React to complain.
- * To stop react from complaining we had to move the solution from `render()`
- * to `componentDidMount()`.
- * Since we do not want duplicate codes, we decided to move the part of the
- * logic that involves acquiring the form state to this function.
- *
- * @param stateAllForms 
- * @param name 
- */
-export function getStateForm (stateAllForms: IStateAllForms, name: string) {
-  const formName = getStateFormName(name)
-  return { stateForm: stateAllForms[formName], formName }
 }
 
 /**
@@ -75,24 +72,6 @@ export function _cancelSpinner() {
     clearTimeout(handle)
     handle = null
   }
-}
-
-/**
- * Get the proper route.
- *
- * This function helps by giving priority to page switching triggered by the Redux
- * state over those triggered by a URL change.
- * It's an implementation issue. Initially, you could not tell the difference between
- * a route change from the Redux state and the URL.
- * So I introduced a new status that indicates that the app is switching page from
- * Redux state change and these have priority over those from URL change.
- *
- * @param stateRoute route from the Redux state
- * @param pathname   route from the URL
- * @param status     current app status
- */
-export function getRoute(stateRoute: string, pathname: string, status?: string) {
-  return status === APP_SWITCHED_PAGE ? stateRoute : pathname
 }
 
 export function getOriginValidation(origin: string) {

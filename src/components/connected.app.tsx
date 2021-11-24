@@ -15,6 +15,7 @@ import Spinner from './spinner.component'
 import Snackbar from '../mui4/snackbar'
 import StatePage, { HARD_CODED_PAGE } from '../state/pages/page.controller'
 import { postReqState } from '../state/net'
+import { getBootstrapKey } from '../state/app/controller'
 
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({
@@ -59,7 +60,7 @@ class App extends Component<IProps> {
   private root?: State
 
   onPostReqHomePageState = (origin: string) => {
-    this.props.onPostReqState(origin, 'portal', '{}')
+    this.props.onPostReqState(origin, getBootstrapKey(), '{}')
   }
 
   componentDidMount() {
@@ -77,8 +78,10 @@ class App extends Component<IProps> {
     this.root = new State(this.props.state)
     const page = this.root.allPages.pageAt(this.root.app.route)
     this.pageID = page._id
-    page.setTabTitle()
     const { classes } = this.props
+
+    page.setTabTitle()
+
     return (
       <React.Fragment>
         <Background def={page.background} />
