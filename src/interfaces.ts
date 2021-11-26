@@ -560,27 +560,7 @@ export interface IState {
  * It is similar to `IState` except that properties are optional to keep
  * the payload minimal.
  */
-export interface INetState {
-  app?: IStateApp
-  appBar?: IStateAppBar
-  appBarSearches?: IStateAppBarSearches
-  background?: IStateBackground
-  typography?: IStateTypography
-  data?: any
-  dialog?: IStateDialog
-  dialogs?: IStateAllDialogs
-  drawer?: IStateDrawer
-  errors?: IJsonapiError[]
-  forms?: IStateAllForms
-  formsData?: any
-  meta?: any
-  pages?: IStateAllPages
-  pagesData?: any
-  snackbar?: IStateSnackbar
-  tmp?: { [x: string]: any }
-  topLevelLinks?: IStateTopLevelLinks
-  theme?: any
-}
+export type INetState = Partial<IState>
 
 // ----------------------------------------------------------------------------
 

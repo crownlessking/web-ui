@@ -19,7 +19,7 @@
       - [Add *textfield*, *numberfield*, or *textarea* to form](#add-textfield-numberfield-or-textarea-to-form)
       - [Add *button* to form](#add-button-to-form)
       - [Add *submit button* to form](#add-submit-button-to-form)
-      - [Add *dropdown (select)* to form](#add-dropdown-select-to-form)
+      - [Add *dropdown list (select)* to form](#add-dropdown-list-select-to-form)
       - [Add *radio bottons* to form](#add-radio-bottons-to-form)
       - [Add *checkboxes* to your form](#add-checkboxes-to-your-form)
       - [Add *material-ui switch* to form](#add-material-ui-switch-to-form)
@@ -110,13 +110,9 @@ You can also define `appInfo` in a separate JavaScript file. For example, create
 ```javascript
 // In your custom js file do:
 
-(function (win) {
-
-win.appInfo = {
+window.appInfo = {
   'origin': 'http://www.mydomain.com/'
 };
-
-}(window));
 ```
 
 Then, import your custom javascript file:
@@ -148,12 +144,12 @@ From here on out, we will use the custom file example.
 
 ### Quick list of global variables that you can define
 
-- `appInfo`
-- `appBackground`
-- `appDialogs`
-- `appForms`
-- `appPages`
-- `appTypography`
+- [`appInfo`](#global-variable-appinfo)
+- [`appBackground`](#global-variable-appbackground)
+- [`appDialogs`](#global-variable-appdialogs)
+- [`appForms`](#global-variable-appforms)
+- [`appPages`](#global-variable-apppages)
+- [`appTypography`](#global-variable-apptypography)
 
 For more information, check the [global variable properties](#glogal-variables) below.
 
@@ -166,17 +162,13 @@ In your custom JavaScript file, create a global variable called `appPages`.
 ```javascript
 // Inside custom js file.
 
-(function (win) {
-
-win.appPages = {}; // <-- there it is
-
-})(window);
+window.appPages = {}; // <-- there it is
 ```
 
 `appPages` is an object where each property is a page.
 
 ```js
-win.appPages = {
+window.appPages = {
   'login': {}, // login page
   'front': {}, // front page
 
@@ -193,7 +185,7 @@ The _login page_ is currently empty let's use it to display a form that can be u
 To display a form, we need to set the `content` property of the login page:
 
 ```js
-win.appPages = {
+window.appPages = {
   login: {
     content: '$form : login : users'
   }
@@ -213,17 +205,13 @@ To create the *login* form, open your custom JavaScript file and look for the va
 ```javascript
 // Inside your custom js file!
 
-(function (win) {
-
-win.appForms = {}; // <-- there it is!
-
-})(window);
+window.appForms = {}; // <-- there it is!
 ```
 
 Now, let's add the *login* form to it:
 
 ```js
-win.appForms = {
+window.appForms = {
 
   loginForm: {} // <-- here
 
@@ -235,7 +223,7 @@ win.appForms = {
 The *login* form is currently empty. Let's add some fields:
 
 ```js
-win.appForms = {
+window.appForms = {
 
   loginForm: {
     items: [ ] // array of fields
@@ -253,7 +241,7 @@ The property `items` is an array containing the field definitions.
 To add a field to your form, just insert a new object into the array of `items`. Generally, the properties of that object are any valid attribute you'll find on a HTML tag. e.g.
 
 ```js
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
 
@@ -284,7 +272,7 @@ is equivalent to:
 ##### Complete _login_ form definition
 
 ```js
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
 
@@ -326,7 +314,7 @@ win.appForms = {
 If you want your form field to be rendered with a default value, you can do that using the `defaultValue` property of the `has` object.
 
 ```javascript
-win.loginForms = {
+window.loginForms = {
   items: [
     {
       type: 'text',
@@ -351,13 +339,9 @@ To do that, we need to tell the app the the login page is the default page.
 This is done by setting the `route` property of `appInfo`.
 
 ```ts
-(function (win) {
-
-win.appInfo = {
+window.appInfo = {
   route: 'login' // <-- right here
 };
-
-})(window);
 ```
 
 Give the `route` property the name of the page which is * *login* * in our example and we are all set.
@@ -371,7 +355,7 @@ When the app is launched, the login page will be shown if every is correct and y
 ##### Add *textfield*, *numberfield*, or *textarea* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
       {
@@ -389,7 +373,7 @@ win.appForms = {
 ##### Add *button* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
       {
@@ -402,31 +386,51 @@ win.appForms = {
 };
 ```
 
-* Button variants: `formItem.has.variant`: *contained* | *outlined* | *text*
-  ```ts
-  win.appForms = {
-    loginForm: {
-      items: [
-        {
-          type: 'button',
-          value: 'Click me!',
-          has: {
-            variant: 'contained' // or 'outlined' or 'text'
-          }
-        }
-      ]
-    }
-  };
-  ```
+**or**
 
-See the [callback](#callback) section to properly setup `onClick`.
+```ts
+window.appForms = {
+  loginForm: {
+    items: [
+      {
+        type: 'button',
+        value: 'Click me!',
+        has: {
+          callback: redux => e => void
+        }
+      }
+    ]
+  }
+};
+```
+
+See the [callback](#callback) section to properly setup `onClick` or `has.callback`.
+
+Button variants: `formItem.has.variant`: *contained* | *outlined* | *text*  
+Changes the look and feel of the button.
+
+```ts
+window.appForms = {
+  loginForm: {
+    items: [
+      {
+        type: 'button',
+        value: 'Click me!',
+        has: {
+          variant: 'contained' // or 'outlined' or 'text'
+        }
+      }
+    ]
+  }
+};
+```
 
 [[top](#web-ui)]
 
 ##### Add *submit button* to form
 
 ```ts
-win.appForm = {
+window.appForms = {
   loginForm: {
     items: [
       {
@@ -442,10 +446,10 @@ Similar to a _button_ except that a default callback is provided if none was imp
 
 [[top](#web-ui)]
 
-##### Add *dropdown (select)* to form
+##### Add *dropdown list (select)* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
       {
@@ -457,7 +461,8 @@ win.appForms = {
             { title: 'Bagger', 'value': 'bagger' },
             { title: 'Web developer', 'value': 'webdeveloper' },
             { title: 'Unemployed', 'value': 'unemployed' },
-          ]
+          ],
+          handle: 'onChange : callback', // <-- pay close attention
         }
       }
     ]
@@ -465,12 +470,24 @@ win.appForms = {
 };
 ```
 
+`handle` is a solution for providing a callback to a form field when its definition was loaded remotely. Based on its value, when the *onChange* event is fired from the dropdown list, a global function called `callback` will be exectuted.
+
+```ts
+window.callback = function (redux) {
+  return function (e) {
+    // TODO: Write callback logic here
+  }
+};
+```
+
+See [`formItem.has.handle`](#formitemhashandle) for more information.
+
 [[top](#web-ui)]
 
 ##### Add *radio bottons* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [ // <-- outer items array (of fields)
       {
@@ -507,7 +524,7 @@ Noticed the inner *items* property? It's an array of *options* object. As always
 ##### Add *checkboxes* to your form
 
 ```ts
-win.appForms = {
+window.appForms = {
   pizzaToppingsForm: {
     items: [ // <-- outer items array (of fields)
       {
@@ -560,7 +577,7 @@ win.appForms = {
 ##### Add *material-ui switch* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   articleStatusForm: {
     items: [
       {
@@ -583,7 +600,7 @@ win.appForms = {
 ##### Add *date & time* to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   reservationForm: {
     items: [
       {
@@ -601,7 +618,7 @@ win.appForms = {
 ##### Add *html* snippets to form
 
 ```ts
-win.appForms = {
+window.appForms = {
   loginForm: {
     items: [
       {
@@ -630,7 +647,7 @@ However, it is possible to provide your own callback if you wish... There are se
 
 1) Using the `formItem.onClick` property:
   ```ts
-  win.appForms = {
+  window.appForms = {
     loginForm: {
       items: [
 
@@ -638,9 +655,12 @@ However, it is possible to provide your own callback if you wish... There are se
         {
           type: 'submit',
           onClick: function(redux) {
-            return function (e) { }
+            return function (e) {
+              // TODO: Write callback logic here
+            }
           }
         }
+
       ]
     }
   };
@@ -648,7 +668,7 @@ However, it is possible to provide your own callback if you wish... There are se
 
 2) Using the `formItem.has.callback` property:
   ```ts
-  win.appForms = {
+  window.appForms = {
     loginForm: {
       items: [
 
@@ -668,7 +688,7 @@ However, it is possible to provide your own callback if you wish... There are se
 
 3) If your form is to be loaded from the server as JSON, you will need to provide your callback seperately. As JSON loaded from the server and converted as JavaScript object:
   ```ts
-  win.appForms = {
+  window.appForms = {
     loginForm: {
       items: [
 
@@ -685,17 +705,14 @@ However, it is possible to provide your own callback if you wish... There are se
   ```
 
 Then, you need to create your function somewhere. In a separate file would be most likely.
-  ```ts
-  // Somewhere in your js files.
 
-  (function (win) {
+```ts
+// Somewhere in your js files.
 
-  win.yourCustomFunc = function (redux) {
-    return function (e) { }
-  }
-
-  })(window);
-  ```
+window.yourCustomFunc = function (redux) {
+  return function (e) { }
+}
+```
 
 [[top](#web-ui)]
 
@@ -707,15 +724,11 @@ If you did set a default background using the [`appBackground`](#global-variable
 With `page.useDefaultBackground` set to true:
 
 ```ts
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   login: {
     useDefaultBackground: true // <-- here
   }
 };
-
-})(window);
 ```
 
 Your page will now use the default background * *if* * it was defined.
@@ -727,15 +740,11 @@ Maybe you want your page to have a unique background that won't be found on any 
 #### How to customize page `content` layout
 
 ```ts
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   login: {
     layout: 'LAYOUT_CENTERED_NO_SCROLL'
   }
 };
-
-})(window);
 ```
 
 If you want to change the way your form is aligned on the page, you can use [`page.layout`](#pagelayout) to change the alignment.
@@ -751,16 +760,12 @@ If you want your page to have an appbar, define the `appBar` property in your pa
 ```ts
 // In your custom js file
 
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   '/my-page': {
     content: '$form : survey : my-page',
     appBar: { } // <-- there it is!
   }
 };
-
-})(window);
 ```
 
 To add links to your appbar, define the `items` property in the `appBar` object.
@@ -768,9 +773,7 @@ To add links to your appbar, define the `items` property in the `appBar` object.
 ```ts
 // In your custom js file
 
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   '/my-page': {
     content: '$form : survey : my-page',
     appBar: {
@@ -778,8 +781,6 @@ win.appPages = {
     }
   }
 };
-
-})(window);
 ```
 
 ### Appbar link
@@ -789,9 +790,7 @@ win.appPages = {
 ```ts
 // In your custom js file
 
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   '/my-page': {
     content: '$form : survey : my-page',
     appBar: {
@@ -810,8 +809,6 @@ win.appPages = {
     }
   }
 };
-
-})(window);
 ```
 
 The `link.has.route` will cause the * *Login* * page to load when the link is clicked.
@@ -834,9 +831,7 @@ You can also define a drawer for a page then have other pages inherit it with th
 To give your page a drawer, use the `page.drawer` property.
 
 ```ts
-(function (win) {
-
-win.appPages = {
+window.appPages = {
 
   // page object
   '/home': {
@@ -844,14 +839,12 @@ win.appPages = {
   }
 
 };
-
-})(window);
 ```
 
 Now, let's insert an icon link in the drawer. We use the `items` property to do that.
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     drawer: {
       items: [ ] // <-- here
@@ -867,7 +860,7 @@ win.appPages = {
 `items` is an array of link objects. An icon is a link object with its type set to * *icon* *.
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     drawer: {
       items: [
@@ -1157,7 +1150,7 @@ var page = {
 #### `page._id`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     '_id': '618e9c9504cc8212caccba17'
   }
@@ -1171,7 +1164,7 @@ win.appPages = {
 #### `page.title`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     title: 'Enter login info'
   }
@@ -1185,7 +1178,7 @@ win.appPages = {
 #### `page.forcedTitle`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     forcedTitle: 'Enter login info'
   }
@@ -1200,7 +1193,7 @@ Normally, the browser tab title is a merge of the app title, the page title, and
 #### `page.appBar`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     appBar: { /* ... */ }
   }
@@ -1214,7 +1207,7 @@ win.appPages = {
 #### `page.background`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     background: {
       type: 'color',
@@ -1231,7 +1224,7 @@ win.appPages = {
 #### `page.typography`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     typography: {
       color: '#606060'
@@ -1248,7 +1241,7 @@ See the [global variable section](#global-variable-apptypography) for more infor
 #### `page.content`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     content: '$form : login : users'
   }
@@ -1264,7 +1257,7 @@ win.appPages = {
 #### `page.drawer`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     drawer: { /* ... */ }
   }
@@ -1278,7 +1271,7 @@ Use `page.drawer` to give your page its own unique drawer with its links. See th
 #### `page.layout`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     layout: 'LAYOUT_CENTERED_NO_SCROLL'
   }
@@ -1300,7 +1293,7 @@ Here is a list of possible values. It will most likely be updated in the future 
 #### `page.hideAppBar`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     hideAppBar: true
   }
@@ -1315,7 +1308,7 @@ It is a good way to remove the appBar without actually deleting it.
 #### `page.hideDrawer`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     hideDrawer: true
   }
@@ -1329,7 +1322,7 @@ If your page has a drawer but for some reason you do not want it to be rendered,
 #### `page.useDefaultAppBar`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     useDefaultAppBar: true
   }
@@ -1343,7 +1336,7 @@ If the default appBar is defined, use `page.useDefaultAppBar` to cause your page
 #### `page.useDefaultDrawer`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     useDefaultDrawer: true
   }
@@ -1357,7 +1350,7 @@ If the default drawer is defined, use `page.useDefaultDrawer` to cause your page
 #### `page.useDefaultBackground`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     useDefaultBackground: true
   }
@@ -1371,7 +1364,7 @@ If the default background is defined, use `page.useDefaultBackground` to cause y
 #### `page.useDefaultTypography`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     useDefaultTypography: true
   }
@@ -1385,7 +1378,7 @@ If the default typography object is defined, use `page.useDefaultTypography` to 
 #### `page.inherited`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     inherited: ''
   }
@@ -1401,7 +1394,7 @@ win.appPages = {
 #### `page.appBarInherited`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     appBar: { /* ... */ }
   },
@@ -1421,7 +1414,7 @@ In the code example, the '/login' page is inheriting the appBar of the '/home' p
 #### `page.drawerInherited`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     drawer: { /* ... */ }
   },
@@ -1441,7 +1434,7 @@ In the code example, the '/login' page is inheriting the drawer of the '/home' p
 #### `page.contentInherited`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     content: ''
   },
@@ -1460,7 +1453,7 @@ win.appPages = {
 #### `page.backgroundInherited`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     background: { /* ... */ }
   },
@@ -1480,7 +1473,7 @@ In the code example, the '/login' page is inheriting the background of the '/hom
 #### `page.data`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     data: { /* ... */ }
   }
@@ -1494,7 +1487,7 @@ If you want to store data in a page, this is how to do it. `page.data` can conta
 #### `page.meta`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     data: { /* ... */ }
   }
@@ -1508,7 +1501,7 @@ If you want to store metadata in a page, this is how to do it. `page.meta` can c
 #### `page.links`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/login': {
     links: { /* ... */ }
   }
@@ -1872,7 +1865,7 @@ var link = {
 #### `link.onClick`
 
 ```ts
-win.appPages = {
+window.appPages = {
   '/home': {
     drawer: {
       items: [
@@ -1911,9 +1904,7 @@ However, if the link definition is loaded remotely, it should be sent from the s
 #### `link.has.handle`
 
 ```ts
-(function (win) {
-
-win.appPages = {
+window.appPages = {
   '/home': {
     drawer: {
       items: [
@@ -1933,8 +1924,6 @@ win.appPages = {
     }
   }
 };
-
-})(window);
 ```
 
 In the previous example, to describe the value of `link.has.handle`, `callbacks` is a global variable which contains the `createNewUser()` callback that the link will execute when it is clicked.
