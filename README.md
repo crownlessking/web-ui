@@ -404,7 +404,25 @@ window.appForms = {
 };
 ```
 
-See the [callback](#callback) section to properly setup `onClick` or `has.callback`.
+**or**
+
+```ts
+window.appForms = {
+  loginForm: {
+    items: [
+      {
+        type: 'button',
+        value: 'Click me!',
+        has: {
+          handle: 'callback' // <-- function name
+        }
+      }
+    ]
+  }
+};
+```
+
+See the [callback](#callback) section to properly setup `onClick`, `has.callback`, or `has.handle`.
 
 Button variants: `formItem.has.variant`: *contained* | *outlined* | *text*  
 Changes the look and feel of the button.
@@ -713,6 +731,8 @@ window.yourCustomFunc = function (redux) {
   return function (e) { }
 }
 ```
+
+See the [callback section](#callback) to learn how to implement a callback function.
 
 [[top](#web-ui)]
 
