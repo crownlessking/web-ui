@@ -697,7 +697,7 @@ export interface IStateFormItemCustom<T = any> {
    */
   key?: string
 
-  /** Name of internally defined callback to be executed */
+  /** Name of an internally defined callback to be executed */
   handle?: string
 
   /**

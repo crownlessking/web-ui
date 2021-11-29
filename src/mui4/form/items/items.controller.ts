@@ -9,7 +9,7 @@ import Config from '../../../config'
 // import _ from 'lodash'
 import StateController from '../../../controllers/state.controller'
 import StateFormItemCustom from './custom.controller'
-import { defaultCallback } from '../../../controllers'
+import { defaultCallback, dummyCallback } from '../../../controllers'
 import { updateFormData } from '../../../state/forms/data/actions'
 import { IParentState } from '../../../interfaces'
 import StateForm from '../../../state/forms/form.controller'
@@ -348,7 +348,7 @@ export default class StateFormItem<P = StateForm, T = any>
     this.noOnClickCallback = !!this.itemJson.onClick
     this.itemOnClick = this.itemJson.onClick || defaultCallback
     this.noOnChangeCallback = !!this.itemJson.onChange
-    this.itemOnChange = this.itemJson.onChange || defaultCallback
+    this.itemOnChange = this.itemJson.onChange || dummyCallback
   }
 
   get json(): IStateFormItem { return this.itemJson }
@@ -426,14 +426,14 @@ export default class StateFormItem<P = StateForm, T = any>
    * Set form field `onClick` attribute
    */
   set onClick (cb: (redux: IRedux) => (e: any) => void) {
-    this.itemOnClick = this.itemJson.onClick || cb
+    this.itemOnClick = cb || this.itemOnClick
   }
 
   /**
    * Set the 'onChange' attribute of the form field.
    */
   set onChange (cb: Function) {
-    this.itemOnChange = this.itemJson.onChange || cb
+    this.itemOnChange = cb || this.itemOnChange
   }
 
   set disabled(b: boolean) { this.itemDisabled = b }

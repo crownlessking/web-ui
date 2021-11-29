@@ -176,7 +176,7 @@ window.appPages = {
 };
 ```
 
-The _login page_ is currently empty let's use it to display a form that can be used to login.
+The *login page* is currently empty let's use it to display a form that can be used to login.
 
 [[top](#web-ui)]
 
@@ -695,7 +695,9 @@ However, it is possible to provide your own callback if you wish... There are se
           type: 'submit',
           has: {
             callback: function (redux) {
-              return function (e) { }
+              return function (e) {
+                // TODO Write callback logic here.
+              }
             }
           }
         }

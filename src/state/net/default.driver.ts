@@ -64,7 +64,7 @@ export default function runDefaultDriver (
   }
 
   // This if-condition handles redux state loaded from the server (remote).
-  if (doc.state) {     
+  if (doc.state) {
     dispatch(netPatchState(doc.state))
   }
 

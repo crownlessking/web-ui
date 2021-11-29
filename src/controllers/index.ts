@@ -484,3 +484,50 @@ export function httpGet(theUrl: string)
   xmlhttp.open("GET", theUrl, false);
   xmlhttp.send();    
 }
+
+function getHandlePropName (handle: string) {
+  const pieces = handle.replace(/\s+/g,'').split(':')
+
+  if (pieces.length > 1) {
+    return {
+      property: pieces[0],
+      callbackName: pieces[1]
+    }
+  }
+
+  return null
+}
+
+/**
+ * Get a callback
+ *
+ * @param state any
+ * @param callback [optional]
+ * @param handle [optional]
+ */
+export function setHandleCallback (state: any, callback: Function, handle?: string) {
+  if (handle) {
+    const handleDef = getHandlePropName(handle)
+
+    if (handleDef) {
+      const handleCallback = getVal(window, handleDef.callbackName)
+
+      state[handleDef.property] = (typeof handleCallback === 'function')
+        ? handleCallback
+        : callback
+    }
+
+    if (Config.DEBUG) {
+      throw new Error(
+        'Invalid handle syntax. '
+        + 'Expected "<prop> : <name>" format.'
+      )
+    }
+  }
+
+  if (Config.DEBUG) {
+    throw new Error(
+      `Invalid handle: The '${handle}' function does not exist.`
+    )
+  }
+}

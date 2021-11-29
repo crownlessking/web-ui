@@ -97,7 +97,7 @@ export default class StateFormItemCustom<P, T = any>
   get key() { return this.hasJson.key || '' }
 
   /**
-   * Name of internally defined callback to be executed
+   * Name of an internally defined callback to be executed.
    */
   get handle() { return this.hasJson.handle || '' }
 
