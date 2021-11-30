@@ -9,7 +9,7 @@ import Form from '../mui4/form'
 import { FormItems } from '../mui4/form/items'
 import WebApp from '.'
 import View from './view.component'
-import StatePage from '../state/pages/page.controller'
+import StatePage from '../controllers/StatePage'
 import {
   createStyles, withStyles, WithStyles
 } from '@material-ui/core'

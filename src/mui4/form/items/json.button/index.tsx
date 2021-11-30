@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import {
   Button, Theme, createStyles, WithStyles, withStyles, Icon
 } from '@material-ui/core'
-import { getButtonProps } from './json.button.c'
+import { getButtonProps } from './controller'
 import { getFontAwesomeIconProp } from '../../../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import store from '../../../../state'
 import allActions from '../../../../state/actions'
-import StateFormItem from '../items.controller'
+import StateFormItem from '../../../../controllers/StateFormItem'
 
 const styles = ({ spacing }: Theme) => createStyles({
   button: {

@@ -17,7 +17,7 @@ import { IDelegated, IStateFormItem } from '../../../interfaces'
 import Items from '../../form/items/local'
 import { delegatedSetState, delegatedState, safelyGet, getDudEventCallback } from '../../../controllers'
 import dateFormat from 'dateformat'
-import StatePage from '../../../state/pages/page.controller'
+import StatePage from '../../../controllers/StatePage'
 
 interface IProps {
   open: boolean

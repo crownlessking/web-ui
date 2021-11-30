@@ -5,7 +5,7 @@ import { getFontAwesomeIconProp, getFormattedRoute } from '../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import store from '../../state'
 import actions from '../../state/actions'
-import StateLink, { getLinkProps } from './controller'
+import StateLink, { getLinkProps } from '../../controllers/StateLink'
 import { Link as RouterLink } from 'react-router-dom'
 
 interface IProps { def: StateLink }

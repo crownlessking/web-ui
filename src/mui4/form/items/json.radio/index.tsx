@@ -2,10 +2,12 @@ import React from 'react'
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
 import {
   getProps, getStoredValue, getLocallyStoredValue
-} from '../items.controller'
+} from '../controller'
 import { IState } from '../../../../interfaces'
 import { connect } from 'react-redux'
-import StateFormItemRadioButton, { StateFormItemRadio } from './controller'
+import StateFormItemRadioButton, { 
+  StateFormItemRadio
+} from '../../../../controllers/StateFormItemRadioButton'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

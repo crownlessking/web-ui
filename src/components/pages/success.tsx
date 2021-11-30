@@ -1,8 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
-import StatePage from '../../state/pages/page.controller'
-import { getPageName } from '../../state/pages/controller'
+import StatePage from '../../controllers/StatePage'
+import { getPageName } from '../../state/pages'
 
 const FONT_COLOR = '#74d2b3'  
 

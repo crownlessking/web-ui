@@ -9,7 +9,7 @@ import {
 import {
   LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout
 } from '../mui4/layouts'
-import StatePage from '../state/pages/page.controller'
+import StatePage from '../controllers/StatePage'
 
 interface IProps {
   def: StatePage

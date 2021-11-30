@@ -4,8 +4,8 @@ import { getFontAwesomeIconProp } from '../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import getSvgIcon from './imported.svg.icons'
-import StateFormItem from './form/items/items.controller'
-import StateLink from './link/controller'
+import StateFormItem from '../controllers/StateFormItem'
+import StateLink from '../controllers/StateLink'
 
 interface IProps {
   json: StateFormItem | StateLink,

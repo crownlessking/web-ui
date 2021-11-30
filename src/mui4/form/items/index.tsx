@@ -12,19 +12,19 @@ import JsonPicker from './json.picker'
 import {
   BREAK_LINE, BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
   CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATETIME, TEXT, 
-} from '../form.controller'
+} from '../controller'
 import { connect } from 'react-redux'
 import {
   updateFormData, IFormDataPayload
 } from '../../../state/forms/data/actions'
 import { postReqState } from '../../../state/net'
-import { getProps, updateCheckboxes } from './items.controller'
+import { getProps, updateCheckboxes } from './controller'
 import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType
-} from '../form.controller'
+} from '../controller'
 import setFormDefaultValues from './defaultvalues'
-import StatePage from '../../../state/pages/page.controller'
-import StateForm from '../../../state/forms/form.controller'
+import StatePage from '../../../controllers/StatePage'
+import StateForm from '../../../controllers/StateForm'
 
 const styles = ({ spacing }: Theme) => createStyles({
   formControl: {

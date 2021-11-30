@@ -1,7 +1,7 @@
 import { ADD_ERROR } from './actions'
 import { IReduxAction, IJsonapiError } from '../../interfaces'
 import state from '../../state/initial.state'
-import { setDateErrorCode } from './controller'
+import { setDateErrorCode } from '.'
 
 const INIT: IJsonapiError[] = state.errors
 

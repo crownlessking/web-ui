@@ -4,7 +4,7 @@ import { setMeta } from '../meta/actions'
 import { setTopLevelLinks } from '../links.toplevel/actions'
 import { requestSuccess, requestFailed } from './actions.net'
 import { addError } from '../errors/actions'
-import { _cancelSpinner } from '../app/controller'
+import { _cancelSpinner } from '../app'
 import { IAbstractResponse, IJsonapiResponse, IState } from '../../interfaces'
 import { netPatchState } from '../actions'
 

@@ -30,7 +30,7 @@ import {
 } from '../../interfaces'
 
 import state from '../initial.state'
-import { _cancelSpinner } from './controller'
+import { _cancelSpinner } from '.'
 
 const INIT: IStateApp = state.app
 

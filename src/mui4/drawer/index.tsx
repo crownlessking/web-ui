@@ -13,14 +13,14 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { IState } from '../../interfaces'
 import { closeDrawer, openDrawer } from './actions'
 import { connect } from 'react-redux'
-import { getDrawerWidth } from './controller'
+import { getDrawerWidth } from '../../controllers/StateDrawer'
 import store from '../../state'
 import actions from '../../state/actions'
 import { getFormattedRoute } from '../../controllers'
 import { Link as RouterLink } from 'react-router-dom'
 import JsonIcon from '../json.icons'
-import StatePage from '../../state/pages/page.controller'
-import StateLink from '../link/controller'
+import StatePage from '../../controllers/StatePage'
+import StateLink from '../../controllers/StateLink'
 
 const styles = (theme: Theme) => createStyles({
   drawer: {

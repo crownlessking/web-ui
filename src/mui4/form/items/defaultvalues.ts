@@ -1,12 +1,12 @@
 import store from '../../../state'
 import {
   TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT, TEXT
-} from '../form.controller'
+} from '../controller'
 import { IStateFormItem } from '../../../interfaces'
 import {
   updateFormData, IFormDataPayload
 } from '../../../state/forms/data/actions'
-import StateForm from '../../../state/forms/form.controller'
+import StateForm from '../../../controllers/StateForm'
 
 /**
  * Helper function for `setDefaultValue()`.

@@ -1,8 +1,6 @@
 import store from '../../state'
 import { getVal } from '../../controllers'
-import { IStatePage, IStateBackground } from '../../interfaces'
-import StateController from '../../controllers/state.controller'
-import State from '../../state/controller'
+import { IStatePage } from '../../interfaces'
 
 /**
  * Get the background color of the app as a CSS value
@@ -26,34 +24,4 @@ export function getAppBarBackgroundStyle(pageJson: IStatePage) {
   return getVal(pageJson, 'appBar.background.value')
     || getVal(state, 'appBar.background.value')
     || 'inherit'
-}
-
-export default class StateBackground<P = State>
-    extends StateController implements IStateBackground {
-
-  private backgroundJson: IStateBackground
-  private parentObj: P
-
-  /**
-   * Background
-   *
-   * @param backgroundJson 
-   */
-  constructor(backgroundJson: IStateBackground, parent: P) {
-    super()
-    this.backgroundJson = backgroundJson
-    this.parentObj = parent
-  }
-
-  /**
-   * Get a copy of the background json.
-   */
-  get json(): IStateBackground { return this.backgroundJson }
-
-  get parent() { return this.parentObj }
-
-  get type() { return this.backgroundJson.type }
-
-  get value() { return this.backgroundJson.value }
-
 }

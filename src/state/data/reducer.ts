@@ -4,7 +4,7 @@ import {
   DATA_CREATE_NEW_COLLECTION, DATA_INSERT_MANY, DATA_SET_COLLECTION,
   DATA_INSERT_ONE
 } from './actions'
-import { listMergeNew } from './controller'
+import { listMergeNew } from '.'
 
 const INIT = initialState.data
 

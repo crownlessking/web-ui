@@ -2,14 +2,15 @@ import React from 'react'
 import {
   FormControl, TextField, InputAdornment, IconButton
 } from '@material-ui/core'
-import StateFormItem, {
+import {
   getProps, getStoredValue, getLocallyStoredValue
-} from './items.controller'
+} from './controller'
 import { getDudEventCallback } from '../../../controllers'
 import JsonIcon from '../../json.icons'
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import Config from '../../../config'
+import StateFormItem from '../../../controllers/StateFormItem'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

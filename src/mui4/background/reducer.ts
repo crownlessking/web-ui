@@ -12,7 +12,7 @@ import {
   IReduxAction,
   IStateBackground,
 } from '../../interfaces'
-import { setStatePageBackground } from '../../state/controller'
+import { setStatePageBackground } from '../../controllers/State'
 
 const INIT: IStateBackground = setStatePageBackground()
 

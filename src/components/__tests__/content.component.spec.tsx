@@ -5,7 +5,7 @@ import Content from '../content.component'
 import initialState from '../../state/initial.state'
 import _ from 'lodash'
 import { IState, IStateAllPages } from '../../interfaces'
-import State from '../../state/controller'
+import State from '../../controllers/State'
 
 const pages: IStateAllPages = {
   '/login': {

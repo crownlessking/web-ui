@@ -2,7 +2,7 @@ import { IStateAllPages, IStatePage } from '../../interfaces'
 import { Dispatch } from 'redux'
 import { updatePage } from '../app/actions'
 import { storeVolatile } from '../tmp/actions'
-import { getPageName } from './controller'
+import { getPageName } from '.'
 
 export const APP_INSERT_PAGES = 'APP_INSERT_PAGES'
 export const insertPages = (pages: IStateAllPages) => ({

@@ -3,7 +3,7 @@ import { IState, IStateDialogForm } from '../../../interfaces'
 import {
   BREAK_LINE, BUTTON, SUBMIT, HTML, SELECT, NUMBER, PASSWORD, TEXTFIELD,
   TEXTAREA, RADIO_BUTTONS, CHECKBOXES, SWITCH, HIGHLIGHT
-} from '../form.controller'
+} from '../controller'
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles'
 import { Theme } from '@material-ui/core'
 import { connect } from 'react-redux'
@@ -14,17 +14,17 @@ import JsonTextarea from './json.textarea'
 import JsonRadio from './json.radio'
 import JsonCheckboxes from './json.checkboxes'
 import JsonSwitch from './json.switch'
-import { getProps, updateCheckboxes } from './items.controller'
+import { getProps, updateCheckboxes } from './controller'
 import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType, setFormValues,
   genStateForm
-} from '../form.controller'
+} from '../controller'
 import { postRequest } from '../../../state/net'
 import { ISingleRow, getMetaDialog } from '../../table/virtualized/controller'
 import Highlight from 'react-highlight.js'
 import '../../../styles/atelier-forest-light.css'
-import StatePage from '../../../state/pages/page.controller'
-import StateDialogForm from '../../../state/dialogs/form.dialog.controller'
+import StatePage from '../../../controllers/StatePage'
+import StateDialogForm from '../../../controllers/StateDialogForm'
 
 const styles = ({ spacing }: Theme) => createStyles({
   textField: {

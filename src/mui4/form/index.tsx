@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   Paper, Theme, createStyles, withStyles, WithStyles
 } from '@material-ui/core'
-import StatePage from '../../state/pages/page.controller'
+import StatePage from '../../controllers/StatePage'
 
 const styles = ({ spacing }: Theme) => createStyles({
   container: {

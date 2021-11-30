@@ -47,7 +47,7 @@ import Pagination from './pagination'
 import { postRequest } from '../../../state/net'
 import TableDialog from './dialog'
 import { writeSuccess, writeError } from '../../snackbar/actions'
-import StatePage from '../../../state/pages/page.controller'
+import StatePage from '../../../controllers/StatePage'
 
 const styles = ({ spacing, palette }: Theme) => createStyles({
   root: {

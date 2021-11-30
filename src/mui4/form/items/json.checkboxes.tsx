@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import StateFormItem, {
+import StateForm from '../../../controllers/StateForm'
+import StateFormItem from '../../../controllers/StateFormItem'
+import {
   getCheckboxesStatus,
   getStoredValue,
   getLocallyStoredValue
-} from './items.controller'
+} from './controller'
 import {
   FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox
 } from '@material-ui/core'
 import { IFormCheckbox, IState } from '../../../interfaces'
 import { RadioProps } from '@material-ui/core/Radio'
-import StateForm from '../../../state/forms/form.controller'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

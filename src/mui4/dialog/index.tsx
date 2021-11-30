@@ -14,10 +14,10 @@ import appActions from '../../state/actions'
 import { IFormDataPayload, updateFormData } from '../../state/forms/data/actions'
 import { postReqState } from '../../state/net'
 import { FormItems } from '../form/items'
-import { getStateFormName } from '../../state/app/controller'
+import { getStateFormName } from '../../state/app'
 import { createStyles, WithStyles, withStyles, PropTypes } from '@material-ui/core'
-import StatePage from '../../state/pages/page.controller'
-import StateDialog from '../../state/dialogs/dialog.controller'
+import StatePage from '../../controllers/StatePage'
+import StateDialog from '../../controllers/StateDialog'
 
 const styles = () => createStyles({
   dialogForm: {

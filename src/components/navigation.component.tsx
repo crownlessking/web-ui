@@ -1,7 +1,7 @@
 import React from 'react'
 import { IStateAppBar } from '../interfaces'
 import AppBar from '../mui4/appbar'
-import StatePage from '../state/pages/page.controller'
+import StatePage from '../controllers/StatePage'
 
 let lastStateAppBar: IStateAppBar | undefined
 

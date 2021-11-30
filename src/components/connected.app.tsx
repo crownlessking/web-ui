@@ -10,12 +10,12 @@ import Content from './content.component'
 import { Background } from '../mui4/background'
 import Dialog from '../mui4/dialog'
 import Drawer from './drawer.component'
-import State from '../state/controller'
+import State from '../controllers/State'
 import Spinner from './spinner.component'
 import Snackbar from '../mui4/snackbar'
-import StatePage, { HARD_CODED_PAGE } from '../state/pages/page.controller'
+import StatePage from '../controllers/StatePage'
 import { postReqState } from '../state/net'
-import { getBootstrapKey } from '../state/app/controller'
+import { getBootstrapKey } from '../state/app'
 
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({
@@ -68,7 +68,7 @@ class App extends Component<IProps> {
       const app = this.root.app
 
       // Get a page from server if none was provided.
-      if (this.pageID === HARD_CODED_PAGE) {
+      if (this.pageID === StatePage.HARD_CODED_PAGE) {
         this.onPostReqHomePageState(app.origin)
       }
     }

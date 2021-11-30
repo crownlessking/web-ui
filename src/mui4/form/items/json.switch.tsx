@@ -2,12 +2,13 @@ import React from 'react'
 import {
   FormControl, FormLabel, FormGroup, FormControlLabel, Switch, FormHelperText
 } from '@material-ui/core'
-import { getBoolValue } from '../form.controller'
+import { getBoolValue } from '../controller'
 import { RadioProps } from '@material-ui/core/Radio'
 import { IState } from '../../../interfaces'
-import StateFormItem, { getStoredValue, getLocallyStoredValue } from './items.controller'
+import { getStoredValue, getLocallyStoredValue } from './controller'
 import { connect } from 'react-redux'
 import { IParentState } from '../../../interfaces'
+import StateFormItem from '../../../controllers/StateFormItem'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

@@ -10,13 +10,14 @@ import {
   createStyles,
   Theme
 } from '@material-ui/core'
-import StateFormItem, {
+import {
   getStoredValue,
   getLocallyStoredValue
-} from './items.controller'
+} from './controller'
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
-import StateForm from '../../../state/forms/form.controller'
+import StateForm from '../../../controllers/StateForm'
+import StateFormItem from '../../../controllers/StateFormItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -7,14 +7,14 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import classNames from 'classnames'
-import StatePage from '../../state/pages/page.controller'
+import StatePage from '../../controllers/StatePage'
 import { openDrawer } from '../drawer/actions'
 import { updateAppbarSearchField } from './searchfield/actions'
 import { IState } from '../../interfaces'
 import { connect } from 'react-redux'
 import AppBarIcon from '../link'
-import StateLink from '../link/controller'
-import StatePageAppBar from '../../state/pages/appbar.c'
+import StateLink from '../../controllers/StateLink'
+import StatePageAppBar from '../../controllers/StatePageAppBar'
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {

@@ -1,4 +1,4 @@
-import { IStateBackground, IRedux, IStateLink, IDelegated } from '../interfaces'
+import { IRedux, IStateLink, IDelegated } from '../interfaces'
 import Config from '../config'
 
 // layouts
@@ -21,6 +21,22 @@ export const APP_CONTENT_HTML = '$html'
 
 export const DEFAULT = 'DEFAULT'
 export const CONTENT_PAGE_NOT_FOUND = 'CONTENT_PAGE_NOT_FOUND'
+
+/**
+ * A simple shortcut for triggering exceptions and preventing unecessarily
+ * inflated code blocks.
+ */
+export function err(message?: string) {
+  if (Config.DEBUG) {
+    throw new Error (message)
+  }
+}
+
+export function log(message: string) {
+  if (Config.DEBUG) {
+    console.log(message)
+  }
+}
 
 /**
  * If a callback is required for a link or button but is not defined, then this
@@ -116,31 +132,9 @@ export function getFontAwesomeIconProp(iconDef: string): string[]|string {
     return ['fas', iconDef]
   }
 
-  if (Config.DEBUG) throw new Error('bad icon definition. Check your JSON.')
+  err('bad icon definition. Check your JSON.')
 
   return ''
-}
-
-/**
- * Applies background style in a way that preserves other styles
- *
- * This is done by merging.
- *
- * @param css 
- * @param background 
- */
-export function getBackgroundCss(background?: IStateBackground): string | number | undefined {
-  if (background) {
-    switch (background.type) {
-    case 'color':
-    case 'gradient':
-    case 'image':
-      return background.value
-    case 'none':
-      return 'none'
-    }
-  }
-  return 'inherit'
 }
 
 /**
@@ -363,11 +357,27 @@ export function getGlobalVar (varName: string) {
   try {
     return (window as { [key: string]: any })[varName]
   } catch (e: any) {
-    if (Config.DEBUG) {
-      throw new Error (`Global variable "${varName}" does not exist.`)
-    }
+    err(`Global variable "${varName}" does not exist.`)
   }
   return { }
+}
+
+/**
+ * Get HTML head meta data.
+ *
+ * @param name 
+ * @returns 
+ */
+export function getHeadMeta(name: string) {
+  const key = document.querySelector(`meta[name="${name}"]`)
+
+  if (key) {
+    return (key as HTMLMetaElement).content
+  }
+
+  err(`Meta with '${name}' name does not exist.`)
+
+  return ''
 }
 
 /**
@@ -483,51 +493,4 @@ export function httpGet(theUrl: string)
   }
   xmlhttp.open("GET", theUrl, false);
   xmlhttp.send();    
-}
-
-function getHandlePropName (handle: string) {
-  const pieces = handle.replace(/\s+/g,'').split(':')
-
-  if (pieces.length > 1) {
-    return {
-      property: pieces[0],
-      callbackName: pieces[1]
-    }
-  }
-
-  return null
-}
-
-/**
- * Get a callback
- *
- * @param state any
- * @param callback [optional]
- * @param handle [optional]
- */
-export function setHandleCallback (state: any, callback: Function, handle?: string) {
-  if (handle) {
-    const handleDef = getHandlePropName(handle)
-
-    if (handleDef) {
-      const handleCallback = getVal(window, handleDef.callbackName)
-
-      state[handleDef.property] = (typeof handleCallback === 'function')
-        ? handleCallback
-        : callback
-    }
-
-    if (Config.DEBUG) {
-      throw new Error(
-        'Invalid handle syntax. '
-        + 'Expected "<prop> : <name>" format.'
-      )
-    }
-  }
-
-  if (Config.DEBUG) {
-    throw new Error(
-      `Invalid handle: The '${handle}' function does not exist.`
-    )
-  }
 }

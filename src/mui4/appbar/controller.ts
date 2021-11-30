@@ -1,12 +1,12 @@
 import {
   IStateAppBar, IStateTypography, IStateBackground
 } from '../../interfaces'
-import StateController from '../../controllers/state.controller'
-import State from '../../state/controller'
-import StatePage from '../../state/pages/page.controller'
-import StateAppBarBackground from './background.c'
-import StateAppBarTypography from './typography.c'
-import StateLink from '../link/controller'
+import AbstractState from '../../controllers/AbstractState'
+import State from '../../controllers/State'
+import StatePage from '../../controllers/StatePage'
+import StateAppBarBackground from '../../controllers/StateAppBarBackground'
+import StateAppBarTypography from '../../controllers/StateAppBarTypography'
+import StateLink from '../../controllers/StateLink'
 
 /**
  * Ports previous appBar state properties over to the newest if missing.
@@ -41,7 +41,7 @@ export function getPageAppbarBackground (page: StatePage, route: string) {
 }
 
 export default class StateAppBar<P = State>
-    extends StateController implements IStateAppBar {
+    extends AbstractState implements IStateAppBar {
 
   static EMPTY_APPBAR_BACKGROUND: IStateBackground = { type: 'none' }
   static EMPTY_APPBAR_TYPOGRAPHY: IStateTypography = {  }

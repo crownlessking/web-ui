@@ -1,5 +1,5 @@
 import React from 'react'
-import StatePage from '../state/pages/page.controller'
+import StatePage from '../controllers/StatePage'
 
 interface IProps {
   def: StatePage

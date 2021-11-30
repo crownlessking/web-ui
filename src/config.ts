@@ -7,7 +7,7 @@ const initConfObj = {
   /**
    * Whether the app is in debugging mode or not.
    */
-  DEBUG: store.getState().app.inDebugMode // boolean
+  DEBUG: store.getState().app.inDebugMode, // boolean
 }
 
 Config.init(initConfObj)

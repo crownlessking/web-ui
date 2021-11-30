@@ -2,8 +2,8 @@ import React from 'react'
 import { IStateBackground } from '../../interfaces'
 import { createStyles, Fade, withStyles } from '@material-ui/core'
 import { WithStyles } from '@material-ui/styles'
-import StateBackground from './controller'
-import StatePage from '../../state/pages/page.controller'
+import StateBackground from '../../controllers/StateBackground'
+import StatePage from '../../controllers/StatePage'
 
 export function getBackgroundCss({type, value}: IStateBackground) {
   switch (type) {

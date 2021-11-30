@@ -1,10 +1,10 @@
 
-import { IStatePage, IStateDialogForm, IJsonapiLink } from '../../../interfaces'
+import { IStateDialogForm, IJsonapiLink } from '../../../interfaces'
 import { getTableViewColumns } from '../controller'
 import { getDudEventCallback } from '../../../controllers'
 import dateFormat from 'dateformat'
-import StatePage from '../../../state/pages/page.controller'
-import StateDialogForm from '../../../state/dialogs/form.dialog.controller'
+import StatePage from '../../../controllers/StatePage'
+import StateDialogForm from '../../../controllers/StateDialogForm'
 import Config from '../../../config'
 
 /**
@@ -342,7 +342,7 @@ function parseCompositeVal(composite: string) {
  * @param rows array of JSON documents (resources)
  * @param index index in `rows`
  */
-export function filterRow(page: IStatePage, rows: any[], index: number) {
+export function filterRow(page: StatePage, rows: any[], index: number) {
   const data = rows[index].attributes || rows[index]
   const filters = page.meta.filters
   if (filters) {

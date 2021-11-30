@@ -1,11 +1,11 @@
 import React from 'react'
 import { FormControl, InputLabel, Select } from '@material-ui/core'
-import StateFormItem, { getProps, getStoredValue, getLocallyStoredValue } from './items.controller'
+import StateFormItem from '../../../controllers/StateFormItem'
+import { getProps, getStoredValue, getLocallyStoredValue, getMeta } from './controller'
 import { IStateFormSelectOption, IState } from '../../../interfaces'
-import { getErrorCode } from '../../../state/errors/controller'
-import { getMeta } from '../../../state/meta/controller'
+import { getErrorCode } from '../../../state/errors'
 import { connect } from 'react-redux'
-import StateForm from '../../../state/forms/form.controller'
+import StateForm from '../../../controllers/StateForm'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData,
