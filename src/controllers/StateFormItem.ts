@@ -110,24 +110,17 @@ get language(): string { return this.itemJson.highlight }
 * Set form field `onClick` attribute
 */
 set onClick (cb: (redux: IRedux) => (e: any) => void) {
-this.itemOnClick = cb || this.itemOnClick
+  this.itemOnClick = cb
 }
 
 /**
 * Set the 'onChange' attribute of the form field.
 */
 set onChange (cb: Function) {
-this.itemOnChange = cb || this.itemOnChange
+  this.itemOnChange = cb
 }
 
 set disabled(b: boolean) { this.itemDisabled = b }
-
-/**
-* Set a callback to run on form submission.
-*/
-setOnClick = (cb: (redux: IRedux) => (e: any) => void) => {
-this.itemOnClick = cb
-}
 
 /**
 * Prevents the app from throwing an exception because of the missing `name`

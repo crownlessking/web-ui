@@ -1,6 +1,6 @@
 import store from '..'
 import { dataInsertOne } from './actions'
-import Config from '../../common/configuration'
+import Config from '../../controllers/config.controller'
 import { addError } from '../errors/actions'
 import { getErrorCode } from '../errors'
 

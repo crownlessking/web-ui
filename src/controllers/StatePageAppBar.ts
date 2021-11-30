@@ -1,6 +1,6 @@
 import { IStateAppBar } from '../interfaces'
+import StateAppBar from './StateAppBar'
 import StatePage from './StatePage'
-import StateAppBar from '../mui4/appbar/controller'
 import StatePageAppBarBackground from './StatePageAppBarBackground'
 import StatePageAppBarTypography from './StatePageAppBarTypography'
 

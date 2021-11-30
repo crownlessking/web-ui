@@ -1,27 +1,6 @@
 import AbstractState from './AbstractState'
 import { IStateFormItemRadioButton } from '../interfaces'
-import StateFormItem from './StateFormItem'
-import StateFormItemCustom from './StateFormItemCustom'
-import StateForm from './StateForm'
-
-/**
- * Radio button.
- *
- * A customized version of `StateFormItem`.
- */
-export type StateFormItemRadio = StateFormItem<
- StateForm,
- IStateFormItemRadioButton
->
-
-/**
- * A custom version of the `StateFormItemCustom` class defined to be used with
- * radio buttons (`StateFormItemRadio`)
- */
-export type StateFormItemRadioCustom = StateFormItemCustom<
-  StateFormItemRadio,
-  IStateFormItemRadioButton
->
+import StateFormItemRadioCustom from './StateFormItemRadioCustom'
 
 /**
  * If a set of radio buttons is a *single form item (`StateFormItemRadio`) then

@@ -1,6 +1,4 @@
 
-// version 0.1.0
-
 /**
  * **WARNING**
  * Do not add any new methods to this interface.

@@ -42,11 +42,11 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = { getReqState }
 
 interface IProps extends WithStyles<typeof styles> {
-  origin: string,
-  endpoint: string,
+  endpoint: string
   topLevelLinks: IStateTopLevelLinks
   getReqState: (origin: string, endpoint: string, args?: string) => void
   meta: any
+  origin?: string
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)

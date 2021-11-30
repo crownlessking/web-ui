@@ -6,7 +6,7 @@ import { toJsonapiError } from '../errors'
 import { _cancelSpinner, _scheduleSpinner } from '../app'
 import runDefaultDriver from './default.driver'
 import runGnscDriver from './gnsc.driver'
-import { requestFailed, startRequest, requestSuccess } from './actions.net'
+import { requestFailed, startRequest, requestSuccess } from './actions'
 import { getEndpoint } from '../../controllers'
 
 // Response identification constants ------------------------------------------

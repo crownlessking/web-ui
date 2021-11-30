@@ -1,5 +1,5 @@
 
-import Config, { IConfiguration } from './common/configuration'
+import Config, { IConfiguration } from './controllers/config.controller'
 import store from './state'
 
 const initConfObj = {

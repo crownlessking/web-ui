@@ -2,11 +2,11 @@ import store from '../../../state'
 import {
   TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT, TEXT
 } from '../controller'
-import { IStateFormItem } from '../../../interfaces'
 import {
   updateFormData, IFormDataPayload
 } from '../../../state/forms/data/actions'
 import StateForm from '../../../controllers/StateForm'
+import StateFormItem from '../../../controllers/StateFormItem'
 
 /**
  * Helper function for `setDefaultValue()`.
@@ -31,6 +31,7 @@ function noFormDataExist (formName: string, name?: string) {
       return !(store.getState().formsData[formName][name])
     }
   } catch (e) { }
+
   return true
 }
 
@@ -40,18 +41,13 @@ function noFormDataExist (formName: string, name?: string) {
  * @param field 
  * @param formName 
  */
-function _setDefaultValue(field: IStateFormItem, formName: string) {
-  const name = field.name || ''
-  if (noFormDataExist(formName, name)
-    && field.has
-    && field.has.defaultValue
-  ) {
-    const fieldType = field.type.toUpperCase()
-    const { has: { defaultValue : value } } = field
-    switch (fieldType) {
+function _setDefaultValue(field: StateFormItem, formName: string) {
+  if (noFormDataExist(formName, field.name) && field.has.defaultValue) {
+    const { type, name, has: { defaultValue : value } } = field
+    switch (type.toUpperCase()) {
 
-    // TODO Add more cases here to enable default values on additional types
-    // of fields
+    // [TODO] Add more cases here to enable default values on additional types
+    //        of fields
     case SELECT:
     case NUMBER:
     case TEXTFIELD:

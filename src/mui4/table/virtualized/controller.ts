@@ -1,11 +1,10 @@
 
 import { IStateDialogForm, IJsonapiLink } from '../../../interfaces'
 import { getTableViewColumns } from '../controller'
-import { getDudEventCallback } from '../../../controllers'
+import { getDudEventCallback, log } from '../../../controllers'
 import dateFormat from 'dateformat'
 import StatePage from '../../../controllers/StatePage'
 import StateDialogForm from '../../../controllers/StateDialogForm'
-import Config from '../../../config'
 
 /**
  * Represents the type of the row object provided by `onRowClick` attribute on
@@ -43,12 +42,14 @@ export function getLinkUri(link?: IJsonapiLink | string) {
  * @param origin url
  * @returns string
  */
-export function getOriginEndingFixed(origin: string) {
+export function getOriginEndingFixed(origin?: string) {
   if (origin) {
     const endingChar = origin.charAt(origin.length - 1)
     return endingChar === '/' ? origin : origin + '/'
   }
-  if (Config.DEBUG) console.log('origin is empty.')
+
+  log('origin is empty.')
+
   return '/'
 }
 

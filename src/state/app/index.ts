@@ -1,8 +1,5 @@
 import store from '..'
 import { showSpinner } from './actions'
-import { IStateApp } from '../../interfaces'
-import AbstractState from '../../controllers/AbstractState'
-import State from '../../controllers/State'
 import { err } from '../../controllers'
 
 /**
@@ -21,7 +18,7 @@ export function getBootstrapKey() {
     return (key as HTMLMetaElement).content
   }
 
-  err('Invalid bootstrap key')
+  err('Missing bootstrap key')
 
   return ''
 }
@@ -70,89 +67,4 @@ export function _cancelSpinner() {
     clearTimeout(handle)
     handle = null
   }
-}
-
-export function getOriginValidation(origin: string) {
-  return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/
-      .test(origin)
-}
-
-/**
- * Get location origin URL.
- *
- * @returns string
- */
-export function getLocationOrigin() {
-  return window.location.origin + '/'
-}
-
-/**
-  * Ensures the origin URL is valid and has an ending forward slash.
-  *
-  * @returns string
-  */
-function getOriginEndingFixed(origin: string) {
-  const endingChar = origin.charAt(origin.length - 1)
-
-  return endingChar === '/' ?  origin : origin + '/'
-}
-
-/**
- * Get the origin URL determined to be valid.
- *
- * @returns string
- */
-export function getOrigin() {
-  const userOrigin = store.getState().app.origin
-
-  return getOriginEndingFixed(userOrigin)
-}
-
-export default class StateApp extends AbstractState implements IStateApp {
-
-  private appJson: IStateApp
-  private parentObj: State
-  private appOrigin?: string
-
-  constructor(app: IStateApp, parent: State) {
-    super()
-    this.appJson = app
-    this.parentObj = parent
-  }
-
-  /**
-   * Get a copy of the app definition.
-   */
-  get json() { return this.appJson }
-
-  /**
-   * Chain-access to parent (root) definition.
-   */
-  get parent() { return this.parentObj }
-
-  get inDebugMode() {
-    return this.appJson.inDebugMode
-  }
-
-  get origin() {
-    return this.appOrigin || (
-      this.appOrigin = getOriginEndingFixed(this.appJson.origin)
-    )
-  }
-
-  /**
-   * Chain-access to the current page route.
-   */
-  get route() { return this.appJson.route }
-
-  get showSpinner() { return this.appJson.showSpinner }
-
-  get status() { return this.appJson.status || '' }
-
-  get title() { return this.appJson.title }
-
-  get logo() { return this.appJson.logo || ''}
-
-  get lastRoute() { return this.appJson.lastRoute || ''}
-
 }

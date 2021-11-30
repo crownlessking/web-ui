@@ -22,7 +22,7 @@ import {
   APP_REQUEST_FAILED,
   APP_REQUEST_SUCCESS,
   REQUEST_PROCESS_END
-} from '../net/actions.net'
+} from '../net/actions'
 
 import {
   IReduxAction,

@@ -47,12 +47,6 @@ export default {
     'inDebugMode': false,
 
     /**
-     * URI of the server to which the app will make requests and receive
-     * responses
-     */
-    'origin': '',
-
-    /**
      * The page that is currently displayed.
      *
      * **How it works**

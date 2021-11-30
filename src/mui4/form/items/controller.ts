@@ -13,7 +13,7 @@ import StateFormItem from '../../../controllers/StateFormItem'
 
 /**
  * Prevents the app from throwing an exception because of the missing `name`
- * attribute in specific form item definitions.
+ * attribute in specific form item definition.
  *
  * The application is set to throw an exception if the name of a form field is
  * missing. However, not all defined form items are fields. If the name is
@@ -145,8 +145,8 @@ export function getProps<T extends IStateFormItem>(item: T, removalList?: string
  */
 export function options(hasJson: IStateFormItemCustom) {
 
-  // Implement additional logic here
-  // e.g. filtering or verification
+  // [TODO] Implement additional logic here
+  //        e.g. filtering or verification
 
   return hasJson.items ? hasJson.items : []
 }
@@ -160,8 +160,8 @@ export function options(hasJson: IStateFormItemCustom) {
  */
 export function radioValue(itemJson: IStateFormItemRadioButton) {
 
-  // TODO Use this function to implement logic when retrieving a form radio
-  // value from the definition.
+  // [TODO] Use this function to implement logic when retrieving a form radio
+  //        value from the definition.
  
   return itemJson.value
 }
@@ -173,8 +173,8 @@ export function radioValue(itemJson: IStateFormItemRadioButton) {
  */
 export function radioButtons(hasJson: IStateFormItemCustom) {
 
-  // Implement logic additional logic needed for radio buttons here.
-  // e.g. filtering and verifications
+  // [TODO] Implement logic additional logic needed for radio buttons here.
+  //        e.g. filtering and verifications
 
   return hasJson.items ? hasJson.items : []
 }

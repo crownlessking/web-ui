@@ -5,9 +5,7 @@ import {
 } from '../controller'
 import { IState } from '../../../../interfaces'
 import { connect } from 'react-redux'
-import StateFormItemRadioButton, { 
-  StateFormItemRadio
-} from '../../../../controllers/StateFormItemRadioButton'
+import StateFormItemRadio from '../../../../controllers/StateFormItemRadio'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -51,21 +49,18 @@ function({ def: radio, formsData, state }: IProps) {
         aria-label={radio.has.label || radio.has.title}
         onChange={radio.onChange(radio.name)}
       >
-        {radio.has.items.map((item, index) => {
-          const radioButton = new StateFormItemRadioButton(item, radio.has)
-          return (
-            <FormControlLabel
-              key={index}
-              value={radioButton.value}
-              control={
-                <Radio color={radioButton.json.color} />
-              }
-              label={radioButton.label}
-              checked={radioButton.value === currentValue}
-              disabled={radioButton.disabled}
-            />
-          )
-        })}
+        {radio.has.items.map((radioButton, i) => (
+          <FormControlLabel
+            key={i}
+            value={radioButton.value}
+            control={
+              <Radio color={radioButton.json.color} />
+            }
+            label={radioButton.label}
+            checked={radioButton.value === currentValue}
+            disabled={radioButton.disabled}
+          />
+        ))}
       </RadioGroup>
     </FormControl>
   )

@@ -422,11 +422,16 @@ export interface IStateApp {
   /** If app is in debug mode or not */
   inDebugMode: boolean
 
-  origin: string
   route: string
 
   /** web page title: It will be displayed if a logo was NOT provided. */
   title: string
+
+  /**
+   * URL of the server to which the app will make requests and receive
+   * responses.
+   */
+  origin?: string
 
   showSpinner?: boolean
   status?: string
@@ -441,6 +446,21 @@ export interface IStateApp {
   //        page.
   //        We will use the 'defaultPage' property instead.
   defaultPage?: string
+
+  /**
+   * Name of property or attribute where the token is stored.
+   */
+  csrfTokenName?: string
+
+  /**
+   * Method used to store the CSRF token.
+   *
+   * CSRF property must be defined also.
+   */
+  csrfTokenMethod?: 'meta' | 'javascript'
+
+  /** CSRF Token */
+  csrfToken?: string
 }
 
 /**

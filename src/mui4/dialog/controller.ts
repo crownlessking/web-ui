@@ -1,6 +1,6 @@
 import { IStateFormItem, IStateForm, IStateDialog } from '../../interfaces'
 import StatePage from '../../controllers/StatePage'
-import StateAllPages from '../../state/pages'
+import StateAllPages from '../../controllers/StateAllPages'
 import store from '../../state'
 import Config from '../../config'
 

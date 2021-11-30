@@ -7,7 +7,7 @@ import {
 } from '../interfaces'
 import StatePageAppBar from './StatePageAppBar'
 import StatePageBackground from './StatePageBackground'
-import StateAllPages from '../state/pages'
+import StateAllPages from './StateAllPages'
 import StatePageDrawer from './StatePageDrawer'
 import StatePageTypography from './StatePageTypography'
 import AbstractState from './AbstractState'

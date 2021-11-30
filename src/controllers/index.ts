@@ -369,13 +369,13 @@ export function getGlobalVar (varName: string) {
  * @returns 
  */
 export function getHeadMeta(name: string) {
-  const key = document.querySelector(`meta[name="${name}"]`)
+  const meta = document.querySelector(`meta[name="${name}"]`)
 
-  if (key) {
-    return (key as HTMLMetaElement).content
+  if (meta) {
+    return (meta as HTMLMetaElement).content
   }
 
-  err(`Meta with '${name}' name does not exist.`)
+  // err(`Meta with '${name}' name does not exist.`)
 
   return ''
 }
@@ -493,4 +493,18 @@ export function httpGet(theUrl: string)
   }
   xmlhttp.open("GET", theUrl, false);
   xmlhttp.send();    
+}
+
+/**
+ * Ensures the origin URL is valid and has an ending forward slash.
+ *
+ * @returns string
+ */
+export function getOriginEndingFixed(origin?: string) {
+  if (origin) {
+    const endingChar = origin.charAt(origin.length - 1)
+
+    return endingChar === '/' ? origin : origin + '/'
+  }
+  return window.location.origin + '/'
 }
