@@ -368,7 +368,7 @@ export function getGlobalVar (varName: string) {
  * @param name 
  * @returns 
  */
-export function getHeadMeta(name: string) {
+export function getHeadMetaContent(name: string) {
   const meta = document.querySelector(`meta[name="${name}"]`)
 
   if (meta) {
@@ -443,12 +443,6 @@ export function safelyGet(obj: any, path?: string, _default?: any) {
 
   if (value !== null) {
     return value
-  }
-
-  if (Config.DEBUG) {
-    // TODO implement logic to save the error here so that it can be viewed later
-    // e.g. Create a view where all error that occurred in the app will be displayed
-    //      in a table
   }
 
   switch (_default) {

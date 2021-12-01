@@ -1,6 +1,3 @@
-// WARNING: This reducer is not in use. This file can be deleted.
-//          This file was kept for the sake of finding a solution
-//          to change the background
 import {
   UI_SET_BACKGROUND_COLOR,
   UI_SET_BACKGROUND_IMAGE,
@@ -12,9 +9,9 @@ import {
   IReduxAction,
   IStateBackground,
 } from '../../interfaces'
-import { setStatePageBackground } from '../../controllers/State'
+import initialState from '../../state/initial.state'
 
-const INIT: IStateBackground = setStatePageBackground()
+const INIT: IStateBackground = initialState.background
 
 export default function BackgroundReducer (
   background = INIT,

@@ -19,6 +19,7 @@ import StatePagesData from './StatePagesData'
 import StateSnackbar from './StateSnackbar'
 import StateTmp from './StateTmp'
 import StateTopLevelLinks from './StateTopLevelLinks'
+import StateSecurity from './StateSecurity'
 
 export default class State extends AbstractState {
 
@@ -43,6 +44,7 @@ export default class State extends AbstractState {
   private storeSnackbar?: StateSnackbar
   private storeTmp?: StateTmp
   private storeTopLevelLinks?: StateTopLevelLinks
+  private storeSecurity?: StateSecurity
 
   /**
    * Constructor of the (store) root state.
@@ -235,6 +237,16 @@ export default class State extends AbstractState {
           this.storeJson.topLevelLinks,
           this
         ))
+  }
+
+  get theme() { return this.storeJson.theme }
+
+  get security() {
+    return this.storeSecurity
+      || (this.storeSecurity = new StateSecurity(
+        this.storeJson.security,
+        this
+      ))
   }
 
 } // END class ----------------------------------------------------------------

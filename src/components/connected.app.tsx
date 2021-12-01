@@ -60,7 +60,7 @@ class App extends Component<IProps> {
   private root?: State
 
   onPostReqHomePageState = (origin: string) => {
-    this.props.onPostReqState(origin, getBootstrapKey(), '{}')
+    this.props.onPostReqState(origin, getBootstrapKey(), '')
   }
 
   componentDidMount() {

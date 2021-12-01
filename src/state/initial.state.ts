@@ -223,6 +223,8 @@ export default {
         'main': orange[800]
       },
     },
-  } as ThemeOptions, getGlobalVar('themeOptions'))
+  } as ThemeOptions, getGlobalVar('themeOptions')),
+
+  'security': _.extend({}, getGlobalVar('appSecurity'))
 
 } as IState

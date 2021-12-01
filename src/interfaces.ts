@@ -11,7 +11,7 @@ export interface IDelegated {
   state?: any, // parent component's state
   setState?: (state: any) => void // parent component's setState()
   data?: any, // additional data the parent component wants to pass to the
-              // child
+  // child
 }
 
 /**
@@ -40,7 +40,7 @@ export interface IDataViewConfig {
   // The view will then know to consider the age field as a number.
   type: {
     [key: string]: string // indicates the type of each field in the JSON
-                          // resource document
+    // resource document
   }
 }
 
@@ -291,7 +291,7 @@ export interface IStateDrawer extends IAbstractStateDrawer {
 /**
  * TEMPORARY You can delete this if it's not in use.
  */
-export interface IStatePageDrawer extends IAbstractStateDrawer {  }
+export interface IStatePageDrawer extends IAbstractStateDrawer { }
 
 /**
  * Background color, image, gradient... etc. Any valid CSS background.
@@ -335,7 +335,7 @@ export interface IStatePage {
    * Only the title of the page will be displayed in the browser tab.
    */
   forcedTitle?: string
-  
+
   /** Page appbar */
   appBar?: IStateAppBar
   /** Page background */
@@ -446,21 +446,6 @@ export interface IStateApp {
   //        page.
   //        We will use the 'defaultPage' property instead.
   defaultPage?: string
-
-  /**
-   * Name of property or attribute where the token is stored.
-   */
-  csrfTokenName?: string
-
-  /**
-   * Method used to store the CSRF token.
-   *
-   * CSRF property must be defined also.
-   */
-  csrfTokenMethod?: 'meta' | 'javascript'
-
-  /** CSRF Token */
-  csrfToken?: string
 }
 
 /**
@@ -572,6 +557,8 @@ export interface IState {
 
   /** Material-ui `ThemeOptions` */
   theme: any
+
+  security: IStateSecurity
 }
 
 /**
@@ -769,7 +756,57 @@ export interface IStateLink {
 /**
  * Use when component receives its parent state
  */
- export interface IParentState {
+export interface IParentState {
   state: any
   setState: Function
+}
+
+export interface IStateSecurity {
+
+  /**
+   * Name of property or attribute where the token is stored.
+   */
+  csrfTokenName?: string
+
+  /**
+   * Method used to store the CSRF token.
+   *
+   * List of methods:
+   *
+   * - **meta**  
+   *    With the meta solution, the token will be stored as the value of the
+   *    content attribute of a meta tag which will be identified by the value
+   *    supplied in the csrf token name. e.g.
+   *    ```html
+   *    <meta name="csrf-token-name" content="token" />
+   *    ```
+   *
+   * - **javascript**  
+   *   With the javascript method, the token will be assumed to be saved as a
+   *   global variable or at least nested within a global variable that is an
+   *   object. If the latter is the case, you can supply a dot-separated list
+   *   of properties as a string which is the exact location of the token.
+   *   e.g.  
+   *
+   *   ```ts
+   *   var globalVar = {
+   *     property1: {
+   *       token: '...'
+   *     }
+   *   };
+   *   const csrfTokenName = 'globalVar.property1.token'
+   *   ```
+   *
+   */
+  csrfTokenMethod?: 'meta' | 'javascript'
+
+  /**
+   * CSRF Token.
+   *
+   * Contains the CSRF token once it is retrieved.
+   */
+  csrfToken?: string
+
+  /** Any value inserted is automatically included in POST request body */
+  headers?: any
 }
