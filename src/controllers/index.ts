@@ -1,5 +1,6 @@
 import { IRedux, IStateLink, IDelegated } from '../interfaces'
 import Config from '../config'
+import AbstractState from './AbstractState'
 
 // layouts
 
@@ -22,6 +23,12 @@ export const APP_CONTENT_HTML = '$html'
 export const DEFAULT = 'DEFAULT'
 export const CONTENT_PAGE_NOT_FOUND = 'CONTENT_PAGE_NOT_FOUND'
 
+export function log(message: string) {
+  if (Config.DEBUG) {
+    console.log(message)
+  }
+}
+
 /**
  * A simple shortcut for triggering exceptions and preventing unecessarily
  * inflated code blocks.
@@ -29,12 +36,6 @@ export const CONTENT_PAGE_NOT_FOUND = 'CONTENT_PAGE_NOT_FOUND'
 export function err(message?: string) {
   if (Config.DEBUG) {
     throw new Error (message)
-  }
-}
-
-export function log(message: string) {
-  if (Config.DEBUG) {
-    console.log(message)
   }
 }
 
@@ -94,17 +95,6 @@ export function delegatedState(delegation: IDelegated, key?: string) {
  */
 export function delegatedSetState(delegation: IDelegated) {
   return delegation.setState || getDudEventCallback()
-}
-
-/**
- * Format a string value to be compared to a string constant.
- *
- * We need a way to format a string value so that it can be compared or
- * be equivalent to the value of a string constant.
- * Generally, the value of a string constant should be all uppercase.
- */
-export function toConstantStr(value: string) {
-  return value.trim().toUpperCase()
 }
 
 /**
@@ -275,20 +265,20 @@ export function getEndpoint(pathname: string) {
  */
 export function getVal(obj: any, path: string) {
   const paths = path.split('.')
-  let o = { ...obj },
-      candidate: any,
-      i = 0
-  do {
-    let key = paths[i]
-    candidate = o[key]
+  let i = 0,
+    key = paths[i],
+    candidate = obj[key]
+
+  while (i < paths.length) {
     if (!candidate) {
       break
     } else if (i >= paths.length - 1) {
       return candidate
     }
-    o = candidate
     i++
-  } while (i < paths.length)
+    key = paths[i]
+    candidate = candidate[key]
+  }
 
   return null
 }
@@ -353,7 +343,7 @@ export function setVal(obj: any, path: string, val: any) {
  * @returns object or throws an exception
  * @throws an exception if the global variable name is invalid.
  */
-export function getGlobalVar (varName: string) {
+export function getGlobalVar(varName: string) {
   try {
     return (window as { [key: string]: any })[varName]
   } catch (e: any) {
@@ -501,4 +491,36 @@ export function getOriginEndingFixed(origin?: string) {
     return endingChar === '/' ? origin : origin + '/'
   }
   return window.location.origin + '/'
+}
+
+/**
+ * Parses a cone expression.
+ *
+ * e.g. "<appInfo.origin>"
+ *
+ * Use a cone expression to give a property the value of another property. e.g.
+ *
+ * ```ts
+ * const appSecurity = {
+ *   headers: {
+ *     origin: '<appInfo.origin>'
+ *   }
+ * };
+ * ```
+ *
+ * `appSecurity.headers.origin` now as the value of `appInfo.origin`
+ *
+ * @param state that supports cone expressions
+ * @param cone  the cone expression
+ * @returns 
+ */
+export function parseConeExp(state: AbstractState, cone: string) {
+  if (/^<([-$_a-zA-Z0-9\\/]+)(\.[-$_a-zA-Z0-9\\/]+)*>$/.test(cone)) {
+    const value = getVal(state, cone.substring(1).substring(0, cone.length - 2))
+    if (!value) {
+      err(`Cone expression resolution on '${cone}' failed.`)
+    }
+    return value
+  }
+  return cone
 }

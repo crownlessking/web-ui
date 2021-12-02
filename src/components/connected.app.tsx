@@ -47,7 +47,8 @@ interface IProps extends WithStyles<typeof styles> {
   onPostReqState: (
     origin: string,
     endpoint: string,
-    body: RequestInit['body']
+    body: RequestInit['body'],
+    headers?: RequestInit['headers']
   ) => void
 }
 
@@ -55,12 +56,12 @@ interface IProps extends WithStyles<typeof styles> {
  * Redux connected App
  */
 class App extends Component<IProps> {
-
   private pageID?: string
   private root?: State
 
   onPostReqHomePageState = (origin: string) => {
-    this.props.onPostReqState(origin, getBootstrapKey(), '')
+    const headers = this.root ? this.root.security.headers : {}
+    this.props.onPostReqState(origin, getBootstrapKey(), '', headers)
   }
 
   componentDidMount() {
@@ -99,8 +100,6 @@ class App extends Component<IProps> {
       </React.Fragment>
     )
   }
-
-  LocalPage = ({ page }:{ page: StatePage }) => { }
 
 }  // END App class
 

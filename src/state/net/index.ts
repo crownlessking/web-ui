@@ -8,6 +8,7 @@ import runDefaultDriver from './default.driver'
 import runGnscDriver from './gnsc.driver'
 import { requestFailed, startRequest, requestSuccess } from './actions'
 import { getEndpoint } from '../../controllers'
+import _ from 'lodash'
 
 // Response identification constants ------------------------------------------
 
@@ -154,13 +155,18 @@ export const getRequest = (
 export const postReqState = (
   origin: string,
   endpoint: string,
-  body: RequestInit['body']
+  body: RequestInit['body'],
+  headers?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
     const uri = `${origin}${endpoint}`
     try {
+      DEFAULT_POST_PAYLOAD.headers = _.extend(
+        DEFAULT_POST_PAYLOAD.headers,
+        headers
+      )
       const response = await fetch(
         uri,
         { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit

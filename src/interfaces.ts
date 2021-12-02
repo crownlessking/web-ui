@@ -807,6 +807,10 @@ export interface IStateSecurity {
    */
   csrfToken?: string
 
-  /** Any value inserted is automatically included in POST request body */
-  headers?: any
+  /**
+   * Any value inserted here is automatically included as POST request headers.
+   *
+   * In addition, cone expressions are supported.
+   */
+  headers?: { [prop: string]: string }
 }

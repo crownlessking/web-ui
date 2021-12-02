@@ -1,4 +1,4 @@
-import { err, getHeadMetaContent, safelyGet } from '.'
+import { getHeadMetaContent, err, parseConeExp, safelyGet } from '.'
 import { IStateSecurity } from '../interfaces'
 import AbstractState from './AbstractState'
 import State from './State'
@@ -8,6 +8,7 @@ export default class StateSecurity extends AbstractState implements IStateSecuri
   private securityJson: IStateSecurity
   private parentObj: State
   private securityCsrfToken?: string
+  private securityHeaders?: { [prop: string]: string }
 
   constructor(security: IStateSecurity, parent: State) {
     super()
@@ -44,5 +45,28 @@ export default class StateSecurity extends AbstractState implements IStateSecuri
     )
   }
 
-  get headers() { return this.securityJson.headers || { } }
+  /** Helper function for `get headers()`.  */
+  private parseHeadersConeExp() {
+    if (this.securityJson.headers) {
+      const securityHeaders: IStateSecurity['headers'] = {}
+      for (const p in this.securityJson.headers) {
+        securityHeaders[p] = parseConeExp(this, this.securityJson.headers[p])
+      }
+      return securityHeaders
+    }
+    return {}
+  }
+
+  get headers() {
+    return this.securityHeaders || (
+      this.securityHeaders = this.parseHeadersConeExp()
+    )
+  }
+
+  setHeader(prop: string, value: string) {
+    const parsedValue = parseConeExp(this, value)
+    this.securityHeaders = this.securityHeaders || {}
+    this.securityHeaders[prop] = parsedValue
+  }
+
 }
