@@ -7,7 +7,7 @@ import { _cancelSpinner, _scheduleSpinner } from '../app'
 import runDefaultDriver from './default.driver'
 import runGnscDriver from './gnsc.driver'
 import { requestFailed, startRequest, requestSuccess } from './actions'
-import { getEndpoint } from '../../controllers'
+import { getEndpoint, getOriginEndingFixed } from '../../controllers'
 import _ from 'lodash'
 
 // Response identification constants ------------------------------------------
@@ -148,12 +148,14 @@ export const getRequest = (
 /**
  * Use this function make a POST request.
  *
+ * [TODO] Implement the PUT request version of this function. Or just fully
+ *        implement all HTTP verbs. PATCH, DELETE, OPTIONS, HEAD.
+ *
  * @param endpoint usually an entity name. Otherwise, it's a valid URI endpoint.
  *                 e.g. `users`
- * @param args the data you want to send to the server. e.g, a form data.
+ * @param args the data you want to send to the server. e.g. form data.
  */
 export const postReqState = (
-  origin: string,
   endpoint: string,
   body: RequestInit['body'],
   headers?: RequestInit['headers']
@@ -161,14 +163,16 @@ export const postReqState = (
   return async (dispatch: Dispatch, getState: () => IState) => {
     dispatch(startRequest())
     _scheduleSpinner()
-    const uri = `${origin}${endpoint}`
     try {
+      const origin = getOriginEndingFixed(getState().app.origin)
+      const url = `${origin}${endpoint}`
+      const mergedHeaders = headers || getState().net.headers || {}
       DEFAULT_POST_PAYLOAD.headers = _.extend(
         DEFAULT_POST_PAYLOAD.headers,
-        headers
+        mergedHeaders
       )
       const response = await fetch(
-        uri,
+        url,
         { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
       )
       const json = await response.json()

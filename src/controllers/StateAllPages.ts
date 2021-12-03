@@ -1,3 +1,4 @@
+import { log } from '.'
 import { IStateAllPages, IStatePage } from '../interfaces'
 import initialState from '../state/initial.state'
 import AbstractState from './AbstractState'
@@ -32,18 +33,9 @@ export default class StateAllPages extends AbstractState {
    *             they should not be accessed using the (dot) `.` operator.
    */
   pageAt = (route: string): StatePage => {
-    const statePage = this.getStatePage(route)
+    const pageJson = this.getStatePage(route)
 
-    if (statePage !== null) {
-      return new StatePage(statePage, this)
-    }
-
-    return new StatePage({
-      _id: StatePage.HARD_CODED_PAGE,
-      title: 'Default page',
-      content: '$html : default.html : n/a',
-      useDefaultBackground: true
-    }, this)
+    return new StatePage(pageJson, this)
   }
 
   /**
@@ -57,17 +49,31 @@ export default class StateAllPages extends AbstractState {
    * @param route the specified route
    */
   getStatePage = (route: string): IStatePage => {
-                      // Try with the forwardslash first
-    return this.allPagesJson[`/${route}`]
+    
+    // Try with the forwardslash first
+    let page = this.allPagesJson[`/${route}`]
 
-      // Okay, that did not work. Let's omit the forwardslash this time.
-      || this.allPagesJson[route]
+    if (page) { return page }
 
-      // Yup! The route is bad.  We'll just juse the default rout then.
-      || this.allPagesJson[initialState.app.route]
+    // Okay, that did not work. Let's omit the forwardslash this time.
+    page = this.allPagesJson[route]
 
-      // Oops! No default page.
-      || null
+    if (page) { return page }
+
+    log(`'${route}' page does exist`)
+
+    // Yup! The route is bad.  We'll just use the default rout then.
+    page = this.allPagesJson[initialState.app.route]
+
+    if (page) { return page }
+
+    // Oops! No default page. Let's create one.
+    return {
+      _id: StatePage.HARD_CODED_PAGE,
+      title: 'Default page',
+      content: '$html : default.html : n/a',
+      useDefaultBackground: true
+    }
   }
 
 } // END class AllPages -------------------------------------------------------

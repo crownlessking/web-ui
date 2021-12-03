@@ -54,9 +54,9 @@ interface IProps extends WithStyles<typeof styles> {
   def: StatePage
   onUpdateFormData: (payload: IFormDataPayload) => void
   onPostReqState: (
-    origin: string,
     endpoint: string,
-    body: RequestInit['body']
+    body: RequestInit['body'],
+    headers?: RequestInit['headers']
   ) => void
 }
 
@@ -209,19 +209,17 @@ class BuildForm extends Component<IProps> {
   onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
     e.preventDefault()
     const page = this.props.def
-    const origin = page.parent.parent.app.origin
     const formsData = page.parent.parent.formsData
     const endpoint = page.contentEndpoint
     const body = formsData.getStoredValues(form.name)
-    this.onPostReqState(origin, endpoint, body)
+    this.onPostReqState(endpoint, body)
   }
 
   onPostReqState = (
-    origin: string,
     endpoint: string,
     body: RequestInit['body']
   ) => {
-    this.props.onPostReqState(origin, endpoint, body)
+    this.props.onPostReqState(endpoint, body)
   }
 
   componentDidMount = () => {

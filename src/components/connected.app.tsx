@@ -45,7 +45,6 @@ const mapDispatchToProps = {
 interface IProps extends WithStyles<typeof styles> {
   state: IState
   onPostReqState: (
-    origin: string,
     endpoint: string,
     body: RequestInit['body'],
     headers?: RequestInit['headers']
@@ -59,19 +58,21 @@ class App extends Component<IProps> {
   private pageID?: string
   private root?: State
 
-  onPostReqHomePageState = (origin: string) => {
-    const headers = this.root ? this.root.security.headers : {}
-    this.props.onPostReqState(origin, getBootstrapKey(), '', headers)
+  /** Get a page from server. */
+  onPostReqHomePageState = () => {
+    const key = getBootstrapKey()
+
+    if (this.root && key) {
+      const headers = this.root.net.headers
+      this.props.onPostReqState(key, '', headers)
+    }
   }
 
   componentDidMount() {
-    if (this.root) {
-      const app = this.root.app
 
-      // Get a page from server if none was provided.
-      if (this.pageID === StatePage.HARD_CODED_PAGE) {
-        this.onPostReqHomePageState(app.origin)
-      }
+    // Get a page from server if none was provided.
+    if (this.pageID === StatePage.HARD_CODED_PAGE) {
+      this.onPostReqHomePageState()
     }
   }
 

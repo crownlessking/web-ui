@@ -38,12 +38,19 @@
 - [Dialog](#dialog)
 - [Spinner](#spinner)
 - [Glogal variables](#glogal-variables)
+  - [Rename global variables](#rename-global-variables)
   - [Global variable `appInfo`](#global-variable-appinfo)
   - [Global variable `appPages` (allPages)](#global-variable-apppages-allpages)
   - [Global variable `appForms`](#global-variable-appforms)
   - [Global variable `appBackground`](#global-variable-appbackground)
   - [Global variable `appDialogs`](#global-variable-appdialogs)
   - [Global variable `appTypography`](#global-variable-apptypography)
+- [Networking](#networking)
+  - [CSRF Protection](#csrf-protection)
+    - [Meta method](#meta-method)
+    - [Javascript method](#javascript-method)
+    - [Sending CSRF token back to server](#sending-csrf-token-back-to-server)
+    - [Cone expressions](#cone-expressions)
 - [Objects and properties](#objects-and-properties)
   - [Page object](#page-object)
   - [Form item (field) object](#form-item-field-object)
@@ -975,6 +982,26 @@ For more information on theming, visit:
 
 The _global variables_ is where it all starts if you are using JavaScript to put your single-page app together. There's a variable to define a page, a form, a popup dialog, and much more.
 
+### Rename global variables
+
+Notice how all global variable names begin with the prefix * *app* * ? If you wish to rename the global variables, you can. In the HTML head tag, there is a meta tag named, "web-ui". If it does not exist, create it:
+
+```html
+<meta name="web-ui" content="app" />
+```
+
+Its content value should be "app" by default which is the global variables prefix.
+
+**NOTE:** The default value is "app" whether the meta tag is defined or not.
+
+Whatever you change "app" to will be your new global variables prefix. For example, if you change "app" to "foo", You need to use `fooForms` to create forms:
+
+```ts
+window.fooForms = {
+  loginForm: { }
+};
+```
+
 [[top](#web-ui)]
 
 ### Global variable `appInfo`
@@ -1106,7 +1133,120 @@ var appDialogs = {
 
 *TODO: `appTypography` might not have been properly implemented. See to it that it has the desired effect and works as intended.*
 
+## Networking
+
 [[top](#web-ui)]
+
+### CSRF Protection
+
+If you are using a web framework with web-ui, you might want to enable CSRF protection on your forms.
+
+Currently, two methods for storing the CSRF token are supported:
+
+#### Meta method
+
+This is the default method of storing the CSRF token. It is stored as the content value of a meta tag. The `name` attribute of that meta tag can be whatever you want. Just don't forget to tell web-ui about it.  
+Create a global variable called `appNet` if it does not exist and define the `csrfTokenName` property:
+
+```ts
+window.appNet = {
+  csrfTokenName: 'foo',
+
+  // defaults to 'meta' if this property is not defined.
+  csrfTokenMethod: 'meta'
+};
+```
+
+Subsequently, web-ui will look for the following meta tag:
+
+```html
+<meta name="foo" content="your-csrf-token-key">
+```
+
+[[top](#web-ui)]
+
+#### Javascript method
+
+With the JavaScript method, your CSRF token will be stored as a global variable or it can be nested in one. In this case, set `csrfTokenName` as the name of that global variable or a dot-separated property path to the CSRF token:
+
+```ts
+window.appNet = {
+  csrfTokenName: 'foo.bar',
+  csrfTokenMethod: 'javascript'
+};
+```
+
+Based on the previous example, the token needs to be located at:
+
+```ts
+window.foo = {
+  bar: 'your-csrf-token-key'
+};
+```
+
+[[top](#web-ui)]
+
+#### Sending CSRF token back to server
+
+It is currently possible to send the token back as a request header. Locate your `appNet` object and define the `headers` property:
+
+```ts
+window.appNet = {
+  headers: { } // <-- over here!
+};
+```
+
+Although you can name the header whatever you want:
+
+```ts
+window.appNet = {
+  headers: {
+    whateverYouWant: 'your-csrf-token-key'
+  }
+};
+```
+
+The convention would be to use the `X-CSRF-Token` header. So we will use:
+
+```ts
+window.appNet = {
+  headers: {
+    'X-CSRF-Token': 'your-csrf-token-key'
+  }
+};
+```
+
+Technically, we're done but... There's just one problem. CSRF token keys constantly change. Typing it in yourself each time it changes would be a nightmare. Fortunately, there is a solution to that dilemma.
+
+When web-ui retrieves the CSRF token the first time (using the *meta* or *javascript* method), it stores it in the `csrfToken` property of `appNet` automatically.
+
+```ts
+window.appNet = {
+
+  // Get your token with it.
+  csrfToken = 'your-csrf-token-key'
+};
+```
+
+[[top](#web-ui)]
+
+#### Cone expressions
+
+Therefore, we need a way to grab the value of `csrfToken` and copy it over to the `X-CSRF-Token` header. We can achieve that using a solution I dubbed  * *Cone expressions* *. Head back to the `appNet.headers` object and change the value of the `X-CSRF-Token` header:
+
+```ts
+window.appNet = {
+  csrfToken: 'your-csrf-token-key',
+
+  headers: {
+    'X-CSRF-Token': '<csrfToken>' // <-- like so
+  }
+};
+```
+
+Write the name of the property between a diamond `<>` whose value you want to be copied over to the `X-CSRF-Token` header and you're done.
+
+The content of `appNet.headers` will be inserted into POST and PUT requests so that your CSRF token is automatically sent to the server.
 
 ## Objects and properties
 

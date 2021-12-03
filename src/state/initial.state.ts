@@ -1,8 +1,11 @@
 import { IState } from '../interfaces'
-import { getGlobalVar } from '../controllers'
+import { getGlobalVar, getHeadMetaContent } from '../controllers'
 import { orange } from '@material-ui/core/colors'
 import _ from 'lodash'
 import { ThemeOptions } from '@material-ui/core'
+
+/** Allows you to rename global variables to prevent conflicts. */
+const GLOBAL_PREFIX = getHeadMetaContent('web-ui') || 'app'
 
 const DEFAULT_BACKGROUND_COLOR = '#af74b0'
 
@@ -60,7 +63,7 @@ export default {
 
     'title': 'web-ui',
 
-  }, getGlobalVar('appInfo')),
+  }, getGlobalVar(`${GLOBAL_PREFIX}Info`)),
 
   /**
    * The `meta` member is used to apply rules as to how the data is
@@ -100,12 +103,12 @@ export default {
   'background': _.extend({
     'type': 'color',
     'value': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
-  }, getGlobalVar('appBackground')),
+  }, getGlobalVar(`${GLOBAL_PREFIX}Background`)),
 
   /**
    * Application `font-family` and `color`
    */
-  'typography': _.extend({ }, getGlobalVar('appTypography')),
+  'typography': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Typography`)),
 
   'dialog': {
     'title': 'Dialog Title',
@@ -119,7 +122,7 @@ export default {
   /**
    * Object containing all dialog definitions
    */
-  'dialogs': _.extend({ }, getGlobalVar('appDialogs')),
+  'dialogs': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Dialogs`)),
 
   /**
    * Drawer general state
@@ -143,7 +146,7 @@ export default {
    *
    * @see forms.state.ts
    */
-  'forms': _.extend({ }, getGlobalVar('appForms')), // forms,
+  'forms': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Forms`)), // forms,
 
   /**
    * Object containing all page definitions.
@@ -162,7 +165,7 @@ export default {
    *
    * @see pages.state.ts
    */
-  'pages': _.extend({ }, getGlobalVar('appPages')), // pages,
+  'pages': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
 
   /**
    * All resources acquired from the server will be stored in this object. The
@@ -223,8 +226,8 @@ export default {
         'main': orange[800]
       },
     },
-  } as ThemeOptions, getGlobalVar('themeOptions')),
+  } as ThemeOptions, getGlobalVar(`${GLOBAL_PREFIX}Theme`)),
 
-  'security': _.extend({}, getGlobalVar('appSecurity'))
+  'net': _.extend({}, getGlobalVar(`${GLOBAL_PREFIX}Net`))
 
 } as IState

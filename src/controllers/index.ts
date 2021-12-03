@@ -501,14 +501,14 @@ export function getOriginEndingFixed(origin?: string) {
  * Use a cone expression to give a property the value of another property. e.g.
  *
  * ```ts
- * const appSecurity = {
+ * const appNet = {
  *   headers: {
  *     origin: '<appInfo.origin>'
  *   }
  * };
  * ```
  *
- * `appSecurity.headers.origin` now as the value of `appInfo.origin`
+ * `appNet.headers.origin` now as the value of `appInfo.origin`
  *
  * @param state that supports cone expressions
  * @param cone  the cone expression

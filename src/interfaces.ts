@@ -558,7 +558,7 @@ export interface IState {
   /** Material-ui `ThemeOptions` */
   theme: any
 
-  security: IStateSecurity
+  net: IStateNet
 }
 
 /**
@@ -761,7 +761,7 @@ export interface IParentState {
   setState: Function
 }
 
-export interface IStateSecurity {
+export interface IStateNet {
 
   /**
    * Name of property or attribute where the token is stored.

@@ -4,32 +4,32 @@ interface Window { }
 /**
  * This is an example global variable
  */
-declare var sessionKey
+// declare var sessionKey
 
 /**
  * pages definition
  */
-declare var appPages
+// declare var appPages
 
 /**
  * forms definition
  */
-declare var appForms
+// declare var appForms
 
 /**
  * application information
  */
-declare var appInfo
+// declare var appInfo
 
 /**
  * default page background
  */
-declare var appBackground
+// declare var appBackground
 
 /**
  * dialogs definition
  */
-declare var appDialogs
+// declare var appDialogs
 
 /**
  * typography definition
@@ -37,11 +37,11 @@ declare var appDialogs
  * Defines the app's default typography object. This is concerned with defining
  * the font of the app.
  */
-declare var appTypography
+// declare var appTypography
 
 /**
  * App theme definition
  * 
  * Use it to change app color, font, styles... etc.
  */
-declare var themeOptions
+// declare var themeOptions
