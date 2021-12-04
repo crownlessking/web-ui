@@ -28,6 +28,10 @@
   - [How to submit the data in your form](#how-to-submit-the-data-in-your-form)
   - [How to customize page background](#how-to-customize-page-background)
   - [How to customize page `content` layout](#how-to-customize-page-content-layout)
+  - [How to display HTML](#how-to-display-html)
+- [JSON definition](#json-definition)
+  - [How to load page definition remotely](#how-to-load-page-definition-remotely)
+  - [JSON structure](#json-structure)
 - [Navigation](#navigation)
   - [Appbar link](#appbar-link)
 - [Drawer](#drawer)
@@ -662,7 +666,7 @@ Here we display a title in our login form. We also use CSS to center the `<h2>` 
 
 [[top](#web-ui)]
 
-#### How to submit the data in your form
+### How to submit the data in your form
 
 A callback is supplied by default when you use the * *submit* * button type. It will use the endpoint in the [`page.content`](#pagecontent) property of the page and the URL from which the app was loaded to send the data as a POST request. e.g.
 
@@ -745,7 +749,7 @@ See the [callback section](#callback) to learn how to implement a callback funct
 
 [[top](#web-ui)]
 
-#### How to customize page background
+### How to customize page background
 
 By default, pages do not have a background but if you want to change that, you can.  
 If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, you can tell your page to use it.  
@@ -766,7 +770,7 @@ Maybe you want your page to have a unique background that won't be found on any 
 
 [[top](#web-ui)]
 
-#### How to customize page `content` layout
+### How to customize page `content` layout
 
 ```ts
 window.appPages = {
@@ -777,6 +781,163 @@ window.appPages = {
 ```
 
 If you want to change the way your form is aligned on the page, you can use [`page.layout`](#pagelayout) to change the alignment.
+
+[[top](#web-ui)]
+
+### How to display HTML
+
+So far, we've learned how to create a page, display a form on it, and many other things but what if we don't need none of that fancy? What if we just want to display a plain ole' HTML page that is also SEO friendly... sort of.  
+In the *index.html* file you should find the following in the body of tag:
+
+```html
+<body>
+
+  <!-- controlled by web-ui. Don't insert anything in this div. -->
+  <div id="root" class="root"></div>
+
+  <!-- PARENT-DIV: contains HTML pages -->
+  <div style="display: none">
+
+    <div id="CONTENT_PAGE_NOT_FOUND">
+      <div style="text-align: center;">
+        <h1>Page not found</h1>
+      </div>
+    </div>
+
+    <!-- TODO: Insert new page here -->
+
+  </div>
+
+</body>
+```
+
+The div which contains the HTML pages. Each of its child div is an individual page. You can insert a new page in it. But first, there are a couple things to note.
+
+1. Don't ever remove the `style="display:none"` attribute from the parent div.
+2. Don't ever delete the `id="CONTENT_PAGE_NOT_FOUND"` page. You can change its content, but don't remove it.
+
+When you're ready, create a new page by inserting a new div inside the parent div. You're new page will be identified by the id attribute of its div.
+
+```html
+<!-- PARENT-DIV: contains HTML pages -->
+<div style="display: none">
+
+  <div id="CONTENT_PAGE_NOT_FOUND">
+    <div style="text-align: center;">
+      <h1>Page not found</h1>
+    </div>
+  </div>
+
+  <!-- New page example -->
+  <div id="my-new-page">
+    Hello world!
+  </div>
+
+</div>
+```
+
+We've added a new page which is a div with its id set to "my-new-page". Now that this is done, create a matching page definition for it in the `appPages` global variable and load it. The name of the property containing that page definition can be anything you like but pay attention to the value of the `content` property.
+
+```ts
+window.appPages = {
+
+  '/my-new-page': {
+    'content': '$html : my-new-page : n/a'
+  }
+
+};
+```
+
+You can find three values in `content`, "$thml", "my-new-page", "n/a". "my-new-page" is the id of the div tag you want to load.
+
+Of course, you don't need to specifically use a div to contain a page. You can use any valid HTML tag. For example, we could have used the *article* tag.
+
+```html
+<!-- PARENT-DIV: contains HTML pages -->
+<div style="display: none">
+
+  <article id="my-new-page">
+    Hello world!
+  </article>
+
+</div>
+```
+
+The result would have been the same.
+
+[[top](#web-ui)]
+
+## JSON definition
+
+So far, although we have been using JavaScript to define pages, forms, and much more. Ultimately, the main purpose of web-ui is the ability to retrieve these definitions from a server. They should be loaded as JSON.
+
+**NOTE** We used JavaScript to make things easy and to explore the multiple possibilities at our disposal to create these definitions. Though, there's nothing wrong in going the pure JavaScript route, the definitions would be cumbersome to update and offer less control.
+
+### How to load page definition remotely
+
+Web-ui can be initialized by remotely loading the very first page JSON definition.
+
+First you'll need to setup the bootstrap meta tag
+
+```html
+<meta name="bootstrap" content="endpoint-to-retrieve-definition">
+```
+
+Notice the content attribute of the meta tag. It's value should be the endpoint from which the JSON definition of the page will be retrieved.
+
+### JSON structure
+
+All definitions should be contained in the `state` member:
+
+```json
+{
+  "state": { }
+}
+```
+
+Each member of `state` is the equivalent to one of the global variables. e.g.
+
+```ts
+window.appPages = { };
+```
+
+is equivalent to:
+
+```json
+{
+  "state": {
+
+    // window.appPages
+    "pages": { }
+
+  }
+}
+```
+
+The general rules is that the JSON equivalent of a global variable is all lowercase without the prefix. In this case "app" is the prefix. `pages` in the JSON format is the same as the `appPages` global variable.
+
+**NOTE:** The only exception to this rule is the `appInfo` global variable. It's equivalent is the `app` member in JSON format.
+
+```json
+{
+  "state": {
+
+    // window.appInfo
+    "app": { },
+
+    // window.appPages
+    "pages": {
+      "login": { },
+      "front": { }
+    },
+
+    // window.appForms
+    "forms": {
+      "loginForm": {}
+    }
+  }
+}
+```
 
 [[top](#web-ui)]
 
@@ -1384,6 +1545,10 @@ window.appPages = {
 [[back](#page-object)] [[top](#web-ui)]
 
 #### `page.typography`
+
+**WARNING:** Not functional.
+
+*TODO: Implement individual pages typography if possible.*
 
 ```ts
 window.appPages = {

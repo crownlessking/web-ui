@@ -260,7 +260,7 @@ export default class StatePage extends AbstractState implements IStatePage {
       }
     }
 
-    throw new Error('Invalid `page` content definition')
+    throw new Error('Invalid or missing `page` content definition')
   }
 
   /**

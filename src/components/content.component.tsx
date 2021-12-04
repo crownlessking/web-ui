@@ -90,6 +90,10 @@ export default withStyles(styles)(class Content extends Component<IProps> {
           <div
             dangerouslySetInnerHTML={{__html: domElement.innerHTML}}
             className={classes.htmlContent}
+            style={{
+              fontFamily: page.typography.fontFamily,
+              color: page.typography.color
+            }}
           />
         )
       } else {

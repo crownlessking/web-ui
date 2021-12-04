@@ -12,7 +12,7 @@ import { err } from '../../controllers'
 let handle: any
 
 export function getBootstrapKey() {
-  const key = document.querySelector('meta[name="source"]')
+  const key = document.querySelector('meta[name="bootstrap"]')
 
   if (key) {
     return (key as HTMLMetaElement).content

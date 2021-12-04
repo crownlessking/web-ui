@@ -33,7 +33,7 @@ export default class StateAllPages extends AbstractState {
    *             they should not be accessed using the (dot) `.` operator.
    */
   pageAt = (route: string): StatePage => {
-    const pageJson = this.getStatePage(route)
+    const pageJson = this.getPageJson(route)
 
     return new StatePage(pageJson, this)
   }
@@ -48,8 +48,8 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  getStatePage = (route: string): IStatePage => {
-    
+  getPageJson = (route: string): IStatePage => {
+
     // Try with the forwardslash first
     let page = this.allPagesJson[`/${route}`]
 
@@ -68,11 +68,16 @@ export default class StateAllPages extends AbstractState {
     if (page) { return page }
 
     // Oops! No default page. Let's create one.
+    // [TODO] Improve the default page
+    //        Right now, it depends on a div located in the index.html file.
+    //        But, what if someone delete it by mistake. I suggest hardcoding
+    //        the default page just like src/components/pages/success.tsx
     return {
       _id: StatePage.HARD_CODED_PAGE,
       title: 'Default page',
-      content: '$html : default.html : n/a',
-      useDefaultBackground: true
+      content: '$html : CONTENT_PAGE_NOT_FOUND : n/a',
+      useDefaultBackground: true,
+      typography: { color: 'white' }
     }
   }
 

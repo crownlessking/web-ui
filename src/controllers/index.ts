@@ -1,6 +1,7 @@
-import { IRedux, IStateLink, IDelegated } from '../interfaces'
+import { IRedux, IDelegated } from '../interfaces'
 import Config from '../config'
 import AbstractState from './AbstractState'
+import StateLink from './StateLink'
 
 // layouts
 
@@ -386,9 +387,8 @@ export function getHeadMetaContent(name: string) {
  *
  * @param route
  */
-export function getFormattedRoute(def: IStateLink, href?: string) {
-  const has = def.has || {}
-  const route = has.route
+export function getFormattedRoute(def: StateLink, href?: string) {
+  const route = def.has.route
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route
   }
