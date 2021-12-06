@@ -165,7 +165,26 @@ export default {
    *
    * @see pages.state.ts
    */
-  'pages': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
+  'pages': _.extend({
+
+    // Default success feedback page
+    'default-success': {
+      'content': '$view : success_page',
+      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
+      'typography': { color: '#74d2b3' },
+      'data': {
+        'message': 'Successful!'
+      }
+    },
+
+    // Default 404 not found page
+    'default-notfound': {
+      'content': '$view : notfound_page',
+      'layout': 'LAYOUT_CENTERED',
+      'data': { 'message': 'Not found!' }
+    }
+  
+  }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
 
   /**
    * All resources acquired from the server will be stored in this object. The

@@ -1,4 +1,4 @@
-import { log } from '.'
+import { DEFAULT_PAGE_NOT_FOUND, log } from '.'
 import { IStateAllPages, IStatePage } from '../interfaces'
 import initialState from '../state/initial.state'
 import AbstractState from './AbstractState'
@@ -67,18 +67,14 @@ export default class StateAllPages extends AbstractState {
 
     if (page) { return page }
 
+    console.log(this.allPagesJson[DEFAULT_PAGE_NOT_FOUND])
+
     // Oops! No default page. Let's create one.
     // [TODO] Improve the default page
     //        Right now, it depends on a div located in the index.html file.
     //        But, what if someone delete it by mistake. I suggest hardcoding
     //        the default page just like src/components/pages/success.tsx
-    return {
-      _id: StatePage.HARD_CODED_PAGE,
-      title: 'Default page',
-      content: '$html : CONTENT_PAGE_NOT_FOUND : n/a',
-      useDefaultBackground: true,
-      typography: { color: 'white' }
-    }
+    return this.allPagesJson[DEFAULT_PAGE_NOT_FOUND]
   }
 
 } // END class AllPages -------------------------------------------------------

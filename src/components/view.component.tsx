@@ -1,6 +1,7 @@
 import React from 'react'
 import Table from '../mui4/table/virtualized'
 import SuccessPage from './pages/success'
+import PageNotFound from './pages/pagenotfound'
 import StatePage from '../controllers/StatePage'
 
 export default function View ({ def: page }: { def: StatePage }) {
@@ -13,6 +14,9 @@ export default function View ({ def: page }: { def: StatePage }) {
 
   case 'SUCCESS_PAGEVIEW':
     return <SuccessPage def={page} />
+  
+  case 'NOTFOUND_PAGEVIEW':
+    return <PageNotFound def={page} />
 
   default:
     return ( null )

@@ -842,13 +842,13 @@ We've added a new page which is a div with its id set to "my-new-page". Now that
 window.appPages = {
 
   '/my-new-page': {
-    'content': '$html : my-new-page : n/a'
+    'content': '$html : my-new-page'
   }
 
 };
 ```
 
-You can find three values in `content`, "$thml", "my-new-page", "n/a". "my-new-page" is the id of the div tag you want to load.
+You can find two values in `content`, "$thml" and "my-new-page". "my-new-page" is the id of the div tag you want to load.
 
 Of course, you don't need to specifically use a div to contain a page. You can use any valid HTML tag. For example, we could have used the *article* tag.
 
@@ -1313,7 +1313,7 @@ Create a global variable called `appNet` if it does not exist and define the `cs
 window.appNet = {
   csrfTokenName: 'foo',
 
-  // defaults to 'meta' if this property is not defined.
+  // defaults to 'meta' if the follwing property is not defined.
   csrfTokenMethod: 'meta'
 };
 ```
@@ -1385,7 +1385,7 @@ When web-ui retrieves the CSRF token the first time (using the *meta* or *javasc
 window.appNet = {
 
   // Get your token with it.
-  csrfToken = 'your-csrf-token-key'
+  csrfToken: 'your-csrf-token-key'
 };
 ```
 

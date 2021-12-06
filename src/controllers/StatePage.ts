@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { mongoObjectId, APP_CONTENT_HTML, CONTENT_PAGE_NOT_FOUND } from '.'
+import { mongoObjectId, APP_CONTENT_VIEW, CONTENT_PAGE_NOT_FOUND } from '.'
 import Config from '../config'
 import {
   IStateAppBar, IStateBackground, IStateDrawer, IStatePage, IStatePageContent,
@@ -242,18 +242,28 @@ export default class StatePage extends AbstractState implements IStatePage {
   parseContent = (content?: string): IStatePageContent => {
     const options = (content || this.content).replace(/\s+/g,'').split(':')
 
-    if (options.length >= 3) {
-      return {
+    if (options.length >= 2) {
+      const contentObj = {
         type: options[0],
         name: options[1],
-        endpoint: options[2],
-        args: options[3] || ''
+        endpoint: 'n/a',
+        args: ''
       }
+
+      if (options.length >= 3) {
+        contentObj.endpoint = options[2]
+      }
+
+      if (options.length >= 4) {
+        contentObj.args = options[3]
+      }
+
+      return contentObj
     }
 
     if (!Config.DEBUG) { // if app not in debug mode
       return {
-        type: APP_CONTENT_HTML,
+        type: APP_CONTENT_VIEW,
         name: CONTENT_PAGE_NOT_FOUND,
         endpoint: 'n/a',
         args: ''

@@ -4,16 +4,13 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import StatePage from '../../controllers/StatePage'
 import { getPageName } from '../../state/pages'
 
-const FONT_COLOR = '#74d2b3'  
-
 const useStyles = makeStyles(() => ({
   resultSymbol: {
     fontSize: '300px'
   },
   messageDiv: {
     width: '100%',
-    textAlign: 'center',
-    color: FONT_COLOR
+    textAlign: 'center'
   }
 }))
 
@@ -44,18 +41,22 @@ export default function PageSuccess ({ def: page }: IProps) {
   const classes = useStyles()
   const route = page.parent.parent.app.route
   const pageName = getPageName(route)
-  let msg: string = ''
-  try {
-    // const message = page.parent.parent.tmp.state[pageName].message || ''
-    msg = page.parent.parent.tmp.get(pageName, 'message', page.data.message)
-  } catch (e) {}
+  const msg = page.parent.parent.tmp.get(
+    pageName,
+    'message',
+    page.data.message
+  )
+
   return (
     <>
       <CheckCircleOutlineIcon
         className={classes.resultSymbol}
-        htmlColor={FONT_COLOR}
+        htmlColor={page.typography.color}
       />
-      <div className={classes.messageDiv}>
+      <div
+        className={classes.messageDiv}
+        style={{color: page.typography.color}}
+      >
         <h1>{ msg }</h1>
       </div>
     </>

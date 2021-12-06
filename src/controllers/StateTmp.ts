@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState'
 import State from './State'
-import Config from '../config'
+import { err } from '.'
 
 export default class StateTmp extends AbstractState {
 
@@ -18,18 +18,22 @@ export default class StateTmp extends AbstractState {
   get parent() { return this.parentObj }
 
   get = (key: string, member?: string, $default?: string) => {
+    let value: any
     try {
-      const m = member || ''
-      return this.tmpJson[key] && this.tmpJson[key][m]
-    } catch (e: any) {
-      if (!$default && Config.DEBUG) {
-        console.error(`IState.tmp[${key}][${member}] does NOT exist.`)
-        console.error(e.stack)
-
-        // TODO Implement logic for to save error so it can be viewed later.
+      if (member) {
+        value = this.tmpJson[key][member] || $default
+      } else {
+        value = this.tmpJson[key] || $default
       }
+    } catch (e: any) {
+      if ($default) { return $default }
+
+      err(`IState.tmp[${key}][${member}] does NOT exist.`)
+
+      // TODO Implement logic for to save error so it can be viewed later.
+
     }
-    return $default || ''
+    return value
   }
 
 }
