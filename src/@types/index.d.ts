@@ -1,2 +1,4 @@
 
-interface Window { }
+interface Window {
+  [property: string]: any
+}

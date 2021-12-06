@@ -164,6 +164,7 @@ export function arrayToEntities(array: any[], key: string) {
 /**
  * Get viewport size.
  *
+ * Creedit:
  * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
  */
 export function getViewportSize()
@@ -347,7 +348,7 @@ export function setVal(obj: any, path: string, val: any) {
  */
 export function getGlobalVar(varName: string) {
   try {
-    return (window as { [key: string]: any })[varName]
+    return window[varName]
   } catch (e: any) {
     err(`Global variable "${varName}" does not exist.`)
   }

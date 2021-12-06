@@ -48,32 +48,23 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  getPageJson = (route: string): IStatePage => {
-
-    // Try with the forwardslash first
-    let page = this.allPagesJson[`/${route}`]
-
-    if (page) { return page }
+  private getPageJson = (route: string): IStatePage => {
 
     // Okay, that did not work. Let's omit the forwardslash this time.
-    page = this.allPagesJson[route]
+    let page = this.allPagesJson[route]
+    if (page) { return page }
 
+    // Try with the forwardslash first
+    page = this.allPagesJson[`/${route}`]
     if (page) { return page }
 
     log(`'${route}' page does exist`)
 
-    // Yup! The route is bad.  We'll just use the default rout then.
-    page = this.allPagesJson[initialState.app.route]
-
-    if (page) { return page }
-
-    console.log(this.allPagesJson[DEFAULT_PAGE_NOT_FOUND])
+    if (route === '/') {
+      return this.allPagesJson[initialState.app.route]
+    }
 
     // Oops! No default page. Let's create one.
-    // [TODO] Improve the default page
-    //        Right now, it depends on a div located in the index.html file.
-    //        But, what if someone delete it by mistake. I suggest hardcoding
-    //        the default page just like src/components/pages/success.tsx
     return this.allPagesJson[DEFAULT_PAGE_NOT_FOUND]
   }
 

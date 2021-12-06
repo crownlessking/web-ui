@@ -798,12 +798,6 @@ In the *index.html* file you should find the following in the body of tag:
   <!-- PARENT-DIV: contains HTML pages -->
   <div style="display: none">
 
-    <div id="CONTENT_PAGE_NOT_FOUND">
-      <div style="text-align: center;">
-        <h1>Page not found</h1>
-      </div>
-    </div>
-
     <!-- TODO: Insert new page here -->
 
   </div>
@@ -811,22 +805,15 @@ In the *index.html* file you should find the following in the body of tag:
 </body>
 ```
 
-The div which contains the HTML pages. Each of its child div is an individual page. You can insert a new page in it. But first, there are a couple things to note.
+The div which contains the HTML pages. Each of its child div is an individual page. You can insert a new page in it. But first, there is one thing to note.
 
 1. Don't ever remove the `style="display:none"` attribute from the parent div.
-2. Don't ever delete the `id="CONTENT_PAGE_NOT_FOUND"` page. You can change its content, but don't remove it.
 
 When you're ready, create a new page by inserting a new div inside the parent div. You're new page will be identified by the id attribute of its div.
 
 ```html
 <!-- PARENT-DIV: contains HTML pages -->
 <div style="display: none">
-
-  <div id="CONTENT_PAGE_NOT_FOUND">
-    <div style="text-align: center;">
-      <h1>Page not found</h1>
-    </div>
-  </div>
 
   <!-- New page example -->
   <div id="my-new-page">
