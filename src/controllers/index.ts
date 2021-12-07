@@ -21,7 +21,7 @@ export const APP_CONTENT_HTML = '$html'
 
 // miscellanous
 
-export const DEFAULT = 'DEFAULT'
+export const DEFAULT_LANDING_PAGE = 'default-landing'
 export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
 export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
 

@@ -1,6 +1,5 @@
-import { DEFAULT_PAGE_NOT_FOUND, log } from '.'
+import { DEFAULT_LANDING_PAGE, DEFAULT_PAGE_NOT_FOUND, log } from '.'
 import { IStateAllPages, IStatePage } from '../interfaces'
-import initialState from '../state/initial.state'
 import AbstractState from './AbstractState'
 import State from './State'
 import StatePage from './StatePage'
@@ -49,23 +48,24 @@ export default class StateAllPages extends AbstractState {
    * @param route the specified route
    */
   private getPageJson = (route: string): IStatePage => {
+    let page = this.allPagesJson[route] || this.allPagesJson[`/${route}`]
 
-    // Okay, that did not work. Let's omit the forwardslash this time.
-    let page = this.allPagesJson[route]
     if (page) { return page }
 
-    // Try with the forwardslash first
-    page = this.allPagesJson[`/${route}`]
-    if (page) { return page }
-
-    log(`'${route}' page does exist`)
-
+    // Maybe its a url switch to the default page
     if (route === '/') {
-      return this.allPagesJson[initialState.app.route]
+      page = this.allPagesJson[this.parent.app.defaultPage]
+              || this.allPagesJson[DEFAULT_LANDING_PAGE]
+      if (page) { return page }
     }
 
-    // Oops! No default page. Let's create one.
-    return this.allPagesJson[DEFAULT_PAGE_NOT_FOUND]
+    // Oops!
+    if (route) {
+      log(`'${route}' page does exist`)
+      return this.allPagesJson[DEFAULT_PAGE_NOT_FOUND]
+    }
+
+    return this.allPagesJson[DEFAULT_LANDING_PAGE]
   }
 
 } // END class AllPages -------------------------------------------------------

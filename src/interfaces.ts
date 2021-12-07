@@ -396,8 +396,8 @@ export interface IStatePage {
 export interface IStatePageContent {
   type: string
   name: string
-  endpoint: string
-  args: string
+  endpoint?: string
+  args?: string
 }
 
 /**

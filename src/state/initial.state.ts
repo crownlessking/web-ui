@@ -182,8 +182,13 @@ export default {
       'content': '$view : notfound_page',
       'layout': 'LAYOUT_CENTERED',
       'data': { 'message': 'Not found!' }
+    },
+
+    'default-landing': {
+      'content': '$view : landing_page',
+      'useDefaultBackground': true
     }
-  
+
   }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
 
   /**

@@ -1,6 +1,5 @@
 import _ from 'lodash'
-import { mongoObjectId, APP_CONTENT_VIEW, CONTENT_PAGE_NOT_FOUND } from '.'
-import Config from '../config'
+import { mongoObjectId, APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE, err } from '.'
 import {
   IStateAppBar, IStateBackground, IStateDrawer, IStatePage, IStatePageContent,
   IStateTypography
@@ -130,13 +129,13 @@ export default class StatePage extends AbstractState implements IStatePage {
   /**
    * Endpoint to which data may be sent or retrieve for the page.
    */
-  get contentEndpoint() { return this.pageContentJson.endpoint }
+  get contentEndpoint() { return this.pageContentJson.endpoint || '' }
 
   /**
    * Miscellanous URL arguments to be inserted when making a server request
    * at the endpoint specified in the page definition.
    */
-  get contentArgs() { return this.pageContentJson.args }
+  get contentArgs() { return this.pageContentJson.args || '' }
 
   /**
    * 
@@ -239,38 +238,32 @@ export default class StatePage extends AbstractState implements IStatePage {
    * @param content contains multiple values that have been joined as one
    *                string
    */
-  parseContent = (content?: string): IStatePageContent => {
+  parseContent = (content?: string) => {
     const options = (content || this.content).replace(/\s+/g,'').split(':')
 
-    if (options.length >= 2) {
-      const contentObj = {
-        type: options[0],
-        name: options[1],
-        endpoint: 'n/a',
-        args: ''
-      }
+    if (options.length <= 1) {
+      err('Invalid or missing `page` content definition')
 
-      if (options.length >= 3) {
-        contentObj.endpoint = options[2]
-      }
-
-      if (options.length >= 4) {
-        contentObj.args = options[3]
-      }
-
-      return contentObj
-    }
-
-    if (!Config.DEBUG) { // if app not in debug mode
       return {
         type: APP_CONTENT_VIEW,
-        name: CONTENT_PAGE_NOT_FOUND,
-        endpoint: 'n/a',
-        args: ''
+        name: DEFAULT_LANDING_PAGE
       }
     }
 
-    throw new Error('Invalid or missing `page` content definition')
+    const contentObj: IStatePageContent = {
+      type: options[0],
+      name: options[1]
+    }
+
+    if (options.length >= 3) {
+      contentObj.endpoint = options[2]
+    }
+
+    if (options.length >= 4) {
+      contentObj.args = options[3]
+    }
+
+    return contentObj
   }
 
   /**

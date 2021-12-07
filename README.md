@@ -504,7 +504,7 @@ window.appForms = {
 ```ts
 window.callback = function (redux) {
   return function (e) {
-    // TODO: Write callback logic here
+    // Write callback logic here
   }
 };
 ```
@@ -685,7 +685,7 @@ However, it is possible to provide your own callback if you wish... There are se
           type: 'submit',
           onClick: function(redux) {
             return function (e) {
-              // TODO: Write callback logic here
+              // Write callback logic here
             }
           }
         }
@@ -707,7 +707,7 @@ However, it is possible to provide your own callback if you wish... There are se
           has: {
             callback: function (redux) {
               return function (e) {
-                // TODO Write callback logic here.
+                // Write callback logic here.
               }
             }
           }
@@ -798,7 +798,7 @@ In the *index.html* file you should find the following in the body of tag:
   <!-- PARENT-DIV: contains HTML pages -->
   <div style="display: none">
 
-    <!-- TODO: Insert new page here -->
+    <!-- Insert new page here -->
 
   </div>
 
@@ -1140,7 +1140,7 @@ Notice how all global variable names begin with the prefix * *app* * ? If you wi
 
 Its content value should be "app" by default which is the global variables prefix.
 
-**NOTE:** The default value is "app" whether the meta tag is defined or not.
+**NOTE:** The default value is "app" whether the meta tag exist or not.
 
 Whatever you change "app" to will be your new global variables prefix. For example, if you change "app" to "foo", You need to use `fooForms` to create forms:
 
