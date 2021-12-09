@@ -32,7 +32,7 @@
 - [JSON definition](#json-definition)
   - [How to load page definition remotely](#how-to-load-page-definition-remotely)
   - [JSON structure](#json-structure)
-- [Navigation](#navigation)
+- [Navigation (appBar)](#navigation-appbar)
   - [Appbar link](#appbar-link)
 - [Drawer](#drawer)
   - [Drawer mechanics](#drawer-mechanics)
@@ -751,20 +751,19 @@ See the [callback section](#callback) to learn how to implement a callback funct
 
 ### How to customize page background
 
-By default, pages do not have a background but if you want to change that, you can.  
-If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, you can tell your page to use it.  
+If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, your page will use it automatically unless you don't want it to.  
 
-With `page.useDefaultBackground` set to true:
+With `page.useDefaultBackground` set to false:
 
 ```ts
 window.appPages = {
   login: {
-    useDefaultBackground: true // <-- here
+    useDefaultBackground: false // <-- here
   }
 };
 ```
 
-Your page will now use the default background * *if* * it was defined.
+Your page will not use the default background even * *if* * it was defined.
 
 Maybe you want your page to have a unique background that won't be found on any other page? You can with [`page.background`](#pagebackground).
 
@@ -928,7 +927,7 @@ The general rules is that the JSON equivalent of a global variable is all lowerc
 
 [[top](#web-ui)]
 
-## Navigation
+## Navigation (appBar)
 
 This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link or the navigation bar at the very top of the page.
 
@@ -1209,7 +1208,7 @@ var appBackground = {
 };
 ```
 
-**Warning**: The global variable `appBackground` only defines the default background for the entire app. Each app page can still define its own background or have no background unless specifically directed to make use of this default background.
+**NOTE**: The global variable `appBackground` only defines the default background for the entire app. Each app page can still define its own background with [`page.background`](#pagebackground).
 
 #### `appBackground.type`
 
@@ -1445,6 +1444,7 @@ var page = {
 - [`page.hideDrawer`](#pagehidedrawer)
 - [`page.useDefaultAppBar`](#pageusedefaultappbar)
 - [`page.useDefaultDrawer`](#pageusedefaultdrawer)
+- [`page.useDefaultBackground`](#pageusedefaultbackground)
 - [`page.useDefaultTypography`](#pageusedefaulttypography)
 - [`page.inherited`](#pageinherited)
 - [`page.appBarInherited`](#pageappbarinherited)
@@ -1510,7 +1510,7 @@ window.appPages = {
 };
 ```
 
-`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation) section for more information. In short, each page can define its own appBar using the `page.appBar` property.
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation-appbar) section for more information. In short, each page can define its own appBar using the `page.appBar` property.
 
 [[back](#page-object)] [[top](#web-ui)]
 
@@ -1671,7 +1671,7 @@ window.appPages = {
 };
 ```
 
-If the default background is defined, use `page.useDefaultBackground` to cause your page to make use of it so that you don't have to give it a background.
+If the page does not have its own background then the page will make use the default background, if it is defined. However, if you want the page to remain without a background, set `page.useDefaultBackground` to false to prevent it from using the default background.
 
 [[back](#page-object)] [[top](#web-ui)]
 

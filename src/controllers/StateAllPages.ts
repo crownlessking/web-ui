@@ -26,18 +26,6 @@ export default class StateAllPages extends AbstractState {
   get parent() { return this.parentObj }
 
   /**
-   * Get a page definition.
-   *
-   * @param route key of page. These can be valid URI parameters. Therefore,
-   *             they should not be accessed using the (dot) `.` operator.
-   */
-  pageAt = (route: string): StatePage => {
-    const pageJson = this.getPageJson(route)
-
-    return new StatePage(pageJson, this)
-  }
-
-  /**
    * Prevents app from crashing when given a bad route.
    *
    * Overall, this function is a temporary solution for a possibility where the
@@ -55,7 +43,7 @@ export default class StateAllPages extends AbstractState {
     // Maybe its a url switch to the default page
     if (route === '/') {
       page = this.allPagesJson[this.parent.app.defaultPage]
-              || this.allPagesJson[DEFAULT_LANDING_PAGE]
+        || this.allPagesJson[DEFAULT_LANDING_PAGE]
       if (page) { return page }
     }
 
@@ -66,6 +54,29 @@ export default class StateAllPages extends AbstractState {
     }
 
     return this.allPagesJson[DEFAULT_LANDING_PAGE]
+  }
+
+  /**
+   * Get a page definition.
+   *
+   * @param route key of page. These can be valid URI parameters. Therefore,
+   *             they should not be accessed using the (dot) `.` operator.
+   */
+  pageAt = (route: string) => {
+    const pageJson = this.getPageJson(route)
+
+    return new StatePage(pageJson, this)
+  }
+
+  /**
+   * Get a page definition
+   *
+   * @returns 
+   */
+  getPage = () => {
+    const pageJson = this.getPageJson(this.parent.app.route)
+
+    return new StatePage(pageJson, this)
   }
 
 } // END class AllPages -------------------------------------------------------

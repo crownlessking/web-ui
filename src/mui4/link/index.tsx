@@ -15,9 +15,8 @@ export default class JsonLink extends React.Component<IProps> {
   public render() {
     const { def } = this.props
     const { type, has, onClick } = def
-    const href: string = def.get('href')
-    const redux = { store, actions, route: href }
-    const route = getFormattedRoute(def, href)
+    const redux = { store, actions, route: has.route }
+    const route = getFormattedRoute(def, has.route)
     const props = getLinkProps(def.json)
 
     switch (type) {

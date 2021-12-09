@@ -750,6 +750,7 @@ export interface IStateLink {
   type: 'text' | 'textlogo' | 'icon' | 'hybrid' | 'link'
   onClick?: (redux: IRedux) => (e: any) => void
   has?: IStateFormItemCustom
+  href?: string
   [attr: string]: any
 }
 

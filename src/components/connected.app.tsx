@@ -78,7 +78,7 @@ class App extends Component<IProps> {
 
   render() {
     this.root = new State(this.props.state)
-    const page = this.root.allPages.pageAt(this.root.app.route)
+    const page = this.root.allPages.getPage()
     this.pageID = page._id
     const { classes } = this.props
 

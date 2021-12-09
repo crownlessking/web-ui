@@ -1,9 +1,10 @@
 import React from 'react'
 import { IStateBackground } from '../../interfaces'
-import { createStyles, Fade, withStyles } from '@material-ui/core'
-import { WithStyles } from '@material-ui/styles'
+import { createStyles, Fade, makeStyles } from '@material-ui/core'
+import { StyleRules } from '@material-ui/styles'
 import StateBackground from '../../controllers/StateBackground'
 import StatePage from '../../controllers/StatePage'
+import _ from 'lodash'
 
 export function getBackgroundCss({type, value}: IStateBackground) {
   switch (type) {
@@ -17,35 +18,29 @@ export function getBackgroundCss({type, value}: IStateBackground) {
   }
 }
 
-const styles = () => createStyles({
-  background: {
-    height: 'inherit',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    zIndex: -9999,
-  }
-})
-
-interface IProps extends WithStyles<typeof styles> {
-  def: StateBackground<StatePage>
+interface IProps {
+  def: StateBackground<StatePage>,
+  children?: any
 }
 
-class BackgroundDiv extends React.Component<IProps> {
-
-  public render() {
-    const { children, classes, def: background } = this.props
-    const style = getBackgroundCss(background.json)
-
-    return (
-      <Fade in={true}>
-        <div className={classes.background} style={style}>
-          { children }
-        </div>
-      </Fade>
-    )
+export const Background = function ({ def: background, children }: IProps) {
+  const rules = {
+    background: _.extend<StyleRules>({
+      height: 'inherit',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      zIndex: -9999
+    }, getBackgroundCss(background.json))
   }
+  const useStyles = makeStyles(() => createStyles(rules))
+  const classes = useStyles()
 
+  return (
+    <Fade in={true}>
+      <div className={classes.background}>
+        { children }
+      </div>
+    </Fade>
+  )
 }
-
-export const Background = withStyles(styles)(BackgroundDiv)

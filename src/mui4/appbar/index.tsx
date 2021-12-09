@@ -178,7 +178,7 @@ const PrimarySearchAppBar = connect(mapStateToProps, mapDispatchToProps)
    * Open drawer (left pane).
    */
   const onOpenDrawerWithCheck = () => {
-    if (!page.hideDrawer) onOpenDrawer()
+    if (page.hasDrawer && !page.hideDrawer) onOpenDrawer()
   }
 
   const searchFieldOnChange = (
@@ -201,8 +201,9 @@ const PrimarySearchAppBar = connect(mapStateToProps, mapDispatchToProps)
       >
         <Toolbar variant='dense' disableGutters={!open}>
           {
-            !page.hideDrawer
-            ? (
+            page.hideDrawer
+            ? ( null )
+            : (
               <IconButton
                 className={classNames(classes.menuButton, {
                   [classes.hide]: open,
@@ -214,7 +215,6 @@ const PrimarySearchAppBar = connect(mapStateToProps, mapDispatchToProps)
                 <MenuIcon />
               </IconButton>
             )
-            : ( null )
           }
           {
             app.logo

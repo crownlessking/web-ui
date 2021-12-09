@@ -55,7 +55,7 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageContentJson = this.parseContent()
     this.noPageBackground = !this.pageJson.background
     this.pageBackgroundJson = this.initPageBackground()
-    this.pageTypographyJson = this.pageJson.typography || { }
+    this.pageTypographyJson = this.pageJson.typography || {}
   }
 
   /**
@@ -158,6 +158,24 @@ export default class StatePage extends AbstractState implements IStatePage {
    */
   get layout() { return this.pageJson.layout || '' }
 
+  /**
+   * Check if an appbar was defined for the current page.
+   */
+  get hasAppBar() {
+    return !this.noPageAppBar
+      || !!this.pageJson.appBarInherited
+      || !!this.pageJson.useDefaultAppBar
+  }
+
+  /**
+   * Check if a drawer was defined for the current page.
+   */
+  get hasDrawer() {
+    return !this.noPageDrawer
+      || !!this.pageJson.drawerInherited
+      || !!this.pageJson.useDefaultDrawer
+  }
+
   get hideAppBar() { return this.pageJson.hideAppBar === true }
 
   get hideDrawer() { return this.pageJson.hideDrawer === true }
@@ -185,24 +203,6 @@ export default class StatePage extends AbstractState implements IStatePage {
   get meta() { return this.pageJson.meta || {} }
 
   get links() { return this.pageJson.links || {} }
-
-  /**
-   * Check if an appbar was defined for the current page.
-   */
-  get hasAppBar() {
-    return !this.noPageAppBar
-      || !!this.pageJson.appBarInherited
-      || !!this.pageJson.useDefaultAppBar
-  }
-
-  /**
-   * Check if a drawer was defined for the current page.
-   */
-  get hasDrawer() {
-    return !this.noPageDrawer
-      || !!this.pageJson.drawerInherited
-      || !!this.pageJson.useDefaultDrawer
-  }
 
   /**
    * Define an appbar for the current page.
@@ -239,7 +239,7 @@ export default class StatePage extends AbstractState implements IStatePage {
    *                string
    */
   parseContent = (content?: string) => {
-    const options = (content || this.content).replace(/\s+/g,'').split(':')
+    const options = (content || this.content).replace(/\s+/g, '').split(':')
 
     if (options.length <= 1) {
       err('Invalid or missing `page` content definition')
@@ -331,6 +331,7 @@ export default class StatePage extends AbstractState implements IStatePage {
     if (this.noPageDrawer && this.pageJson.useDefaultDrawer) {
       return this.parent.parent.drawer.json
     }
+
     return StatePage.EMPTY_DRAWER
   }
 
@@ -350,10 +351,13 @@ export default class StatePage extends AbstractState implements IStatePage {
       return this.parent.pageAt(route).background.json
     }
 
-    if (this.noPageBackground && this.pageJson.useDefaultBackground) {
-      return this.parent.parent.background.json
+    if (this.noPageBackground
+      && this.pageJson.useDefaultBackground === false
+    ) {
+      return StatePage.EMPTY_BACKGROUND
     }
-    return StatePage.EMPTY_BACKGROUND
+
+    return this.parent.parent.background.json
   }
 
 }

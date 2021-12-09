@@ -185,8 +185,7 @@ export default {
     },
 
     'default-landing': {
-      'content': '$view : landing_page',
-      'useDefaultBackground': true
+      'content': '$view : landing_page'
     }
 
   }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,

@@ -44,6 +44,8 @@ export default class StateLink<P = any>
     return this.linkJson.onClick || defaultCallback
   }
 
+  get href() { return this.linkJson.href || '' }
+
   get(attr: string) { return this.linkJson[attr] }
 
 }
