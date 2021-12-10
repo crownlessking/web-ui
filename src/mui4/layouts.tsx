@@ -133,3 +133,28 @@ const LayoutDefaultFactory = (mHeight = 0) => {
 
 export const DefaultLayout = LayoutDefaultFactory()
 export const VirtualizedTableLayout = LayoutDefaultFactory(49) // 29
+
+/** Created to apply toolbar space at the top if the page has an appBar */
+const LayoutNoneFactory = (mHeight = 0) => {
+  return React.forwardRef(({children}: any) => {
+    const classes = makeStyles(({mixins}: Theme) => createStyles({
+      toolbar: {
+        ...defaultClasses.container,
+        minHeight: mHeight || mixins.toolbar.minHeight
+      },
+      main: { width: '100%' }
+    }))()
+    return (
+      <main className={classes.main}>
+        <div className={classes.toolbar} />
+        { children }
+      </main>
+    )
+  })
+}
+
+/**
+ * Applies toolbar space to prevent content from being hidden under the
+ * appBar.
+ */
+export const DefaultLayoutToolbared = LayoutNoneFactory(40)

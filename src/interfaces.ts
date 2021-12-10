@@ -722,7 +722,15 @@ export interface IStateFormItemCustom<T = any> {
   adornment?: ITextfieldAdornment
 
   /** Use this to set props from definition */
-  props?: any
+  props?: any,
+
+  /**
+   * Contains CSS rules.
+   *
+   * Use to customize the formControl (JSS) component of the corresponding
+   * field.
+   */
+  formControl?: any
 }
 
 export interface IStateFormSelectOption {

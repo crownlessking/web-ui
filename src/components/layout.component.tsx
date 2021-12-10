@@ -7,7 +7,8 @@ import {
   LAYOUT_TABLE_VIRTUALIZED
 } from '../controllers'
 import {
-  LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout
+  LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout,
+  DefaultLayoutToolbared
 } from '../mui4/layouts'
 import StatePage from '../controllers/StatePage'
 
@@ -21,9 +22,9 @@ interface IProps {
 export default class Layout extends Component<IProps> {
 
   render() {
-    const { children, def: pageDef } = this.props
+    const { children, def: page } = this.props
 
-    switch (pageDef.layout) {
+    switch (page.layout) {
 
     case LAYOUT_CENTERED_NO_SCROLL:
       return (
@@ -55,6 +56,13 @@ export default class Layout extends Component<IProps> {
 
     case LAYOUT_NONE:
     default:
+      if (page.hasAppBar) {
+        return (
+          <DefaultLayoutToolbared>
+            { children }
+          </DefaultLayoutToolbared>
+        )
+      }
       return (
         <React.Fragment>
           { children }

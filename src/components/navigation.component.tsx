@@ -1,9 +1,6 @@
 import React from 'react'
-import { IStateAppBar } from '../interfaces'
 import AppBar from '../mui4/appbar'
 import StatePage from '../controllers/StatePage'
-
-let lastStateAppBar: IStateAppBar | undefined
 
 interface IProps {
   def: StatePage
@@ -27,14 +24,6 @@ export default class Navigation extends React.Component<IProps> {
     }
 
     if (page.hasAppBar) {
-      lastStateAppBar = page.appBar.json
-
-      return <AppBar def={page} />
-    }
-
-    if (lastStateAppBar) {
-      page.setAppBar(lastStateAppBar)
-
       return <AppBar def={page} />
     }
 

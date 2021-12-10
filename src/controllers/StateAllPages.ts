@@ -35,25 +35,10 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  private getPageJson = (route: string): IStatePage => {
-    let page = this.allPagesJson[route] || this.allPagesJson[`/${route}`]
-
-    if (page) { return page }
-
-    // Maybe its a url switch to the default page
-    if (route === '/') {
-      page = this.allPagesJson[this.parent.app.defaultPage]
-        || this.allPagesJson[DEFAULT_LANDING_PAGE]
-      if (page) { return page }
-    }
-
-    // Oops!
-    if (route) {
-      log(`'${route}' page does exist`)
-      return this.allPagesJson[DEFAULT_PAGE_NOT_FOUND]
-    }
-
-    return this.allPagesJson[DEFAULT_LANDING_PAGE]
+  private getPageJson = (route: string) => {
+    return this.allPagesJson[route]
+      || this.allPagesJson[`/${route}`]
+      || this.allPagesJson[route.substring(1)]
   }
 
   /**
@@ -74,9 +59,32 @@ export default class StateAllPages extends AbstractState {
    * @returns 
    */
   getPage = () => {
-    const pageJson = this.getPageJson(this.parent.app.route)
+    const route = this.parent.app.route
+    let page: IStatePage
 
-    return new StatePage(pageJson, this)
+    // If this is the first page to be rendered
+    if (!this.parent.app.status) {
+      page = this.allPagesJson[window.location.pathname.substring(1)]
+        || this.allPagesJson[window.location.pathname]
+      if (page) { return new StatePage(page, this) }
+    }
+
+    page = this.getPageJson(route)
+    if (page) { return new StatePage(page, this) }
+
+    // Maybe its a url switch to the default page
+    if (route === '/' ) {
+      page = this.allPagesJson[this.parent.app.defaultPage]
+      if (page) { return new StatePage(page, this) }
+    }
+
+    // Oops!
+    if (route) {
+      log(`'${route}' page does exist`)
+      return new StatePage(this.allPagesJson[DEFAULT_PAGE_NOT_FOUND], this)
+    }
+
+    return new StatePage(this.allPagesJson[DEFAULT_LANDING_PAGE], this)
   }
 
 } // END class AllPages -------------------------------------------------------

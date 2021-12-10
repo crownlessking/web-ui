@@ -49,12 +49,12 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageJson = pageJson
     this._pageId = this.pageJson._id
     this.noPageAppBar = !this.pageJson.appBar
-    this.pageAppBarJson = this.initPageAppBar()
+    this.pageAppBarJson = StatePage.EMPTY_APPBAR // this.initPageAppBar()
     this.noPageDrawer = !this.pageJson.drawer
-    this.pageDrawerJson = this.initPageDrawer()
+    this.pageDrawerJson = StatePage.EMPTY_DRAWER // this.initPageDrawer()
     this.pageContentJson = this.parseContent()
     this.noPageBackground = !this.pageJson.background
-    this.pageBackgroundJson = this.initPageBackground()
+    this.pageBackgroundJson = StatePage.EMPTY_BACKGROUND // this.initPageBackground()
     this.pageTypographyJson = this.pageJson.typography || {}
   }
 
@@ -81,22 +81,27 @@ export default class StatePage extends AbstractState implements IStatePage {
    * Chain-access to the page appbar definition.
    */
   get appBar() {
+    if (this.pageAppBar) {
+      return this.pageAppBar
+    }
+    this.pageAppBarJson = this.initPageAppBar()
+    this.pageAppBar = new StatePageAppBar(this.pageAppBarJson, this)
     return this.pageAppBar
-      || (this.pageAppBar = new StatePageAppBar(
-        this.pageAppBarJson,
-        this
-      ))
   }
 
   /**
    * Chain-access to the page background definition.
    */
   get background() {
+    if (this.pageBackground) {
+      return this.pageBackground
+    }
+    this.pageBackgroundJson = this.initPageBackground()
+    this.pageBackground = new StatePageBackground(
+      this.pageBackgroundJson,
+      this
+    )
     return this.pageBackground
-      || (this.pageBackground = new StatePageBackground(
-        this.pageBackgroundJson,
-        this
-      ))
   }
 
   /**
@@ -146,11 +151,12 @@ export default class StatePage extends AbstractState implements IStatePage {
    * Chain-access to the page drawer definition.
    */
   get drawer() {
+    if (this.pageDrawer) {
+      return this.pageDrawer
+    }
+    this.pageDrawerJson = this.initPageDrawer()
+    this.pageDrawer = new StatePageDrawer(this.pageDrawerJson, this)
     return this.pageDrawer
-      || (this.pageDrawer = new StatePageDrawer(
-        this.pageDrawerJson,
-        this
-      ))
   }
 
   /**
@@ -206,6 +212,8 @@ export default class StatePage extends AbstractState implements IStatePage {
 
   /**
    * Define an appbar for the current page.
+   *
+   * @deprecated
    */
   setAppBar = (appBar: IStateAppBar) => {
     this.pageAppBarJson = appBar

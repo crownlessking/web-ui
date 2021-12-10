@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 import { IFormCheckbox, IState } from '../../../interfaces'
 import { RadioProps } from '@material-ui/core/Radio'
+import classnames from 'classnames'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -48,7 +49,12 @@ function ({ def: checkboxes, formsData, state }: IProps) {
   return (
     <FormControl
       component="fieldset"
-      className={checkboxes.has.classes.formControl}
+      className={
+        classnames(
+          checkboxes.has.classes.formControl,
+          checkboxes.has.formControl
+        )
+      }
     >
       <FormLabel component="legend">
         { checkboxes.has.label || checkboxes.has.title }

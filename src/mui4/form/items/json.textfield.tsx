@@ -1,6 +1,7 @@
 import React from 'react'
 import {
-  FormControl, TextField, InputAdornment, IconButton
+  FormControl, TextField, InputAdornment, IconButton, makeStyles, createStyles,
+  Theme
 } from '@material-ui/core'
 import {
   getProps, getStoredValue, getLocallyStoredValue
@@ -11,6 +12,7 @@ import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import Config from '../../../config'
 import StateFormItem from '../../../controllers/StateFormItem'
+import classnames from 'classnames'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -88,13 +90,19 @@ interface IProps {
 export default connect(mapStateToProps)(
 
 function ({ def, formsData, state }: IProps) {
-
   const { name, onChange } = def
   const has = def.has
   const noAdornment = !has.adornment
-  const classes = has.classes
   const props = getProps(def.json)
   const { fullWidth } = props
+  const defaultClasses = has.classes
+
+  const classes = makeStyles(({ spacing }: Theme) => createStyles({
+    textField: {
+      margin: spacing(0, 1),
+      width: 300,
+    },
+  }))()
 
   const getValueFromParent = () => {
     if (state) {
@@ -112,12 +120,17 @@ function ({ def, formsData, state }: IProps) {
   if (noAdornment) {
     const value = getValue()
     return (
-      <FormControl fullWidth={fullWidth} className={classes.formControl}>
+      <FormControl
+        fullWidth={fullWidth}
+        className={
+          classnames(defaultClasses.formControl, has.formControl)
+        }
+      >
         <TextField
+          className={classes.textField}
           {...props}
           error={has.regexError(value)}
           value={value}
-          className={classes.textField}
           onChange={onChange(name)}
         />
       </FormControl>
@@ -134,12 +147,17 @@ function ({ def, formsData, state }: IProps) {
     case 'start':
       value = getValue()
       return (
-        <FormControl fullWidth={fullWidth} className={classes.formControl}>
+        <FormControl
+          fullWidth={fullWidth}
+          className={
+            classnames(defaultClasses.formControl, has.formControl)
+          }
+        >
           <TextField
+            className={classes.textField}
             {...props}
             error={has.regexError(value)}
             value={value}
-            className={classes.textField}
             onChange={onChange(name)}
             ref={ref}
             InputProps={{
@@ -152,12 +170,17 @@ function ({ def, formsData, state }: IProps) {
     case 'end':
       value = getValue()
       return (
-        <FormControl fullWidth={fullWidth} className={classes.formControl}>
+        <FormControl
+          fullWidth={fullWidth}
+          className={
+            classnames(defaultClasses.formControl, has.formControl)
+          }
+        >
           <TextField
+            className={classes.textField}
             {...props}
             error={has.regexError(value)}
             value={value}
-            className={classes.textField}
             onChange={onChange(name)}
             ref={ref}
             InputProps={{

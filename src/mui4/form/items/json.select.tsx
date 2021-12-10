@@ -1,11 +1,14 @@
 import React from 'react'
 import { FormControl, InputLabel, Select } from '@material-ui/core'
 import StateFormItem from '../../../controllers/StateFormItem'
-import { getProps, getStoredValue, getLocallyStoredValue, getMeta } from './controller'
+import {
+  getProps, getStoredValue, getLocallyStoredValue, getMeta
+} from './controller'
 import { IStateFormSelectOption, IState } from '../../../interfaces'
 import { getErrorCode } from '../../../state/errors'
 import { connect } from 'react-redux'
 import StateForm from '../../../controllers/StateForm'
+import classnames from 'classnames'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData,
@@ -28,8 +31,9 @@ export default connect(mapStateToProps)(
 
 function ({ def, formsData, stateMeta, state }: IProps) {
   const { id, name, has, onChange } = def
-  const classes = has.classes
+  const defaultClasses = has.classes
   const props = getProps(def.json)
+
   const getValueFromParent = () => {
     if (state) {
       return getLocallyStoredValue(state.state.formData, def)
@@ -45,7 +49,11 @@ function ({ def, formsData, stateMeta, state }: IProps) {
     const meta = getMeta(stateMeta, has.load, has.key)
     const code = getErrorCode()
     return (
-      <FormControl className={classes.selectFormControl}>
+      <FormControl
+        className={
+          classnames(defaultClasses.selectFormControl, has.formControl)
+        }
+      >
         <InputLabel htmlFor={id}>
           { props.label || name }
         </InputLabel>
@@ -69,7 +77,11 @@ function ({ def, formsData, stateMeta, state }: IProps) {
     )
   } else {
     return (
-      <FormControl className={classes.selectFormControl}>
+      <FormControl
+        className={
+          classnames(defaultClasses.selectFormControl, has.formControl)
+        }
+      >
         <InputLabel htmlFor={id}>
           { props.label || name }
         </InputLabel>

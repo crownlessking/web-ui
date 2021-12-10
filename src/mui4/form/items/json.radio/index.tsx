@@ -1,11 +1,14 @@
 import React from 'react'
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
+import {
+  FormControl, FormLabel, RadioGroup, FormControlLabel, Radio
+} from '@material-ui/core'
 import {
   getProps, getStoredValue, getLocallyStoredValue
 } from '../controller'
 import { IState } from '../../../../interfaces'
 import { connect } from 'react-redux'
 import StateFormItemRadio from '../../../../controllers/StateFormItemRadio'
+import classnames from 'classnames'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -38,7 +41,9 @@ function({ def: radio, formsData, state }: IProps) {
   return (
     <FormControl
       component="fieldset"
-      className={radio.has.classes.formControl}
+      className={
+        classnames(radio.has.classes.formControl, radio.has.formControl)
+      }
     >
       <FormLabel component="legend">
         { radio.has.label || radio.has.title }

@@ -20,11 +20,9 @@ import { getBootstrapKey } from '../state/app'
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({
   root: {
-    display: 'flex',
+    width: '100%',
+    // display: 'flex',
     height: 'inherit',
-  },
-  button: {
-    margin: spacing(1),
   },
   rightIcon: {
     marginLeft: spacing(1),

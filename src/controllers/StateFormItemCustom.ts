@@ -123,6 +123,8 @@ export default class StateFormItemCustom<P, T = any>
    */
   get props() { return this.hasJson.props || {} }
 
+  get formControl() { return this.hasJson.formControl || {} }
+
   set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb }
 
   /**

@@ -1,6 +1,5 @@
-import { Theme } from '@material-ui/core'
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import React, { Component } from 'react'
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
 import JsonButton from './json.button'
 import JsonSelect from './json.select'
 import JsonTextarea from './json.textarea'
@@ -30,19 +29,7 @@ const styles = ({ spacing }: Theme) => createStyles({
   formControl: {
     margin: spacing(1),
   },
-  selectFormControl: {
-    margin: spacing(1),
-    minWidth: 120,
-  },
   inputLabel: { },
-  textField: {
-    margin: spacing(0, 1),
-    width: 300,
-  },
-  textArea: {
-    margin: spacing(0, 1),
-    width: 300
-  }
 })
 
 const mapDispatchToProps = {

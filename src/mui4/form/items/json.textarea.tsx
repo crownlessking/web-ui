@@ -1,11 +1,14 @@
 import React from 'react'
-import { FormControl, TextField } from '@material-ui/core'
+import {
+  createStyles, FormControl, makeStyles, TextField, Theme
+} from '@material-ui/core'
 import {
   getProps, getStoredValue, getLocallyStoredValue
 } from './controller'
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import StateFormItem from '../../../controllers/StateFormItem'
+import classnames from 'classnames'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -26,10 +29,16 @@ export default connect(mapStateToProps)(
 
 function ({ def, formsData, state }: IProps) {
   const { name, onChange } = def
-  const has = def.has
-  const classes = has.classes
+  const defaultClasses = def.has.classes
   const props = getProps(def.json)
   const { fullWidth } = props
+
+  const classes = makeStyles(({ spacing }: Theme) => createStyles({
+    textArea: {
+      margin: spacing(0, 1),
+      width: 300
+    }
+  }))()
 
   const getValueFromParent = () => {
     if (state) {
@@ -44,13 +53,18 @@ function ({ def, formsData, state }: IProps) {
   )
 
   return (
-    <FormControl fullWidth={fullWidth} className={classes.formControl}>
+    <FormControl
+      fullWidth={fullWidth}
+      className={
+        classnames(defaultClasses.formControl, def.has.formControl)
+      }
+    >
       <TextField
         rows={5}
         rowsMax={12}
+        className={classes.textArea}
         {...props}
         value={getValue()}
-        className={classes.textArea}
         multiline
         onChange={onChange(name)}
       />

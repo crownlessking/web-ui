@@ -751,7 +751,7 @@ See the [callback section](#callback) to learn how to implement a callback funct
 
 ### How to customize page background
 
-If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, your page will use it automatically unless you don't want it to.  
+If you did set a default background using the [`appBackground`](#global-variable-appbackground) global variable, your page will use it automatically unless specified otherwise.  
 
 With `page.useDefaultBackground` set to false:
 
