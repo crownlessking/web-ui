@@ -237,6 +237,16 @@ REDUX STORE
  * Default appbar state.
  */
 export interface IStateAppBar {
+
+  /** mui5 logo tag. i.e. "span" */
+  logoTag?: keyof JSX.IntrinsicElements
+
+  /** mui5 logo props */
+  logoProps?: any
+
+  /** mui5 text-logo props */
+  textLogoProps?: any
+
   /** Appbar background color, image, gradient... etc. */
   background?: IStateBackground
   /** Appbar font color and family. */
