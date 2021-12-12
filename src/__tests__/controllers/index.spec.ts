@@ -1,40 +1,40 @@
-import * as c from '../../controllers'
-import store from '../../state'
-import actions from '../../state/actions'
+// import * as c from '../../controllers'
+// import store from '../../state'
+// import actions from '../../state/actions'
 
-test('err()', done => { done() })
-test('log()', done => { done() })
+// test('log()', done => { done() })
+// test('err()', done => { done() })
 
-test('getDudEventCallback()', done => {
+// test('getDudEventCallback()', done => {
 //   expect(typeof c.getDudEventCallback).toBe('function')
 //   expect(typeof c.getDudEventCallback()).toBe('function')
-  done()
-})
+  // done()
+// })
 
-test('dummyCallback()', done => {
+// test('dummyCallback()', done => {
 //   const route = 'someRoute'
 //   expect(typeof c.dummyCallback).toBe('function')
 //   expect(typeof c.dummyCallback({ store, actions, route})).toBe('function')
-  done()
-})
+  // done()
+// })
 
-test('defaultCallback()', done => {
+// test('defaultCallback()', done => {
 //   const route = 'someRoute'
 //   expect(typeof c.defaultCallback).toBe('function')
 //   expect(typeof c.defaultCallback({ store, actions, route})).toBe('function')
-  done()
-})
+  // done()
+// })
 
-test('delegatedState()', done => {
+// test('delegatedState()', done => {
 //   const dish = {
 //     state: { name: 'Potage le magnifique', price: 1400 }
 //   }
 //   expect(c.delegatedState(dish, 'price')).toBe(1400)
 //   expect(c.delegatedState(dish)).toEqual(dish)
-  done()
-})
+  // done()
+// })
 
-test('getVal()', (done) => {
+// test('getVal()', (done) => {
 //   const obj = {
 //     account: {
 //       user: {
@@ -48,5 +48,7 @@ test('getVal()', (done) => {
 //   const value1 = c.getVal(obj, 'account.usr.lastname')
 //   expect(value1).toBeNull()
 
-  done()
-})
+  // done()
+// })
+
+export default undefined
