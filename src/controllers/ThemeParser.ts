@@ -1,6 +1,13 @@
 import { Theme } from '@mui/material'
 import { err, getVal, safelyGet } from '.'
 
+interface IEval {
+  type      : 'fn' | 'slice'
+  startIndex: number
+  endIndex  : number
+  exp       : string
+}
+
 export default class ThemeParser {
 
   private theme: Theme
@@ -18,6 +25,58 @@ export default class ThemeParser {
     this.rules = { ...rules }
   }
 
+  _eval(str: string) {
+
+    const queue: IEval[] = []
+
+    const patt = /\\${|}/gi
+
+    let array1: RegExpExecArray | null
+    let lastEndIndex: number = 0
+    do {
+      let startIndex = -1
+      let endIndex   = 0
+      array1 = patt.exec(str)
+      if (array1 && array1[0] === '${') {
+        startIndex = array1.index
+      } else {
+        return str
+      }
+      array1 = patt.exec(str)
+      if (array1 && array1[0] === '}') {
+        endIndex = array1.index
+      } else {
+        return str
+      }
+      if (startIndex >= 0 && startIndex < endIndex) {
+        let slice = str.substring(lastEndIndex, startIndex)
+        if (slice) {
+          queue.push({
+            type: 'slice',
+            startIndex: lastEndIndex,
+            endIndex: startIndex,
+            exp: slice
+          })
+        }
+      }
+      lastEndIndex = endIndex + 1
+      let exp = str.substring(startIndex + 2, endIndex)
+      if (exp) {
+        queue.push({
+          type: 'fn',
+          startIndex,
+          endIndex,
+          exp
+        })
+      }
+    } while (array1 !== null)
+
+    let e: IEval | undefined
+    while (e = queue.shift()) {
+      // [TODO] finish runing theme functions here
+    }
+  }
+
   /**
    * Parse string to theme funtions
    *
@@ -25,7 +84,7 @@ export default class ThemeParser {
    *
    * @param strFn 
    */
-  private parseStrFn (strFn: string | number) {
+  private _parseStrFn (strFn: string | number) {
     if (typeof strFn !== 'string') {
       return strFn
     }
@@ -45,7 +104,7 @@ export default class ThemeParser {
   }
 
   /** Runs theme functions */
-  private runFn (fname: string, args: (string | number)[]) {
+  private _runFn (fname: string, args: (string | number)[]) {
     const fn = getVal(this.theme, fname)
     if (typeof fn === 'function') {
       return fn(...args)
@@ -56,7 +115,7 @@ export default class ThemeParser {
   }
 
   /** Prevents unintended values */
-  private filter (result: any) {
+  private _filter (result: any) {
     switch (typeof result) {
     case 'function':
       return undefined
@@ -65,7 +124,7 @@ export default class ThemeParser {
   }
 
   /** Applies theme function values */
-  private apply (
+  private _apply (
     type: 'value' | 'property',
     rules: any,
     prop: string,
@@ -74,10 +133,10 @@ export default class ThemeParser {
     const fname = tokens.shift() as string
     switch (type) {
     case 'value':
-      rules[prop] = this.runFn(fname, tokens)
+      rules[prop] = this._runFn(fname, tokens)
       break
     case 'property':
-      const computedProp = this.runFn(fname, tokens)
+      const computedProp = this._runFn(fname, tokens)
       if (computedProp) {
         rules[computedProp] = rules[prop]
       }
@@ -97,7 +156,7 @@ export default class ThemeParser {
    * }
    * ```
    */
-  private deleteProperties (propertyBin: string[], rules: any) {
+  private _deleteProperties (propertyBin: string[], rules: any) {
     for (let i = 0; i < propertyBin.length; i++) {
       const property = propertyBin[i]
       delete rules[property]
@@ -115,32 +174,32 @@ export default class ThemeParser {
         rules[prop] = this.parse(val)
       }
 
-      const parsedProp = this.parseStrFn(prop)
+      const parsedProp = this._parseStrFn(prop)
       switch (typeof parsedProp) {
       case 'string':
         rules[safelyGet(this.theme,parsedProp,parsedProp)] = val
         break
       case 'object':
         propertyBin.push(prop)
-        this.apply('property', rules, prop, parsedProp)
+        this._apply('property', rules, prop, parsedProp)
         break
       }
 
-      const parsedVal = this.parseStrFn(val)
+      const parsedVal = this._parseStrFn(val)
       switch (typeof parsedVal) {
         case 'number':
           break
         case 'string':
-          rules[prop] = this.filter(safelyGet(this.theme, parsedVal, val))
+          rules[prop] = this._filter(safelyGet(this.theme, parsedVal, val))
           break
         case 'object':
           if (Array.isArray(parsedVal)) {
-            this.apply('value', rules, prop, parsedVal)
+            this._apply('value', rules, prop, parsedVal)
           }
           break
       }
     }
-    this.deleteProperties(propertyBin, rules)
+    this._deleteProperties(propertyBin, rules)
 
     return rules
   }

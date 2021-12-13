@@ -45,6 +45,15 @@ const mockTheme: any = {
       return 200
     }
   },
+
+  transitions: {
+    create: function() {
+      if (arguments.length > 0) {
+        return 200
+      }
+      return 500
+    }
+  }
 }
 
 test('ThemeParser.parse()', done => {
@@ -83,6 +92,40 @@ test('ThemeParser.parse()', done => {
   expect(tp.parse()[200]).toEqual({
     marginLeft: 200,
     width: 'auto'
+  })
+
+  tp.set({
+    'padding': 'spacing, 0, 2',
+    'height': '100%',
+    'position': 'absolute',
+    'pointerEvents': 'none',
+    'display': 'flex',
+    'alignItems': 'center',
+    'justifyContent': 'center'
+  })
+
+  expect(tp.parse()).toEqual({
+    padding: 200,
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  })
+
+  tp.set({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      'padding': 'spacing, 1, 1, 1, 0',
+      // vertical padding + font size from searchIcon
+      'paddingLeft': 'calc(1em + ${spacing, 4})',
+      'transition': 'transitions.create, width',
+      'width': '100%',
+      'breakpoints.up, md': {
+        'width': '20ch',
+      },
+    },
   })
 
   done()
