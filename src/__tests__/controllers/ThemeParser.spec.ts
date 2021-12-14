@@ -1,24 +1,11 @@
 import ThemeParser from '../../controllers/ThemeParser'
 
 const mockTheme: any = {
-  alpha: function() {
-    switch(arguments.length) {
-    default:
-      return 500
-    case 2:
-      if (typeof arguments[0] === 'string'
-        && typeof arguments[1] === 'number'
-      ) {
-        return 200
-      }
-      return 500
-    }
-  },
-
   breakpoints: {
     up: function(size: string) {
       switch (size) {
       case 'sm':
+      case 'md':
         return 200
       }
     }
@@ -60,10 +47,48 @@ test('ThemeParser.parse()', done => {
   const tp = new ThemeParser(mockTheme, {
     'position': 'relative',
     'borderRadius': 'shape.borderRadius',
-    'padding': 'spacing, 2, 2',
+    'backgroundColor': 'alpha, palette.common.white, 0.15',
+    '&:hover': {
+      'backgroundColor': 'alpha, palette.common.white, 0.25',
+    },
+    'marginRight': 'spacing, 2',
+    'marginLeft': 0,
+    'width': '100%',
+    'breakpoints.up, sm': {
+      'marginLeft': 'spacing, 3',
+      'width': 'auto',
+    }
+  }, {
+    alpha: function() {
+      switch(arguments.length) {
+      default:
+        return 500
+      case 2:
+        if (typeof arguments[0] === 'string'
+          && typeof arguments[1] === 'number'
+        ) {
+          return 200
+        }
+        return 500
+      }
+    }
   })
-  expect(tp.parse().borderRadius).toBe(200)
-  expect(tp.parse().padding).toBe(200)
+
+  expect(tp.parse()).toEqual({
+    'position': 'relative',
+    'borderRadius': 200,
+    'backgroundColor': 200,
+    '&:hover': {
+      'backgroundColor': 200,
+    },
+    'marginRight': 200,
+    'marginLeft': 0,
+    'width': '100%',
+    200: {
+      'marginLeft': 200,
+      'width': 'auto',
+    }
+  })
 
   tp.set({
     'padding': 'spacing , true'
@@ -80,6 +105,7 @@ test('ThemeParser.parse()', done => {
       'backgroundColor' : 'alpha, palette.common.white, 0.25'
     }
   })
+
   expect(tp.parse()['&:hover'].backgroundColor).toBe(200)
 
   tp.set({
@@ -126,6 +152,19 @@ test('ThemeParser.parse()', done => {
         'width': '20ch',
       },
     },
+  })
+
+  expect(tp.parse()).toEqual({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+      'padding': 200,
+      'paddingLeft': 'calc(1em + 200)',
+      'transition': 200,
+      'width': '100%',
+      200: {
+        'width': '20ch',
+      }
+    }
   })
 
   done()

@@ -5,17 +5,34 @@ interface IEval {
   type      : 'fn' | 'slice'
   startIndex: number
   endIndex  : number
-  exp       : string
+  str       : string
 }
 
 export default class ThemeParser {
 
   private theme: Theme
   private rules: any
+  private fnList: any
 
-  constructor (theme: Theme, rules: any) {
+  /** Material-ui 5 list of theme functions */
+  private mui5FnList = {
+    'breakpoints.up': 1,
+    'breakpoints.down': 1,
+    'breakpoints.between': 1,
+    'breakpoints.only': 1,
+    'breakpoints.not': 1,
+    'palette.getcontrasttext': 1,
+    'palette.augmentcolor': 1,
+    'spacing': 1,
+    'typography.pxToRem': 1,
+    'transitions.getautoheightduration': 1,
+    'transitions.create': 1
+  }
+
+  constructor (theme: Theme, rules: any, fnList: any = {}) {
     this.theme = theme
     this.rules = { ...rules }
+    this.fnList = fnList
   }
 
   getTheme() { return this.theme }
@@ -25,56 +42,9 @@ export default class ThemeParser {
     this.rules = { ...rules }
   }
 
-  _eval(str: string) {
-
-    const queue: IEval[] = []
-
-    const patt = /\\${|}/gi
-
-    let array1: RegExpExecArray | null
-    let lastEndIndex: number = 0
-    do {
-      let startIndex = -1
-      let endIndex   = 0
-      array1 = patt.exec(str)
-      if (array1 && array1[0] === '${') {
-        startIndex = array1.index
-      } else {
-        return str
-      }
-      array1 = patt.exec(str)
-      if (array1 && array1[0] === '}') {
-        endIndex = array1.index
-      } else {
-        return str
-      }
-      if (startIndex >= 0 && startIndex < endIndex) {
-        let slice = str.substring(lastEndIndex, startIndex)
-        if (slice) {
-          queue.push({
-            type: 'slice',
-            startIndex: lastEndIndex,
-            endIndex: startIndex,
-            exp: slice
-          })
-        }
-      }
-      lastEndIndex = endIndex + 1
-      let exp = str.substring(startIndex + 2, endIndex)
-      if (exp) {
-        queue.push({
-          type: 'fn',
-          startIndex,
-          endIndex,
-          exp
-        })
-      }
-    } while (array1 !== null)
-
-    let e: IEval | undefined
-    while (e = queue.shift()) {
-      // [TODO] finish runing theme functions here
-    }
+  /** Pass a set of required function to be executed */
+  setFnList (fnList: any) {
+    this.fnList = fnList
   }
 
   /**
@@ -92,7 +62,14 @@ export default class ThemeParser {
     if (strFnPieces.length <= 1) {
       return strFn
     }
-    const parsed: (string | number)[] = [strFnPieces[0]]
+    const fname = strFnPieces[0]
+
+    // if fname is NOT a valid material-ui 5 theme function
+    if (!(fname in this.mui5FnList) && !(fname in this.fnList)) {
+      return strFn
+    }
+
+    const parsed: (string | number)[] = [fname]
     for (var i = 1; i < strFnPieces.length; i++) {
       const arg = strFnPieces[i]
       const parsedArg = +arg || NaN
@@ -105,10 +82,15 @@ export default class ThemeParser {
 
   /** Runs theme functions */
   private _runFn (fname: string, args: (string | number)[]) {
-    const fn = getVal(this.theme, fname)
+    let fn = getVal(this.theme, fname)
     if (typeof fn === 'function') {
       return fn(...args)
     }
+    fn = getVal(this.fnList, fname)
+    if (typeof fn === 'function') {
+      return fn(...args)
+    }
+
     err(`Bad value: '${fname}' not a function`)
 
     return undefined
@@ -123,7 +105,81 @@ export default class ThemeParser {
     return result
   }
 
-  /** Applies theme function values */
+  _eval(str: string) {
+    const queue: IEval[] = []
+    const pattern = /\${|}/g
+
+    let match: RegExpExecArray | null,
+        sliceStart: number = 0,
+        fnStart = str.length,
+        fnEnd   = 0,
+        slice: string
+
+    while (match = pattern.exec(str)) {
+      if (match[0] === '${') {
+        fnStart = match.index
+      } else if (match[0] === '}') {
+        fnEnd = match.index
+        if (fnStart < fnEnd) {
+          slice = str.substring(sliceStart, fnStart)
+          if (slice) {
+            queue.push({
+              type: 'slice',
+              startIndex: sliceStart,
+              endIndex: fnStart,
+              str: slice
+            })
+          }
+          sliceStart = fnEnd + 1
+          let fn = str.substring(fnStart + 2, fnEnd)
+          if (fn) {
+            queue.push({
+              type: 'fn',
+              startIndex: fnStart,
+              endIndex: fnEnd,
+              str: fn
+            })
+          }
+          fnStart = str.length
+        }
+      }
+    }
+
+    if (queue.length === 0) {
+      return this._parseStrFn(str)
+    }
+
+    slice = str.substring(sliceStart)
+    if (slice) {
+      queue.push({
+        type: 'slice',
+        startIndex: sliceStart,
+        endIndex: fnStart,
+        str: slice
+      })
+    }
+
+    let e: IEval | undefined
+    let fragments: (string|number)[] = []
+
+    while (e = queue.shift()) {
+      if (e.type === 'slice') {
+        fragments.push(e.str)
+      } else if (e.type === 'fn') {
+        const parsedVal = this._parseStrFn(e.str)
+        if (typeof parsedVal === 'object' && Array.isArray(parsedVal)) {
+          const fname = parsedVal.shift() as string
+          fragments.push(this._runFn(fname, parsedVal))
+        } else {
+          fragments.push(parsedVal)
+        }
+      }
+    }
+
+    return fragments.join('')
+  }
+
+  /** Gives arguments to theme functions */
   private _apply (
     type: 'value' | 'property',
     rules: any,
@@ -174,7 +230,7 @@ export default class ThemeParser {
         rules[prop] = this.parse(val)
       }
 
-      const parsedProp = this._parseStrFn(prop)
+      const parsedProp = this._eval(prop)
       switch (typeof parsedProp) {
       case 'string':
         rules[safelyGet(this.theme,parsedProp,parsedProp)] = val
@@ -185,12 +241,12 @@ export default class ThemeParser {
         break
       }
 
-      const parsedVal = this._parseStrFn(val)
+      const parsedVal = this._eval(val)
       switch (typeof parsedVal) {
         case 'number':
           break
         case 'string':
-          rules[prop] = this._filter(safelyGet(this.theme, parsedVal, val))
+          rules[prop] = this._filter(safelyGet(this.theme, parsedVal, parsedVal))
           break
         case 'object':
           if (Array.isArray(parsedVal)) {
