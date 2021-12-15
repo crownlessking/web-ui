@@ -238,11 +238,16 @@ REDUX STORE
  */
 export interface IStateAppBar {
 
-  /** mui5 logo tag. i.e. "span" */
+  /** navigation layout */
+  layout?: ('logo' | 'search' | 'menu' | 'space')[]
+
+  /** mui5 logo tag. i.e. "img" */
   logoTag?: keyof JSX.IntrinsicElements
 
-  /** mui5 logo props */
   logoProps?: any
+
+  /** mui5 logo wrapper props */
+  logoTheme?: any
 
   /** mui5 text-logo props */
   textLogoProps?: any

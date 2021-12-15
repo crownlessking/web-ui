@@ -2,7 +2,6 @@ import { IRedux, IDelegated } from '../interfaces'
 import Config from '../config'
 import AbstractState from './AbstractState'
 import StateLink from './StateLink'
-import { Theme } from '@mui/material'
 
 // layouts
 

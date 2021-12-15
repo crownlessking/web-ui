@@ -16,6 +16,10 @@ import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
+import _ from 'lodash'
+import ThemeParser from '../../controllers/ThemeParser'
+import { setAppBarLayout } from './controller'
+import Logo from './logo'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,17 +61,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function AppBarMui5({ page }:{ page: StatePage }) {
+export default function AppBarMui5({ def: page }:{ def: StatePage }) {
 
   const app = page.parent.parent.app
   const appbar = page.appBar
+  const parse = new ThemeParser().getParser()
 
-  const Logo = () => (
-    app.logo ? styled(appbar.logoTag)(({ theme }) => ({
-
-  })) : (
-    <Typography {...appbar.textLogoProps}>{ app.title }</Typography>
-  ))
+  const LogoWrapper = styled('div')(({ theme }) => (_.extend({
+    // [TODO] insert default logo wrapper theme here
+  }, parse(theme, appbar.logoTheme))))
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -180,63 +182,75 @@ export default function AppBarMui5({ page }:{ page: StatePage }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
+          {
+            setAppBarLayout(
+              appbar.layout,
+              <React.Fragment key='logo'>
+                {appbar.hasLogo ? (
+                  <LogoWrapper>
+                    <Logo def={page} />
+                  </LogoWrapper>
+                ) : (
+                  <Typography {...appbar.textLogoProps}>{ app.title }</Typography>
+                )}
+              </React.Fragment>,
+              <React.Fragment key='search'>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Search>
+              </React.Fragment>,
+              <React.Fragment key='menu'>
+                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                  <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                    <Badge badgeContent={4} color="error">
+                      <MailIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                  >
+                    <Badge badgeContent={17} color="error">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                </Box>
+                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="show more"
+                    aria-controls={mobileMenuId}
+                    aria-haspopup="true"
+                    onClick={handleMobileMenuOpen}
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </Box>
+              </React.Fragment>,
+              <React.Fragment key='box'>
+                <Box sx={{ flexGrow: 1 }} />
+              </React.Fragment>
+            )
+          }
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

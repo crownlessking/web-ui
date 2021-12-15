@@ -43,8 +43,25 @@ const mockTheme: any = {
   }
 }
 
+const alpha = function() {
+  switch(arguments.length) {
+  default:
+    return 500
+  case 2:
+    if (typeof arguments[0] === 'string'
+      && typeof arguments[1] === 'number'
+    ) {
+      return 200
+    }
+    return 500
+  }
+}
+
 test('ThemeParser.parse()', done => {
-  const tp = new ThemeParser(mockTheme, {
+  const factory = new ThemeParser({ alpha })
+  const parse = factory.getParser()
+
+  expect(parse(mockTheme, {
     'position': 'relative',
     'borderRadius': 'shape.borderRadius',
     'backgroundColor': 'alpha, palette.common.white, 0.15',
@@ -58,23 +75,7 @@ test('ThemeParser.parse()', done => {
       'marginLeft': 'spacing, 3',
       'width': 'auto',
     }
-  }, {
-    alpha: function() {
-      switch(arguments.length) {
-      default:
-        return 500
-      case 2:
-        if (typeof arguments[0] === 'string'
-          && typeof arguments[1] === 'number'
-        ) {
-          return 200
-        }
-        return 500
-      }
-    }
-  })
-
-  expect(tp.parse()).toEqual({
+  })).toEqual({
     'position': 'relative',
     'borderRadius': 200,
     'backgroundColor': 200,
@@ -90,37 +91,41 @@ test('ThemeParser.parse()', done => {
     }
   })
 
-  tp.set({
+  expect(parse(mockTheme, {
     'padding': 'spacing , true'
+  })).toEqual({
+    'padding': 200
   })
-  expect(tp.parse().padding).toBe(200)
 
-  tp.set({
+  expect(parse(mockTheme, {
     'padding': 'spacing'
+  })).toEqual({
+    'padding': undefined
   })
-  expect(tp.parse().padding).toBe(undefined)
-
-  tp.set({
+  
+  expect(parse(mockTheme, {
     '&:hover' : {
       'backgroundColor' : 'alpha, palette.common.white, 0.25'
     }
+  })).toEqual({
+    '&:hover' : {
+      'backgroundColor' : 200
+    }
   })
-
-  expect(tp.parse()['&:hover'].backgroundColor).toBe(200)
-
-  tp.set({
+  
+  expect(parse(mockTheme, {
     'breakpoints.up, sm': {
       marginLeft: 'spacing, 3',
       width: 'auto'
     }
+  })).toEqual({
+    200: {
+      marginLeft: 200,
+      width: 'auto'
+    }
   })
 
-  expect(tp.parse()[200]).toEqual({
-    marginLeft: 200,
-    width: 'auto'
-  })
-
-  tp.set({
+  expect(parse(mockTheme, {
     'padding': 'spacing, 0, 2',
     'height': '100%',
     'position': 'absolute',
@@ -128,9 +133,7 @@ test('ThemeParser.parse()', done => {
     'display': 'flex',
     'alignItems': 'center',
     'justifyContent': 'center'
-  })
-
-  expect(tp.parse()).toEqual({
+  })).toEqual({
     padding: 200,
     height: '100%',
     position: 'absolute',
@@ -140,7 +143,7 @@ test('ThemeParser.parse()', done => {
     justifyContent: 'center'
   })
 
-  tp.set({
+  expect(parse(mockTheme, {
     color: 'inherit',
     '& .MuiInputBase-input': {
       'padding': 'spacing, 1, 1, 1, 0',
@@ -152,9 +155,7 @@ test('ThemeParser.parse()', done => {
         'width': '20ch',
       },
     },
-  })
-
-  expect(tp.parse()).toEqual({
+  })).toEqual({
     color: 'inherit',
     '& .MuiInputBase-input': {
       'padding': 200,

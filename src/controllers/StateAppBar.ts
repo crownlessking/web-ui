@@ -16,6 +16,7 @@ export default class StateAppBar<P = State>
 
   protected parentObj: P
   protected appBarJson: IStateAppBar
+  protected appBarLayout?: IStateAppBar['layout']
   protected appBarItems?: StateLink<this>[]
   protected appBarTypographyJson: IStateTypography
   protected appBarTypography?: StateAppBarTypography<P>
@@ -47,9 +48,24 @@ export default class StateAppBar<P = State>
   */
   get parent() { return this.parentObj }
 
-  get logoTag() { return this.appBarJson.logoTag || 'div' }
+  get layout() {
+    return this.appBarLayout
+      || (this.appBarLayout = (
+            this.appBarJson.layout && this.appBarJson.layout.length > 0
+          ) ? this.appBarJson.layout
+            : ['menu','space','logo','space','search']
+          )
+  }
+
+  get logoTag() { return this.appBarJson.logoTag || 'img' }
 
   get logoProps() { return this.appBarJson.logoProps || {} }
+
+  get logoTheme() { return this.appBarJson.logoTheme || {} }
+
+  get hasLogo () {
+    return Object.keys(this.logoProps).length > 0
+  }
 
   get textLogoProps() {
     return _.extend({

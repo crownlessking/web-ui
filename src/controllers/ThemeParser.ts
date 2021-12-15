@@ -10,9 +10,14 @@ interface IEval {
 
 export default class ThemeParser {
 
-  private theme: Theme
-  private rules: any
-  private fnList: any
+  private theme?: Theme
+
+  /**
+   * If a function is called from the JSON theme definitions but it is not a
+   * theme function, it can be stored in an object saved to this field.
+   * When it is needed, it will be called from this field.
+   */
+  private fnList?: any
 
   /** Material-ui 5 list of theme functions */
   private mui5FnList = {
@@ -29,17 +34,18 @@ export default class ThemeParser {
     'transitions.create': 1
   }
 
-  constructor (theme: Theme, rules: any, fnList: any = {}) {
-    this.theme = theme
-    this.rules = { ...rules }
+  constructor (fnList: any = {}) {
     this.fnList = fnList
   }
 
   getTheme() { return this.theme }
 
-  /** Set new rules */
-  set (rules: any) {
-    this.rules = { ...rules }
+  /** Get a simplified parser */
+  getParser () {
+    return  (theme: Theme, rules: any) => {
+      this.theme = theme
+      return this._parse(rules)
+    }
   }
 
   /** Pass a set of required function to be executed */
@@ -82,11 +88,11 @@ export default class ThemeParser {
 
   /** Runs theme functions */
   private _runFn (fname: string, args: (string | number)[]) {
-    let fn = getVal(this.theme, fname)
+    let fn = getVal(this.fnList, fname)
     if (typeof fn === 'function') {
       return fn(...args)
     }
-    fn = getVal(this.fnList, fname)
+    fn = getVal(this.theme, fname)
     if (typeof fn === 'function') {
       return fn(...args)
     }
@@ -105,7 +111,8 @@ export default class ThemeParser {
     return result
   }
 
-  _eval(str: string) {
+  /** Detects theme functions embeded in strings and evaluates them */
+  private _eval(str: string) {
     const queue: IEval[] = []
     const pattern = /\${|}/g
 
@@ -115,6 +122,7 @@ export default class ThemeParser {
         fnEnd   = 0,
         slice: string
 
+    // eslint-disable-next-line
     while (match = pattern.exec(str)) {
       if (match[0] === '${') {
         fnStart = match.index
@@ -145,7 +153,7 @@ export default class ThemeParser {
       }
     }
 
-    if (queue.length === 0) {
+    if (queue.length <= 0) {
       return this._parseStrFn(str)
     }
 
@@ -162,6 +170,7 @@ export default class ThemeParser {
     let e: IEval | undefined
     let fragments: (string|number)[] = []
 
+    // eslint-disable-next-line
     while (e = queue.shift()) {
       if (e.type === 'slice') {
         fragments.push(e.str)
@@ -201,8 +210,10 @@ export default class ThemeParser {
   }
 
   /** 
-   * Delete property names that are dynamically set via a theme function.
-   * 
+   * Delete property names that expressions to run theme function.
+   * Once the expression is evaluated the property is queue to be
+   * removed.
+   *
    * i.e.
    * ```ts
    * {
@@ -220,14 +231,14 @@ export default class ThemeParser {
   }
 
   /** Applies theme function values */
-  parse (rules = this.rules) {
+  private _parse (rules : any) {
     const propertyBin: string[] = []
     for (const prop in rules) {
       const val = rules[prop]
 
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
-        rules[prop] = this.parse(val)
+        rules[prop] = this._parse(val)
       }
 
       const parsedProp = this._eval(prop)
