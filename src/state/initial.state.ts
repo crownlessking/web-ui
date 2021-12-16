@@ -143,29 +143,18 @@ export default {
 
   /**
    * Object containing all form definitions
-   *
-   * @see forms.state.ts
    */
   'forms': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Forms`)), // forms,
 
   /**
    * Object containing all page definitions.
    *
-   * You can manually insert pages in that empty object.
-   *
-   * e.g.
-   * ```javascript
-   * '/default': {
-   *   'title': 'Default page',
-   *   'content': '$html : default.html : n/a',
-   * }
-   * ```
-   *
-   * However, these pages will be transpiled in the resulting JavaScript.
-   *
-   * @see pages.state.ts
+   * You can manually insert pages in that object if you wish. However, these
+   * pages will be transpiled in the resulting JavaScript.
    */
   'pages': _.extend({
+
+    // List of hard coded pages
 
     // Default success feedback page
     'default-success': {
@@ -212,9 +201,7 @@ export default {
    */
   'formsData': {},
 
-  /**
-   * material-ui snackbar redux store data
-   */
+  /** material-ui snackbar redux store data */
   'snackbar': {
     'anchorOrigin': {
       'vertical': 'bottom',

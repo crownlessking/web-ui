@@ -7,7 +7,6 @@ import {
 } from '../interfaces'
 import Form from '../mui4/form'
 import { FormItems } from '../mui4/form/items'
-import WebApp from '.'
 import View from './view.component'
 import StatePage from '../controllers/StatePage'
 import {
@@ -71,8 +70,7 @@ export default withStyles(styles)(class Content extends Component<IProps> {
       //          { data }
       //        </WebApp>
       //        Then it will take the data and display it like its suppose to
-      contentJsx = <WebApp def={page} />
-      currentContentJsx = contentJsx
+      currentContentJsx = contentJsx = ( null )
       break
 
     // [TODO] add more cases here for different types of content

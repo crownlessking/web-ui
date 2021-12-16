@@ -88,6 +88,8 @@ export default class StateFormItemCustom<P, T = any>
    */
   get variant() { return this.hasJson.variant }
 
+  get badge() { return this.hasJson.badge }
+
   /**
    * to be used with `load` when loading `meta`. e.g.
    * ```ts

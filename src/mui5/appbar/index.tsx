@@ -6,20 +6,18 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
-import Badge from '@mui/material/Badge'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import MailIcon from '@mui/icons-material/Mail'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
 import _ from 'lodash'
 import ThemeParser from '../../controllers/ThemeParser'
 import { setAppBarLayout } from './controller'
 import Logo from './logo'
+import AppBarIcon from '../link'
+import AppBarIconText from '../link/text'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,37 +63,47 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
 
   const app = page.parent.parent.app
   const appbar = page.appBar
-  const parse = new ThemeParser().getParser()
+  const parse = new ThemeParser({ alpha }).getParser()
 
   const LogoWrapper = styled('div')(({ theme }) => (_.extend({
     // [TODO] insert default logo wrapper theme here
   }, parse(theme, appbar.logoTheme))))
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    React.useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  /**
+   * Example for when an appbar menu item has a dropdown menu
+   * 
+   * [TODO] Don't remove yet. At some point you will rename it and use it to
+   *        handle menu items that dropdown menus.
+   */
+  // eslint-disable-next-line
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+    setMobileMoreAnchorEl(null)
+  }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+    setAnchorEl(null)
+    handleMobileMenuClose()
+  }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+    setMobileMoreAnchorEl(event.currentTarget)
+  }
 
-  const menuId = 'primary-search-account-menu';
+  // [TODO] The following set of code is a dropdown example
+  //        Remove it only after assimilating it to give
+  //        app bar items dropdown menu from their state definition
+  const menuId = 'primary-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -117,7 +125,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = 'primary-menu-mobile'
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -134,52 +142,20 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {appbar.items.map((menu, i) => (
+        <MenuItem>
+          <AppBarIcon key={`mobile-icon-${i}`} def={menu} />
+          <AppBarIconText key={`mobile-icon-${i}-text`} def={menu} />
+        </MenuItem>
+      ))}
     </Menu>
   );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+      <AppBar {...appbar.props}>
+        <Toolbar {...appbar.toolbarProps}>
+          <IconButton {...appbar.menuIconProps}>
             <MenuIcon />
           </IconButton>
           {
@@ -199,41 +175,16 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ 'aria-label': 'search' }}
-                  />
+                  <StyledInputBase {...appbar.searchFieldProps} />
                 </Search>
               </React.Fragment>,
               <React.Fragment key='menu'>
-                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
-                      <MailIcon />
-                    </Badge>
-                  </IconButton>
-                  <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                  >
-                    <Badge badgeContent={17} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                  <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
+                <Box {...appbar.desktopMenuItemsProps}>
+                  {appbar.items.map((menu, i) => (
+                    <AppBarIcon key={`mobile-icon-${i}`} def={menu} />
+                  ))}
                 </Box>
-                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <Box {...appbar.mobileMenuItemsProps}>
                   <IconButton
                     size="large"
                     aria-label="show more"
@@ -241,6 +192,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
                     aria-haspopup="true"
                     onClick={handleMobileMenuOpen}
                     color="inherit"
+                    {...appbar.mobileMenuIconProps}
                   >
                     <MoreIcon />
                   </IconButton>
@@ -248,6 +200,14 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
               </React.Fragment>,
               <React.Fragment key='box'>
                 <Box sx={{ flexGrow: 1 }} />
+              </React.Fragment>,
+              <React.Fragment key='custom'>
+                {appbar.components.map((c, i) => {
+                  const Comp = styled(c.tag)(
+                    ({ theme }) => parse(theme, c.theme)
+                  )
+                  return <Comp key={`custom-${i}`} {...c.props} />
+                })}
               </React.Fragment>
             )
           }

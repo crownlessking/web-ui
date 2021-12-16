@@ -6,13 +6,13 @@ export function setAppBarLayout (
   logo: JSX.Element,
   search: JSX.Element,
   menu: JSX.Element,
-  box: JSX.Element
+  box: JSX.Element,
+  custom: JSX.Element
 ) {
   const appbar: (JSX.Element|JSX.Element[])[] = []
 
   for (let i = 0; i < layout.length; i++) {
-    const lname = layout[i]
-    switch (lname) {
+    switch (layout[i]) {
     case 'logo':
       appbar.push(logo)
       break
@@ -24,6 +24,9 @@ export function setAppBarLayout (
       break
     case 'space':
       appbar.push(box)
+      break
+    case 'components':
+      appbar.push(custom)
     }
   }
 

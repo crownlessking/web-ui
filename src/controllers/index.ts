@@ -25,6 +25,10 @@ export const DEFAULT_LANDING_PAGE = 'default-landing'
 export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
 export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
 
+/**
+ * Sometimes, you don't want a hard crash. Sometimes, you want a simple
+ * console print out.
+ */
 export function log(message: string) {
   if (Config.DEBUG) {
     console.log(message)
@@ -119,6 +123,7 @@ export function delegatedSetState(delegation: IDelegated) {
  */
 export function getFontAwesomeIconProp(iconDef: string): string[]|string {
   const pieces = iconDef.replace(/\s+/,'').split(',')
+
   if (pieces.length === 2) {
     return pieces
   } else if (pieces.length === 1) {

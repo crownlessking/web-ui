@@ -6,6 +6,7 @@ import AbstractState from './AbstractState'
 import State from './State'
 import StateAppBarBackground from './StateAppBarBackground'
 import StateAppBarTypography from './StateAppBarTypography'
+import StateComponent from './StateComponent'
 import StateLink from './StateLink'
 
 export default class StateAppBar<P = State>
@@ -22,6 +23,7 @@ export default class StateAppBar<P = State>
   protected appBarTypography?: StateAppBarTypography<P>
   protected appBarBackgroundJson: IStateBackground
   protected appBarBackground?: StateAppBarBackground<P>
+  protected appBarComponents?: StateComponent<this>[]
 
   /**
   * Constructor
@@ -53,13 +55,54 @@ export default class StateAppBar<P = State>
       || (this.appBarLayout = (
             this.appBarJson.layout && this.appBarJson.layout.length > 0
           ) ? this.appBarJson.layout
-            : ['menu','space','logo','space','search']
+            : ['logo','space','menu']
           )
   }
 
   get logoTag() { return this.appBarJson.logoTag || 'img' }
 
+  get props() {
+    return this.appBarJson.props || { position: 'static' }
+  }
+
+  get toolbarProps() {
+    return this.appBarJson.toolbarProps || {}
+  }
+
   get logoProps() { return this.appBarJson.logoProps || {} }
+
+  get menuIconProps() {
+    return this.appBarJson.menuIconProps || {
+      size: 'large',
+      edge: 'start',
+      color: 'inherit',
+      'aria-label': 'open drawer',
+      sx: { mr: 2 }
+    }
+  }
+
+  get searchFieldProps() {
+    return this.appBarJson.searchFieldProps || {
+      placeholder: 'Search…',
+      inputProps: { 'aria-label': 'search' }
+    }
+  }
+
+  get desktopMenuItemsProps() {
+    return this.appBarJson.desktopMenuItemsProps || {
+      sx : { display: { xs: 'none', md: 'flex' } }
+    }
+  }
+
+  get mobileMenuItemsProps() {
+    return this.appBarJson.mobileMenuItemsProps || {
+      sx : { display: { xs: 'flex', md: 'none' } }
+    }
+  }
+
+  get mobileMenuIconProps() {
+    return this.appBarJson.mobileMenuIconProps || {}
+  }
 
   get logoTheme() { return this.appBarJson.logoTheme || {} }
 
@@ -107,6 +150,14 @@ export default class StateAppBar<P = State>
         this.appBarTypographyJson,
         this
       ))
+  }
+
+  get components() {
+    return this.appBarComponents || (
+      this.appBarComponents = (this.appBarJson.components || []).map(
+        c => new StateComponent(c, this)
+      )
+    )
   }
 
 } // END class StateAppBar --------------------------------------------------
