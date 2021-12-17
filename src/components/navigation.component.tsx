@@ -1,5 +1,5 @@
 import React from 'react'
-import AppBar from '../mui5/appbar'
+import AppBar from '../mui/appbar'
 import StatePage from '../controllers/StatePage'
 
 interface IProps {

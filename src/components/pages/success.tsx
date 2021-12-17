@@ -1,6 +1,5 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { makeStyles } from '@mui/styles'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import StatePage from '../../controllers/StatePage'
 import { getPageName } from '../../state/pages'
 

@@ -1,8 +1,8 @@
 
-import { SelectProps } from '@material-ui/core/Select'
+import { SelectProps } from '@mui/material/Select'
 import { Store, Action } from 'redux'
 import appActions from './state/actions'
-import { RadioProps } from '@material-ui/core/Radio'
+import { RadioProps } from '@mui/material/Radio'
 import {
   AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
@@ -255,7 +255,6 @@ export interface IAbstractState {
   components?: IAbstractStateComponent[]
 }
 
-/** Default appbar state */
 export interface IStateAppBar extends IAbstractState {
   /** navigation layout */
   layout?: ('logo' | 'search' | 'menu' | 'space' | 'components')[]

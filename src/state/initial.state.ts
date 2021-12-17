@@ -1,8 +1,8 @@
 import { IState } from '../interfaces'
 import { getGlobalVar, getHeadMetaContent } from '../controllers'
-import { orange } from '@material-ui/core/colors'
+import { orange } from '@mui/material/colors'
+import { ThemeOptions } from '@mui/material'
 import _ from 'lodash'
-import { ThemeOptions } from '@material-ui/core'
 
 /** Allows you to rename global variables to prevent conflicts. */
 const GLOBAL_PREFIX = getHeadMetaContent('web-ui') || 'app'

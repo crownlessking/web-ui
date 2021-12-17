@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import StatePage from '../../controllers/StatePage'
 import { getPageName } from '../../state/pages'
 
