@@ -6,6 +6,7 @@ import { RadioProps } from '@mui/material/Radio'
 import {
   AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
+import { CSSProperties } from '@mui/styles'
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -356,6 +357,12 @@ export interface IStateForm {
   items: IStateFormItem[]
   /** Whether the generated form should have a paper background or not. */
   paperBackground?: boolean
+  /** Switch layout effects */
+  type?: 'stack' | 'default'
+  /** Use to set props in form tag */
+  props?: any
+  /** Use to style the form tag */
+  theme?: CSSProperties
 }
 
 /**

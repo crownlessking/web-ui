@@ -1,46 +1,11 @@
 import {
-  TEXTFIELD, TEXTAREA, SUBMIT, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES,
-  SWITCH, SELECT
+  TEXTFIELD, TEXTAREA, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES, SWITCH,
+  SELECT
 } from '../controller'
 import {
-  IStateFormItem, IStateFormItemRadioButton, IStateFormItemCustom,
-  IFormCheckbox
+  IStateFormItem, IStateFormItemCustom, IFormCheckbox
 } from '../../../interfaces'
-import { err, log } from '../../../controllers'
-import { updateFormData } from '../../../state/forms/data/actions'
-import { IParentState } from '../../../interfaces'
-import StateFormItem from '../../../controllers/StateFormItem'
-
-/**
- * Prevents the app from throwing an exception because of the missing `name`
- * attribute in specific form item definition.
- *
- * The application is set to throw an exception if the name of a form field is
- * missing. However, not all defined form items are fields. If the name is
- * missing from one of those definitions, the application should not throw an
- * exception.
- *
- * @param type form item type
- * @param json
- *
- * @deprecated
- */
-export function notMissingNameExDef(type: string, json: IStateFormItem) {
-  if (json.name) {
-    return type
-  } else {
-    switch (type) {
-    case HTML:
-    case SUBMIT:
-    case BREAK_LINE:
-      return type
-    }
-  }
-
-  err('The `name` attribute is required.')
-
-  return ''
-}
+import { log } from '../../../controllers'
 
 /**
  * Get form field value from redux store.
@@ -78,22 +43,6 @@ export function getLocallyStoredValue(formData: any, item: IStateFormItem) {
     : (copyItem.value || defaultValue || '')
 }
 
-export function getValueFromParent(def: StateFormItem, parentState?: IParentState) {
-  if (parentState) {
-    return getLocallyStoredValue(parentState.state.formData, def)
-  }
-  return null
-}
-
-/**
- * Get form name
- *
- * @param that
- */
-export function getFormName(that: any) {
-  return that.props.state.formName
-}
-
 /**
  * Helper function.
  *
@@ -104,7 +53,10 @@ export function getFormName(that: any) {
  * @param item 
  * @param removalList list of key to be remove from form definition
  */
-export function getProps<T extends IStateFormItem>(item: T, removalList?: string[]) {
+export function getProps<T extends IStateFormItem>(
+  item: T,
+  removalList?: string[]
+) {
   const itemCopy = { ...item }
   delete itemCopy.has
   delete itemCopy.onChange
@@ -134,64 +86,6 @@ export function getProps<T extends IStateFormItem>(item: T, removalList?: string
   }
 
   return itemCopy
-}
-
-/**
- * Get list of `<option>` definition.
- *
- * @param hasJson
- *
- * @deprecated
- */
-export function options(hasJson: IStateFormItemCustom) {
-
-  // [TODO] Implement additional logic here
-  //        e.g. filtering or verification
-
-  return hasJson.items ? hasJson.items : []
-}
-
-/**
- * Getter function for the radio value.
- *
- * @param itemJson
- *
- * @deprecated
- */
-export function radioValue(itemJson: IStateFormItemRadioButton) {
-
-  // [TODO] Use this function to implement logic when retrieving a form radio
-  //        value from the definition.
- 
-  return itemJson.value
-}
-
-/**
- * Get list of radio buttons.
- *
- * @param hasJson
- */
-export function radioButtons(hasJson: IStateFormItemCustom) {
-
-  // [TODO] Implement logic additional logic needed for radio buttons here.
-  //        e.g. filtering and verifications
-
-  return hasJson.items ? hasJson.items : []
-}
-
-/**
- * Get list of checkboxes.
- *
- * @param hasJson
- *
- * @deprecated
- */
-export function checkboxes(hasJson: IStateFormItemCustom) {
-
-  // [TODO] Implement logic additional logic needed for radio buttons here.
-  //        e.g. filtering and verifications
-
-  return hasJson.items ? hasJson.items : []
 }
 
 /**
@@ -272,59 +166,33 @@ export function updateCheckboxes(checkedValues: string[], value: string, checked
   return newValues
 }
 
-/**
- * Gather all checkbox values which were checked into an array.
- *
- * @param obj checkboxes status. It's an object which has checkbox values as 
- *            keys. These keys are boolean values representing whether a
- *            checkbox is checked or not.
- */
-export function checkboxesStatusToArray(obj: any) {
-  const values = Object.keys(obj)
-  return values.map(value => {
-    if (obj[value] === true) {
-      return value
-    }
-    return null;
-  })
-}
-
-/**
- * Creates a unique form name, depending on how unique the id is.
- *
- * @param formName 
- * @param id 
- */
-export function getUniqueFormName (formName: string, id: string) {
-  return formName.substring(0, formName.length - 4) + id + 'Form';
-}
-
-/**
- * Saves the form field value to the store.
- *
- * Note: this process is automatic
- *
- * Redux action
- *
- * @param name
- */
-export function onUpdateFormData(
-  action: typeof updateFormData,
-  formName: string,
-  name: string
-) {
-  return (e: any) => {
-  action({
-    formName: formName,
-    name,
-    value: e.target.value
-  })}
-}
-
 export function getMeta(stateMeta: any, endpoint: string, key?: string) {
   try {
     return key ? stateMeta[endpoint][key] : stateMeta[endpoint]
   } catch (e) {
     log(`stateMeta[${endpoint}][${key}] does NOT exist.`)
   }
+}
+
+export function orderGroups(
+  order: string[],
+  none: JSX.Element[],
+  stacked: JSX.Element[],
+  localized: JSX.Element[]
+) {
+  const group: JSX.Element[] = []
+  for (let i = 0; i < order.length; i++) {
+    switch (order[i]) {
+    case 'none':
+      group.push(...none)
+      break
+    case 'stacked':
+      group.push(...stacked)
+      break
+    case 'localized':
+      group.push(...localized)
+      break
+    }
+  }
+  return group
 }

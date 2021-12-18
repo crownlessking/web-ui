@@ -2,6 +2,7 @@ import { IStateForm } from '../interfaces'
 import StateAllForms from './StateAllForms'
 import AbstractState from './AbstractState'
 import StateFormItem from './StateFormItem'
+import { CSSProperties } from '@mui/styles'
 
 export default class StateForm extends AbstractState implements IStateForm {
 
@@ -28,6 +29,10 @@ export default class StateForm extends AbstractState implements IStateForm {
    * Whether the form should have a paper background or not.
    */
   get paperBackground() { return !!this.formJson.paperBackground }
+
+  get type() { return this.formJson.type || 'default' }
+  get theme() { return this.formJson.theme || {} }
+  get props() { return this.formJson.props || {} }
 
   /**
    * Get (chain-access) list of form fields definition.

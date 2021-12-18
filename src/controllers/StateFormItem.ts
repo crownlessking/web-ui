@@ -36,24 +36,13 @@ export default class StateFormItem<P = StateForm, T = any>
   }
 
   get json(): IStateFormItem { return this.itemJson }
-
-  /**
-  * Chain-access to parent object (form).
-  */
+  /** Chain-access to parent object (form). */
   get parent() { return this.parentObj }
-
   get type() { return this.itemJson.type || '' }
-
   get id() { return this.itemJson.id || '' }
-
-  /**
-  * Get the current form field name.
-  */
+  /** Get the current form field name. */
   get name() { return this.itemJson.name || '' }
-
-  /**
-  * Get the current form field custom definition.
-  */
+  /** Get the current form field custom definition. */
   get has() {
     return this.itemHas
       || (this.itemHas = new StateFormItemCustom(
@@ -61,65 +50,34 @@ export default class StateFormItem<P = StateForm, T = any>
         this
       ))
   }
-
-  /**
-  * Get the current form field `href` attribute.
-  */
-  get href() {
-    return this.itemJson.href
-  }
-
-  get value() {
-    return this.itemJson.value
-  }
-
+  /** Get the current form field `href` attribute. */
+  get href() { return this.itemJson.href }
+  get value() { return this.itemJson.value }
   /** Get human-readable text. */
   get text(): string {
     return this.itemHasJson.title || this.itemJson.value || ''
   }
-
-  /**
-  * Get form field `onClick` value.
-  */
-  get onClick() {
-    return this.itemOnClick
-  }
-
+  /** Get form field `onClick` value. */
+  get onClick() { return this.itemOnClick }
   get hasNoOnClickCallback() {
     return this.noOnClickCallback
   }
-
   get hasNoOnChangeCallback() {
     return this.noOnChangeCallback
   }
-
-  /**
-  * Callback to run on 'onChange' event.
-  */
-  get onChange() {
-    return this.itemOnChange
-  }
-
+  /** Callback to run on 'onChange' event. */
+  get onChange() { return this.itemOnChange }
   get disabled() { return this.itemDisabled }
-
   get label(): string { return this.itemJson.label || '' }
-
   get language(): string { return this.itemJson.highlight }
-
-  /**
-  * Set form field `onClick` attribute
-  */
+  /** Set form field `onClick` attribute */
   set onClick(cb: (redux: IRedux) => (e: any) => void) {
     this.itemOnClick = cb
   }
-
-  /**
-  * Set the 'onChange' attribute of the form field.
-  */
+  /** Set the 'onChange' attribute of the form field. */
   set onChange(cb: Function) {
     this.itemOnChange = cb
   }
-
   set disabled(b: boolean) { this.itemDisabled = b }
 
   /**
@@ -131,7 +89,7 @@ export default class StateFormItem<P = StateForm, T = any>
   * missing from one of those definitions, the application should not throw an
   * exception.
   */
-  notMissingNameExDef = () => {
+  typeCheckingName = () => {
     const type = this.itemJson.type.toUpperCase()
     if (this.itemJson.name) {
       return type

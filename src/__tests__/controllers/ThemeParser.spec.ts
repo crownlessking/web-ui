@@ -57,9 +57,9 @@ const alpha = function() {
   }
 }
 
+
 test('ThemeParser.parse()', done => {
-  const factory = new ThemeParser({ alpha })
-  const parse = factory.getParser()
+  const parse = new ThemeParser({ alpha }).getParser()
 
   expect(parse(mockTheme, {
     'position': 'relative',

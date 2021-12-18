@@ -80,7 +80,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
    * Example for when an appbar menu item has a dropdown menu
    * 
    * [TODO] Don't remove yet. At some point you will rename it and use it to
-   *        handle menu items that dropdown menus.
+   *        handle menu items that have dropdown menus.
    */
   // eslint-disable-next-line
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

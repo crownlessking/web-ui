@@ -11,7 +11,8 @@ import JsonTextfield from './json.textfield'
 import JsonPicker from './json.picker'
 import {
   BREAK_LINE, BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
-  CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATETIME, TEXT, 
+  CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATE_TIME_PICKER, TEXT,
+  DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER, TIME_PICKER, STATIC_DATE_PICKER
 } from '../controller'
 import { connect } from 'react-redux'
 import {
@@ -48,7 +49,7 @@ interface IProps extends WithStyles<typeof styles> {
   ) => void
 }
 
-class BuildForm extends Component<IProps> {
+class FormBuilder extends Component<IProps> {
 
   render() {
     const form = this.getFormDef()
@@ -56,18 +57,7 @@ class BuildForm extends Component<IProps> {
     return form.items.map((item, index) => {
       item.has.classes = this.props.classes
 
-      switch (item.notMissingNameExDef()) {
-
-      case BREAK_LINE:
-        return <br key={index} />
-
-      case BUTTON:
-        return <JsonButton key={index} def={item} />
-
-      case SUBMIT:
-        item.onClick = this.onFormSubmitDefault(form)
-        return <JsonButton key={index} def={item} />
-
+      switch (item.typeCheckingName()) {
       case HTML:
         return (
           <div
@@ -76,38 +66,41 @@ class BuildForm extends Component<IProps> {
             {...getProps(item.json, ['value','type'])}
           />
         )
-
+      case SUBMIT:
+        item.onClick = this.onFormSubmitDefault(form)
+        return <JsonButton key={index} def={item} />
+      case BUTTON:
+        return <JsonButton key={index} def={item} />
+      case BREAK_LINE:
+        return <br key={index} />
       case SELECT:
         item.onChange = this.onUpdateFormData(form)
         return <JsonSelect key={index} def={item} />
-
       case NUMBER:
       case PASSWORD:
       case TEXT:
       case TEXTFIELD:
         item.onChange = this.onUpdateFormData(form)
         return <JsonTextfield key={index} def={item} />
-
       case TEXTAREA:
         item.onChange = this.onUpdateFormData(form)
         return <JsonTextarea key={index} def={item} />
-
       case RADIO_BUTTONS:
         item.onChange = this.onUpdateFormData(form)
         return <JsonRadio key={index} def={item} />
-
       case CHECKBOXES:
         item.onChange = this.onHandleCheckbox(form)
         return <JsonCheckboxes key={index} def={item} />
-
       case SWITCH:
         item.onChange = this.onHandleSwitch(form)
         return <JsonSwitch key={index} def={item} />
-
-      case DATETIME:
+      case STATIC_DATE_PICKER:
+      case DESKTOP_DATE_PICKER:
+      case MOBILE_DATE_PICKER:
+      case TIME_PICKER:
+      case DATE_TIME_PICKER:
         item.onChange = this.onUpdateFormDatetime(form)
         return <JsonPicker key={index} def={item} />
-
       } // switch END
 
       return ( null )
@@ -191,9 +184,7 @@ class BuildForm extends Component<IProps> {
     }
   }
 
-  /**
-   * A default form submission callback if none was provided
-   */
+  /** A default form submission callback if none was provided */
   onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
     e.preventDefault()
     const page = this.props.def
@@ -219,4 +210,4 @@ class BuildForm extends Component<IProps> {
 export const FormItems = connect(
   null,// mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(BuildForm))
+)(withStyles(styles)(FormBuilder))
