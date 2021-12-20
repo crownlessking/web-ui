@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, PropTypes
+  Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ButtonProps
 } from '@mui/material'
 import { createStyles, WithStyles, withStyles } from '@mui/styles'
 import { IState } from '../../interfaces'
@@ -202,7 +202,7 @@ class ResponsiveDialog extends React.Component<IProps> {
         return (
           <Button
             key={index}
-            color={action.has.color as PropTypes.Color}
+            color={action.has.color as ButtonProps['color']}
             onClick={callback({store, actions: appActions})}
           >
             { action.has.title }

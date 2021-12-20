@@ -168,5 +168,29 @@ test('ThemeParser.parse()', done => {
     }
   })
 
+  expect(parse(mockTheme, {
+    dialogForm: {
+      width: '500px',
+      margin: '${spacing, 3} + 1'
+    },
+    dialogTitle: {
+      margin: 'spacing, 3'
+    },
+    dialogContentText: {
+      'breakpoints.up, md': 'spacing, 3'
+    }
+  })).toEqual({
+    dialogForm: {
+      width: '500px',
+      margin: '200 + 1'
+    },
+    dialogTitle: {
+      margin: 200
+    },
+    dialogContentText: {
+      200: 200
+    }
+  })
+
   done()
 })

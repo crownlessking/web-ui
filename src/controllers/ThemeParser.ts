@@ -188,7 +188,7 @@ export default class ThemeParser {
     return fragments.join('')
   }
 
-  /** Gives arguments to theme functions */
+  /** Saves theme functions changes to rules */
   private _apply (
     type: 'value' | 'property',
     rules: any,
@@ -235,12 +235,10 @@ export default class ThemeParser {
     const propertyBin: string[] = []
     for (const prop in rules) {
       const val = rules[prop]
-
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
         rules[prop] = this._parse(val)
       }
-
       const parsedProp = this._eval(prop)
       switch (typeof parsedProp) {
       case 'string':
@@ -251,7 +249,14 @@ export default class ThemeParser {
         this._apply('property', rules, prop, parsedProp)
         break
       }
-
+    }
+    this._deleteProperties(propertyBin, rules)
+    for (const prop in rules) {
+      const val = rules[prop]
+      // Recursively handle nested CSS properties
+      if (typeof val === 'object' && !Array.isArray(val)) {
+        rules[prop] = this._parse(val)
+      }
       const parsedVal = this._eval(val)
       switch (typeof parsedVal) {
         case 'number':
@@ -266,9 +271,6 @@ export default class ThemeParser {
           break
       }
     }
-    this._deleteProperties(propertyBin, rules)
-
     return rules
   }
-
 }

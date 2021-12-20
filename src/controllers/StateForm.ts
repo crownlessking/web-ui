@@ -2,7 +2,6 @@ import { IStateForm } from '../interfaces'
 import StateAllForms from './StateAllForms'
 import AbstractState from './AbstractState'
 import StateFormItem from './StateFormItem'
-import { CSSProperties } from '@mui/styles'
 
 export default class StateForm extends AbstractState implements IStateForm {
 
