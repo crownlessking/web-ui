@@ -8,6 +8,8 @@ interface IEval {
   str       : string
 }
 
+type ParsingType = 'value' | 'property'
+
 export default class ThemeParser {
 
   private theme?: Theme
@@ -190,7 +192,7 @@ export default class ThemeParser {
 
   /** Saves theme functions changes to rules */
   private _apply (
-    type: 'value' | 'property',
+    type: ParsingType,
     rules: any,
     prop: string,
     tokens: (string|number)[]
