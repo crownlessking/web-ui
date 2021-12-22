@@ -173,26 +173,3 @@ export function getMeta(stateMeta: any, endpoint: string, key?: string) {
     log(`stateMeta[${endpoint}][${key}] does NOT exist.`)
   }
 }
-
-export function orderGroups(
-  order: string[],
-  none: JSX.Element[],
-  stacked: JSX.Element[],
-  localized: JSX.Element[]
-) {
-  const group: JSX.Element[] = []
-  for (let i = 0; i < order.length; i++) {
-    switch (order[i]) {
-    case 'none':
-      group.push(...none)
-      break
-    case 'stacked':
-      group.push(...stacked)
-      break
-    case 'localized':
-      group.push(...localized)
-      break
-    }
-  }
-  return group
-}

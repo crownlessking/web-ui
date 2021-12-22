@@ -362,7 +362,7 @@ export interface IStateForm {
   /** Use to set props in form tag */
   props?: any
   /** Use to style the form tag */
-  theme?: CSSProperties
+  style?: any
 }
 
 /**
@@ -697,47 +697,37 @@ export interface ITextfieldAdornment {
 
 export interface IStateFormItemCustom<T = any> {
   callback?: (redux: IRedux) => (e: any) => void
-
   /** CSS classes (JSS), most likely inherited from parent element */
   classes?: any
-
   content?: string
   color?: string
-
   /**
    * Currently the only way to set the default value for a
    * field. Don't use the `value` attribute, it will not
    * work with React/Redux.
    */
   defaultValue?: string
-
   /** Display a Material UI icon */
   icon?: string
-
   /** Display a Font-Awesome icon */
   faIcon?: string
-
   /**
    * #1 Whether the icon within the button should be located to the left or
    *    right of the label.
    */
   iconPosition?: 'left' | 'right'
-
   /** Contains data for <select />,  */
   items?: T[]
-
   /**
    * Used in certain situations when the label attribute cannot be set on
    * HTMLElement directly.
    */
   label?: string
-
   regex?: string
   route?: string
   text?: string
   title?: string
   variant?: string
-
   /**
    * badge props. If defined, the badge will show  
    * Badge example:
@@ -746,7 +736,6 @@ export interface IStateFormItemCustom<T = any> {
    * ```
    */
   badge?: BadgeProps
-
   /**
    * **Usage**:
    * to be used with `load` when loading `meta`. e.g.
@@ -755,34 +744,20 @@ export interface IStateFormItemCustom<T = any> {
    * ```
    */
   key?: string
-
   /** Name of an internally defined callback to be executed */
   handle?: string
-
   /**
    * Load metadata into field from `state.meta`. The metadata will be
    * identified by the endpoint (this value). If the data is missing, the
    * normal data source will be used.
    */
   load?: string
-
-  /**
-   * Material UI adornments.
-   *
-   * This field should be ignored if using another lib.
-   */
+  /** Material UI adornments. */
   adornment?: ITextfieldAdornment
-
   /** Use this to set props from definition */
-  props?: any,
-
-  /**
-   * Contains CSS rules.
-   *
-   * Use to customize the formControl (JSS) component of the corresponding
-   * field.
-   */
-  formControl?: any
+  props?: any
+  /** JSS style */
+  theme?: any
 }
 
 export interface IStateFormSelectOption {
@@ -791,14 +766,19 @@ export interface IStateFormSelectOption {
 }
 
 export interface IStateFormItem {
-  type: string /** Form field type e.g. textfield, select, radio... etc. */
-  id?: string /** Form field `id` */
-  name?: string /** Form field `name` */
+  /** Form field type e.g. textfield, select, radio... etc. */
+  type: string
+  /** Form field `id` */
+  id?: string
+  /** Form field `name` */
+  name?: string
+  /** Form field `value` */
   value?: any
-
+  style?: any
+  /** Form field group for localization purposes */
+  group?: string
   /** Contains members that are generally not `JSX.Element` props. */
   has?: IStateFormItemCustom
-
   [key: string]: any
 }
 

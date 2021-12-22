@@ -69,7 +69,6 @@ export function dummyCallback (redux: IRedux) {
  */
 export function defaultCallback ({store, actions, route}:IRedux) {
   return (e: any) => {
-    console.log(route)
     if (route) {
       store.dispatch(actions.app.urlUpdatePage(route))
     }

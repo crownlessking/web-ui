@@ -20,27 +20,16 @@ export default class StateFormItemCustom<P, T = any>
   }
 
   get json () { return this.hasJson }
-
   get parent() { return this.parentObj }
-
   get callback() { return this.hasCallback }
-
   get classes() { return this.hasClasses }
-  
   get content() { return this.hasJson.content || '' }
-
   get color() { return this.hasJson.color || '' }
-
   get defaultValue() { return this.hasJson.defaultValue || '' }
-
   get faIcon() { return this.hasJson.faIcon || '' }
-
   get icon() { return this.hasJson.icon || '' }
-
   get iconPosition() { return this.hasJson.iconPosition }
-
   get items() { return this.hasItemsJson }
-
   get label() { return this.hasJson.label || '' }
 
   /**
@@ -77,19 +66,14 @@ export default class StateFormItemCustom<P, T = any>
   }
 
   get route() { return this.hasJson.route || '' }
-
   get text() { return this.hasJson.text || '' }
-
   get title() { return this.hasJson.title || '' }
-
   /**
    * Material UI component attribute.  
    * __Note__: Can be undefined on purpose.
    */
   get variant() { return this.hasJson.variant }
-
   get badge() { return this.hasJson.badge }
-
   /**
    * to be used with `load` when loading `meta`. e.g.
    * ```ts
@@ -97,36 +81,12 @@ export default class StateFormItemCustom<P, T = any>
    * ```
    */
   get key() { return this.hasJson.key || '' }
-
-  /**
-   * Name of an internally defined callback to be executed.
-   */
+  /** Name of an internally defined callback to be executed. */
   get handle() { return this.hasJson.handle || '' }
-
-  /**
-   * Load metadata into field from `state.meta`. The metadata will be
-   * identified by the endpoint (this value). If the data is missing, the
-   * normal data source will be used.
-   * ```ts
-   * const meta = stateMeta['load']['key']
-   * ```
-   */
   get load() { return this.hasJson.load || '' }
-
-  /**
-   * Material UI adornments.
-   *
-   * This field should be ignored if using another lib.
-   */
   get adornment() { return this.hasJson.adornment }
-
-  /**
-   * Icon component props.
-   */
+  /** Icon component props. */
   get props() { return this.hasJson.props || {} }
-
-  get formControl() { return this.hasJson.formControl || {} }
-
   set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb }
 
   /**

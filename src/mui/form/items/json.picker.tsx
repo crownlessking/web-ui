@@ -1,5 +1,4 @@
 import { TextField, Theme } from '@mui/material'
-import DateAdapter from '@mui/lab/AdapterDateFns'
 import { makeStyles, createStyles } from '@mui/styles'
 import {
   getStoredValue,
@@ -11,8 +10,8 @@ import { IState } from '../../../interfaces'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import {
-  DateTimePicker, DesktopDatePicker, LocalizationProvider, MobileDatePicker,
-  StaticDatePicker, TimePicker
+  DateTimePicker, DesktopDatePicker, MobileDatePicker, StaticDatePicker,
+  TimePicker
 } from '@mui/lab'
 import {
   DATE_TIME_PICKER, DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER,
@@ -67,71 +66,64 @@ function ({ def, formsData, state }: IProps) {
   const value = getValue()
   // json.format = json.format || 'MM/dd/yyyy'
 
-  const PickerBuilder = () => {
-    switch (type) {
-    case DATE_TIME_PICKER:
-      return (
-        <DateTimePicker
-          label="Date&Time picker"
-          {...props}
-          value={value}
-          onChange={onChange(name)}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      )
-    case DESKTOP_DATE_PICKER:
-      return (
-        <DesktopDatePicker
-          label="Date desktop"
-          inputFormat="MM/dd/yyyy"
-          {...props}
-          value={value}
-          onChange={onChange(name)}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      )
-    case MOBILE_DATE_PICKER:
-      return (
-        <MobileDatePicker
-          label="Date mobile"
-          inputFormat="MM/dd/yyyy"
-          {...props}
-          value={value}
-          onChange={onChange(name)}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      )
-    case TIME_PICKER:
-      return (
-        <TimePicker
-          label="Time"
-          {...props}
-          value={value}
-          onChange={onChange(name)}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      )
-    case STATIC_DATE_PICKER:
-      return (
-        <StaticDatePicker
-          displayStaticWrapperAs="desktop"
-          openTo="year"
-          {...props}
-          value={value}
-          onChange={onChange(name)}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      )
-    default:
-      return ( null )
-    }
+  switch (type) {
+  case DATE_TIME_PICKER:
+    return (
+      <DateTimePicker
+        label="Date&Time picker"
+        {...props}
+        value={value}
+        onChange={onChange(name)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    )
+  case DESKTOP_DATE_PICKER:
+    return (
+      <DesktopDatePicker
+        label="Date desktop"
+        inputFormat="MM/dd/yyyy"
+        {...props}
+        value={value}
+        onChange={onChange(name)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    )
+  case MOBILE_DATE_PICKER:
+    return (
+      <MobileDatePicker
+        label="Date mobile"
+        inputFormat="MM/dd/yyyy"
+        {...props}
+        value={value}
+        onChange={onChange(name)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    )
+  case TIME_PICKER:
+    return (
+      <TimePicker
+        label="Time"
+        {...props}
+        value={value}
+        onChange={onChange(name)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    )
+  case STATIC_DATE_PICKER:
+    return (
+      <StaticDatePicker
+        displayStaticWrapperAs="desktop"
+        openTo="year"
+        {...props}
+        value={value}
+        onChange={onChange(name)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    )
+  default:
+    return ( null )
   }
 
-  return (
-    <LocalizationProvider dateAdapter={DateAdapter}>
-      <PickerBuilder />
-    </LocalizationProvider>
-  )
 
   // return (
   //   <MuiPickersUtilsProvider utils={DateFnsUtils}>

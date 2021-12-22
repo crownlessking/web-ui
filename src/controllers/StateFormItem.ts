@@ -50,12 +50,18 @@ export default class StateFormItem<P = StateForm, T = any>
         this
       ))
   }
+  get style() { return this.itemJson.style || {} }
+  get group() { return this.itemJson.group || '' }
   /** Get the current form field `href` attribute. */
   get href() { return this.itemJson.href }
   get value() { return this.itemJson.value }
   /** Get human-readable text. */
   get text(): string {
-    return this.itemHasJson.title || this.itemJson.value || ''
+    return this.itemHasJson.title
+      || this.itemHasJson.text
+      || this.itemJson.value
+      || this.itemHasJson.label
+      || ''
   }
   /** Get form field `onClick` value. */
   get onClick() { return this.itemOnClick }

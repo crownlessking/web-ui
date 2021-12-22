@@ -26,6 +26,8 @@ import {
 import setFormDefaultValues from './defaultvalues'
 import StatePage from '../../../controllers/StatePage'
 import StateForm from '../../../controllers/StateForm'
+import { LocalizationProvider } from '@mui/lab'
+import DateAdapter from '@mui/lab/AdapterDateFns'
 
 const styles = ({ spacing }: Theme) => createStyles({
   formControl: {
@@ -33,6 +35,10 @@ const styles = ({ spacing }: Theme) => createStyles({
   },
   inputLabel: { },
 })
+
+interface ILocalized {
+  [key: string]: JSX.Element[]
+}
 
 const mapDispatchToProps = {
   onUpdateFormData: updateFormData,
@@ -53,6 +59,7 @@ class FormBuilder extends Component<IProps> {
 
   render() {
     const form = this.getFormDef()
+    const localized: ILocalized = {}
 
     return form.items.map((item, index) => {
       item.has.classes = this.props.classes
@@ -67,7 +74,7 @@ class FormBuilder extends Component<IProps> {
           />
         )
       case SUBMIT:
-        item.onClick = this.onFormSubmitDefault(form)
+        item.onClick = item.onClick || this.onFormSubmitDefault(form)
         return <JsonButton key={index} def={item} />
       case BUTTON:
         return <JsonButton key={index} def={item} />
@@ -100,7 +107,24 @@ class FormBuilder extends Component<IProps> {
       case TIME_PICKER:
       case DATE_TIME_PICKER:
         item.onChange = this.onUpdateFormDatetime(form)
+        if (item.group && localized[item.group]) {
+          localized[item.group].push(
+            <JsonPicker key={`localized-${item.group}-${index}`} def={item} />
+          )
+          return ( null )
+        } else if (item.group) {
+          localized[item.group] = []
+          localized[item.group].push(
+            <JsonPicker key={`localized-${item.group}-${index}`} def={item} />
+          )
+          return (
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              { localized[item.group] }
+            </LocalizationProvider>
+          )
+        }
         return <JsonPicker key={index} def={item} />
+        
       } // switch END
 
       return ( null )

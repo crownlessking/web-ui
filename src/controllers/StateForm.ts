@@ -30,7 +30,7 @@ export default class StateForm extends AbstractState implements IStateForm {
   get paperBackground() { return !!this.formJson.paperBackground }
 
   get type() { return this.formJson.type || 'default' }
-  get theme() { return this.formJson.theme || {} }
+  get style() { return this.formJson.style || {} }
   get props() { return this.formJson.props || {} }
 
   /**

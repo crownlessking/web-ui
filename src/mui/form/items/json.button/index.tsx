@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import { Theme, Icon, Button } from '@mui/material'
-import { createStyles, WithStyles, withStyles } from '@mui/styles'
+import { Fragment } from 'react'
+import { Icon, Button, Theme, alpha } from '@mui/material'
 import { getButtonProps } from './controller'
 import { getFontAwesomeIconProp } from '../../../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
@@ -8,49 +7,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import store from '../../../../state'
 import allActions from '../../../../state/actions'
 import StateFormItem from '../../../../controllers/StateFormItem'
+import ThemeParser from '../../../../controllers/ThemeParser'
+import { makeStyles } from '@mui/styles'
 
-const styles = ({ spacing }: Theme) => createStyles({
-  button: {
-    margin: spacing(1),
-  },
-})
+interface IProps { def: StateFormItem }
 
-interface IProps extends WithStyles<typeof styles> {
-  def: StateFormItem
-}
-
-export default withStyles(styles)(class extends Component<IProps> {
-
-  /**
-   * For more information on valid props:
-   *
-   * @see https://material-ui.com/api/button/#props
-   */
-  public render() {
-    const { classes, def: button } = this.props
-    const { buttonContent: ButtonContent } = this
-    const redux = {
-      store,
-      actions: allActions,
-      route: button.json.href
-    }
-    const onClick = button.onClick || button.has.callback
-  
-    const props = getButtonProps(button.json)
-    return (
-      <Button
-        className={classes.button}
-        variant={button.has.variant as any}
-        color={button.has.color as any}
-        onClick={onClick(redux)}
-        {...props}
-      >
-        <ButtonContent def={button} />
-      </Button>
-    )
+export default function JsonButton ({ def: button }: IProps) {
+  const redux = {
+    store,
+    actions: allActions,
+    route: button.json.href
   }
+  const onClick = button.onClick || button.has.callback
+  const props = getButtonProps(button.json)
 
-  private buttonContent({ def: button }: { def: StateFormItem}) {
+  const parse = new ThemeParser({ alpha }).getParser()
+  const useStyles = makeStyles((theme: Theme) => ({
+    json: parse(theme, button.style)
+  }))
+  const classes = useStyles({ def: button })
+
+  const ButtonContent = ({ def: button }: { def: StateFormItem}) => {
     if (button.text) {
       switch (button.has.iconPosition) {
 
@@ -58,20 +35,20 @@ export default withStyles(styles)(class extends Component<IProps> {
       case 'right':
         if (button.has.icon) {
           return (
-            <React.Fragment>
+            <Fragment>
               { button.text }
               &nbsp;
               <Icon>{ button.has.icon }</Icon>
-            </React.Fragment>
+            </Fragment>
           )
         } else if (button.has.faIcon) {
           const icon = getFontAwesomeIconProp(button.has.faIcon) as IconProp
           return (
-            <React.Fragment>
+            <Fragment>
               { button.value }
               &nbps;
               <FontAwesomeIcon icon={icon} />
-            </React.Fragment>
+            </Fragment>
           )
         }
         break
@@ -81,26 +58,26 @@ export default withStyles(styles)(class extends Component<IProps> {
       default:
         if (button.has.icon) {
           return (
-            <React.Fragment>
+            <Fragment>
               <Icon>{ button.has.icon }</Icon>
               &nbsp;
               { button.text }
-            </React.Fragment>
+            </Fragment>
           )
         } else if (button.has.faIcon) {
           const icon = getFontAwesomeIconProp(button.has.faIcon) as IconProp
           return (
-            <React.Fragment>
+            <Fragment>
               <FontAwesomeIcon icon={icon} />
               &nbsp;
               { button.text }
-            </React.Fragment>
+            </Fragment>
           )
         }
 
       } // END switch
 
-      return <React.Fragment>{ button.text }</React.Fragment>
+      return <Fragment>{ button.text }</Fragment>
     } else {
       if (button.has.icon) {
         return <Icon>{ button.has.icon }</Icon>
@@ -112,4 +89,13 @@ export default withStyles(styles)(class extends Component<IProps> {
     return ( null )
   } // END buttonContent
 
-})
+  return (
+    <Button
+      {...props}
+      className={classes.json}
+      onClick={onClick(redux)}
+    >
+      <ButtonContent def={button} />
+    </Button>
+  )
+}

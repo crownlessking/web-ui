@@ -1,6 +1,8 @@
-import React from 'react'
-import { Box, Paper, Stack } from '@mui/material'
+import { Fragment } from 'react'
+import { alpha, Box, Paper, Stack, Theme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import StatePage from '../../controllers/StatePage'
+import ThemeParser from '../../controllers/ThemeParser'
 
 interface IProps {
   def: StatePage
@@ -18,23 +20,33 @@ function ConditionalPaper (
     )
   } else {
     return (
-      <React.Fragment>
+      <Fragment>
         { children }
-      </React.Fragment>
+      </Fragment>
     )
   }
 }
 
-export default function (
+export default function JsonPicker (
   { def: page, children }: IProps
 ) {
   const form = page.parent.parent.allForms.getForm(page.contentName)
+  const parse = new ThemeParser({ alpha }).getParser()
+  const useStyles = makeStyles((theme: Theme) => ({
+    json: parse(theme, form.style)
+  }))
+  const classes = useStyles({ def: page, children})
   switch (form.type) {
   default:
   case 'default':
     return (
       <ConditionalPaper show={form.paperBackground}>
-        <Box autoComplete="off" {...form.props} component="form">
+        <Box
+          autoComplete="off"
+          {...form.props}
+          component="form"
+          className={classes.json}
+        >
           { children }
         </Box>
       </ConditionalPaper>
@@ -49,49 +61,3 @@ export default function (
     )
   }
 }
-
-// const styles = ({ spacing }: Theme) => createStyles({
-//   container: {
-//     // fontWeight: 'bold',
-//     display: 'table',
-//     // flexFlow: 'column',
-//   },
-//   root: {
-//     padding: spacing(2, 3, 2, 3)
-//   }
-// })
-
-// const Form = ({ children, classes }: any) => (
-//   <form className={classes.container} autoComplete='off'>
-//     { children }
-//   </form>
-// )
-
-// const FormOnPaper = ({ children, classes }: any) => (
-//   <Paper className={classes.root} elevation={4}>
-//     <Form classes={classes}>
-//       { children }
-//     </Form>
-//   </Paper>
-// )
-
-// interface IProps extends WithStyles<typeof styles> {
-//   def: StatePage
-// }
-
-// export default withStyles(styles)(class extends Component<IProps> {
-
-//   public render() {
-//     const { def: page } = this.props
-//     const form = page.parent.parent.allForms.getForm(page.contentName)
-
-//     if (form.paperBackground) {
-//       return (
-//         <FormOnPaper { ...this.props} />
-//       )
-//     }
-
-//     return <Form { ...this.props} />
-//   } // END render()
-
-// })
