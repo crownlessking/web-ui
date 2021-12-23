@@ -67,7 +67,11 @@ export default class State extends AbstractState {
    * Chain-access to parent definition.
    */
   get parent() {
-    throw new Error('`Root state` has no parent.')
+    throw new Error('Root state has no parent.')
+  }
+
+  get props() {
+    throw new Error('Root state props cannot be used for component spreading.')
   }
 
   /**

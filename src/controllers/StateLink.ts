@@ -28,24 +28,19 @@ export default class StateLink<P = any>
   }
 
   get json() { return this.linkJson }
-
   get parent() { return this.parentObj }
-
+  get props() { throw new Error('Not implemented yet.') }
   get type() { return this.linkJson.type }
-
   get has() {
     return this.linkHas
       || (this.linkHas = new StateFormItemCustom(
         this.linkHasJson, this
       ))
   }
-
   get onClick() {
     return this.linkJson.onClick || defaultCallback
   }
-
   get href() { return this.linkJson.href || '' }
 
   get(attr: string) { return this.linkJson[attr] }
-
 }

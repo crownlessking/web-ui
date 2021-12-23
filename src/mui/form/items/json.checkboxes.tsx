@@ -6,12 +6,11 @@ import {
   getStoredValue,
   getLocallyStoredValue
 } from './controller'
-import {
-  FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox
-} from '@mui/material'
-import { IFormCheckbox, IState } from '../../../interfaces'
+import { FormControlLabel, Checkbox } from '@mui/material'
+import { IState } from '../../../interfaces'
 import { RadioProps } from '@mui/material/Radio'
-import classnames from 'classnames'
+import { Fragment } from 'react'
+import StateFormItemCheckbox from '../../../controllers/StateFormItemCheckbox'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -23,7 +22,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<StateForm, IFormCheckbox>
+  def: StateFormItem<StateForm, StateFormItemCheckbox>
   formsData: any
   state?: IParentState
 }
@@ -46,25 +45,17 @@ function ({ def: checkboxes, formsData, state }: IProps) {
   const checkboxesStatus = getCheckboxesStatus(checkboxes.has, value)
 
   return (
-    <FormControl
-      component="fieldset"
-      className={
-        classnames(
-          checkboxes.has.classes.formControl,
-          checkboxes.has.formControl
-        )
-      }
-    >
-      <FormLabel component="legend">
-        { checkboxes.has.label || checkboxes.has.title }
-        &nbsp;
-      </FormLabel>
-      <FormGroup>
-        {checkboxes.has.items.map((box, index) => (
+    <Fragment>
+      {checkboxes.has.items.map((box, i) => (
+        box.hasLabel
+        ? (
           <FormControlLabel
-            key={index}
+            {...box.formControlLabelProps}
+            key={i}
+            label={box.label}
             control={
               <Checkbox
+                {...box.props}
                 checked={checkboxesStatus[box.value]}
                 onChange={checkboxes.onChange(checkboxes.name, value)}
                 value={box.value}
@@ -73,12 +64,22 @@ function ({ def: checkboxes, formsData, state }: IProps) {
                 }
               />
             }
-            label={box.label || ''}
-            disabled={box.disabled === true}
+            disabled={box.disabled}
           />
-        ))}
-      </FormGroup>
-    </FormControl>
+        ) : (
+          <Checkbox
+            {...box.props}
+            checked={checkboxesStatus[box.value]}
+            onChange={checkboxes.onChange(checkboxes.name, value)}
+            value={box.value}
+            color={
+              box.color || (checkboxes.has.color as RadioProps['color'])
+            }
+            disabled={box.disabled}
+          />
+        )
+      ))}
+    </Fragment>
   )
 
 })

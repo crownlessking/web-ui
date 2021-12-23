@@ -10,4 +10,6 @@ import StateFormItemRadioButton from './StateFormItemRadioButton'
 export default class StateFormItemRadio extends StateFormItem<
   StateForm,
   StateFormItemRadioButton
-> { }
+> {
+  get hasLabel() { return !!this.itemHasJson.label }
+}

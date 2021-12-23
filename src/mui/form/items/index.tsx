@@ -1,6 +1,5 @@
-import { Component } from 'react'
-import { Theme } from '@mui/material'
-import { createStyles, withStyles, WithStyles } from '@mui/styles'
+import { Fragment, useEffect } from 'react'
+import { FormHelperText, FormLabel } from '@mui/material'
 import JsonButton from './json.button'
 import JsonSelect from './json.select'
 import JsonTextarea from './json.textarea'
@@ -12,13 +11,15 @@ import JsonPicker from './json.picker'
 import {
   BREAK_LINE, BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
   CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATE_TIME_PICKER, TEXT,
-  DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER, TIME_PICKER, STATIC_DATE_PICKER
+  DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER, TIME_PICKER, STATIC_DATE_PICKER,
+  FORM_LABEL, FORM_HELPER_TEXT, BOX, STACK, LOCALIZED, FORM_GROUP,
+  FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE
 } from '../controller'
 import { connect } from 'react-redux'
 import {
-  updateFormData, IFormDataPayload
+  updateFormData as updateFormDataAction, IFormDataPayload
 } from '../../../state/forms/data/actions'
-import { postReqState } from '../../../state/net'
+import { postReqState as postReqStateAction } from '../../../state/net'
 import { getProps, updateCheckboxes } from './controller'
 import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType
@@ -26,124 +27,47 @@ import {
 import setFormDefaultValues from './defaultvalues'
 import StatePage from '../../../controllers/StatePage'
 import StateForm from '../../../controllers/StateForm'
-import { LocalizationProvider } from '@mui/lab'
-import DateAdapter from '@mui/lab/AdapterDateFns'
-
-const styles = ({ spacing }: Theme) => createStyles({
-  formControl: {
-    margin: spacing(1),
-  },
-  inputLabel: { },
-})
-
-interface ILocalized {
-  [key: string]: JSX.Element[]
-}
+import StateFormItem from '../../../controllers/StateFormItem'
+import FormItemGroup from '../group'
+import StateFormItemGroup from '../../../controllers/StateFormGroup'
+import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
+import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 
 const mapDispatchToProps = {
-  onUpdateFormData: updateFormData,
-  onPostReqState: postReqState
+  onUpdateFormDataAction: updateFormDataAction,
+  onPostReqStateAction: postReqStateAction
 }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IProps {
   def: StatePage
-  onUpdateFormData: (payload: IFormDataPayload) => void
-  onPostReqState: (
+  onUpdateFormDataAction: (payload: IFormDataPayload) => void
+  onPostReqStateAction: (
     endpoint: string,
     body: RequestInit['body'],
     headers?: RequestInit['headers']
   ) => void
 }
 
-class FormBuilder extends Component<IProps> {
+interface ICascadingFormItemsProps {
+  form: StateForm
+  items: StateFormItem[]
+}
 
-  render() {
-    const form = this.getFormDef()
-    const localized: ILocalized = {}
-
-    return form.items.map((item, index) => {
-      item.has.classes = this.props.classes
-
-      switch (item.typeCheckingName()) {
-      case HTML:
-        return (
-          <div
-            key={index}
-            dangerouslySetInnerHTML={{__html: item.has.content}}
-            {...getProps(item.json, ['value','type'])}
-          />
-        )
-      case SUBMIT:
-        item.onClick = item.onClick || this.onFormSubmitDefault(form)
-        return <JsonButton key={index} def={item} />
-      case BUTTON:
-        return <JsonButton key={index} def={item} />
-      case BREAK_LINE:
-        return <br key={index} />
-      case SELECT:
-        item.onChange = this.onUpdateFormData(form)
-        return <JsonSelect key={index} def={item} />
-      case NUMBER:
-      case PASSWORD:
-      case TEXT:
-      case TEXTFIELD:
-        item.onChange = this.onUpdateFormData(form)
-        return <JsonTextfield key={index} def={item} />
-      case TEXTAREA:
-        item.onChange = this.onUpdateFormData(form)
-        return <JsonTextarea key={index} def={item} />
-      case RADIO_BUTTONS:
-        item.onChange = this.onUpdateFormData(form)
-        return <JsonRadio key={index} def={item} />
-      case CHECKBOXES:
-        item.onChange = this.onHandleCheckbox(form)
-        return <JsonCheckboxes key={index} def={item} />
-      case SWITCH:
-        item.onChange = this.onHandleSwitch(form)
-        return <JsonSwitch key={index} def={item} />
-      case STATIC_DATE_PICKER:
-      case DESKTOP_DATE_PICKER:
-      case MOBILE_DATE_PICKER:
-      case TIME_PICKER:
-      case DATE_TIME_PICKER:
-        item.onChange = this.onUpdateFormDatetime(form)
-        if (item.group && localized[item.group]) {
-          localized[item.group].push(
-            <JsonPicker key={`localized-${item.group}-${index}`} def={item} />
-          )
-          return ( null )
-        } else if (item.group) {
-          localized[item.group] = []
-          localized[item.group].push(
-            <JsonPicker key={`localized-${item.group}-${index}`} def={item} />
-          )
-          return (
-            <LocalizationProvider dateAdapter={DateAdapter}>
-              { localized[item.group] }
-            </LocalizationProvider>
-          )
-        }
-        return <JsonPicker key={index} def={item} />
-        
-      } // switch END
-
-      return ( null )
-    })
-
-  } // render() END
-
+function FormBuilder ({
+  def: page, onUpdateFormDataAction, onPostReqStateAction
+}:IProps) {
   /** Get form definition */
-  getFormDef = () => {
-    const store = this.props.def.parent.parent
-    const contentName = this.props.def.contentName
+  const getFormDef = () => {
+    const store = page.parent.parent
+    const contentName = page.contentName
     const form = store.allForms.getForm(contentName)
 
     return form
   }
 
   /** Saves the form field value to the store. */
-  onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
-    this.props.onUpdateFormData({
+  const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
+    onUpdateFormDataAction({
       formName: form.name,
       name,
       value: e.target.value
@@ -151,10 +75,10 @@ class FormBuilder extends Component<IProps> {
   }
 
   /** Saves the date value to the store. */
-  onUpdateFormDatetime = (form: StateForm) => 
+  const onUpdateFormDatetime = (form: StateForm) => 
       (name: string, val: string) => (date: Date | null) => {
     if (date) {
-      this.props.onUpdateFormData({
+      onUpdateFormDataAction({
         formName: form.name,
         name,
         value: date.toLocaleString() || ''
@@ -163,11 +87,11 @@ class FormBuilder extends Component<IProps> {
   }
 
   /** Saves checkboxes values to the Redux store. */
-  onHandleCheckbox = (form: StateForm) =>
+  const onHandleCheckbox = (form: StateForm) =>
       (name: string, oldValue: any) => (e: any) => {
     let value = oldValue ? oldValue : []
     value = updateCheckboxes(value, e.target.value, e.target.checked)
-    this.props.onUpdateFormData({
+    onUpdateFormDataAction({
       formName: form.name,
       name,
       value
@@ -175,32 +99,32 @@ class FormBuilder extends Component<IProps> {
   }
 
   /** Save switches value to the Redux store. */
-  onHandleSwitch = (form: StateForm) =>
+  const onHandleSwitch = (form: StateForm) =>
       (name: string, value: any) => (e: any) => {
     switch (getBoolType(value)) {
     case BOOL_TRUEFALSE:
-      this.props.onUpdateFormData({
+      onUpdateFormDataAction({
         formName: form.name,
         name,
         value: e.target.checked ? 'true' : 'false'
       })
       break
     case BOOL_ONOFF:
-      this.props.onUpdateFormData({
+      onUpdateFormDataAction({
         formName: form.name,
         name,
         value: e.target.checked ? 'on' : 'off'
       })
       break
     case BOOL_YESNO:
-      this.props.onUpdateFormData({
+      onUpdateFormDataAction({
         formName: form.name,
         name,
         value: e.target.checked ? 'yes' : 'no'
       })
       break
     default:
-      this.props.onUpdateFormData({
+      onUpdateFormDataAction({
         formName: form.name,
         name,
         value: e.target.checked
@@ -208,30 +132,108 @@ class FormBuilder extends Component<IProps> {
     }
   }
 
-  /** A default form submission callback if none was provided */
-  onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
-    e.preventDefault()
-    const page = this.props.def
-    const formsData = page.parent.parent.formsData
-    const endpoint = page.contentEndpoint
-    const body = formsData.getStoredValues(form.name)
-    this.onPostReqState(endpoint, body)
-  }
-
-  onPostReqState = (
+  const onPostReqState = (
     endpoint: string,
     body: RequestInit['body']
   ) => {
-    this.props.onPostReqState(endpoint, body)
+    onPostReqStateAction(endpoint, body)
   }
 
-  componentDidMount = () => {
-    setFormDefaultValues(this.getFormDef())
+  /** A default form submission callback if none was provided */
+  const onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
+    e.preventDefault()
+    const formsData = page.parent.parent.formsData
+    const endpoint = page.contentEndpoint
+    const body = formsData.getStoredValues(form.name)
+    onPostReqState(endpoint, body)
   }
 
+  const RecursiveFormItems = ({ form, items }: ICascadingFormItemsProps) => {
+    return (
+      <Fragment>
+        {items.map((item, i) => {
+          switch (item.typeCheckingName()) {
+          case HTML:
+            return (
+              <div
+                key={i}
+                dangerouslySetInnerHTML={{__html: item.has.content}}
+                {...getProps(item.json, ['value','type'])}
+              />
+            )
+          case SUBMIT:
+            item.onClick = item.hasNoOnClickCallback
+              ? onFormSubmitDefault(form)
+              : item.onClick
+            return <JsonButton key={i} def={item} />
+          case BUTTON:
+            return <JsonButton key={i} def={item} />
+          case BREAK_LINE:
+            return <br key={i} />
+          case SELECT:
+            item.onChange = onUpdateFormData(form)
+            return <JsonSelect key={i} def={item as StateFormItemSelect} />
+          case NUMBER:
+          case PASSWORD:
+          case TEXT:
+          case TEXTFIELD:
+            item.onChange = onUpdateFormData(form)
+            return <JsonTextfield key={i} def={item} />
+          case TEXTAREA:
+            item.onChange = onUpdateFormData(form)
+            return <JsonTextarea key={i} def={item} />
+          case RADIO_BUTTONS:
+            item.onChange = onUpdateFormData(form)
+            return <JsonRadio key={i} def={item as StateFormItemRadio} />
+          case CHECKBOXES:
+            item.onChange = onHandleCheckbox(form)
+            return <JsonCheckboxes key={i} def={item} />
+          case SWITCH:
+            item.onChange = onHandleSwitch(form)
+            return <JsonSwitch key={i} def={item} />
+          case STATIC_DATE_PICKER:
+          case DESKTOP_DATE_PICKER:
+          case MOBILE_DATE_PICKER:
+          case TIME_PICKER:
+          case DATE_TIME_PICKER:
+            item.onChange = onUpdateFormDatetime(form)
+            return <JsonPicker key={i} def={item} />
+          case BOX:
+          case STACK:
+          case LOCALIZED:
+          case FORM_GROUP:
+          case FORM_CONTROL:
+          case FORM_CONTROL_LABEL:
+          case INDETERMINATE:
+            return (
+              <FormItemGroup key={i} def={item}>
+                <RecursiveFormItems
+                  form={form}
+                  items={(item as StateFormItemGroup).items}
+                />
+              </FormItemGroup>
+            )
+          case FORM_LABEL:
+            return <FormLabel {...item.has.props}>{ item.has.text }</FormLabel>
+          case FORM_HELPER_TEXT:
+            return <FormHelperText>{ item.has.text }</FormHelperText>
+          } // switch END
+
+          return ( null )
+        })}
+      </Fragment>
+    )
+  } // CascadingFormItems END
+
+  useEffect(() => {
+    setFormDefaultValues(getFormDef())
+  })
+
+  const form = getFormDef()
+  return <RecursiveFormItems items={form.items} form={form} />
 } // class BuildForm END
 
 export const FormItems = connect(
   null,// mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(FormBuilder))
+)(FormBuilder)

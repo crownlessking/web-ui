@@ -17,9 +17,8 @@ export default class StateSnackbar
   }
 
   get json(): IStateSnackbar { return this.snackbarJson }
-
   get parent() { return this.parentObj }
-
+  get props() { throw new Error('Not implemented yet.') }
   get anchorOrigin() {
     return this.snackbarAnchorOrigin
       || (this.snackbarAnchorOrigin = new StateAnchorOrigin(
@@ -27,23 +26,13 @@ export default class StateSnackbar
           this
         ))
   }
-
   get autoHideDuration() { return this.snackbarJson.autoHideDuration }
-
   get open() { return this.snackbarJson.open || false }
-
   get content() { return this.snackbarJson.content }
-
   get message() { return this.snackbarJson.message || '' }
-
   get actions() { return this.snackbarJson.actions || [] }
-
   get id() { return this.snackbarJson.id || '' }
-
   get defaultId() { return this.snackbarJson.defaultId }
-
   get type() { return this.snackbarJson.type }
-
   get variant() { return this.snackbarJson.variant }
-
 }

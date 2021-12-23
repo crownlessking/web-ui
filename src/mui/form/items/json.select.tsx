@@ -1,14 +1,11 @@
-import React from 'react'
-import { FormControl, InputLabel, Select } from '@mui/material'
-import StateFormItem from '../../../controllers/StateFormItem'
+import { InputLabel, Select } from '@mui/material'
 import {
-  getProps, getStoredValue, getLocallyStoredValue, getMeta
+  getProps, getStoredValue, getLocallyStoredValue
 } from './controller'
-import { IStateFormSelectOption, IState } from '../../../interfaces'
-import { getErrorCode } from '../../../state/errors'
+import { IState } from '../../../interfaces'
 import { connect } from 'react-redux'
-import StateForm from '../../../controllers/StateForm'
-import classnames from 'classnames'
+import { Fragment } from 'react'
+import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData,
@@ -21,7 +18,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItem<StateForm, IStateFormSelectOption>
+  def: StateFormItemSelect
   formsData: any
   stateMeta: any
   state?: IParentState
@@ -29,79 +26,43 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def, formsData, stateMeta, state }: IProps) {
-  const { id, name, has, onChange } = def
-  const defaultClasses = has.classes
-  const props = getProps(def.json)
+function ({ def: select, formsData, state }: IProps) {
+  const { id, name, has, onChange } = select
+  const props = getProps(select.json)
 
   const getValueFromParent = () => {
     if (state) {
-      return getLocallyStoredValue(state.state.formData, def)
+      return getLocallyStoredValue(state.state.formData, select)
     }
   }
   const getValue = () => {
-    return getStoredValue(formsData, def.parent.name, def.name)
+    return getStoredValue(formsData, select.parent.name, select.name)
     || getValueFromParent()
   }
 
-  // If the options of the select should be loaded from data.
-  if (has.load && has.key) {
-    const meta = getMeta(stateMeta, has.load, has.key)
-    const code = getErrorCode()
-    return (
-      <FormControl
-        className={
-          classnames(defaultClasses.selectFormControl, has.formControl)
-        }
+  return (
+    <Fragment>
+      <InputLabel
+        {...select.inputLabelProps}
+        htmlFor={id}
       >
-        <InputLabel htmlFor={id}>
-          { props.label || name }
-        </InputLabel>
-        <Select
-          native
-          disabled={!meta}
-          margin='dense'
-          {...props}
-          value={getValue()}
-          onChange={onChange(name)}
-          inputProps={{ name, id }}
-        >
-          <option key={-1} value='' />
-          {meta ? Object.keys(meta).map((key, index) => (
-            <option value={key} key={code + '-' + index}>
-              { meta[key] }
-            </option>
-          )) : ( null )}
-        </Select>
-      </FormControl>
-    )
-  } else {
-    return (
-      <FormControl
-        className={
-          classnames(defaultClasses.selectFormControl, has.formControl)
-        }
+        { select.text }
+      </InputLabel>
+      <Select
+        native
+        margin='dense'
+        {...props}
+        value={getValue()}
+        onChange={onChange(name)}
+        inputProps={{ name, id }}
       >
-        <InputLabel htmlFor={id}>
-          { props.label || name }
-        </InputLabel>
-        <Select
-          native
-          margin='dense'
-          {...props}
-          value={getValue()}
-          onChange={onChange(name)}
-          inputProps={{ name, id }}
-        >
-          <option key={-1} value=''></option>
-          {has.items.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.title || option.value}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-    )
-  }
-
+        <option key={-1} value=''></option>
+        {has.items.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.title || option.value}
+          </option>
+        ))}
+      </Select>
+    </Fragment>
+  )
 })

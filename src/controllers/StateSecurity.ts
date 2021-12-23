@@ -18,9 +18,8 @@ export default class StateSecurity extends AbstractState implements IStateNet {
 
   get json() { return this.securityJson }
   get parent() { return this.parentObj }
-
+  get props() { throw new Error('Not implemented yet.') }
   get csrfTokenName() { return this.securityJson.csrfTokenName || '' }
-
   get csrfTokenMethod() { return this.securityJson.csrfTokenMethod || 'meta' }
 
   /** Attempts to locate the CSRF token. */

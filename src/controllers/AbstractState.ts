@@ -11,9 +11,11 @@ export default abstract class AbstractState {
    */
   abstract get json(): any
 
-  /**
-   * Chain-access to parent object.
-   */
+  /** Chain-access to parent object. */
   abstract get parent(): any
 
+  /**
+   * Use to spread properties that are valid component props on a component.
+   */
+  abstract get props(): any
 }

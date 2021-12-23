@@ -3,7 +3,7 @@ import {
   SELECT
 } from '../controller'
 import {
-  IStateFormItem, IStateFormItemCustom, IFormCheckbox
+  IStateFormItem, IStateFormItemCustom, IStateFormItemCheckbox
 } from '../../../interfaces'
 import { log } from '../../../controllers'
 
@@ -95,7 +95,7 @@ export function getProps<T extends IStateFormItem>(
  *
  * @param hasJson
  */
-function getCheckboxValues(hasJson: IStateFormItemCustom<IFormCheckbox>) {
+function getCheckboxValues(hasJson: IStateFormItemCustom<IStateFormItemCheckbox>) {
   return hasJson.items ? hasJson.items.map(item => item.value) : []
 }
 
@@ -128,6 +128,8 @@ function setCheckedValue(obj: any, value: string, checkedValues: string[]) {
  * we need a way to load that array (of checked values) to restore the form
  * checkboxes and the boxes which were checked.
  *
+ * [TODO] The current time complexity of this function is O(a+b*c).
+ *        Find a way to improve it when you have time.
  * @param hasJson
  * @param checkedValues array of checkboxes values that are checked
  */

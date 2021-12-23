@@ -33,7 +33,7 @@ export default function JsonPicker (
   const form = page.parent.parent.allForms.getForm(page.contentName)
   const parse = new ThemeParser({ alpha }).getParser()
   const useStyles = makeStyles((theme: Theme) => ({
-    json: parse(theme, form.style)
+    json: parse(theme, form.theme)
   }))
   const classes = useStyles({ def: page, children})
   switch (form.type) {

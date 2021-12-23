@@ -6,7 +6,10 @@ import {
   IRedux, IStateFormItem, IStateFormItemCustom
 } from '../interfaces'
 import StateForm from './StateForm'
-import { HTML, SUBMIT, BUTTON, BREAK_LINE } from '../mui/form/controller'
+import {
+  HTML, SUBMIT, BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, CHECKBOXES,
+  RADIO_BUTTONS, SELECT, SWITCH, TEXTAREA, TEXTFIELD
+} from '../mui/form/controller'
 import StateFormItemCustom from './StateFormItemCustom'
 
 export default class StateFormItem<P = StateForm, T = any>
@@ -17,27 +20,45 @@ export default class StateFormItem<P = StateForm, T = any>
   protected itemHasJson: IStateFormItemCustom<T>
   protected itemHas?: StateFormItemCustom<StateFormItem<P, T>, T>
   protected itemDisabled: boolean
-  protected noOnClickCallback: boolean
-  protected itemOnClick: (redux: IRedux) => (e: any) => void
-  protected noOnChangeCallback: boolean
-  protected itemOnChange: Function
+  protected itemOnClick?: (redux: IRedux) => (e: any) => void
+  protected itemOnChange?: Function
 
   constructor(itemJson: IStateFormItem, parent: P) {
     super()
     this.itemJson = itemJson
     this.parentObj = parent
+    this.itemDisabled = !!this.itemJson.disabled
     this.itemHasJson = itemJson.has || {}
-    this.itemDisabled = this.itemJson.disabled
-    this.noOnClickCallback = !!this.itemJson.onClick
-    this.itemOnClick = this.itemJson.onClick || defaultCallback
-    this.noOnChangeCallback = !!this.itemJson.onChange
-    this.itemOnChange = this.itemJson.onChange || dummyCallback
     this.setHandleCallback()
   }
 
   get json(): IStateFormItem { return this.itemJson }
   /** Chain-access to parent object (form). */
   get parent() { return this.parentObj }
+  get props() {
+    const componentProps: any = { ...this.itemJson }
+    delete componentProps.has
+    delete componentProps.onChange
+
+    const type = componentProps.type.toUpperCase()
+    switch (type) {
+    case TEXTFIELD:
+    case TEXTAREA:
+      componentProps.type = 'text'
+      break
+    case RADIO_BUTTONS:
+    case BREAK_LINE:
+    case CHECKBOXES:
+    case SWITCH:
+    case SELECT:
+    case HTML:
+      componentProps.type = ''
+      break
+    default:
+      componentProps.type = type
+    }
+    return componentProps
+  }
   get type() { return this.itemJson.type || '' }
   get id() { return this.itemJson.id || '' }
   /** Get the current form field name. */
@@ -51,28 +72,34 @@ export default class StateFormItem<P = StateForm, T = any>
       ))
   }
   get style() { return this.itemJson.style || {} }
-  get group() { return this.itemJson.group || '' }
   /** Get the current form field `href` attribute. */
   get href() { return this.itemJson.href }
   get value() { return this.itemJson.value }
   /** Get human-readable text. */
   get text(): string {
-    return this.itemHasJson.title
-      || this.itemHasJson.text
+    return this.itemHasJson.label
+      || this.itemHasJson.title
       || this.itemJson.value
-      || this.itemHasJson.label
+      || this.itemJson.name
+      || this.itemHasJson.text
       || ''
   }
   /** Get form field `onClick` value. */
-  get onClick() { return this.itemOnClick }
+  get onClick() {
+    return this.itemOnClick
+      || (this.itemOnClick = this.itemJson.onClick || defaultCallback)
+  }
   get hasNoOnClickCallback() {
-    return this.noOnClickCallback
+    return !!this.itemJson.onClick
   }
   get hasNoOnChangeCallback() {
-    return this.noOnChangeCallback
+    return !!this.itemJson.onChange
   }
   /** Callback to run on 'onChange' event. */
-  get onChange() { return this.itemOnChange }
+  get onChange() {
+    return this.itemOnChange
+      || (this.itemOnChange = this.itemJson.onChange || dummyCallback)
+  }
   get disabled() { return this.itemDisabled }
   get label(): string { return this.itemJson.label || '' }
   get language(): string { return this.itemJson.highlight }
@@ -105,6 +132,8 @@ export default class StateFormItem<P = StateForm, T = any>
         case SUBMIT:
         case BUTTON:
         case BREAK_LINE:
+        case FORM_LABEL:
+        case FORM_HELPER_TEXT:
           return type
       }
     }

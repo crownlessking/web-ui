@@ -13,10 +13,7 @@ export default class StatePagesData extends AbstractState {
   }
 
   get json() { return this.pagesDataJson }
-
-  /**
-   * Chain-access to parent (root) definition.
-   */
+  /** Chain-access to the root definition. */
   get parent() { return this.parentObj }
-
+  get props() { throw new Error('Not implemented yet.') }
 }

@@ -6,7 +6,6 @@ import { RadioProps } from '@mui/material/Radio'
 import {
   AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
-import { CSSProperties } from '@mui/styles'
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -238,13 +237,12 @@ REDUX STORE
  --------------------------------------------------------------------------- */
 
 export interface IAbstractStateComponent {
-  tag: keyof JSX.IntrinsicElements
+  tag?: keyof JSX.IntrinsicElements
   /** CSS properties */
   theme?: any
-  /** properties for the tag */
-  props?: any
   /** can be a single component or an array */
   children?: any
+  [props: string]: any
 }
 
 export interface IAbstractState {
@@ -254,6 +252,7 @@ export interface IAbstractState {
    * into existing component to customize them even further.
    */
   components?: IAbstractStateComponent[]
+  [props: string]: any
 }
 
 export interface IStateAppBar extends IAbstractState {
@@ -349,20 +348,36 @@ export interface IStateTypography {
   fontFamily?: string
 }
 
+export interface IStateFormItem {
+  /** Form field type e.g. textfield, select, radio... etc. */
+  type: string
+  /** Form field `id` */
+  id?: string
+  /** Form field `name` */
+  name?: string
+  /** Form field `value` */
+  value?: any
+  /** Contains members that are generally not `JSX.Element` props. */
+  has?: IStateFormItemCustom
+  [key: string]: any
+}
+
+export interface IStateFormItemGroup extends IStateFormItem {
+  items: IStateFormItem[]
+}
+
 /**
  * Form with a list of fields and optional background.
  */
-export interface IStateForm {
+export interface IStateForm extends IAbstractState {
   /** List of field states. e.g. textfield, select, radio... etc. */
   items: IStateFormItem[]
   /** Whether the generated form should have a paper background or not. */
   paperBackground?: boolean
   /** Switch layout effects */
   type?: 'stack' | 'default'
-  /** Use to set props in form tag */
-  props?: any
   /** Use to style the form tag */
-  style?: any
+  theme?: any
 }
 
 /**
@@ -647,15 +662,19 @@ export interface IRedux {
 Form items definition
 ---------------------------------------------------------------------------- */
 
-interface IFormChoices {
+interface IFormChoices extends IAbstractState {
   value: string
   label?: string
   color?: RadioProps['color']
   disabled?: boolean
+  formControlLabelProps?: any
 }
 
-export interface IFormCheckbox extends IFormChoices { }
+export interface IStateFormItemCheckbox extends IFormChoices { }
 export interface IStateFormItemRadioButton extends IFormChoices { }
+export interface IStateFormItemSelect extends IFormChoices {
+  inputLabelProps?: any
+}
 
 /**
  * Type for textfield adornment, e.g.
@@ -763,23 +782,6 @@ export interface IStateFormItemCustom<T = any> {
 export interface IStateFormSelectOption {
   title?: string
   value: string
-}
-
-export interface IStateFormItem {
-  /** Form field type e.g. textfield, select, radio... etc. */
-  type: string
-  /** Form field `id` */
-  id?: string
-  /** Form field `name` */
-  name?: string
-  /** Form field `value` */
-  value?: any
-  style?: any
-  /** Form field group for localization purposes */
-  group?: string
-  /** Contains members that are generally not `JSX.Element` props. */
-  has?: IStateFormItemCustom
-  [key: string]: any
 }
 
 export interface IStateFormSelect extends SelectProps {

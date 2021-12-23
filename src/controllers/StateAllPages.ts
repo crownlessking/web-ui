@@ -15,15 +15,11 @@ export default class StateAllPages extends AbstractState {
     this.parentObj = parent
   }
 
-  /**
-   * Get a copy of all pages state.
-   */
+  /** Get a copy of all pages json. */
   get json() { return this.allPagesJson }
-
-  /**
-   * Chain-access to parent (root) definition.
-   */
+  /** Chain-access root definition. */
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   /**
    * Prevents app from crashing when given a bad route.

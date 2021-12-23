@@ -16,15 +16,11 @@ export default class StateAllForms extends Controller {
     this.lastFormName = ''
   }
 
-  /**
-   * Get a copy of all forms state.
-   */
+  /** Get all forms json. */
   get json() { return this.allFormsJson }
-
-  /**
-   * Chain-access to parent (root) state definition.
-   */
+  /** Chain-access to root definition. */
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   /**
    * Get (chain-access to) the form definition.

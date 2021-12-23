@@ -18,11 +18,9 @@ export default class StateForm extends AbstractState implements IStateForm {
   }
 
   get json() { return this.formJson }
-
-  /**
-   * Chain-access to parent (all forms) definition.
-   */
+  /** Chain-access to all forms definition. */
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   /**
    * Whether the form should have a paper background or not.
@@ -30,8 +28,7 @@ export default class StateForm extends AbstractState implements IStateForm {
   get paperBackground() { return !!this.formJson.paperBackground }
 
   get type() { return this.formJson.type || 'default' }
-  get style() { return this.formJson.style || {} }
-  get props() { return this.formJson.props || {} }
+  get theme() { return this.formJson.theme || {} }
 
   /**
    * Get (chain-access) list of form fields definition.

@@ -21,18 +21,18 @@ export default class StateFormItemRadioButton
 
   get json() { return this.radioButtonJson }
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
   get value() { return this.radioButtonJson.value }
-
   get label() {
     return this.radioButtonJson.label || this.radioButtonJson.value
   }
-
   get color() {
     return this.radioButtonJson.color || 'default'
   }
-
   get disabled() {
     return this.radioButtonJson.disabled === true
   }
-
+  get formControlLabelProps() {
+    return this.radioButtonJson.formControlLabelProps || {}
+  }
 }

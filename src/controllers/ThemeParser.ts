@@ -234,6 +234,9 @@ export default class ThemeParser {
 
   /** Applies theme function values */
   private _parse (rules : any) {
+    if (!rules || Object.keys(rules).length <= 0) {
+      return {}
+    }
     const propertyBin: string[] = []
     for (const prop in rules) {
       const val = rules[prop]

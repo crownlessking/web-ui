@@ -16,4 +16,7 @@ export default class StateAllDialogs extends AbstractState {
 
   get parent() { return this.parentObj }
 
+  get props() {
+    throw new Error('props cannot be used on dialog collection')
+  }
 }

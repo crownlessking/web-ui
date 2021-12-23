@@ -14,9 +14,9 @@ export default class StateAnchorOrigin
     this.anchorOriginJson = anchorOriginJson
   }
 
-  get json(): IStateAnchorOrigin { return this.anchorOriginJson }
-
+  get json() { return this.anchorOriginJson }
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   get vertical() { return this.anchorOriginJson.vertical }
 

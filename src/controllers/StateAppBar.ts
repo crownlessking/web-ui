@@ -40,15 +40,13 @@ export default class StateAppBar<P = State>
       || StateAppBar.EMPTY_APPBAR_BACKGROUND
   }
 
-  /**
-  * Get a copy of the `appBar` json.
-  */
+  /** Get a copy of the `appBar` json. */
   get json() { return this.appBarJson }
-
-  /**
-  * Chain-access to parent (root) definition.
-  */
+  /** Chain-access to root definition. */
   get parent() { return this.parentObj }
+  get props() {
+    return this.appBarJson.props || { position: 'static' }
+  }
 
   get layout() {
     return this.appBarLayout
@@ -60,10 +58,6 @@ export default class StateAppBar<P = State>
   }
 
   get logoTag() { return this.appBarJson.logoTag || 'img' }
-
-  get props() {
-    return this.appBarJson.props || { position: 'static' }
-  }
 
   get toolbarProps() {
     return this.appBarJson.toolbarProps || {}

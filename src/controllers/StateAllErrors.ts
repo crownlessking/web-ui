@@ -15,9 +15,8 @@ export default class StateAllErrors extends AbstractState {
 
   get json() { return this.allErrorsJson }
 
-  /**
-   * Chain-access to parent (root) definition.
-   */
+  /** Chain-access to root definition. */
   get parent() { return this.parentObj }
 
+  get props() { throw new Error('Not implemented yet.')}
 }

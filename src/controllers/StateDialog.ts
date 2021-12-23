@@ -19,32 +19,21 @@ export default class StateDialog extends AbstractState implements IStateDialog {
   }
 
   get json() { return this.dialogJson }
-
   get parent() { return this.parentObj }
-
+  get props() { throw new Error('Not implemented yet.') }
   get title() { return this.dialogJson.title || '' }
-
   get label() { return this.dialogJson.label || '' }
-
   get contentType() { return this.dialogJson.contentType }
-
   get contentText() { return this.dialogJson.contentText || '' }
-
   get content() { return this.dialogJson.content }
-
   get actions() {
     return this.dialogActions
       || (this.dialogActions = this.dialogActionsJson.map(
           item => new StateFormItem<StateDialog>(item, this)
         ))
   }
-
   get showActions() { return this.dialogJson.showActions }
-
   get onSubmit() { return this.dialogJson.onSubmit || getDudEventCallback }
-
   get items() { return this.dialogJson.items || [] }
-
   get open() { return this.dialogJson.open }
-
 }

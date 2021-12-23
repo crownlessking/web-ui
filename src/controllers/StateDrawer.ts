@@ -25,27 +25,17 @@ export default class StateDrawer<P = State>
   }
 
   get json(): IStateDrawer { return this.drawerJson }
-
   get parent () { return this.parentObj }
-
-  /**
-   * Get the drawer's list of icon links.
-   */
+  get props() { throw new Error('Not implemented yet.') }
+  /** Get the drawer's list of icon links. */
   get items() {
     return this.drawerItems
       || (this.drawerItems = this.drawerJson.items.map(
         item => new StateLink<this>(item, this)
       ))
   }
-
-  /**
-   * Whether the drawer is open or not.
-   */
+  /** Whether the drawer is open or not. */
   get open () { return this.drawerJson.open }
-
-  /**
-   * Drawer's width
-   */
+  /** Drawer's width */
   get width () { return this.drawerJson.width }
-
 }

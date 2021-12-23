@@ -23,7 +23,6 @@ interface IProps {
 }
 
 export const Background = function ({ def: background, children }: IProps) {
-  
   const useStyles = makeStyles({
     background: _.extend<StyleRules>({
       height: 'inherit',

@@ -58,15 +58,11 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageTypographyJson = this.pageJson.typography || {}
   }
 
-  /**
-   * Get a copy of the page state.
-   */
+  /** Get the page json. */
   get json() { return this.pageJson }
-
-  /**
-   * Chain-access to parent (all pages) definition.
-   */
+  /** Chain-access to all pages definition. */
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   /**
    * A unique id is assigned if you would like to use an identifier for the

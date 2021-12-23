@@ -14,8 +14,8 @@ export default class StateTmp extends AbstractState {
   }
 
   get json() { return this.tmpJson }
-
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   get = (key: string, member?: string, $default?: string) => {
     let value: any

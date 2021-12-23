@@ -16,15 +16,11 @@ export default class StateApp extends AbstractState implements IStateApp {
     this.parentObj = parent
   }
 
-  /**
-   * Get a copy of the app definition.
-   */
+  /** Get a copy of the app definition. */
   get json() { return this.appJson }
-
-  /**
-   * Chain-access to parent (root) definition.
-   */
+  /** Chain-access to root definition. */
   get parent() { return this.parentObj }
+  get props() { throw new Error('Not implemented yet.') }
 
   get inDebugMode() {
     return this.appJson.inDebugMode
