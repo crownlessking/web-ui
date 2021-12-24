@@ -27,6 +27,7 @@ export default class StateDrawer<P = State>
   get json(): IStateDrawer { return this.drawerJson }
   get parent () { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   /** Get the drawer's list of icon links. */
   get items() {
     return this.drawerItems

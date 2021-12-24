@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 import JsonButton from './json.button'
 import JsonSelect from './json.select'
 import JsonTextfield from './json.textfield'
-import JsonTextarea from './json.textarea'
 import JsonRadio from './json.radio'
 import JsonCheckboxes from './json.checkboxes'
 import JsonSwitch from './json.switch'
@@ -25,6 +24,9 @@ import Highlight from 'react-highlight.js'
 import '../../../styles/atelier-forest-light.css'
 import StatePage from '../../../controllers/StatePage'
 import StateDialogForm from '../../../controllers/StateDialogForm'
+import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
+import StateFormItemTextField from '../../../controllers/StateFormItemTextField'
+import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 
 const styles = ({ spacing }: Theme) => createStyles({
   textField: {
@@ -143,18 +145,14 @@ connect(mapStateToProps, mapDispatchToProps)
 
       case SELECT:
         formField.onChange = this.onUpdateFormData
-        return <JsonSelect key={key} def={formField} state={state} />
+        return <JsonSelect key={key} def={formField as StateFormItemSelect} state={state} />
 
+      case TEXTAREA:
       case NUMBER:
       case PASSWORD:
       case TEXTFIELD:
         formField.onChange = this.onUpdateFormData
-        return <JsonTextfield key={key} def={formField} state={state} />
-
-      case TEXTAREA:
-        formField.onChange = this.onUpdateFormData
-        return <JsonTextarea key={key} def={formField} state={state} />
-
+        return <JsonTextfield key={key} def={formField as StateFormItemTextField} state={state} />
       case HIGHLIGHT:
         try {
           return (
@@ -178,7 +176,7 @@ connect(mapStateToProps, mapDispatchToProps)
 
       case RADIO_BUTTONS:
         formField.onChange = this.onUpdateFormData
-        return <JsonRadio key={key} def={formField} state={state} />
+        return <JsonRadio key={key} def={formField as StateFormItemRadio} state={state} />
 
       case CHECKBOXES:
         formField.onChange = this.onHandleCheckbox

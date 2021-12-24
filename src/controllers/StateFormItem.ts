@@ -7,8 +7,9 @@ import {
 } from '../interfaces'
 import StateForm from './StateForm'
 import {
-  HTML, SUBMIT, BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, CHECKBOXES,
-  RADIO_BUTTONS, SELECT, SWITCH, TEXTAREA, TEXTFIELD
+  HTML, SUBMIT, BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, BOX,
+  FORM_CONTROL, FORM_CONTROL_LABEL, FORM_GROUP, INDETERMINATE, LOCALIZED,
+  STACK
 } from '../mui/form/controller'
 import StateFormItemCustom from './StateFormItemCustom'
 
@@ -39,25 +40,15 @@ export default class StateFormItem<P = StateForm, T = any>
     const componentProps: any = { ...this.itemJson }
     delete componentProps.has
     delete componentProps.onChange
-
-    const type = componentProps.type.toUpperCase()
-    switch (type) {
-    case TEXTFIELD:
-    case TEXTAREA:
-      componentProps.type = 'text'
-      break
-    case RADIO_BUTTONS:
-    case BREAK_LINE:
-    case CHECKBOXES:
-    case SWITCH:
-    case SELECT:
-    case HTML:
-      componentProps.type = ''
-      break
-    default:
-      componentProps.type = type
-    }
+    delete componentProps.onClick
+    delete componentProps.type
+  
     return componentProps
+  }
+  get theme() {
+    return this.itemJson.theme
+      || this.itemHasJson.theme
+      || {}
   }
   get type() { return this.itemJson.type || '' }
   get id() { return this.itemJson.id || '' }
@@ -134,12 +125,19 @@ export default class StateFormItem<P = StateForm, T = any>
         case BREAK_LINE:
         case FORM_LABEL:
         case FORM_HELPER_TEXT:
+        case BOX:
+        case STACK:
+        case LOCALIZED:
+        case FORM_GROUP:
+        case FORM_CONTROL:
+        case FORM_CONTROL_LABEL:
+        case INDETERMINATE:
           return type
       }
     }
     err('`formItem.name` is NOT defined.')
 
-    return ''
+    return type
   }
 
   private getHandlePropName = (handle: string): {

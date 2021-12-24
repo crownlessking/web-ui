@@ -682,36 +682,13 @@ export interface IStateFormItemSelect extends IFormChoices {
  * icons and text symbol located within the textfield that serve as a type of
  * label.
  */
-export interface ITextfieldAdornment {
-  position: 'start' | 'end',
-  type: 'text' | 'button',
-
-  /**
-   * Text value of the textfield adornment
-   *
-   * @see https://material-ui.com/components/text-fields/#input-adornments
-   */
-  value: string,
-
-  /**
-   * Callback that will run when the embeded textfield adornment button-icon is
-   * clicked.
-   *
-   * @param ref
-   *
-   * @see https://reactjs.org/docs/refs-and-the-dom.html#creating-refs
-   * @see https://material-ui.com/components/text-fields/#input-adornments
-   */
-  callback?: (ref: HTMLElement) => (e: any) => void
-
-  /**
-   * spread it unto `<IconButton />`
-   *
-   * Use it to set additional props on the textfield adornment `<IconButton />`.
-   *
-   * @see https://material-ui.com/components/text-fields/#input-adornments
-   */
-  buttonProps?: any
+export interface IAdornment {
+  position: 'start' | 'end'
+  type?: 'text' | 'button'
+  icon?: string
+  faIcon?: string
+  text?: string
+  [props: string]: any
 }
 
 export interface IStateFormItemCustom<T = any> {
@@ -772,7 +749,8 @@ export interface IStateFormItemCustom<T = any> {
    */
   load?: string
   /** Material UI adornments. */
-  adornment?: ITextfieldAdornment
+  startAdornment?: IAdornment
+  endAdornment?: IAdornment
   /** Use this to set props from definition */
   props?: any
   /** JSS style */

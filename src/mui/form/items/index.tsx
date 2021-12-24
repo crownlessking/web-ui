@@ -1,8 +1,7 @@
 import { Fragment, useEffect } from 'react'
-import { FormHelperText, FormLabel } from '@mui/material'
+import { FormHelperText, FormLabel, InputLabel } from '@mui/material'
 import JsonButton from './json.button'
 import JsonSelect from './json.select'
-import JsonTextarea from './json.textarea'
 import JsonRadio from './json.radio'
 import JsonSwitch from './json.switch'
 import JsonCheckboxes from './json.checkboxes'
@@ -13,7 +12,7 @@ import {
   CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATE_TIME_PICKER, TEXT,
   DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER, TIME_PICKER, STATIC_DATE_PICKER,
   FORM_LABEL, FORM_HELPER_TEXT, BOX, STACK, LOCALIZED, FORM_GROUP,
-  FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE
+  FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE, INPUT_LABEL, ICON
 } from '../controller'
 import { connect } from 'react-redux'
 import {
@@ -32,6 +31,8 @@ import FormItemGroup from '../group'
 import StateFormItemGroup from '../../../controllers/StateFormGroup'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
+import JsonIcon from '../../json.icons'
+import StateFormItemTextField from '../../../controllers/StateFormItemTextField'
 
 const mapDispatchToProps = {
   onUpdateFormDataAction: updateFormDataAction,
@@ -177,11 +178,9 @@ function FormBuilder ({
           case PASSWORD:
           case TEXT:
           case TEXTFIELD:
-            item.onChange = onUpdateFormData(form)
-            return <JsonTextfield key={i} def={item} />
           case TEXTAREA:
             item.onChange = onUpdateFormData(form)
-            return <JsonTextarea key={i} def={item} />
+            return <JsonTextfield key={i} def={item as StateFormItemTextField} />
           case RADIO_BUTTONS:
             item.onChange = onUpdateFormData(form)
             return <JsonRadio key={i} def={item as StateFormItemRadio} />
@@ -214,9 +213,13 @@ function FormBuilder ({
               </FormItemGroup>
             )
           case FORM_LABEL:
-            return <FormLabel {...item.has.props}>{ item.has.text }</FormLabel>
+            return <FormLabel {...item.props}>{ item.text }</FormLabel>
           case FORM_HELPER_TEXT:
-            return <FormHelperText>{ item.has.text }</FormHelperText>
+            return <FormHelperText>{ item.text }</FormHelperText>
+          case INPUT_LABEL:
+            return <InputLabel>{ item.text }</InputLabel>
+          case ICON:
+            return <JsonIcon key={i} def={item} />
           } // switch END
 
           return ( null )

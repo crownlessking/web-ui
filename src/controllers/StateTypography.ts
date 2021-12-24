@@ -27,6 +27,7 @@ export default class StateTypography<P = State>
   /** Chain-access to root, page, or appBar definition. */
   get parent(): P { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get color() { return this.typographyJson.color }
   get fontFamily() { return this.typographyJson.fontFamily }
 }

@@ -16,5 +16,5 @@ export default class StateTopLevelLinks extends AbstractState {
   get json(): IStateTopLevelLinks { return this.topLevelLinksJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
-
+  get theme() { throw new Error('Not implemented yet.') }
 }

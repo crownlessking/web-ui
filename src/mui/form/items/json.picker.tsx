@@ -1,5 +1,5 @@
-import { TextField, Theme } from '@mui/material'
-import { makeStyles, createStyles } from '@mui/styles'
+import { alpha, TextField, Theme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import {
   getStoredValue,
   getLocallyStoredValue,
@@ -17,20 +17,7 @@ import {
   DATE_TIME_PICKER, DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER,
   STATIC_DATE_PICKER, TIME_PICKER
 } from '../controller'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    field: {
-      width: '200px',
-      margin: '0 10px'
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
-    }
-  })
-)
+import ThemeParser from '../../../controllers/ThemeParser'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -50,7 +37,10 @@ interface IProps {
 export default connect(mapStateToProps)(
 
 function ({ def, formsData, state }: IProps) {
-  const classes = useStyles()
+  const parse = new ThemeParser({ alpha }).getParser()
+  const classes = makeStyles((theme: Theme) =>({
+    json: parse(theme, def.theme)
+  }))()
   const { type, name, onChange } = def
   const getValueFromParent = () => {
     if (state) {
@@ -70,6 +60,7 @@ function ({ def, formsData, state }: IProps) {
   case DATE_TIME_PICKER:
     return (
       <DateTimePicker
+        className={classes.json}
         label="Date&Time picker"
         {...props}
         value={value}
@@ -80,6 +71,7 @@ function ({ def, formsData, state }: IProps) {
   case DESKTOP_DATE_PICKER:
     return (
       <DesktopDatePicker
+        className={classes.json}
         label="Date desktop"
         inputFormat="MM/dd/yyyy"
         {...props}
@@ -91,6 +83,7 @@ function ({ def, formsData, state }: IProps) {
   case MOBILE_DATE_PICKER:
     return (
       <MobileDatePicker
+        className={classes.json}
         label="Date mobile"
         inputFormat="MM/dd/yyyy"
         {...props}
@@ -102,6 +95,7 @@ function ({ def, formsData, state }: IProps) {
   case TIME_PICKER:
     return (
       <TimePicker
+        className={classes.json}
         label="Time"
         {...props}
         value={value}
@@ -112,6 +106,7 @@ function ({ def, formsData, state }: IProps) {
   case STATIC_DATE_PICKER:
     return (
       <StaticDatePicker
+        className={classes.json}
         displayStaticWrapperAs="desktop"
         openTo="year"
         {...props}

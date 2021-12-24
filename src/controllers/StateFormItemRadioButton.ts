@@ -8,20 +8,20 @@ import StateFormItemRadioCustom from './StateFormItemRadioCustom'
  */
 export default class StateFormItemRadioButton
   extends AbstractState
-  implements IStateFormItemRadioButton
-{
+  implements IStateFormItemRadioButton {
   private radioButtonJson: IStateFormItemRadioButton
-  private parentObj:       StateFormItemRadioCustom
+  private parentObj: StateFormItemRadioCustom
 
   constructor(radioButtonJson: IStateFormItemRadioButton, parent: StateFormItemRadioCustom) {
     super()
     this.radioButtonJson = radioButtonJson
-    this.parentObj       = parent
+    this.parentObj = parent
   }
 
   get json() { return this.radioButtonJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get value() { return this.radioButtonJson.value }
   get label() {
     return this.radioButtonJson.label || this.radioButtonJson.value

@@ -21,6 +21,7 @@ export default class StateAllForms extends Controller {
   /** Chain-access to root definition. */
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
 
   /**
    * Get (chain-access to) the form definition.

@@ -4,10 +4,12 @@ import {
   alpha, Box, FormControl, FormControlLabel, FormGroup, Stack, Theme
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { Fragment } from 'react'
 import StateFormItem from '../../controllers/StateFormItem'
 import ThemeParser from '../../controllers/ThemeParser'
 import {
-  BOX, STACK, LOCALIZED, FORM_GROUP, FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE
+  BOX, STACK, LOCALIZED, FORM_GROUP, FORM_CONTROL, FORM_CONTROL_LABEL,
+  INDETERMINATE, DIV, NONE
 } from './controller'
 
 interface IProps {
@@ -23,13 +25,13 @@ export default function FormItemGroup ({ def: item, children }: IProps) {
   switch (item.type.toUpperCase()) {
   case BOX:
     return (
-      <Box {...item.has.props} className={classes.json}>
+      <Box className={classes.json} {...item.props}>
         { children }
       </Box>
     )
   case STACK:
     return (
-      <Stack {...item.has.props} className={classes.json}>
+      <Stack className={classes.json} {...item.props}>
         { children }
       </Stack>
     )
@@ -41,29 +43,49 @@ export default function FormItemGroup ({ def: item, children }: IProps) {
     )
   case FORM_GROUP:
     return (
-      <FormGroup {...item.has.props} className={classes.json}>
+      <FormGroup className={classes.json} {...item.props}>
         { children }
       </FormGroup>
     )
   case FORM_CONTROL:
     return (
-      <FormControl {...item.has.props} className={classes.json}>
+      <FormControl className={classes.json} {...item.props}>
         { children }
       </FormControl>
     )
   case FORM_CONTROL_LABEL:
     return (
-      <FormControlLabel {...item.has.props} control={children} />
+      <FormControlLabel
+        {...item.props}
+        className={classes.json}
+        control={children}
+      />
     )
-  case INDETERMINATE:
+  case INDETERMINATE: {
     const parent = (children as JSX.Element[]).shift()
     return (
       <div>
-        <FormControlLabel {...item.has.props} control={parent} />
+        <FormControlLabel
+          {...item.props}
+          className={classes.json}
+          control={parent}
+        />
+        { children }
+      </div>
+    )
+  }
+  case DIV:
+    return (
+      <div className={classes.json} {...item.props}>
         { children }
       </div>
     )
   default:
-    return ( null )
+  case NONE:
+    return (
+      <Fragment>
+        { children }
+      </Fragment>
+    )
   }
 }

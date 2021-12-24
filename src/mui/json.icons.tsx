@@ -5,18 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import getSvgIcon from './imported.svg.icons'
 import StateFormItem from '../controllers/StateFormItem'
 import StateLink from '../controllers/StateLink'
+import _ from 'lodash'
 
 interface IProps {
-  json: StateFormItem | StateLink,
-
-  /** Set props for `@mui/icons-material`. */
-  svgProps?: any
-
-  /** Set props for `<Icon />` */
-  muiProps?: any
-
-  /** Set props for `<FontAwesomeIcon />` */
-  faProps?: any
+  def: StateFormItem | StateLink
 }
 
 /**
@@ -30,19 +22,15 @@ interface IProps {
  * }
  * ```
  */
-export default function getJsonIcon (
-  { json, svgProps, muiProps, faProps }: IProps
-) {
-  const has = json.has
-  const props = has.props
-
-  if (has.icon) {
-    return getSvgIcon(has.icon,  { ...props, ...svgProps })
-      || <Icon {...props} {...muiProps}>{ has.icon }</Icon>
-
-  } else if (has.faIcon) {
-    const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
-    return <FontAwesomeIcon icon={icon} {...props} {...faProps} />
+export default function getJsonIcon ({ def }: IProps) {
+  const has = def.has
+  if (def.has.icon) {
+    return getSvgIcon(def.has.icon, def.props)
+      || <Icon {...def.props}>{ has.icon }</Icon>
+  } else if (def.has.faIcon) {
+    const faProps: any = _.extend({ size: 'lg' }, def.props)
+    const faIcon = getFontAwesomeIconProp(def.has.faIcon)
+    return <FontAwesomeIcon icon={faIcon as IconProp} {...faProps} />
   }
 
   return ( null )

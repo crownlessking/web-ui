@@ -20,6 +20,7 @@ export default class StateAllPages extends AbstractState {
   /** Chain-access root definition. */
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
 
   /**
    * Prevents app from crashing when given a bad route.

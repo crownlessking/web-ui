@@ -17,9 +17,8 @@ export default class StateAnchorOrigin
   get json() { return this.anchorOriginJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
 
   get vertical() { return this.anchorOriginJson.vertical }
-
   get horizontal() { return this.anchorOriginJson.horizontal }
-
 }

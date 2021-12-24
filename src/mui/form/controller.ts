@@ -21,6 +21,7 @@ export const MOBILE_DATE_PICKER  = 'MOBILE_DATE_PICKER'
 export const TIME_PICKER = 'TIME_PICKER'
 export const STATIC_DATE_PICKER = 'STATIC_DATE_PICKER'
 export const HIGHLIGHT = 'HIGHLIGHT'
+export const INPUT_LABEL = 'INPUT_LABEL'
 export const FORM_LABEL = 'FORM_LABEL'
 export const FORM_HELPER_TEXT = 'FORM_HELPER_TEXT'
 export const BOX = 'BOX'
@@ -33,6 +34,8 @@ export const INDETERMINATE = 'INDETERMINATE'
 export const BOOL_TRUEFALSE = 'BOOL_TRUEFALSE'
 export const BOOL_ONOFF = 'BOOL_ONOFF'
 export const BOOL_YESNO = 'BOOL_YESNO'
+export const NONE = 'NONE'
+export const ICON = 'ICON'
 
 /** 
  * Regular expression identifying a `true` or `false` boolean value.

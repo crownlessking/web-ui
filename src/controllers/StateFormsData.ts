@@ -16,7 +16,7 @@ export default class StateFormsData extends AbstractState {
   get json() { return this.formsDataJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
-
+  get theme() { throw new Error('Not implemented yet.') }
   /**
    * Get form field value from redux store.
    *

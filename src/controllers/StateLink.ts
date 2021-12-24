@@ -30,6 +30,7 @@ export default class StateLink<P = any>
   get json() { return this.linkJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get type() { return this.linkJson.type }
   get has() {
     return this.linkHas

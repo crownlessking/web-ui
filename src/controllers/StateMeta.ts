@@ -16,6 +16,7 @@ export default class StateMeta extends AbstractState {
   get json() { return this.metaJson }
   get parent () { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
 
   /**
    * Get the metadata retrieved form the server.

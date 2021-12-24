@@ -19,6 +19,7 @@ export default class StateNet extends AbstractState implements IStateNet {
   get json() { return this.netJson }
   get parent(): any { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get csrfTokenName() { return this.netJson.csrfTokenName || '' }
   get csrfTokenMethod() { return this.netJson.csrfTokenMethod || 'meta' }
 

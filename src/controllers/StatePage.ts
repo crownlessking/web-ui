@@ -63,6 +63,7 @@ export default class StatePage extends AbstractState implements IStatePage {
   /** Chain-access to all pages definition. */
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
 
   /**
    * A unique id is assigned if you would like to use an identifier for the

@@ -80,9 +80,12 @@ export default class StateFormItemCustom<P, T = any>
   /** Name of an internally defined callback to be executed. */
   get handle() { return this.hasJson.handle || '' }
   get load() { return this.hasJson.load || '' }
-  get adornment() { return this.hasJson.adornment }
+  get startAdornment() { return this.hasJson.startAdornment }
+  get endAdornment() { return this.hasJson.endAdornment }
   /** Icon component props. */
   get props() { return this.hasJson.props || {} }
+  get theme() { throw new Error('Not implemented yet.') }
+
   set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb }
 
   /**

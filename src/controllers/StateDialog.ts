@@ -21,6 +21,7 @@ export default class StateDialog extends AbstractState implements IStateDialog {
   get json() { return this.dialogJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get title() { return this.dialogJson.title || '' }
   get label() { return this.dialogJson.label || '' }
   get contentType() { return this.dialogJson.contentType }

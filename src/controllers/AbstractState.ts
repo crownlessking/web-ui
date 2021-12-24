@@ -18,4 +18,7 @@ export default abstract class AbstractState {
    * Use to spread properties that are valid component props on a component.
    */
   abstract get props(): any
+
+  /** Use to apply CSS styles via JSS. */
+  abstract get theme(): any
 }

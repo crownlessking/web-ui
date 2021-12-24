@@ -19,6 +19,7 @@ export default class StateSnackbar
   get json(): IStateSnackbar { return this.snackbarJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get anchorOrigin() {
     return this.snackbarAnchorOrigin
       || (this.snackbarAnchorOrigin = new StateAnchorOrigin(

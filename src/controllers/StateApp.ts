@@ -21,32 +21,22 @@ export default class StateApp extends AbstractState implements IStateApp {
   /** Chain-access to root definition. */
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
-
-  get inDebugMode() {
-    return this.appJson.inDebugMode
-  }
-
+  get theme() { throw new Error('Not implemented yet.') }
+  get inDebugMode() { return this.appJson.inDebugMode }
   get origin() {
     return this.appOrigin || (
       this.appOrigin = getOriginEndingFixed(this.appJson.origin)
     )
   }
-
   /**
    * Chain-access to the current page route.
    */
   get route() { return this.appJson.route || this.defaultPage }
-
   get showSpinner() { return this.appJson.showSpinner }
-
   get status() { return this.appJson.status || '' }
-
   get title() { return this.appJson.title }
-
   get logo() { return this.appJson.logo || ''}
-
   get lastRoute() { return this.appJson.lastRoute || '' }
-
   /**
    * The default page can and should be dynamically update to the most relevant
    * page based on the session (e.g. whether the user is logged in or not).
@@ -54,5 +44,4 @@ export default class StateApp extends AbstractState implements IStateApp {
    * [TODO] Remember
    */
   get defaultPage() { return this.appJson.defaultPage || '' }
-
 }

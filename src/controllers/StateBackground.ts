@@ -23,7 +23,7 @@ export default class StateBackground<P = State>
   get json() { return this.backgroundJson }
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
+  get theme() { throw new Error('Not implemented yet.') }
   get type() { return this.backgroundJson.type }
   get value() { return this.backgroundJson.value }
-
 }

@@ -22,7 +22,7 @@ export default class StateFormItemCheckbox
   get color() { return this.checkbox.color || 'default' }
   get disabled() { return this.checkbox.disabled }
   get props() { return this.checkbox.props || {} }
-
+  get theme() { throw new Error('Not implemented yet.') }
   get hasLabel() { return !!this.checkbox.label }
   get formControlLabelProps() {
     return this.checkbox.formControlLabelProps || {}

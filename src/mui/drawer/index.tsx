@@ -139,7 +139,7 @@ class MiniDrawer extends React.Component<IProps, { open: boolean }> {
               to={getFormattedRoute(item)}
             >
               <ListItemIcon>
-                <JsonIcon json={item} faProps={{ size: 'lg' }} />
+                <JsonIcon def={item} />
               </ListItemIcon>
               <ListItemText primary={item.has.json.text} />
             </ListItem>
@@ -163,7 +163,7 @@ export function JsonDrawerIcon ({ json }: { json: StateLink }) {
       color='inherit'
       aria-label={json.has.json.label}
     >
-      <JsonIcon json={json} />
+      <JsonIcon def={json} />
     </ListItemIcon>
   )
 }
