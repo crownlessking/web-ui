@@ -1,3 +1,4 @@
+import { IconButtonProps } from '@mui/material'
 import _ from 'lodash'
 import {
   IStateAppBar, IStateBackground, IStateTypography
@@ -12,18 +13,18 @@ import StateLink from './StateLink'
 export default class StateAppBar<P = State>
   extends AbstractState implements IStateAppBar {
 
-  static EMPTY_APPBAR_BACKGROUND: IStateBackground = { type: 'none' }
-  static EMPTY_APPBAR_TYPOGRAPHY: IStateTypography = {}
+  static EMPTY_APPBAR_BACKGROUND :IStateBackground = { type: 'none' }
+  static EMPTY_APPBAR_TYPOGRAPHY :IStateTypography = {}
 
-  protected parentObj: P
-  protected appBarJson: IStateAppBar
-  protected appBarLayout?: IStateAppBar['layout']
-  protected appBarItems?: StateLink<this>[]
-  protected appBarTypographyJson: IStateTypography
-  protected appBarTypography?: StateAppBarTypography<P>
-  protected appBarBackgroundJson: IStateBackground
-  protected appBarBackground?: StateAppBarBackground<P>
-  protected appBarComponents?: StateComponent<this>[]
+  protected parentObj :P
+  protected appBarJson :IStateAppBar
+  protected appBarLayout ?:IStateAppBar['layout']
+  protected appBarItems ?:StateLink<this>[]
+  protected appBarTypographyJson :IStateTypography
+  protected appBarTypography ?:StateAppBarTypography<P>
+  protected appBarBackgroundJson :IStateBackground
+  protected appBarBackground ?:StateAppBarBackground<P>
+  protected appBarComponents ?:StateComponent<this>[]
 
   /**
   * Constructor
@@ -64,32 +65,36 @@ export default class StateAppBar<P = State>
   }
   get logoProps() { return this.appBarJson.logoProps || {} }
 
-  get menuIconProps() {
-    return this.appBarJson.menuIconProps || {
+  get menuIconProps(): IconButtonProps {
+    return {
       size: 'large',
       edge: 'start',
       color: 'inherit',
       'aria-label': 'open drawer',
-      sx: { mr: 2 }
+      sx: { mr: 2 },
+      ...this.appBarJson.menuIconProps
     }
   }
 
   get searchFieldProps() {
-    return this.appBarJson.searchFieldProps || {
+    return {
       placeholder: 'Search…',
-      inputProps: { 'aria-label': 'search' }
+      inputProps: { 'aria-label': 'search' },
+      ...this.appBarJson.searchFieldProps
     }
   }
 
   get desktopMenuItemsProps() {
-    return this.appBarJson.desktopMenuItemsProps || {
-      sx : { display: { xs: 'none', md: 'flex' } }
+    return {
+      sx : { display: { xs: 'none', md: 'flex' } },
+      ...this.appBarJson.desktopMenuItemsProps
     }
   }
 
   get mobileMenuItemsProps() {
-    return this.appBarJson.mobileMenuItemsProps || {
-      sx : { display: { xs: 'flex', md: 'none' } }
+    return {
+      sx : { display: { xs: 'flex', md: 'none' } },
+      ...this.appBarJson.mobileMenuItemsProps
     }
   }
 

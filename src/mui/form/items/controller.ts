@@ -1,6 +1,6 @@
 import {
   TEXTFIELD, TEXTAREA, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES, SWITCH,
-  SELECT
+  SELECT,
 } from '../controller'
 import {
   IStateFormItem, IStateFormItemCustom, IStateFormItemCheckbox

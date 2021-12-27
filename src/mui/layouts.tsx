@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, makeStyles, CSSProperties } from '@mui/styles'
+import { makeStyles, CSSProperties } from '@mui/styles'
 import { Grid, Theme } from '@mui/material'
 
 const defaultClasses: { [key: string]: CSSProperties } = {
@@ -22,7 +22,7 @@ const defaultClasses: { [key: string]: CSSProperties } = {
  * resize.
  */
 export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) => {
-  const classes = makeStyles(() => createStyles({
+  const classes = makeStyles(() => ({
     container: {
       // fontWeight: 'bold',
       minHeight: '100vh'
@@ -52,7 +52,7 @@ export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) 
  */
 const LayoutCenteredFactory = (mHeight?: number) => {
   return React.forwardRef(({ children }: any, ref) => {
-    const classes = makeStyles(({ mixins, spacing }: Theme) => createStyles({
+    const classes = makeStyles(({ mixins, spacing }: Theme) => ({
       toolbar: {
         ...defaultClasses.container,
     
@@ -104,7 +104,7 @@ export const LayoutCenteredDialog = LayoutCenteredFactory(0)
  */
 const LayoutDefaultFactory = (mHeight = 0) => {
   return React.forwardRef(({children}: any, ref) => {
-    const classes = makeStyles(({mixins, spacing}: Theme) => createStyles({
+    const classes = makeStyles(({mixins, spacing}: Theme) => ({
       toolbar: {
         ...defaultClasses.container,
     
@@ -131,8 +131,8 @@ export const VirtualizedTableLayout = LayoutDefaultFactory(49) // 29
 
 /** Created to apply toolbar space at the top if the page has an appBar */
 const LayoutNoneFactory = (mHeight = 0) => {
-  return React.forwardRef(({children}: any) => {
-    const classes = makeStyles(({mixins}: Theme) => createStyles({
+  return React.forwardRef(({children}: any, ref) => {
+    const classes = makeStyles(({mixins}: Theme) => ({
       toolbar: {
         ...defaultClasses.container,
         minHeight: mHeight || mixins.toolbar.minHeight

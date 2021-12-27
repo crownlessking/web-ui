@@ -5,7 +5,7 @@ import StateFormItem from '../../../controllers/StateFormItem'
 import ThemeParser from '../../../controllers/ThemeParser'
 import { IParentState, IState } from '../../../interfaces'
 import { getStoredValue, getLocallyStoredValue } from './controller'
-import ia, { getAdornment } from './json.input.adornment'
+import { getAdornment } from './json.input.adornment'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData

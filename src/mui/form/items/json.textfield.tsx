@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import getTextFieldAdornment from './json.input.adornment'
 import ThemeParser from '../../../controllers/ThemeParser'
-import StateFormItemTextField from '../../../controllers/StateFormItemTextField'
+import StateFormItem from '../../../controllers/StateFormItem'
 
 const mapStateToProps = (state: IState) => ({
   formsData: state.formsData
@@ -19,7 +19,7 @@ interface IParentState {
 }
 
 interface IProps {
-  def: StateFormItemTextField
+  def: StateFormItem
   formsData: any
   state?: IParentState
 }

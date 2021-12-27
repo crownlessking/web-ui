@@ -2,6 +2,7 @@ import Controller from './AbstractState'
 import { IStateAllForms } from '../interfaces'
 import State from './State'
 import StateForm from './StateForm'
+import { err } from '.'
 
 export default class StateAllForms extends Controller {
 
@@ -46,7 +47,8 @@ export default class StateAllForms extends Controller {
       return formDef
     }
 
-    throw new Error(`${formName} does not exist.`)
+    err(`${formName} does not exist.`)
+    return new StateForm({ items: [] }, this)
   }
 
   /**

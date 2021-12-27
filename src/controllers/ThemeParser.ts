@@ -99,7 +99,7 @@ export default class ThemeParser {
       return fn(...args)
     }
 
-    err(`Bad value: '${fname}' not a function`)
+    err(`Bad value: '${fname}' not a function.`)
 
     return undefined
   }

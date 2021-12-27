@@ -45,11 +45,7 @@ export default class StateFormItem<P = StateForm, T = any>
   
     return componentProps
   }
-  get theme() {
-    return this.itemJson.theme
-      || this.itemHasJson.theme
-      || {}
-  }
+  get theme() { return this.itemHasJson.theme || {} }
   get type() { return this.itemJson.type || '' }
   get id() { return this.itemJson.id || '' }
   /** Get the current form field name. */
@@ -94,6 +90,11 @@ export default class StateFormItem<P = StateForm, T = any>
   get disabled() { return this.itemDisabled }
   get label(): string { return this.itemJson.label || '' }
   get language(): string { return this.itemJson.highlight }
+  /** Used with a textfield. */
+  get inputProps() {
+    return this.itemJson.inputProps || {}
+  }
+
   /** Set form field `onClick` attribute */
   set onClick(cb: (redux: IRedux) => (e: any) => void) {
     this.itemOnClick = cb

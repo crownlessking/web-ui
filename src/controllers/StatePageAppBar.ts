@@ -4,8 +4,9 @@ import StatePage from './StatePage'
 import StatePageAppBarBackground from './StatePageAppBarBackground'
 import StatePageAppBarTypography from './StatePageAppBarTypography'
 
-export default class StatePageAppBar extends StateAppBar<StatePage> {
-
+export default class StatePageAppBar 
+  extends StateAppBar<StatePage> implements IStateAppBar
+{
   protected noAppBarBackground: boolean
   protected noAppBarTypography: boolean
   protected pageAppBarBackgroundDef?: StatePageAppBarBackground
@@ -38,8 +39,10 @@ export default class StatePageAppBar extends StateAppBar<StatePage> {
         ))
   }
 
-  /** if `true`, a search field will be available in the appbar. */
-  get hasSearchField () { return !!this.appBarJson.hasSearchField }
+  /** Returns `true` if the appbar has a search field. */
+  get hasSearchField () {
+    return (this.appBarJson.layout || []).includes('search')
+  }
 
   private initBackground = () => {
     if (this.noAppBarBackground) {

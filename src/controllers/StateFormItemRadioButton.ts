@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import { IStateFormItemRadioButton } from '../interfaces'
+import { IStateFormItemCustom, IStateFormItemRadioButton } from '../interfaces'
 import StateFormItemRadioCustom from './StateFormItemRadioCustom'
 
 /**
@@ -8,14 +8,17 @@ import StateFormItemRadioCustom from './StateFormItemRadioCustom'
  */
 export default class StateFormItemRadioButton
   extends AbstractState
-  implements IStateFormItemRadioButton {
+  implements IStateFormItemRadioButton
+{
   private radioButtonJson: IStateFormItemRadioButton
   private parentObj: StateFormItemRadioCustom
+  private radioButtonHasJson: IStateFormItemCustom
 
   constructor(radioButtonJson: IStateFormItemRadioButton, parent: StateFormItemRadioCustom) {
     super()
     this.radioButtonJson = radioButtonJson
     this.parentObj = parent
+    this.radioButtonHasJson = radioButtonJson.has || {}
   }
 
   get json() { return this.radioButtonJson }
@@ -33,6 +36,6 @@ export default class StateFormItemRadioButton
     return this.radioButtonJson.disabled === true
   }
   get formControlLabelProps() {
-    return this.radioButtonJson.formControlLabelProps || {}
+    return this.radioButtonHasJson.formControlLabelProps || {}
   }
 }

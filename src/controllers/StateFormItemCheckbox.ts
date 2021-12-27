@@ -1,4 +1,4 @@
-import { IStateFormItemCheckbox } from '../interfaces'
+import { IStateFormItemCheckbox, IStateFormItemCustom } from '../interfaces'
 import AbstractState from './AbstractState'
 import StateForm from './StateForm'
 import StateFormItem from './StateFormItem'
@@ -6,25 +6,27 @@ import StateFormItem from './StateFormItem'
 export default class StateFormItemCheckbox
   extends AbstractState implements IStateFormItemCheckbox
 {
-  private checkbox: IStateFormItemCheckbox
+  private checkboxJson: IStateFormItemCheckbox
+  private checkboxHasJson: IStateFormItemCustom
   private parentObj: StateFormItem<StateForm, this>
 
-  constructor(checkbox: IStateFormItemCheckbox, parent: StateFormItem) {
+  constructor(checkboxJson: IStateFormItemCheckbox, parent: StateFormItem) {
     super()
-    this.checkbox = checkbox
+    this.checkboxJson = checkboxJson
     this.parentObj = parent
+    this.checkboxHasJson = checkboxJson.has || {}
   }
 
-  get json() { return this.checkbox }
+  get json() { return this.checkboxJson }
   get parent() { return this.parentObj }
-  get value() { return this.checkbox.value }
-  get label() { return this.checkbox.label || '' }
-  get color() { return this.checkbox.color || 'default' }
-  get disabled() { return this.checkbox.disabled }
-  get props() { return this.checkbox.props || {} }
+  get value() { return this.checkboxJson.value }
+  get label() { return this.checkboxJson.label || '' }
+  get color() { return this.checkboxJson.color || 'default' }
+  get disabled() { return this.checkboxJson.disabled }
+  get props() { throw new Error('Not implemented yet.') }
   get theme() { throw new Error('Not implemented yet.') }
-  get hasLabel() { return !!this.checkbox.label }
+  get hasLabel() { return !!this.checkboxJson.label }
   get formControlLabelProps() {
-    return this.checkbox.formControlLabelProps || {}
+    return this.checkboxHasJson.formControlLabelProps || {}
   }
 }

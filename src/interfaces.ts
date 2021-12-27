@@ -1,4 +1,3 @@
-
 import { SelectProps } from '@mui/material/Select'
 import { Store, Action } from 'redux'
 import appActions from './state/actions'
@@ -236,22 +235,13 @@ export interface IJsonapiResponse extends IJsonapiBaseResponse {
 REDUX STORE
  --------------------------------------------------------------------------- */
 
-export interface IAbstractStateComponent {
-  tag?: keyof JSX.IntrinsicElements
-  /** CSS properties */
-  theme?: any
-  /** can be a single component or an array */
-  children?: any
-  [props: string]: any
+export interface IStateComponent<T = any> extends IAbstractState {
+  type?: string
+  items?: T
 }
 
 export interface IAbstractState {
-  /**
-   * There are times when the available options are not enough.
-   * With this function, you can insert a JSON defined components
-   * into existing component to customize them even further.
-   */
-  components?: IAbstractStateComponent[]
+  /** Spreadable props */
   [props: string]: any
 }
 
@@ -276,7 +266,7 @@ export interface IStateAppBar extends IAbstractState {
   mobileMenuItemsProps?: BoxProps
   /** when web page is in mobile view, this icon will show */
   mobileMenuIconProps?: IconButtonProps
-  /** mui5 logo wrapper props */
+  /** mui5 logo wrapper styles */
   logoTheme?: any
   /** Appbar background color, image, gradient... etc. */
   background?: IStateBackground
@@ -284,8 +274,6 @@ export interface IStateAppBar extends IAbstractState {
   typography?: IStateTypography
   /** Appbar icons and links. */
   items: IStateLink[]
-  /** If `true`, a search field will be available in the appbar. */
-  hasSearchField?: boolean
   /**
    * If `true`, the background of the appbar defined at the root state (`IState`)
    * will be used.
@@ -300,6 +288,12 @@ export interface IStateAppBar extends IAbstractState {
   useDefaultTypography?: boolean
   /** The route of the page with a valid appbar typography. */
   typographyInherited?: string
+  /**
+   * There are times when the available options are not enough.
+   * With this function, you can insert a JSON defined components
+   * into existing component to customize them even further.
+   */
+   components?: IStateComponent[]
 }
 
 export interface IStateAppBarSearches {
@@ -307,32 +301,25 @@ export interface IStateAppBarSearches {
 }
 
 interface IAbstractStateDrawer {
+  /** List of icons with the descriptions */
   items?: IStateLink[],
+  /** Whether the drawer is open or not. */
   open?: boolean
+  /** Drawer's width in pixels. */
   width?: number
 }
 
-/**
- * Default drawer state. Contains icons and descriptions.
- */
-export interface IStateDrawer extends IAbstractStateDrawer {
-  /** List of icons with the descriptions */
-  items: IStateLink[]
-  /** Whether the drawer is open or not. */
-  open: boolean
-  /** Drawer's width in pixels. */
-  width: number
-}
+/** Default drawer state. Contains icons and descriptions. */
+export type IStateDrawer = Required<IAbstractStateDrawer>
 
-/**
- * TEMPORARY You can delete this if it's not in use.
- */
+/** Type for a drawer defined within a page. */
 export interface IStatePageDrawer extends IAbstractStateDrawer { }
 
 /**
  * Background color, image, gradient... etc. Any valid CSS background.
  */
 export interface IStateBackground {
+  /** The background type. */
   type: 'none' | 'color' | 'gradient' | 'image'
   /** Any valid CSS value for the background property. */
   value?: string | number
@@ -348,7 +335,7 @@ export interface IStateTypography {
   fontFamily?: string
 }
 
-export interface IStateFormItem {
+export interface IStateFormItem extends IAbstractState {
   /** Form field type e.g. textfield, select, radio... etc. */
   type: string
   /** Form field `id` */
@@ -359,11 +346,10 @@ export interface IStateFormItem {
   value?: any
   /** Contains members that are generally not `JSX.Element` props. */
   has?: IStateFormItemCustom
-  [key: string]: any
 }
 
 export interface IStateFormItemGroup extends IStateFormItem {
-  items: IStateFormItem[]
+  items ?:IStateFormItem[]
 }
 
 /**
@@ -376,8 +362,6 @@ export interface IStateForm extends IAbstractState {
   paperBackground?: boolean
   /** Switch layout effects */
   type?: 'stack' | 'default'
-  /** Use to style the form tag */
-  theme?: any
 }
 
 /**
@@ -385,16 +369,11 @@ export interface IStateForm extends IAbstractState {
  */
 export interface IStatePage {
   _id?: string
-  title?: string /** Page title */
-
-  /**
-   * Forced page title
-   * 
-   * Only the title of the page will be displayed in the browser tab.
-   */
+   /** Page title */
+  title?: string
+  /** If set, only this value will be displayed in the browser tab. */
   forcedTitle?: string
-
-  /** Page appbar */
+  /** Page appBar */
   appBar?: IStateAppBar
   /** Page background */
   background?: IStateBackground
@@ -402,6 +381,7 @@ export interface IStatePage {
   typography?: IStateTypography
   /** Content of page represented as a symbolic string. */
   content?: string
+  /** Page drawer */
   drawer?: IStatePageDrawer
   /** A valid layout constant. */
   layout?: string
@@ -411,32 +391,25 @@ export interface IStatePage {
   hideDrawer?: boolean
   /** If `true`, the page will use the default appBar at `IState.appBar` */
   useDefaultAppBar?: boolean
-  /** If `true`, the page will use the default drawer at `state.drawer`. */
+  /** If `true`, the page will use the default drawer at `IState.drawer`. */
   useDefaultDrawer?: boolean
-
-  /**
-   * If `true`, the page will use the default background at `state.background`
-   */
+  /** If `true`, the `IState.background` will be used. */
   useDefaultBackground?: boolean
-
-  /**
-   * If `true`, the page will use the default typography at `state.typography`
-   */
+  /** If `true`, the `IState.typography` will be used. */
   useDefaultTypography?: boolean
-
   /**
-   * Inherit the appBar and drawer definition from a page that has an appbar
-   * and a drawer defined.
+   * Route of a page with a valid appBar and drawer to use.
+   *
+   * [TODO] Check to see if this property works.
    */
   inherited?: string
-
   /** Inherits the appBar of a page that has a defined appBar. */
   appBarInherited?: string
-  /** Inherits the drawer of a page that has a defined drawer. */
+  /** Route of another page with a valid drawer to use. */
   drawerInherited?: string
-  /** Inherits the content string definition of another page. */
+  /** Route of another page with a valid content to use. */
   contentInherited?: string
-  /** Inherits the background of another page definition. */
+  /** Route of another page with a valid background to use. */
   backgroundInherited?: string
   /** The page can retrieve or possibly store data in this field. */
   data?: any
@@ -458,51 +431,43 @@ export interface IStatePageContent {
   args?: string
 }
 
-/**
- * Contains all form states.
- */
+/** Contains all form states. */
 export interface IStateAllForms {
-  [key: string]: IStateForm
+  [prop: string]: IStateForm
 }
 
 /**
  * Contains all page states.
  */
 export interface IStateAllPages {
-  [key: string]: IStatePage
+  [prop: string]: IStatePage
 }
 
 /**
  * App information state.
  */
 export interface IStateApp {
-
   /** If app is in debug mode or not */
   inDebugMode: boolean
-
+  /** Route of the page to be displayed. */
   route: string
-
   /** web page title: It will be displayed if a logo was NOT provided. */
   title: string
-
   /**
    * URL of the server to which the app will make requests and receive
    * responses.
    */
   origin?: string
-
   showSpinner?: boolean
   status?: string
-
   /** Image src of appbar logo */
   logo?: string
-
   lastRoute?: string
-
-  // [TODO] Finish improving the default page system.
-  //        I'm trying to no longer use the 'route' property to set the default
-  //        page.
-  //        We will use the 'defaultPage' property instead.
+  /** 
+   * [TODO] Finish improving the default page system.
+   *        I'm trying to no longer use the 'route' property to set the default
+   *        page. We will use the 'defaultPage' property instead.
+   */
   defaultPage?: string
 }
 
@@ -598,7 +563,6 @@ export interface IState {
   pages: IStateAllPages
   pagesData: any
   snackbar: IStateSnackbar
-
   /**
    * Holds temporary data.
    *
@@ -609,13 +573,10 @@ export interface IState {
    * `suffix` `Form` indicates that the temporary data is stored for a form and
    * when the `newUserForm` accesses this data, it will be removed.
    */
-  tmp: { [x: string]: any }
-
+  tmp: { [prop: string]: any }
   topLevelLinks: IStateTopLevelLinks
-
   /** Material-ui `ThemeOptions` */
   theme: any
-
   net: IStateNet
 }
 
@@ -644,17 +605,19 @@ export interface IStateTopLevelLinks {
  * Even if the callback is implemented in a pure javascript file.
  */
 export interface IRedux {
-
-  // Redux store
+  /** Redux store */
   store: Store<IState, any>
-
-  // Contains all redux actions
-  // From within the link callback, you can fire any actions you want
+  /**
+   * Contains all redux actions.
+   * 
+   * From within the link callbacks, you can fire any actions you want.
+   */
   actions: typeof appActions
-
-  // If you don't want to define a callback for your button or link,
-  // you can use the href prop to set the target page. It's value will
-  // then be passed to this route key.
+  /**
+   * If you don't want to define a callback for your button or link,
+   * you can use the href prop to set the target page. It's value will
+   * then be passed to this route key.
+   */
   route?: string
 }
 
@@ -662,19 +625,16 @@ export interface IRedux {
 Form items definition
 ---------------------------------------------------------------------------- */
 
-interface IFormChoices extends IAbstractState {
+interface IFormChoices {
   value: string
   label?: string
   color?: RadioProps['color']
   disabled?: boolean
-  formControlLabelProps?: any
+  has?: IStateFormItemCustom
 }
 
 export interface IStateFormItemCheckbox extends IFormChoices { }
 export interface IStateFormItemRadioButton extends IFormChoices { }
-export interface IStateFormItemSelect extends IFormChoices {
-  inputLabelProps?: any
-}
 
 /**
  * Type for textfield adornment, e.g.
@@ -755,6 +715,8 @@ export interface IStateFormItemCustom<T = any> {
   props?: any
   /** JSS style */
   theme?: any
+  formControlLabelProps?: any
+  inputLabelProps?: any
 }
 
 export interface IStateFormSelectOption {

@@ -1,11 +1,11 @@
 import { Fragment } from 'react'
 import { alpha, Box, Paper, Stack, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import StatePage from '../../controllers/StatePage'
 import ThemeParser from '../../controllers/ThemeParser'
+import StateForm from '../../controllers/StateForm'
 
 interface IProps {
-  def: StatePage
+  def: StateForm
   children: any
 }
 
@@ -27,25 +27,21 @@ function ConditionalPaper (
   }
 }
 
-export default function JsonPicker (
-  { def: page, children }: IProps
+export default function JsonForm (
+  { def: form, children }: IProps
 ) {
-  const form = page.parent.parent.allForms.getForm(page.contentName)
   const parse = new ThemeParser({ alpha }).getParser()
-  const useStyles = makeStyles((theme: Theme) => ({
+  const classes = makeStyles((theme: Theme) => ({
     json: parse(theme, form.theme)
-  }))
-  const classes = useStyles({ def: page, children})
+  }))({ def: form, children})
   switch (form.type) {
   default:
   case 'default':
     return (
       <ConditionalPaper show={form.paperBackground}>
         <Box
-          autoComplete="off"
-          {...form.props}
-          component="form"
           className={classes.json}
+          {...form.props}
         >
           { children }
         </Box>

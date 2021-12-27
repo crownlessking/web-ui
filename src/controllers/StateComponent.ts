@@ -1,12 +1,14 @@
-import { IAbstractStateComponent } from '../interfaces';
+import { IStateComponent } from '../interfaces';
 import AbstractState from './AbstractState'
 
-export default class StateComponent<P> extends AbstractState {
-
-  private componentJson: IAbstractStateComponent
+export default class StateComponent<P = any>
+  extends AbstractState
+  implements IStateComponent
+{
+  private componentJson: IStateComponent
   private parentObj: P
 
-  constructor (componentJson: IAbstractStateComponent, parent: P) {
+  constructor (componentJson: IStateComponent, parent: P) {
     super()
     this.componentJson = componentJson
     this.parentObj     = parent
@@ -14,15 +16,16 @@ export default class StateComponent<P> extends AbstractState {
 
   get json() { return this.componentJson }
   get parent() { return this.parentObj }
-  get tag() { return this.componentJson.tag || 'div' }
+  get type() { return this.componentJson.type || 'div' }
   get theme() { return this.componentJson.theme || {} }
   get props() {
-    const componentProps = { ...this.componentJson }
-    delete componentProps.tag
-    delete componentProps.theme
-    delete componentProps.children
-    return componentProps
+    const props: any = { ...this.componentJson }
+    delete props.tag
+    return props
   }
-  get children() { return this.componentJson.children }
-  get hasChildren() { return !!this.componentJson.children }
+  get items() { return this.componentJson.items || [] }
+}
+
+export function getStateComponents<T>(sc: IStateComponent[], parent: T) {
+  return sc.map(component => new StateComponent<T>(component, parent))
 }

@@ -1,23 +1,18 @@
-import * as React from 'react'
-import { styled, alpha } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
-import MenuItem from '@mui/material/MenuItem'
-import Menu from '@mui/material/Menu'
+import { useState, Fragment } from 'react'
+import {
+  alpha, AppBar, Box, Toolbar, IconButton, Typography, InputBase, MenuItem,
+  Menu, styled
+} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
 import _ from 'lodash'
 import ThemeParser from '../../controllers/ThemeParser'
-import { setAppBarLayout } from './controller'
 import Logo from './logo'
 import AppBarIcon from '../link'
 import AppBarIconText from '../link/text'
+import ComponentBuilder from '../../components'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,13 +60,9 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
   const appbar = page.appBar
   const parse = new ThemeParser({ alpha }).getParser()
 
-  const LogoWrapper = styled('div')(({ theme }) => (_.extend({
-    // [TODO] insert default logo wrapper theme here
-  }, parse(theme, appbar.logoTheme))))
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null)
+    useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -143,13 +134,93 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
       onClose={handleMobileMenuClose}
     >
       {appbar.items.map((menu, i) => (
-        <MenuItem>
+        <MenuItem key={`mobile-menu-${i}`}>
           <AppBarIcon key={`mobile-icon-${i}`} def={menu} />
           <AppBarIconText key={`mobile-icon-${i}-text`} def={menu} />
         </MenuItem>
       ))}
     </Menu>
   );
+
+  const LayoutFactory = () => {
+    const factory: JSX.Element[] = []
+    const LogoWrapper = styled('div')(({ theme }) => (_.extend({
+      // [TODO] insert default logo wrapper theme here
+    }, parse(theme, appbar.logoTheme))))
+    for (let i = 0; i < appbar.layout.length; i++) {
+      switch (appbar.layout[i]) {
+      case 'logo':
+        factory.push(
+          <Fragment key={`logo-${i}`}>
+            {appbar.hasLogo ? (
+              <LogoWrapper>
+                <Logo def={page} />
+              </LogoWrapper>
+            ) : (
+              <Typography {...appbar.textLogoProps}>{ app.title }</Typography>
+            )}
+          </Fragment>
+        )
+        break
+      case 'search':
+        factory.push(
+          <Fragment key={`search-${i}`}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase {...appbar.searchFieldProps} />
+            </Search>
+          </Fragment>
+        )
+        break
+      case 'menu':
+        factory.push(
+          <Fragment key={`menu-${i}`}>
+            <Box {...appbar.desktopMenuItemsProps}>
+              {appbar.items.map((menu, i) => (
+                <AppBarIcon key={`mobile-icon-${i}`} def={menu} />
+              ))}
+            </Box>
+            <Box {...appbar.mobileMenuItemsProps}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+                {...appbar.mobileMenuIconProps}
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Fragment>
+        )
+        break
+      case 'space':
+        factory.push(
+          <Fragment key={`space-${i}`}>
+            <Box sx={{ flexGrow: 1 }} />
+          </Fragment>
+        )
+        break
+      case 'components':
+        factory.push(
+          <ComponentBuilder
+            key={`custom-${i}`}
+            def={appbar.components}
+            parent={appbar}
+          />
+        )
+      }
+    }
+    return (
+      <Fragment>
+        { factory }
+      </Fragment>
+    )
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -158,59 +229,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
           <IconButton {...appbar.menuIconProps}>
             <MenuIcon />
           </IconButton>
-          {
-            setAppBarLayout(
-              appbar.layout,
-              <React.Fragment key='logo'>
-                {appbar.hasLogo ? (
-                  <LogoWrapper>
-                    <Logo def={page} />
-                  </LogoWrapper>
-                ) : (
-                  <Typography {...appbar.textLogoProps}>{ app.title }</Typography>
-                )}
-              </React.Fragment>,
-              <React.Fragment key='search'>
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase {...appbar.searchFieldProps} />
-                </Search>
-              </React.Fragment>,
-              <React.Fragment key='menu'>
-                <Box {...appbar.desktopMenuItemsProps}>
-                  {appbar.items.map((menu, i) => (
-                    <AppBarIcon key={`mobile-icon-${i}`} def={menu} />
-                  ))}
-                </Box>
-                <Box {...appbar.mobileMenuItemsProps}>
-                  <IconButton
-                    size="large"
-                    aria-label="show more"
-                    aria-controls={mobileMenuId}
-                    aria-haspopup="true"
-                    onClick={handleMobileMenuOpen}
-                    color="inherit"
-                    {...appbar.mobileMenuIconProps}
-                  >
-                    <MoreIcon />
-                  </IconButton>
-                </Box>
-              </React.Fragment>,
-              <React.Fragment key='box'>
-                <Box sx={{ flexGrow: 1 }} />
-              </React.Fragment>,
-              <React.Fragment key='custom'>
-                {appbar.components.map((c, i) => {
-                  const Comp = styled(c.tag)(
-                    ({ theme }) => parse(theme, c.theme)
-                  )
-                  return <Comp key={`custom-${i}`} {...c.props} />
-                })}
-              </React.Fragment>
-            )
-          }
+          <LayoutFactory />
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

@@ -1,7 +1,5 @@
 import { InputLabel, Select } from '@mui/material'
-import {
-  getProps, getStoredValue, getLocallyStoredValue
-} from './controller'
+import { getStoredValue, getLocallyStoredValue } from './controller'
 import { IState } from '../../../interfaces'
 import { connect } from 'react-redux'
 import { Fragment } from 'react'
@@ -28,8 +26,6 @@ export default connect(mapStateToProps)(
 
 function ({ def: select, formsData, state }: IProps) {
   const { id, name, has, onChange } = select
-  const props = getProps(select.json)
-
   const getValueFromParent = () => {
     if (state) {
       return getLocallyStoredValue(state.state.formData, select)
@@ -51,7 +47,7 @@ function ({ def: select, formsData, state }: IProps) {
       <Select
         native
         margin='dense'
-        {...props}
+        {...select.props}
         value={getValue()}
         onChange={onChange(name)}
         inputProps={{ name, id }}

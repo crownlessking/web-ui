@@ -109,6 +109,7 @@ class ResponsiveDialog extends React.Component<IProps> {
     const { open, contentText, title, content } = pageDef.parent.parent.dialog
 
     const dialogPageDef = new StatePage({ content }, pageDef.parent)
+    const form = pageDef.parent.parent.allForms.getForm(dialogPageDef.contentName)
 
     return (
       <Dialog
@@ -130,7 +131,7 @@ class ResponsiveDialog extends React.Component<IProps> {
         <DialogContent>
           <div className={classes.dialogForm}>
             <form autoComplete='off'>
-              <FormItems def={dialogPageDef} />
+              <FormItems def={form} />
             </form>
           </div>
         </DialogContent>

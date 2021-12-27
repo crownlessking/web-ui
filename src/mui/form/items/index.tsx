@@ -24,15 +24,11 @@ import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType
 } from '../controller'
 import setFormDefaultValues from './defaultvalues'
-import StatePage from '../../../controllers/StatePage'
 import StateForm from '../../../controllers/StateForm'
-import StateFormItem from '../../../controllers/StateFormItem'
 import FormItemGroup from '../group'
-import StateFormItemGroup from '../../../controllers/StateFormGroup'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
-import StateFormItemTextField from '../../../controllers/StateFormItemTextField'
 
 const mapDispatchToProps = {
   onUpdateFormDataAction: updateFormDataAction,
@@ -40,7 +36,7 @@ const mapDispatchToProps = {
 }
 
 interface IProps {
-  def: StatePage
+  def: StateForm
   onUpdateFormDataAction: (payload: IFormDataPayload) => void
   onPostReqStateAction: (
     endpoint: string,
@@ -49,22 +45,9 @@ interface IProps {
   ) => void
 }
 
-interface ICascadingFormItemsProps {
-  form: StateForm
-  items: StateFormItem[]
-}
-
 function FormBuilder ({
-  def: page, onUpdateFormDataAction, onPostReqStateAction
+  def: form, onUpdateFormDataAction, onPostReqStateAction
 }:IProps) {
-  /** Get form definition */
-  const getFormDef = () => {
-    const store = page.parent.parent
-    const contentName = page.contentName
-    const form = store.allForms.getForm(contentName)
-
-    return form
-  }
 
   /** Saves the form field value to the store. */
   const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
@@ -143,16 +126,15 @@ function FormBuilder ({
   /** A default form submission callback if none was provided */
   const onFormSubmitDefault = (form: StateForm) => () => (e: any) => {
     e.preventDefault()
-    const formsData = page.parent.parent.formsData
-    const endpoint = page.contentEndpoint
+    const formsData = form.parent.parent.formsData
     const body = formsData.getStoredValues(form.name)
-    onPostReqState(endpoint, body)
+    onPostReqState(form.endpoint, body)
   }
 
-  const RecursiveFormItems = ({ form, items }: ICascadingFormItemsProps) => {
+  const RecursiveFormItems = ({ form }: { form: StateForm }) => {
     return (
       <Fragment>
-        {items.map((item, i) => {
+        {form.items.map((item, i) => {
           switch (item.typeCheckingName()) {
           case HTML:
             return (
@@ -173,17 +155,29 @@ function FormBuilder ({
             return <br key={i} />
           case SELECT:
             item.onChange = onUpdateFormData(form)
-            return <JsonSelect key={i} def={item as StateFormItemSelect} />
+            return (
+              <JsonSelect
+                key={i}
+                def={new StateFormItemSelect(
+                  item.json, item.parent
+                )}
+              />
+            )
           case NUMBER:
           case PASSWORD:
           case TEXT:
           case TEXTFIELD:
           case TEXTAREA:
             item.onChange = onUpdateFormData(form)
-            return <JsonTextfield key={i} def={item as StateFormItemTextField} />
+            return <JsonTextfield key={i} def={item} />
           case RADIO_BUTTONS:
             item.onChange = onUpdateFormData(form)
-            return <JsonRadio key={i} def={item as StateFormItemRadio} />
+            return (
+              <JsonRadio
+                key={i}
+                def={new StateFormItemRadio(item.json, item.parent)}
+              />
+            )
           case CHECKBOXES:
             item.onChange = onHandleCheckbox(form)
             return <JsonCheckboxes key={i} def={item} />
@@ -206,10 +200,7 @@ function FormBuilder ({
           case INDETERMINATE:
             return (
               <FormItemGroup key={i} def={item}>
-                <RecursiveFormItems
-                  form={form}
-                  items={(item as StateFormItemGroup).items}
-                />
+                <RecursiveFormItems form={form} />
               </FormItemGroup>
             )
           case FORM_LABEL:
@@ -229,12 +220,11 @@ function FormBuilder ({
   } // CascadingFormItems END
 
   useEffect(() => {
-    setFormDefaultValues(getFormDef())
+    setFormDefaultValues(form)
   })
 
-  const form = getFormDef()
-  return <RecursiveFormItems items={form.items} form={form} />
-} // class BuildForm END
+  return <RecursiveFormItems form={form} />
+} // END class FormBuilder
 
 export const FormItems = connect(
   null,// mapStateToProps,

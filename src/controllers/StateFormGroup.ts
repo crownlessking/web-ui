@@ -15,7 +15,7 @@ export default class StateFormItemGroup
 
   get items() {
     return this.itemGroupItems
-      || (this.itemGroupItems = this.itemGroupJson.items.map(
+      || (this.itemGroupItems = (this.itemGroupJson.items || []).map(
           item => new StateFormItem(item, this.parentObj
         )))
   }

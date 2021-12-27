@@ -25,7 +25,6 @@ import '../../../styles/atelier-forest-light.css'
 import StatePage from '../../../controllers/StatePage'
 import StateDialogForm from '../../../controllers/StateDialogForm'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
-import StateFormItemTextField from '../../../controllers/StateFormItemTextField'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 
 const styles = ({ spacing }: Theme) => createStyles({
@@ -152,7 +151,7 @@ connect(mapStateToProps, mapDispatchToProps)
       case PASSWORD:
       case TEXTFIELD:
         formField.onChange = this.onUpdateFormData
-        return <JsonTextfield key={key} def={formField as StateFormItemTextField} state={state} />
+        return <JsonTextfield key={key} def={formField} state={state} />
       case HIGHLIGHT:
         try {
           return (

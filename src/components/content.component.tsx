@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import {
   APP_CONTENT_FORM, APP_CONTENT_WEBAPP, APP_CONTENT_VIEW, APP_CONTENT_HTML
 } from '../controllers'
@@ -46,13 +46,16 @@ export default withStyles(styles)(class Content extends Component<IProps> {
 
     switch (type) {
 
-    case APP_CONTENT_FORM: // Form as content 
+    case APP_CONTENT_FORM: { // Form as content
+      const form = page.parent.parent.allForms.getForm(page.contentName)
+      form.endpoint = page.contentEndpoint
       currentContentJsx = contentJsx = (
-        <Form def={page}>
-          <FormItems def={page} />
+        <Form def={form}>
+          <FormItems def={form} />
         </Form>
       )
       break
+    }
 
     case APP_CONTENT_VIEW: // Content type to display data
       currentContentJsx = contentJsx = <View def={page} />

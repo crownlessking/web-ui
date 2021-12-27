@@ -7,8 +7,9 @@ export default class StateForm extends AbstractState implements IStateForm {
 
   private formJson: IStateForm
   private parentObj: StateAllForms
-  private formItems?: StateFormItem[]
   private fName: string
+  private formItems?: StateFormItem[]
+  private ePoint?: string
 
   constructor (formJson: IStateForm, parent: StateAllForms) {
     super()
@@ -20,7 +21,19 @@ export default class StateForm extends AbstractState implements IStateForm {
   get json() { return this.formJson }
   /** Chain-access to all forms definition. */
   get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
+
+  get props() {
+    const props :any = { ...this.formJson}
+    delete props.items
+    delete props.paperBackground
+    delete props.type
+    delete props.theme
+    return {
+      autoComplete: 'off',
+      component: 'form',
+      ...props
+    }
+  }
 
   /**
    * Whether the form should have a paper background or not.
@@ -43,6 +56,13 @@ export default class StateForm extends AbstractState implements IStateForm {
   /**
    * Get the form name (`formName`)
    */
-  get name () { return this.fName }
+  get name() { return this.fName }
 
+  get endpoint() {
+    return this.ePoint || ''
+  }
+
+  set endpoint(endpoint: string) {
+    this.ePoint = endpoint
+  }
 }

@@ -1,10 +1,6 @@
 import { alpha, TextField, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import {
-  getStoredValue,
-  getLocallyStoredValue,
-  getProps
-} from './controller'
+import { getStoredValue, getLocallyStoredValue } from './controller'
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import StateForm from '../../../controllers/StateForm'
@@ -41,7 +37,7 @@ function ({ def, formsData, state }: IProps) {
   const classes = makeStyles((theme: Theme) =>({
     json: parse(theme, def.theme)
   }))()
-  const { type, name, onChange } = def
+  const { type, name, onChange, props } = def
   const getValueFromParent = () => {
     if (state) {
       return getLocallyStoredValue(state.state.formData, def)
@@ -52,7 +48,6 @@ function ({ def, formsData, state }: IProps) {
     || getValueFromParent()
     || null
   }
-  const props = getProps(def.json)
   const value = getValue()
   // json.format = json.format || 'MM/dd/yyyy'
 
