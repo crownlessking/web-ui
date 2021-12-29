@@ -1,10 +1,10 @@
 import { SelectProps } from '@mui/material/Select'
-import { Store, Action } from 'redux'
-import appActions from './state/actions'
+import { Action } from 'redux'
 import { RadioProps } from '@mui/material/Radio'
 import {
   AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
+import { appUseSelector, appUseDispatch } from './state/actions'
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -605,14 +605,9 @@ export interface IStateTopLevelLinks {
  * Even if the callback is implemented in a pure javascript file.
  */
 export interface IRedux {
-  /** Redux store */
-  store: Store<IState, any>
-  /**
-   * Contains all redux actions.
-   * 
-   * From within the link callbacks, you can fire any actions you want.
-   */
-  actions: typeof appActions
+  useSelector: typeof appUseSelector
+  useDispatch: typeof appUseDispatch
+
   /**
    * If you don't want to define a callback for your button or link,
    * you can use the href prop to set the target page. It's value will

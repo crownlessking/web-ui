@@ -44,70 +44,60 @@ import JsonPicker from '../mui/form/items/json.picker'
 import JsonForm from '../mui/form'
 import StateForm from '../controllers/StateForm'
 import JsonTextfield from '../mui/form/items/json.textfield'
-import { connect } from 'react-redux'
-import {
-  updateFormData as updateFormDataAction, IFormDataPayload
-} from '../state/forms/data/actions'
-import { postReqState as postReqStateAction } from '../state/net'
-
-const mapDispatchToProps = {
-  onUpdateFormDataAction: updateFormDataAction,
-  onPostReqStateAction: postReqStateAction
-}
+import { postReqState } from '../state/net.controller'
+import { appUseDispatch } from '../state/actions'
+import store from '../state'
 
 interface IProps {
   def: StateComponent[]
   parent: any
 }
 
-interface IConnectedProps extends IProps {
-  onUpdateFormDataAction: (payload: IFormDataPayload) => void
-  onPostReqStateAction: (
-    endpoint: string,
-    body: RequestInit['body'],
-    headers?: RequestInit['headers']
-  ) => void
-}
-
-export default connect(null, mapDispatchToProps)(
-
-function ComponentsBuilder({
-  def: allDefs,
-  parent,
-  onPostReqStateAction,
-  onUpdateFormDataAction
-}: IConnectedProps) {
+export default function ComponentsBuilder({ def: allDefs, parent}: IProps) {
+  const dispatch = appUseDispatch()
 
   /** Saves the form field value to the store. */
-  const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
-    onUpdateFormDataAction({
-      formName: form.name,
-      name,
-      value: e.target.value
+  const onUpdateFormData = (form: StateForm) =>
+  (name: string) => (e: any) => {
+    dispatch({
+      type: 'formsData/formsDataUpdate',
+      payload: {
+        formName: form.name,
+        name,
+        value: e.target.value
+      }
     })
   }
 
   /** Saves the date value to the store. */
   const onUpdateFormDatetime = (form: StateForm) => 
-      (name: string, val: string) => (date: Date | null) => {
+    (name: string, val: string) => (date: Date | null) =>
+  {
     if (date) {
-      onUpdateFormDataAction({
-        formName: form.name,
-        name,
-        value: date.toLocaleString() || ''
+      dispatch({
+        type: 'formsData/formsDataUpdate',
+        payload: {
+          formName: form.name,
+          name,
+          value: date.toLocaleString() || ''
+        }
       })
     }
   }
 
   /** Saves checkboxes values to the Redux store. */
   const onHandleCheckbox = (form: StateForm) =>
-      (name: string, oldValue: any) => (e: any) => {
+    (name: string, oldValue: any) => (e: any) => 
+  {
     let value = oldValue ? oldValue : []
     value = updateCheckboxes(value, e.target.value, e.target.checked)
-    onUpdateFormDataAction({
-      formName: form.name,
-      name,
-      value
+    dispatch({
+      type: 'formsData/formsDataUpdate',
+      payload: {
+        formName: form.name,
+        name,
+        value
+      }
     })
   }
 
@@ -116,31 +106,43 @@ function ComponentsBuilder({
       (name: string, value: any) => (e: any) => {
     switch (getBoolType(value)) {
     case BOOL_TRUEFALSE:
-      onUpdateFormDataAction({
-        formName: form.name,
-        name,
-        value: e.target.checked ? 'true' : 'false'
+      dispatch({
+        type: 'formsData/formsDataUpdate',
+        payload: {
+          formName: form.name,
+          name,
+          value: e.target.checked ? 'true' : 'false'
+        }
       })
       break
     case BOOL_ONOFF:
-      onUpdateFormDataAction({
-        formName: form.name,
-        name,
-        value: e.target.checked ? 'on' : 'off'
+      dispatch({
+        type: 'formsData/formsDataUpdate',
+        payload: {
+          formName: form.name,
+          name,
+          value: e.target.checked ? 'on' : 'off'
+        }
       })
       break
     case BOOL_YESNO:
-      onUpdateFormDataAction({
-        formName: form.name,
-        name,
-        value: e.target.checked ? 'yes' : 'no'
+      dispatch({
+        type: 'formsData/formsDataUpdate',
+        payload: {
+          formName: form.name,
+          name,
+          value: e.target.checked ? 'yes' : 'no'
+        }
       })
       break
     default:
-      onUpdateFormDataAction({
-        formName: form.name,
-        name,
-        value: e.target.checked
+      dispatch({
+        type: 'formsData/formsDataUpdate',
+        payload: {
+          formName: form.name,
+          name,
+          value: e.target.checked
+        }
       })
     }
   }
@@ -149,7 +151,7 @@ function ComponentsBuilder({
     endpoint: string,
     body: RequestInit['body']
   ) => {
-    onPostReqStateAction(endpoint, body)
+    store.dispatch(postReqState(endpoint, body))
   }
 
   /** A default form submission callback if none was provided */
@@ -169,18 +171,18 @@ function ComponentsBuilder({
     const components: JSX.Element[] = []
   
     for (let i = 0; i < allDefs.length; i++) {
-      const { type, props: json, theme: jsonTheme } = allDefs[i]
+      const { type, getJson, props, theme: jsonTheme, items } = allDefs[i]
       switch (type.toUpperCase()) {
         case BUTTON:
           components.push(
             <JsonButton
               key={`${type}-${i}`}
-              def={new StateFormItem(json, parent)}
+              def={new StateFormItem(getJson(), parent)}
             />
           )
           break
         case CHECKBOXES: {
-          const checkboxes = new StateFormItem(json, parent)
+          const checkboxes = new StateFormItem(getJson(), parent)
           if (parent instanceof StateForm) {
             checkboxes.onChange = onHandleCheckbox(parent)
           }
@@ -190,10 +192,10 @@ function ComponentsBuilder({
           break
         }
         case FORM: {
-          const form = new StateForm(json, parent)
+          const form = new StateForm(getJson(), parent)
           components.push(
             <JsonForm key={`${type}-${i}`} def={form}>
-              <RecursiveComponents def={json.items} parent={form} />
+              <RecursiveComponents key={`rc-${i}`} def={items} parent={form} />
             </JsonForm>
           )
           break
@@ -202,7 +204,7 @@ function ComponentsBuilder({
           components.push(
             <JsonInput
               key={`${type}-${i}`}
-              def={new StateFormItem(json, parent)}
+              def={new StateFormItem(getJson(), parent)}
             />
           )
           break
@@ -213,7 +215,7 @@ function ComponentsBuilder({
               className={makeStyles((theme: Theme) => ({
                 json: parse(theme, jsonTheme)
               }))()}
-              {...json}
+              {...props}
             />
           )
           break
@@ -221,7 +223,7 @@ function ComponentsBuilder({
           components.push(
             <JsonLink
               key={`${type}-${i}`}
-              def={new StateLink(json, parent)}
+              def={new StateLink(getJson(), parent)}
             />
           )
           break
@@ -229,7 +231,7 @@ function ComponentsBuilder({
           components.push(
             <JsonRadio
               key={`${type}-${i}`}
-              def={new StateFormItemRadio(json, parent)}
+              def={new StateFormItemRadio(getJson(), parent)}
             />
           )
           break
@@ -237,12 +239,12 @@ function ComponentsBuilder({
           components.push(
             <JsonSelect
               key={`${type}-${i}`}
-              def={new StateFormItemSelect(json, parent)}
+              def={new StateFormItemSelect(getJson(), parent)}
             />
           )
           break
         case SUBMIT: {
-          const button = new StateFormItem(json, parent)
+          const button = new StateFormItem(getJson(), parent)
           if (parent instanceof StateForm) {
             button.onClick = button.hasNoOnClickCallback
               ? onFormSubmitDefault(parent)
@@ -252,7 +254,7 @@ function ComponentsBuilder({
           break
         }
         case SWITCH: {
-          const $witch = new StateFormItem(json, parent)
+          const $witch = new StateFormItem(getJson(), parent)
           if (parent instanceof StateForm) {
             $witch.onChange = onHandleSwitch(parent)
           }
@@ -269,7 +271,7 @@ function ComponentsBuilder({
         case NUMBER:
         case PASSWORD:
         case TEXT: {
-          const textfield = new StateFormItem(json, parent)
+          const textfield = new StateFormItem(getJson(), parent)
           if (parent instanceof StateForm) {
             textfield.onChange = onUpdateFormData(parent)
           }
@@ -285,7 +287,7 @@ function ComponentsBuilder({
         case DESKTOP_DATE_PICKER:
         case MOBILE_DATE_PICKER:
         case STATIC_DATE_PICKER: {
-          const picker = new StateFormItem(json, parent)
+          const picker = new StateFormItem(getJson(), parent)
           if (parent instanceof StateForm) {
             picker.onChange = onUpdateFormDatetime(parent)
           }
@@ -301,12 +303,9 @@ function ComponentsBuilder({
           const C = styled(type as keyof JSX.IntrinsicElements)(
             ({ theme }) => parse(theme, jsonTheme)
           )
-          const props: any = { ...json }
-          delete props.type
-          delete props.items
           components.push(
             <C key={`${type}-${i}`} {...props}>
-              <RecursiveComponents def={json.items} parent={parent} />
+              <RecursiveComponents key={`rc-${i}`} def={items} parent={parent} />
             </C>
           )
           break
@@ -324,4 +323,3 @@ function ComponentsBuilder({
   return <RecursiveComponents def={allDefs} parent={parent} />
 } // END ComponentBuilder()
 
-)

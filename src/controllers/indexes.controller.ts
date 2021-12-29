@@ -1,7 +1,7 @@
 import { arrayToEntities } from '.'
 import { addError } from '../state/errors/actions'
 import store from '../state'
-import { getErrorCode } from '../state/errors'
+import { getErrorCode } from '../state/errors.controller'
 
 /**
  * Indexes is a copy of the data received from the server.

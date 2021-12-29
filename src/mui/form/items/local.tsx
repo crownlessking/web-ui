@@ -18,7 +18,7 @@ import {
   BOOL_TRUEFALSE, BOOL_ONOFF, BOOL_YESNO, getBoolType, setFormValues,
   genStateForm
 } from '../controller'
-import { postRequest } from '../../../state/net'
+import { postRequest } from '../../../state/net.controller'
 import { ISingleRow, getMetaDialog } from '../../table/virtualized/controller'
 import Highlight from 'react-highlight.js'
 import '../../../styles/atelier-forest-light.css'

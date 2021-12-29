@@ -12,7 +12,7 @@ import {
   IJsonapiPaginationLinks,
 } from '../../../interfaces'
 import { getLinkUri, getOriginEndingFixed } from './controller'
-import { getReqState } from '../../../state/net'
+import { getReqState } from '../../../state/net.controller'
 import { getVal, getDudEventCallback, getUriQuery } from '../../../controllers'
 
 const styles = () => createStyles({

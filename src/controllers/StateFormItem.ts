@@ -42,10 +42,12 @@ export default class StateFormItem<P = StateForm, T = any>
     delete componentProps.onChange
     delete componentProps.onClick
     delete componentProps.type
+    delete componentProps.items
+    delete componentProps.theme
   
     return componentProps
   }
-  get theme() { return this.itemHasJson.theme || {} }
+  get theme() { return this.itemJson.theme || this.itemHasJson.theme || {} }
   get type() { return this.itemJson.type || '' }
   get id() { return this.itemJson.id || '' }
   /** Get the current form field name. */

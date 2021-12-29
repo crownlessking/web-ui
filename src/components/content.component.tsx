@@ -6,7 +6,7 @@ import {
   IStatePage, IStateAllForms, IStateApp,
 } from '../interfaces'
 import Form from '../mui/form'
-import { FormItems } from '../mui/form/items'
+import FormItems from '../mui/form/items'
 import View from './view.component'
 import StatePage from '../controllers/StatePage'
 import { createStyles, withStyles, WithStyles } from '@mui/styles'

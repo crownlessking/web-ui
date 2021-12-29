@@ -20,10 +20,14 @@ export default class StateComponent<P = any>
   get theme() { return this.componentJson.theme || {} }
   get props() {
     const props: any = { ...this.componentJson }
-    delete props.tag
+    delete props.type
+    delete props.theme
+    delete props.items
     return props
   }
   get items() { return this.componentJson.items || [] }
+
+  getJson = <T = any>() => this.componentJson as T
 }
 
 export function getStateComponents<T>(sc: IStateComponent[], parent: T) {

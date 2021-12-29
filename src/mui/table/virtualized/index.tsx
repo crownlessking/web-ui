@@ -43,7 +43,7 @@ import {
 import { connect } from 'react-redux'
 import { IState } from '../../../interfaces'
 import Pagination from './pagination'
-import { postRequest } from '../../../state/net'
+import { postRequest } from '../../../state/net.controller'
 import TableDialog from './dialog'
 import { writeSuccess, writeError } from '../../snackbar/actions'
 import StatePage from '../../../controllers/StatePage'

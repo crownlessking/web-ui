@@ -46,6 +46,17 @@ export function err(message?: string) {
 }
 
 /**
+ * Get page name.
+ *
+ * This function is only used to store a data for a page into `state.tmp`.
+ *
+ * @param name 
+ */
+ export function getPageName(name: string) {
+  return name + 'Page'
+}
+
+/**
  * If a callback is required for a link or button but is not defined, then this
  * method will provide a dummy one.
  */
@@ -67,10 +78,11 @@ export function dummyCallback (redux: IRedux) {
  *
  * The app page will be updated based on the URL change triggered by the link.
  */
-export function defaultCallback ({store, actions, route}:IRedux) {
+export function defaultCallback ({actions, route}:IRedux) {
+  const { dispatch, appUrlPageUpdate } = actions
   return (e: any) => {
     if (route) {
-      store.dispatch(actions.app.urlUpdatePage(route))
+      dispatch(appUrlPageUpdate(route))
     }
   }
 }

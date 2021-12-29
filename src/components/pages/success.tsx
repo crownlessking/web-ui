@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import StatePage from '../../controllers/StatePage'
-import { getPageName } from '../../state/pages'
+import { getPageName } from '../../controllers'
 
 const useStyles = makeStyles(() => ({
   resultSymbol: {

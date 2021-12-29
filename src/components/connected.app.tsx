@@ -15,8 +15,8 @@ import State from '../controllers/State'
 import Spinner from './spinner.component'
 import Snackbar from '../mui/snackbar'
 import StatePage from '../controllers/StatePage'
-import { postReqState } from '../state/net'
-import { getBootstrapKey } from '../state/app'
+import { postReqState } from '../state/net.controller'
+import { getBootstrapKey } from '../state/app.controller'
 
 // https://material-ui.com/guides/typescript/#usage-of-withstyles
 const styles = ({ spacing }: Theme) => createStyles({

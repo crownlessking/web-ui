@@ -6,16 +6,14 @@ import reportWebVitals from './reportWebVitals'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { Provider } from 'react-redux'
 import store from './state'
-import { urlUpdatePage } from './state/app/actions'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { appUrlPageUpdate } from './slices/app.slice'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={createTheme(store.getState().theme)}>
-        <Router>
-          <Route component={App} />
-        </Router>
+        <Router><App /></Router>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
@@ -25,7 +23,7 @@ ReactDOM.render(
 // A solution to make the browser's forward and back buttons work.
 // see https://stackoverflow.com/questions/17071361/browser-back-and-forward-button-events-without-a-jquery-plugin
 window.addEventListener('popstate', e => {
-  store.dispatch(urlUpdatePage(window.location.pathname))
+  store.dispatch(appUrlPageUpdate(window.location.pathname))
 })
 
 // If you want to start measuring performance in your app, pass a function

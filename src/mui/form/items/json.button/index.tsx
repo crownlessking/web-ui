@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import { Icon, Button, Theme, alpha } from '@mui/material'
-import { getButtonProps } from './controller'
 import { getFontAwesomeIconProp } from '../../../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,13 +18,10 @@ export default function JsonButton ({ def: button }: IProps) {
     route: button.json.href
   }
   const onClick = button.onClick || button.has.callback
-  const props = getButtonProps(button.json)
-
   const parse = new ThemeParser({ alpha }).getParser()
-  const useStyles = makeStyles((theme: Theme) => ({
-    json: parse(theme, button.style)
-  }))
-  const classes = useStyles({ def: button })
+  const classes = makeStyles((theme: Theme) => ({
+    json: parse(theme, button.theme)
+  }))({ def: button })
 
   const ButtonContent = ({ def: button }: { def: StateFormItem}) => {
     if (button.text) {
@@ -86,12 +82,16 @@ export default function JsonButton ({ def: button }: IProps) {
         return <FontAwesomeIcon icon={icon} />
       }
     }
-    return ( null )
-  } // END buttonContent
+    return (
+      <Fragment>
+        No Text!
+      </Fragment>
+    )
+  } // END ButtonContent
 
   return (
     <Button
-      {...props}
+      {...button.props}
       className={classes.json}
       onClick={onClick(redux)}
     >

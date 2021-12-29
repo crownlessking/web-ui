@@ -1,48 +1,49 @@
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { appActions } from '../slices/app.slice'
+import { appBarActions } from '../slices/appBar.slice'
+import { appBarSearchesActions } from '../slices/appBarSearches.slice'
+import { backgroundActions } from '../slices/background.slice'
+import { dataActions } from '../slices/data.slice'
+import { dialogActions } from '../slices/dialog.slice'
+import { drawerActions } from '../slices/drawer.slice'
+import { errorsActions } from '../slices/errors.slice'
+import { formsActions } from '../slices/forms.slice'
+import { formsDataActions } from '../slices/formsData.slice'
+import { metaActions } from '../slices/meta.slice'
+import { pagesActions } from '../slices/pages.slice'
+import { pagesDataActions } from '../slices/pagesData.slice'
+import { snackbarActions } from '../slices/snackbar.slice'
+import { themeActions } from '../slices/theme.slice'
+import { tmpActions } from '../slices/tmp.slice'
+import { topLevelLinksActions } from '../slices/topLevelLinks.slice'
+import { typographyActions } from '../slices/typography.slice'
+import { AppDispatch, RootState } from '.'
 
-import * as forms from './forms/actions'
-import * as pages from '../state/pages/actions'
-import * as app from '../state/app/actions'
-import * as appbar from '../mui/appbar/actions'
-import * as background from '../mui/background/actions'
-import * as data from '../state/data/actions'
-import * as dialog from '../mui/dialog/actions'
-import * as drawer from '../mui/drawer/actions'
-import * as errors from '../state/errors/actions'
-import * as formsData from '../state/forms/data/actions'
-import * as meta from '../state/meta/actions'
-import * as net from '../state/net'
-import * as snackbar from '../mui/snackbar/actions'
-import * as topLevelLinks from '../state/links.toplevel/actions'
-import ui from '../mui/ui'
-import { IReduxAction, INetState } from '../interfaces'
-
-export const NET_PATCH_STATE = 'NET_PATCH_STATE'
-export const netPatchState = (payload: INetState): IReduxAction<INetState> => ({
-  type: NET_PATCH_STATE,
-  payload
-})
+// throughout your app instead of plain `useDispatch` and `useSelector`
+export const appUseDispatch = () => useDispatch<AppDispatch>()
+export const appUseSelector: TypedUseSelectorHook<RootState> = useSelector
 
 const allActions = {
-  app,
-  appbar,
-  background,
-  data,
-  dialog,
-  drawer,
-  errors,
-  formsData,
-  forms,
-  meta,
-  pages,
-  net,
-  snackbar,
-  topLevelLinks,
-
-  // non-redux-actions inclusion
-  // Didn't want to but don't have a choice.
-  // We needed a way to give pure javascript
-  // access.
-  ui
+  ...appActions,
+  ...appBarActions,
+  ...appBarSearchesActions,
+  ...backgroundActions,
+  ...dataActions,
+  ...dialogActions,
+  ...drawerActions,
+  ...errorsActions,
+  ...formsActions,
+  ...formsDataActions,
+  ...metaActions,
+  ...pagesActions,
+  ...pagesDataActions,
+  ...snackbarActions,
+  ...themeActions,
+  ...tmpActions,
+  ...topLevelLinksActions,
+  ...typographyActions,
+  appUseDispatch,
+  appUseSelector
 }
 
 export default allActions

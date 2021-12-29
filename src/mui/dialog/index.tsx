@@ -7,14 +7,16 @@ import { createStyles, WithStyles, withStyles } from '@mui/styles'
 import { IState } from '../../interfaces'
 import { closeDialog } from './actions'
 import { dummyCallback } from '../../controllers'
-import store from '../../state'
-import appActions from '../../state/actions'
-import { IFormDataPayload, updateFormData } from '../../state/forms/data/actions'
-import { postReqState } from '../../state/net'
-import { FormItems } from '../form/items'
-import { getStateFormName } from '../../state/app'
+import { postReqState } from '../../state/net.controller'
+import FormItems from '../form/items'
+import { getStateFormName } from '../../state/app.controller'
 import StatePage from '../../controllers/StatePage'
 import StateDialog from '../../controllers/StateDialog'
+import {
+  appUseDispatch as useDispatch,
+  appUseSelector as useSelector
+} from '../../state/actions'
+import { formsDataUpdate, IFormsDataArgs } from '../../slices/formsData.slice'
 
 const styles = () => createStyles({
   dialogForm: {
@@ -42,13 +44,13 @@ const mapStateToProps = (state: IState) => ({
 
 const mapDispachToProps = {
   onCloseDialog: closeDialog,
-  onUpdateFormData: updateFormData,
+  onUpdateFormData: formsDataUpdate,
   onPostReqState: postReqState
 }
 
 interface IProps extends WithStyles<typeof styles> {
   pageDef: StatePage
-  onUpdateFormData: (payload: IFormDataPayload) => void
+  onUpdateFormData: (payload: IFormsDataArgs) => void
   onPostReqState: (
     endpoint: string,
     body: RequestInit['body'],
@@ -204,7 +206,7 @@ class ResponsiveDialog extends React.Component<IProps> {
           <Button
             key={index}
             color={action.has.color as ButtonProps['color']}
-            onClick={callback({store, actions: appActions})}
+            onClick={callback({ useSelector, useDispatch })}
           >
             { action.has.title }
           </Button>

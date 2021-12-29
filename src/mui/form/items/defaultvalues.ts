@@ -3,8 +3,8 @@ import {
   TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT, TEXT
 } from '../controller'
 import {
-  updateFormData, IFormDataPayload
-} from '../../../state/forms/data/actions'
+  formsDataUpdate, IFormsDataArgs
+} from '../../../slices/formsData.slice'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 
@@ -13,8 +13,8 @@ import StateFormItem from '../../../controllers/StateFormItem'
  *
  * @param payload 
  */
-function saveFormData(payload: IFormDataPayload) {
-  store.dispatch(updateFormData(payload))
+function saveFormData(payload: IFormsDataArgs) {
+  store.dispatch(formsDataUpdate(payload))
 }
 
 /**
