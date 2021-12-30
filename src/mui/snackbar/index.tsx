@@ -9,7 +9,8 @@ import ErrorIcon from '@mui/icons-material/Error'
 import InfoIcon from '@mui/icons-material/Info'
 import { amber, green } from '@mui/material/colors'
 import { connect } from 'react-redux'
-import { IState, IStateAnchorOrigin, IStateSnackbar } from '../../interfaces'
+import { IStateAnchorOrigin, IStateSnackbar } from '../../interfaces'
+import { RootState } from '../../state'
 import { openSnackbar, closeSnackbar, clearMessage } from './actions'
 
 const variantIcon = {
@@ -48,7 +49,7 @@ const styles = (theme: Theme) => createStyles({
   }
 })
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   anchorOrigin: state.snackbar.anchorOrigin,
   autoHideDuration: state.snackbar.autoHideDuration,
   open: state.snackbar.open,
@@ -66,7 +67,7 @@ const mapDispatchToProps = {
   clearMessage
 }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IJsonSnackbarProps extends WithStyles<typeof styles> {
   anchorOrigin: IStateAnchorOrigin
   autoHideDuration: number
   message?: string
@@ -90,7 +91,7 @@ interface ISnackbarProps {
  * @see https://material-ui.com/components/snackbars/
  */
 export default connect(mapStateToProps, mapDispatchToProps)
-(withStyles(styles)(class extends Component<IProps> {
+(withStyles(styles)(class JsonSnackbar extends Component<IJsonSnackbarProps> {
 
   handleClick = () => {
     this.setOpen(true)

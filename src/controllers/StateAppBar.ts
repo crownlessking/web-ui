@@ -48,7 +48,7 @@ export default class StateAppBar<P = State>
   get props() {
     return this.appBarJson.props || { position: 'static' }
   }
-  get theme() { throw new Error('Not implemented yet.') }
+  get theme() { return this.appBarJson.theme || {} }
 
   get layout() {
     return this.appBarLayout

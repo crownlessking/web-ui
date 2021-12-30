@@ -3,17 +3,17 @@ import {
 } from '@mui/material'
 import { getBoolValue } from '../controller'
 import { RadioProps } from '@mui/material/Radio'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import { getStoredValue, getLocallyStoredValue } from './controller'
 import { connect } from 'react-redux'
 import { IParentState } from '../../../interfaces'
 import StateFormItem from '../../../controllers/StateFormItem'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
-interface IProps {
+interface IJsonSwitchProps {
   def: StateFormItem
   formsData: any
   state?: IParentState
@@ -22,7 +22,7 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def, formsData, state }: IProps) {
+function JsonSwitch ({ def, formsData, state }: IJsonSwitchProps) {
   const { disabled, name, onChange } = def
   const has = def.has
   const getValueFromParent = () => {

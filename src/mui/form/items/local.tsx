@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { IState, IStateDialogForm } from '../../../interfaces'
+import { IStateDialogForm } from '../../../interfaces'
+import { RootState } from '../../../state'
 import {
-  BREAK_LINE, BUTTON, SUBMIT, HTML, SELECT, NUMBER, PASSWORD, TEXTFIELD,
+  BREAK_LINE, JSON_BUTTON, SUBMIT, HTML, JSON_SELECT, NUMBER, PASSWORD, TEXTFIELD,
   TEXTAREA, RADIO_BUTTONS, CHECKBOXES, SWITCH, HIGHLIGHT
 } from '../controller'
 import { Theme } from '@mui/material'
@@ -35,13 +36,13 @@ const styles = ({ spacing }: Theme) => createStyles({
   highlight: { fontWeight: 'bold' }
 })
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   stateMeta: state.meta
 })
 
 const mapDispatchToProps = { postRequest }
 
-interface IProps extends WithStyles<typeof styles> {
+interface ILocalFormItemProps extends WithStyles<typeof styles> {
   row?: ISingleRow
   def: StatePage
   setState: (formData: any) => void
@@ -60,7 +61,7 @@ interface ILocalState {
 export default
 connect(mapStateToProps, mapDispatchToProps)
 (withStyles(styles)
-(class extends Component<IProps, ILocalState> {
+(class LocalFormItem extends Component<ILocalFormItemProps, ILocalState> {
 
   constructor (props: any) {
     super(props)
@@ -123,7 +124,7 @@ connect(mapStateToProps, mapDispatchToProps)
       case BREAK_LINE:
         return <br key={key} />
 
-      case BUTTON:
+      case JSON_BUTTON:
         return <JsonButton key={key} def={formField} />
 
       case SUBMIT:
@@ -142,7 +143,7 @@ connect(mapStateToProps, mapDispatchToProps)
         }
         break
 
-      case SELECT:
+      case JSON_SELECT:
         formField.onChange = this.onUpdateFormData
         return <JsonSelect key={key} def={formField as StateFormItemSelect} state={state} />
 

@@ -4,7 +4,7 @@ import {
   Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ButtonProps
 } from '@mui/material'
 import { createStyles, WithStyles, withStyles } from '@mui/styles'
-import { IState } from '../../interfaces'
+import { RootState } from '../../state'
 import { closeDialog } from './actions'
 import { dummyCallback } from '../../controllers'
 import { postReqState } from '../../state/net.controller'
@@ -12,10 +12,8 @@ import FormItems from '../form/items'
 import { getStateFormName } from '../../state/app.controller'
 import StatePage from '../../controllers/StatePage'
 import StateDialog from '../../controllers/StateDialog'
-import {
-  appUseDispatch as useDispatch,
-  appUseSelector as useSelector
-} from '../../state/actions'
+import store from '../../state'
+import allActions from '../../state/actions'
 import { formsDataUpdate, IFormsDataArgs } from '../../slices/formsData.slice'
 
 const styles = () => createStyles({
@@ -36,7 +34,7 @@ const styles = () => createStyles({
  *
  * @param state 
  */
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   def: state.dialog,
   stateForms: state.forms,
   formsData: state.formsData,
@@ -48,7 +46,7 @@ const mapDispachToProps = {
   onPostReqState: postReqState
 }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IResponsiveDialogProps extends WithStyles<typeof styles> {
   pageDef: StatePage
   onUpdateFormData: (payload: IFormsDataArgs) => void
   onPostReqState: (
@@ -72,7 +70,7 @@ interface IProps extends WithStyles<typeof styles> {
  *
  * @see IStateDialog
  */
-class ResponsiveDialog extends React.Component<IProps> {
+class ResponsiveDialog extends React.Component<IResponsiveDialogProps> {
 
   onCloseDialog = () => {
     this.props.onCloseDialog()
@@ -206,7 +204,7 @@ class ResponsiveDialog extends React.Component<IProps> {
           <Button
             key={index}
             color={action.has.color as ButtonProps['color']}
-            onClick={callback({ useSelector, useDispatch })}
+            onClick={callback({store, actions: allActions })}
           >
             { action.has.title }
           </Button>

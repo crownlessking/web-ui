@@ -9,9 +9,9 @@ import StateFormItem from '../../../../controllers/StateFormItem'
 import ThemeParser from '../../../../controllers/ThemeParser'
 import { makeStyles } from '@mui/styles'
 
-interface IProps { def: StateFormItem }
+interface IJsonButtonProps { def: StateFormItem }
 
-export default function JsonButton ({ def: button }: IProps) {
+export default function JsonButton ({ def: button }: IJsonButtonProps) {
   const redux = {
     store,
     actions: allActions,

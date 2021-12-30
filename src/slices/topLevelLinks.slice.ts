@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IStateTopLevelLinks } from '../interfaces'
+import { IJsonapiPaginationLinks } from '../interfaces'
 import initialState from '../state/initial.state'
 
 export interface ITopLevelLinksArgs {
-  route: string
-  links: IStateTopLevelLinks
+  endpoint: string
+  links: IJsonapiPaginationLinks
 }
 
 interface ITopLevelLinksReducerArgs {
@@ -17,8 +17,8 @@ export const topLevelLinksSlice = createSlice({
   initialState: initialState.topLevelLinks,
   reducers: {
     topLevelLinksAdd: (state, action: ITopLevelLinksReducerArgs) => {
-      const { route, links } = action.payload
-      state[route] = links as any
+      const { endpoint, links } = action.payload
+      state[endpoint] = links as any
     },
     topLevelLinksRemove: (state, action) => {
       delete state[action.payload]

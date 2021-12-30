@@ -4,7 +4,8 @@ import { RadioProps } from '@mui/material/Radio'
 import {
   AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
-import { appUseSelector, appUseDispatch } from './state/actions'
+import enhancedStore from './state'
+import allActions from './state/actions'
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -235,9 +236,9 @@ export interface IJsonapiResponse extends IJsonapiBaseResponse {
 REDUX STORE
  --------------------------------------------------------------------------- */
 
-export interface IStateComponent<T = any> extends IAbstractState {
+export interface IStateComponent extends IAbstractState {
   type?: string
-  items?: T
+  items?: IStateComponent
 }
 
 export interface IAbstractState {
@@ -318,7 +319,7 @@ export interface IStatePageDrawer extends IAbstractStateDrawer { }
 /**
  * Background color, image, gradient... etc. Any valid CSS background.
  */
-export interface IStateBackground {
+export interface IStateBackground extends IAbstractState {
   /** The background type. */
   type: 'none' | 'color' | 'gradient' | 'image'
   /** Any valid CSS value for the background property. */
@@ -605,8 +606,8 @@ export interface IStateTopLevelLinks {
  * Even if the callback is implemented in a pure javascript file.
  */
 export interface IRedux {
-  useSelector: typeof appUseSelector
-  useDispatch: typeof appUseDispatch
+  store: typeof enhancedStore
+  actions: typeof allActions
 
   /**
    * If you don't want to define a callback for your button or link,

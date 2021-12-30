@@ -3,11 +3,11 @@ import { FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
 import {
   getProps, getStoredValue, getLocallyStoredValue
 } from '../controller'
-import { IState } from '../../../../interfaces'
+import { RootState } from '../../../../state'
 import { connect } from 'react-redux'
 import StateFormItemRadio from '../../../../controllers/StateFormItemRadio'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
@@ -16,7 +16,7 @@ interface IParentState {
   setState: Function
 }
 
-interface IProps {
+interface IJsonRadioProps {
   def: StateFormItemRadio
   formsData: any
   state?: IParentState
@@ -24,7 +24,7 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function({ def: radio, formsData, state }: IProps) {
+function JsonRadio ({ def: radio, formsData, state }: IJsonRadioProps) {
   const getValueFromParent = () => {
     if (state) {
       return getLocallyStoredValue(state.state.formData, radio)

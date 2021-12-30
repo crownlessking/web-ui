@@ -1,6 +1,6 @@
 import store from '../../../state'
 import {
-  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, SELECT, TEXT
+  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, JSON_SELECT, TEXT
 } from '../controller'
 import {
   formsDataUpdate, IFormsDataArgs
@@ -48,7 +48,7 @@ function _setDefaultValue(field: StateFormItem, formName: string) {
 
     // [TODO] Add more cases here to enable default values on additional types
     //        of fields
-    case SELECT:
+    case JSON_SELECT:
     case NUMBER:
     case TEXTFIELD:
     case TEXTAREA:

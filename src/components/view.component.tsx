@@ -1,4 +1,3 @@
-import React from 'react'
 import Table from '../mui/table/virtualized'
 import SuccessPage from './pages/success'
 import PageNotFound from './pages/pagenotfound'

@@ -9,6 +9,8 @@ import store from './state'
 import { appUrlPageUpdate } from './slices/app.slice'
 import { BrowserRouter as Router } from 'react-router-dom'
 
+console.log(store.getState().theme)
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

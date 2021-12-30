@@ -78,11 +78,10 @@ export function dummyCallback (redux: IRedux) {
  *
  * The app page will be updated based on the URL change triggered by the link.
  */
-export function defaultCallback ({actions, route}:IRedux) {
-  const { dispatch, appUrlPageUpdate } = actions
+export function defaultCallback ({store, actions, route}:IRedux) {
   return (e: any) => {
     if (route) {
-      dispatch(appUrlPageUpdate(route))
+      store.dispatch(actions.appUrlPageUpdate(route))
     }
   }
 }
@@ -224,7 +223,6 @@ export function getUriQuery(uri: string) {
   }
   return ''
 }
-
 
 /**
  * Removes leading and ending forward and back slashes.

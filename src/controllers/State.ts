@@ -1,4 +1,5 @@
-import { IStatePage, IStateBackground, IState } from '../interfaces'
+import { IStatePage, IStateBackground } from '../interfaces'
+import { RootState } from '../state'
 import _ from 'lodash'
 import { getVal, setVal } from '.'
 import StateAllPages from './StateAllPages'
@@ -26,7 +27,7 @@ export default class State extends AbstractState {
   /**
    * The entire Redux Store.
    */
-  private storeJson: IState
+  private storeJson: RootState
   private storeApp?: StateApp
   private storeAppBar?: StateAppBar
   private storeBackground?: StateBackground
@@ -51,7 +52,7 @@ export default class State extends AbstractState {
    *
    * @param storeJson 
    */
-  constructor(storeJson: IState) {
+  constructor(storeJson: RootState) {
     super()
     this.storeJson = storeJson
   }
@@ -59,7 +60,7 @@ export default class State extends AbstractState {
   /**
    * Get a copy of the (store) state.
    */
-  get json(): IState {
+  get json(): RootState {
     throw new Error(`Access to the root state is NOT a good idea.`)
   }
 

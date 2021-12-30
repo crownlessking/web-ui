@@ -2,7 +2,7 @@ import React from 'react'
 import AppBar from '../mui/appbar'
 import StatePage from '../controllers/StatePage'
 
-interface IProps {
+interface INavigationProps {
   def: StatePage
 }
 
@@ -11,7 +11,7 @@ interface IProps {
  *
  * Also updates the browser's tab title
  */
-export default class Navigation extends React.Component<IProps> {
+export default class Navigation extends React.Component<INavigationProps> {
 
   /**
    * render

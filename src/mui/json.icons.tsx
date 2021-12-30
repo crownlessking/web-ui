@@ -7,7 +7,7 @@ import StateFormItem from '../controllers/StateFormItem'
 import StateLink from '../controllers/StateLink'
 import _ from 'lodash'
 
-interface IProps {
+interface IGetJsonIconProps {
   def: StateFormItem | StateLink
 }
 
@@ -22,7 +22,7 @@ interface IProps {
  * }
  * ```
  */
-export default function getJsonIcon ({ def }: IProps) {
+export default function getJsonIcon ({ def }: IGetJsonIconProps) {
   const has = def.has
   if (def.has.icon) {
     return getSvgIcon(def.has.icon, def.props)

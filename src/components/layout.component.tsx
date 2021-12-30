@@ -12,14 +12,10 @@ import {
 } from '../mui/layouts'
 import StatePage from '../controllers/StatePage'
 
-interface IProps {
-  def: StatePage
-}
-
 /**
  * Application layout
  */
-export default class Layout extends Component<IProps> {
+export default class Layout extends Component<{ def: StatePage }> {
 
   render() {
     const { children, def: page } = this.props

@@ -4,7 +4,7 @@ import { Icon, InputAdornment } from '@mui/material'
 import { getFontAwesomeIconProp } from '../../../controllers'
 import { IAdornment } from '../../../interfaces'
 
-interface IProps {
+interface IGetTextFieldAdornmentProps {
   startAdornment ?:IAdornment | JSX.Element
   endAdornment ?:IAdornment | JSX.Element
   [props: string]: any
@@ -77,7 +77,9 @@ export const getAdornment = function (adornment ?:IAdornment) {
  * @param inputProps 
  * @returns 
  */
-export default function getTextFieldAdornment (inputProps :IProps) {
+export default function getTextFieldAdornment (
+  inputProps :IGetTextFieldAdornmentProps
+) {
   inputProps.startAdornment = getAdornment(
     inputProps.startAdornment as IAdornment
   )

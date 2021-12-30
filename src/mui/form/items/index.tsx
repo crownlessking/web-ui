@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { FormHelperText, FormLabel, InputLabel } from '@mui/material'
 import JsonButton from './json.button'
 import JsonSelect from './json.select'
@@ -8,12 +9,13 @@ import JsonCheckboxes from './json.checkboxes'
 import JsonTextfield from './json.textfield'
 import JsonPicker from './json.picker'
 import {
-  BREAK_LINE, BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
-  CHECKBOXES, SWITCH, PASSWORD, SELECT, NUMBER, DATE_TIME_PICKER, TEXT,
+  BREAK_LINE, JSON_BUTTON, SUBMIT, HTML, TEXTFIELD, TEXTAREA, RADIO_BUTTONS,
+  CHECKBOXES, SWITCH, PASSWORD, JSON_SELECT, NUMBER, DATE_TIME_PICKER, TEXT,
   DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER, TIME_PICKER, STATIC_DATE_PICKER,
   FORM_LABEL, FORM_HELPER_TEXT, BOX, STACK, LOCALIZED, FORM_GROUP,
   FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE, INPUT_LABEL, ICON
 } from '../controller'
+import store from '../../../state'
 import { postReqState } from '../../../state/net.controller'
 import { getProps, updateCheckboxes } from './controller'
 import {
@@ -25,15 +27,10 @@ import FormItemGroup from '../group'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
-import { appUseDispatch } from '../../../state/actions'
-import store from '../../../state'
-
-interface IProps {
-  def: StateForm
-}
+import { AppDispatch } from '../../../state'
 
 const RecursiveFormItems = ({ form }: { form: StateForm }) => {
-  const dispatch = appUseDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   /** Saves the form field value to the store. */
   const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
@@ -148,11 +145,11 @@ const RecursiveFormItems = ({ form }: { form: StateForm }) => {
             ? onFormSubmitDefault(form)
             : item.onClick
           return <JsonButton key={i} def={item} />
-        case BUTTON:
+        case JSON_BUTTON:
           return <JsonButton key={i} def={item} />
         case BREAK_LINE:
           return <br key={i} />
-        case SELECT:
+        case JSON_SELECT:
           item.onChange = onUpdateFormData(form)
           return (
             <JsonSelect
@@ -218,7 +215,7 @@ const RecursiveFormItems = ({ form }: { form: StateForm }) => {
   )
 } // RecursiveFormItems END
 
-export default function FormItems ({def: form}:IProps) {
+export default function FormItems ({ def: form }:{ def: StateForm }) {
 
   useEffect(() => {
     setFormDefaultValues(form)

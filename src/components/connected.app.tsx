@@ -4,7 +4,7 @@ import { CssBaseline, Theme } from '@mui/material'
 import {
   createStyles, withStyles, WithStyles
 } from '@mui/styles'
-import { IState } from '../interfaces'
+import { RootState } from '../state'
 import Navigation from './navigation.component'
 import Layout from './layout.component'
 import Content from './content.component'
@@ -35,14 +35,14 @@ const styles = ({ spacing }: Theme) => createStyles({
   },
 })
 
-const mapStateToProps = (state: IState) => ({ state })
+const mapStateToProps = (state: RootState) => ({ state })
 
 const mapDispatchToProps = {
   onPostReqState: postReqState
 }
 
-interface IProps extends WithStyles<typeof styles> {
-  state: IState
+interface IAppProps extends WithStyles<typeof styles> {
+  state: RootState
   onPostReqState: (
     endpoint: string,
     body: RequestInit['body'],
@@ -53,7 +53,7 @@ interface IProps extends WithStyles<typeof styles> {
 /**
  * Redux connected App
  */
-class App extends Component<IProps> {
+class App extends Component<IAppProps> {
   private pageID?: string
   private root?: State
 

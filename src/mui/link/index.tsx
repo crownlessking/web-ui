@@ -13,7 +13,7 @@ import StateLink, { getLinkProps } from '../../controllers/StateLink'
 import { Link as RouterLink } from 'react-router-dom'
 import { Badge } from '@mui/material'
 
-interface IProps { def: StateLink }
+interface IJsonLinkProps { def: StateLink }
 
 /**
  * [TODO] To update badge notification, the data needs to be retrieve from
@@ -23,7 +23,7 @@ interface IProps { def: StateLink }
  *        `state.data`. Then retrieve the content of that property and set it
  *        as the value of badge content.
  */
-export default class JsonLink extends Component<IProps> {
+export default class JsonLink extends Component<IJsonLinkProps> {
 
   public render() {
     const { def } = this.props

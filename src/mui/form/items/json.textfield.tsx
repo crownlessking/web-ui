@@ -4,12 +4,12 @@ import {
   getProps, getStoredValue, getLocallyStoredValue
 } from './controller'
 import { connect } from 'react-redux'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import getTextFieldAdornment from './json.input.adornment'
 import ThemeParser from '../../../controllers/ThemeParser'
 import StateFormItem from '../../../controllers/StateFormItem'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
@@ -18,7 +18,7 @@ interface IParentState {
   setState: Function
 }
 
-interface IProps {
+interface IJsonTextfieldProps {
   def: StateFormItem
   formsData: any
   state?: IParentState
@@ -29,7 +29,7 @@ interface IProps {
  */
 export default connect(mapStateToProps)(
 
-function ({ def: textfield, formsData, state }: IProps) {
+function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProps) {
   const props = getProps(textfield.json)
   const parse = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) => ({

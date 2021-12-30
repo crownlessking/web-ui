@@ -4,7 +4,8 @@ import renderer from 'react-test-renderer'
 import Content from '../../components/content.component'
 import initialState from '../../state/initial.state'
 import _ from 'lodash'
-import { IState, IStateAllPages } from '../../interfaces'
+import { RootState } from '../../state'
+import { IStateAllPages } from '../../interfaces'
 import State from '../../controllers/State'
 
 // const pages: IStateAllPages = {
@@ -13,7 +14,7 @@ import State from '../../controllers/State'
 //   }
 // }
 
-// const state = _.extend<IState>(initialState, {
+// const state = _.extend<RootState>(initialState, {
 //   pages
 // })
 

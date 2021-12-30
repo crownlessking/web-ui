@@ -7,7 +7,7 @@ import {
 } from '../interfaces'
 import StateForm from './StateForm'
 import {
-  HTML, SUBMIT, BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, BOX,
+  HTML, SUBMIT, JSON_BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, BOX,
   FORM_CONTROL, FORM_CONTROL_LABEL, FORM_GROUP, INDETERMINATE, LOCALIZED,
   STACK
 } from '../mui/form/controller'
@@ -124,7 +124,7 @@ export default class StateFormItem<P = StateForm, T = any>
       switch (type) {
         case HTML:
         case SUBMIT:
-        case BUTTON:
+        case JSON_BUTTON:
         case BREAK_LINE:
         case FORM_LABEL:
         case FORM_HELPER_TEXT:

@@ -3,11 +3,11 @@ import { makeStyles } from '@mui/styles'
 import StateFormItem from '../../../controllers/StateFormItem'
 import ThemeParser from '../../../controllers/ThemeParser'
 
-interface IProps {
+interface IJsonInputLabelProps {
   def: StateFormItem
 }
 
-export default function JsonInputLabel ({ def: label }: IProps) {
+export default function JsonInputLabel ({ def: label }: IJsonInputLabelProps) {
   const parse = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) => ({
     json: parse(theme, label.theme)

@@ -1,6 +1,6 @@
 import {
   TEXTFIELD, TEXTAREA, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES, SWITCH,
-  SELECT,
+  JSON_SELECT,
 } from '../controller'
 import {
   IStateFormItem, IStateFormItemCustom, IStateFormItemCheckbox
@@ -71,7 +71,7 @@ export function getProps<T extends IStateFormItem>(
   case BREAK_LINE:
   case CHECKBOXES:
   case SWITCH:
-  case SELECT:
+  case JSON_SELECT:
   case HTML:
     itemCopy.type = ''
     break

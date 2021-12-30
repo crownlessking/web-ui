@@ -1,8 +1,8 @@
-import store from '..'
-import { dataInsertOne } from './actions'
-import Config from '../../controllers/config.controller'
-import { addError } from '../errors/actions'
-import { getErrorCode } from '../errors'
+import store from '.'
+import { dataAdd } from '../slices/data.slice'
+import Config from '../config'
+import { errorsAdd } from '../slices/errors.slice'
+import { getErrorCode } from '../state/errors.controller'
 
 /**
  * Use this function to merge an existing array of resources with a new array
@@ -44,7 +44,7 @@ export function getData(endpoint: string): any[] {
       || []
   } catch (e: any) {
     if (Config.debug) {
-      addError({
+      errorsAdd({
         code: getErrorCode(),
         title: 'Error Retrieving a Collection',
         detail: e.stack,
@@ -70,5 +70,5 @@ export function getData(endpoint: string): any[] {
  * @param doc 
  */
 export function saveData(endpoint: string, doc: any) {
-  store.dispatch(dataInsertOne(endpoint, doc))
+  store.dispatch(dataAdd({endpoint, data: doc}))
 }

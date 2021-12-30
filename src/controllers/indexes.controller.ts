@@ -1,5 +1,5 @@
 import { arrayToEntities } from '.'
-import { addError } from '../state/errors/actions'
+import { errorsAdd } from '../slices/errors.slice'
 import store from '../state'
 import { getErrorCode } from '../state/errors.controller'
 
@@ -67,12 +67,15 @@ export function select(endpoint: string, id: string) {
   try {
     return indexes[endpoint][id]
   } catch (e: any) {
-    store.dispatch(addError({
-      'code': getErrorCode(),
-      'title': e.message,
-      'detail': e.stack,
-      'source': {
-        parameter: `${endpoint}/${id}`
+    store.dispatch(errorsAdd({
+      id,
+      error: {
+        'code': getErrorCode(),
+        'title': e.message,
+        'detail': e.stack,
+        'source': {
+          parameter: `${endpoint}/${id}`
+        }
       }
     }))
   }

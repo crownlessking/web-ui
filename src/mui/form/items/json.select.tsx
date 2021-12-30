@@ -1,11 +1,11 @@
 import { InputLabel, Select } from '@mui/material'
 import { getStoredValue, getLocallyStoredValue } from './controller'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import { connect } from 'react-redux'
 import { Fragment } from 'react'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData,
   stateMeta: state.meta
 })
@@ -15,7 +15,7 @@ interface IParentState {
   setState: Function
 }
 
-interface IProps {
+interface IJsonSelectProps {
   def: StateFormItemSelect
   formsData: any
   stateMeta: any
@@ -24,7 +24,7 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def: select, formsData, state }: IProps) {
+function JsonSelect ({ def: select, formsData, state }: IJsonSelectProps) {
   const { id, name, has, onChange } = select
   const getValueFromParent = () => {
     if (state) {

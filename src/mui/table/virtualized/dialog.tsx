@@ -14,7 +14,7 @@ import { delegatedSetState, delegatedState, safelyGet, getDudEventCallback } fro
 import dateFormat from 'dateformat'
 import StatePage from '../../../controllers/StatePage'
 
-interface IProps {
+interface IVirtualizedDialogProps {
   open: boolean
   onClose: () => void
   def: StatePage
@@ -22,8 +22,9 @@ interface IProps {
   classes?: any
 }
 
-export default class MaterialTableVirtualizedDialog extends Component<IProps> {
-
+export default class VirtualizedDialog
+  extends Component<IVirtualizedDialogProps>
+{
   render() {
     const {
       optionalDialogTitle: OptionalDialogTitle, transition: Transition,

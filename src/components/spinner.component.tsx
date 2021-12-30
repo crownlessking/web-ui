@@ -1,20 +1,16 @@
 import { CircularProgress, Theme } from '@mui/material'
 import { makeStyles} from '@mui/styles'
 import { LayoutCenteredNoScroll } from '../mui/layouts'
-import { IState } from '../interfaces'
+import { RootState } from '../state'
 import { connect } from 'react-redux'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   open: state.app.showSpinner
 })
 
-interface IProps {
-  open?: boolean
-}
-
 export default connect(mapStateToProps)(
 
-function ({ open }: IProps) {
+function ({ open }:{ open?: boolean }) {
   const classes = makeStyles((theme: Theme) => ({
     root: {
       width: '100%',

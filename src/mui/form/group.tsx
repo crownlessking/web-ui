@@ -12,12 +12,14 @@ import {
   INDETERMINATE, DIV, NONE
 } from './controller'
 
-interface IProps {
+interface IFormItemGroupProps {
   def: StateFormItem
   children: any
 }
 
-export default function FormItemGroup ({ def: item, children }: IProps) {
+export default function FormItemGroup (
+  { def: item, children }: IFormItemGroupProps
+) {
   const parse   = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) => ({
     json : parse(theme, item.has.props)

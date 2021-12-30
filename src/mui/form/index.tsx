@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles'
 import ThemeParser from '../../controllers/ThemeParser'
 import StateForm from '../../controllers/StateForm'
 
-interface IProps {
+interface IJsonFormProps {
   def: StateForm
   children: any
 }
@@ -28,7 +28,7 @@ function ConditionalPaper (
 }
 
 export default function JsonForm (
-  { def: form, children }: IProps
+  { def: form, children }: IJsonFormProps
 ) {
   const parse = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) => ({

@@ -6,11 +6,11 @@ import {
 } from '@mui/icons-material'
 import { connect } from 'react-redux'
 import {
-  IState,
   IStateTopLevelLinks,
   IJsonapiLink,
   IJsonapiPaginationLinks,
 } from '../../../interfaces'
+import { RootState } from '../../../state'
 import { getLinkUri, getOriginEndingFixed } from './controller'
 import { getReqState } from '../../../state/net.controller'
 import { getVal, getDudEventCallback, getUriQuery } from '../../../controllers'
@@ -32,7 +32,7 @@ const styles = () => createStyles({
   }
 })
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   origin: state.app.origin,
   topLevelLinks: state.topLevelLinks,
   meta: state.meta
@@ -40,7 +40,7 @@ const mapStateToProps = (state: IState) => ({
 
 const mapDispatchToProps = { getReqState }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IPaginationProps extends WithStyles<typeof styles> {
   endpoint: string
   topLevelLinks: IStateTopLevelLinks
   getReqState: (origin: string, endpoint: string, args?: string) => void
@@ -49,7 +49,7 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)
-(class extends Component<IProps> {
+(class Pagination extends Component<IPaginationProps> {
 
   render() {
     const {

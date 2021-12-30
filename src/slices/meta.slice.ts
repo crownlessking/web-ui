@@ -5,9 +5,9 @@ export const metaSlice = createSlice({
   name: 'meta',
   initialState: initialState.meta,
   reducers: {
-    metaSet: (state, action) => {
-      const { endpoint, info } = action.payload
-      state[endpoint] = info
+    metaAdd: (state, action) => {
+      const { endpoint, meta } = action.payload
+      state[endpoint] = meta
     },
     metaRemove: (state, action) => {
       delete state[action.payload]
@@ -16,6 +16,6 @@ export const metaSlice = createSlice({
 })
 
 export const metaActions = metaSlice.actions
-export const { metaSet, metaRemove } = metaSlice.actions
+export const { metaAdd, metaRemove } = metaSlice.actions
 
 export default metaSlice.reducer

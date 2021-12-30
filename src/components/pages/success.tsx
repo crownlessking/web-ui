@@ -13,10 +13,6 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-interface IProps {
-  def: StatePage
-}
-
 /**
  * Displays a generic page that indicates a successful operation.
  *
@@ -36,7 +32,7 @@ interface IProps {
  *
  * Tags: `success`, `page`, `message`
  */
-export default function PageSuccess ({ def: page }: IProps) {
+export default function PageSuccess ({ def: page }:{ def: StatePage }) {
   const classes = useStyles()
   const route = page.parent.parent.app.route
   const pageName = getPageName(route)

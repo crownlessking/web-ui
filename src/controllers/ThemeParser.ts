@@ -46,7 +46,7 @@ export default class ThemeParser {
   getParser () {
     return  (theme: Theme, rules: any) => {
       this.theme = theme
-      return this._parse(rules)
+      return this._parse({ ...rules })
     }
   }
 

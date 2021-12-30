@@ -1,13 +1,13 @@
 
 import Config, { IConfiguration } from './controllers/config.controller'
-import { appUseSelector } from './state/actions'
+import store from './state'
 
 const initConfObj = {
 
   /**
    * Whether the app is in debugging mode or not.
    */
-  DEBUG: appUseSelector(state => state.app.inDebugMode), // boolean
+  DEBUG: store.getState().app.inDebugMode, // boolean
 }
 
 Config.init(initConfObj)

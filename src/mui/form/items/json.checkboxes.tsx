@@ -7,12 +7,12 @@ import {
   getLocallyStoredValue
 } from './controller'
 import { FormControlLabel, Checkbox } from '@mui/material'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import { RadioProps } from '@mui/material/Radio'
 import { Fragment } from 'react'
 import StateFormItemCheckbox from '../../../controllers/StateFormItemCheckbox'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
@@ -21,7 +21,7 @@ interface IParentState {
   setState: Function
 }
 
-interface IProps {
+interface IJsonCheckboxesProps {
   def: StateFormItem<StateForm, StateFormItemCheckbox>
   formsData: any
   state?: IParentState
@@ -29,7 +29,9 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def: checkboxes, formsData, state }: IProps) {
+function JsonCheckboxes (
+  { def: checkboxes, formsData, state }: IJsonCheckboxesProps
+) {
   const formName = checkboxes.parent.name
   const getValueFromParent = () => {
     if (state) {

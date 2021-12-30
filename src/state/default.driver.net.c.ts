@@ -1,19 +1,20 @@
 import { Dispatch } from 'redux'
-import { setCollection } from '../data/actions'
-import { setMeta } from '../meta/actions'
-import { setTopLevelLinks } from '../links.toplevel/actions'
-import { requestSuccess, requestFailed } from './actions'
-import { addError } from '../errors/actions'
-import { _cancelSpinner } from '../app.controller'
-import { IAbstractResponse, IJsonapiResponse, IState } from '../../interfaces'
-import { netPatchState } from '../actions'
+import { dataAdd } from '../slices/data.slice'
+import { metaAdd } from '../slices/meta.slice'
+import { topLevelLinksAdd } from '../slices/topLevelLinks.slice'
+import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
+import { errorsAdd } from '../slices/errors.slice'
+import { _cancelSpinner } from './app.controller'
+import { IAbstractResponse, IJsonapiResponse } from '../interfaces'
+import { RootState } from '.'
+import { netStatePatch } from '../slices/net.slice'
 
 /**
  * Once the server response is received, this function can be used to process it.
  */
 export default function runDefaultDriver (
   dispatch: Dispatch,
-  getState: ()=>IState,
+  getState: ()=> RootState,
   endpoint: string,
   json: IAbstractResponse
 ) {
@@ -21,11 +22,11 @@ export default function runDefaultDriver (
   const doc = json as IJsonapiResponse
 
   if (doc.meta) {
-    dispatch(setMeta(endpoint, doc.meta))
+    dispatch(metaAdd({ endpoint, meta: doc.meta }))
   }
 
   if (doc.links) {
-    dispatch(setTopLevelLinks(endpoint, doc.links))
+    dispatch(topLevelLinksAdd({ endpoint, links: doc.links }))
   }
 
   if (doc.data) {
@@ -45,9 +46,7 @@ export default function runDefaultDriver (
     //        timestamp
     //        of each documents, the oldest 25 documents should be removed to make
     //        room for the newest 25.
-
-    const data = { _endpoint: endpoint, list: doc.data }
-    dispatch(setCollection(data))
+    dispatch(dataAdd({ endpoint, data: doc.data }))
 
     // [TODO] convert the array from the `json` parameter to an object where the
     //      entity ID is the key. You can put the logic in a controller called,
@@ -56,7 +55,7 @@ export default function runDefaultDriver (
     //      insertIndexes(endpoint, json)
 
   } else if (doc.errors) {
-    dispatch(addError({
+    dispatch(errorsAdd({
       title: 'No JSON',
       code: Date.now().toString(),
       meta: { endpoint }
@@ -65,13 +64,13 @@ export default function runDefaultDriver (
 
   // This if-condition handles redux state loaded from the server (remote).
   if (doc.state) {
-    dispatch(netPatchState(doc.state))
+    dispatch(netStatePatch(doc.state))
   }
 
   if (!!(doc.meta || doc.data || doc.links || doc.state)) {
-    dispatch(requestSuccess())
+    dispatch(appRequestSuccess())
   } else {
-    dispatch(requestFailed())
+    dispatch(appRequestFailed())
   }
 
 }

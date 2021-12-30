@@ -26,4 +26,16 @@ export default class StateBackground<P = State>
   get theme() { throw new Error('Not implemented yet.') }
   get type() { return this.backgroundJson.type }
   get value() { return this.backgroundJson.value }
+
+  getJss() {
+    switch (this.type) {
+    case 'color':
+      return { backgroundColor: this.value+'' }
+    case 'gradient':
+    case 'image':
+      return { backgroundImage: this.value+'' }
+    case 'none':
+      return {}
+    }
+  }
 }

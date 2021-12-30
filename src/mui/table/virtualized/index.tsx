@@ -41,7 +41,7 @@ import {
   filterRow,
 } from './controller'
 import { connect } from 'react-redux'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import Pagination from './pagination'
 import { postRequest } from '../../../state/net.controller'
 import TableDialog from './dialog'
@@ -79,22 +79,22 @@ const styles = ({ spacing, palette }: Theme) => createStyles({
   },
 })
 
-// const mapStateToProps = (state: IState) => ({
+// const mapStateToProps = (state: RootState) => ({
 //   dataSource: state.data,
 //   linkSource: state.topLevelLinks
 // })
 
 const mapDispatchToProps = { postRequest, writeSuccess, writeError }
 
-interface IProps extends WithStyles<typeof styles> {
+interface ITableProps extends WithStyles<typeof styles> {
   // dataSource: any
   // linkSource: any
   def: StatePage
   postRequest: (
     endpoint: string,
     body: RequestInit['body'],
-    success?: (res: any, dispatch?: Dispatch, state?: ()=>IState) => void,
-    error?: (err: any, dispatch?: Dispatch, state?: ()=>IState) => void
+    success?: (res: any, dispatch?: Dispatch, state?: ()=>RootState) => void,
+    error?: (err: any, dispatch?: Dispatch, state?: ()=>RootState) => void
   ) => void
   writeSuccess: (msg: string) => void
   writeError: (msg: string) => void
@@ -116,7 +116,7 @@ interface ILocalState {
  *
  * @see https://material-ui.com/components/tables/#virtualized-table
  */
-class Table extends Component<IProps, ILocalState> {
+class Table extends Component<ITableProps, ILocalState> {
 
   /**
    * Constructor
@@ -180,8 +180,8 @@ class Table extends Component<IProps, ILocalState> {
   onPostRequest = (
     endpoint: string,
     data: any,
-    success: (res: any, dispatch?: Dispatch, state?: () => IState)=>void,
-    error: (err: any, dispatch?: Dispatch, state?: () => IState)=>void
+    success: (res: any, dispatch?: Dispatch, state?: () => RootState)=>void,
+    error: (err: any, dispatch?: Dispatch, state?: () => RootState)=>void
   ) => this.props.postRequest(endpoint, data, success, error)
 
   /**

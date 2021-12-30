@@ -1,4 +1,4 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+// import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { appActions } from '../slices/app.slice'
 import { appBarActions } from '../slices/appBar.slice'
 import { appBarSearchesActions } from '../slices/appBarSearches.slice'
@@ -17,11 +17,12 @@ import { themeActions } from '../slices/theme.slice'
 import { tmpActions } from '../slices/tmp.slice'
 import { topLevelLinksActions } from '../slices/topLevelLinks.slice'
 import { typographyActions } from '../slices/typography.slice'
-import { AppDispatch, RootState } from '.'
+import { netActions } from '../slices/net.slice'
+// import { AppDispatch, RootState } from '.'
 
 // throughout your app instead of plain `useDispatch` and `useSelector`
-export const appUseDispatch = () => useDispatch<AppDispatch>()
-export const appUseSelector: TypedUseSelectorHook<RootState> = useSelector
+// export const appUseDispatch = () => useDispatch<AppDispatch>()
+// export const appUseSelector: TypedUseSelectorHook<RootState> = useSelector
 
 const allActions = {
   ...appActions,
@@ -35,6 +36,7 @@ const allActions = {
   ...formsActions,
   ...formsDataActions,
   ...metaActions,
+  ...netActions,
   ...pagesActions,
   ...pagesDataActions,
   ...snackbarActions,
@@ -42,8 +44,6 @@ const allActions = {
   ...tmpActions,
   ...topLevelLinksActions,
   ...typographyActions,
-  appUseDispatch,
-  appUseSelector
 }
 
 export default allActions

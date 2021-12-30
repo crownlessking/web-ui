@@ -7,7 +7,7 @@ import { createStyles, WithStyles, withStyles } from '@mui/styles'
 // import Divider from '@mui/material/Divider'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { IState } from '../../interfaces'
+import { RootState } from '../../state'
 import { closeDrawer, openDrawer } from './actions'
 import { connect } from 'react-redux'
 import { getDrawerWidth } from '../../controllers/StateDrawer'
@@ -66,7 +66,7 @@ const styles = (theme: Theme) => createStyles({
   }
 })
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   open: state.drawer.open,
 })
 
@@ -75,7 +75,7 @@ const mapDispatchToProps = {
   onOpenDrawer: openDrawer
 }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IMiniDrawerProps extends WithStyles<typeof styles> {
   onCloseDrawer: ()=>void
   onOpenDrawer: ()=>void
   open: boolean
@@ -83,7 +83,7 @@ interface IProps extends WithStyles<typeof styles> {
   theme: Theme
 }
 
-class MiniDrawer extends React.Component<IProps, { open: boolean }> {
+class MiniDrawer extends React.Component<IMiniDrawerProps, { open: boolean }> {
 
   constructor(props: any) {
     super(props)

@@ -1,5 +1,5 @@
 import store from '.'
-import { showSpinner } from './app/actions'
+import { appShowSpinner } from '../slices/app.slice'
 import { err } from '../controllers'
 
 /**
@@ -37,6 +37,10 @@ export function getStateFormName(name: string) {
   return name + 'Form'
 }
 
+export function getStateDialogName(name: string) {
+  return name + 'Dialog'
+}
+
 /**
  * We don't want to spinner to show up right away, so we schedule it to appear
  * if a specific operation takes too long.
@@ -45,7 +49,7 @@ export function getStateFormName(name: string) {
  */
 export function _scheduleSpinner(time = 200) {
   if (!handle) {
-    const callback = () => store.dispatch(showSpinner())
+    const callback = () => store.dispatch(appShowSpinner())
     handle = setTimeout(callback, time)
   }
 }

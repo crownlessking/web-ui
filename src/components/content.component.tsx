@@ -29,14 +29,16 @@ export interface IContentState {
   statePage: IStatePage
 }
 
-interface IProps extends WithStyles<typeof styles> {
+interface IContentProps extends WithStyles<typeof styles> {
   def: StatePage
 }
 
 /**
  * Application content
  */
-export default withStyles(styles)(class Content extends Component<IProps> {
+export default withStyles(styles)(
+  
+class Content extends Component<IContentProps> {
 
   render() {
     const { def: page, classes } = this.props
@@ -109,4 +111,6 @@ export default withStyles(styles)(class Content extends Component<IProps> {
     return contentJsx
   } // END render()
 
-})
+}
+
+)

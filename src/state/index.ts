@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import logger from 'redux-logger'
+// import logger from 'redux-logger'// TODO Uncomment when debugging Redux
 import thunk from 'redux-thunk'
 import preloadedState from './initial.state'
 import appReducer from '../slices/app.slice'
+import appBarReducer from '../slices/appBar.slice'
 import metaReducer from '../slices/meta.slice'
 import appBarSearchesReducer from '../slices/appBarSearches.slice'
 import backgroundReducer from '../slices/background.slice'
 import typographyReducer from '../slices/typography.slice'
 import dialogReducer from '../slices/dialog.slice'
+import dialogsReducer from '../slices/dialogs.slice'
 import drawerReducer from '../slices/drawer.slice'
 import formsReducer from '../slices/forms.slice'
 import pagesReducer from '../slices/pages.slice'
@@ -26,23 +28,25 @@ import netReducer from '../slices/net.slice'
 const store = configureStore({
   reducer: {
     app: appReducer,
-    meta: metaReducer,
+    appBar: appBarReducer,
     appBarSearches: appBarSearchesReducer,
     background: backgroundReducer,
-    typography: typographyReducer,
-    dialog: dialogReducer,
-    drawer: drawerReducer,
-    forms: formsReducer,
-    pages: pagesReducer,
     data: dataReducer,
+    dialog: dialogReducer,
+    dialogs: dialogsReducer,
+    drawer: drawerReducer,
     errors: errorsReducer,
-    pagesData: pagesDataReducer,
+    forms: formsReducer,
     formsData: formsDataReducer,
+    meta: metaReducer,
+    net: netReducer,
+    pages: pagesReducer,
+    pagesData: pagesDataReducer,
     snackbar: snackbarReducer,
+    theme: themeReducer,
     tmp: tmpReducer,
     topLevelLinks: topLevelLinksReducer,
-    theme: themeReducer,
-    net: netReducer,
+    typography: typographyReducer,
   },
   preloadedState,
   middleware: (getDefaultMiddleware) =>
@@ -51,7 +55,7 @@ const store = configureStore({
       thunk
       // TODO add more middlewares here
     )
-    .concat(logger)
+    // .concat(logger) // TODO Uncomment when debugging Redux
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

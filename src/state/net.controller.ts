@@ -9,7 +9,6 @@ import runGnscDriver from './gnsc.driver.net.c'
 import { appRequestFailed, appRequestStart, appRequestSuccess } from '../slices/app.slice'
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
-import Config from '../config'
 import { RootState } from '.'
 
 // Response identification constants ------------------------------------------
@@ -297,54 +296,4 @@ export const originGet = (
           : delegateDataHandling(dispatch, getState, endpoint, json)
       )
   }
-}
-
-/**
- * Merges fragment state received from server into the current redux state.
- *
- * @param state current redux state
- * @param fragment fragment state received from server
- *
- * @returns void
- *
- * [TODO] Write a unit test for this function
- */
- export function getNetMergedState(state: any, fragment: any) {
-  try {
-    for (const prop in fragment) {
-      const newStateVal = fragment[prop]
-
-      switch (typeof newStateVal) {
-
-      case 'object':
-        if (newStateVal === null) continue
-
-        if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
-          state[prop] = { ...state[prop] }
-          getNetMergedState(state[prop], newStateVal)
-        } else {
-
-          // arrays are never deeply copied
-          state[prop] = [ ...newStateVal ]
-        }
-
-        break
-
-      case 'symbol':
-      case 'bigint':
-      case 'number':
-      case 'function':
-      case 'boolean':
-        state[prop] = newStateVal
-        break
-      case 'string':
-        state[prop] = newStateVal
-        break
-      } // END switch
-
-    }
-  } catch (e: any) {
-    if (Config.DEBUG) console.error(e.stack)
-  }
-
 }

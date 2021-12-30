@@ -2,7 +2,7 @@ import { alpha, TextField, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { getStoredValue, getLocallyStoredValue } from './controller'
 import { connect } from 'react-redux'
-import { IState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import {
@@ -15,7 +15,7 @@ import {
 } from '../controller'
 import ThemeParser from '../../../controllers/ThemeParser'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
@@ -24,7 +24,7 @@ interface IParentState {
   setState: Function
 }
 
-interface IProps {
+interface IJsonPickerProps {
   def: StateFormItem<StateForm>
   formsData: any
   state?: IParentState
@@ -32,7 +32,7 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def, formsData, state }: IProps) {
+function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
   const parse = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) =>({
     json: parse(theme, def.theme)

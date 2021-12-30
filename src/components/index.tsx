@@ -8,28 +8,10 @@ import StateFormItemSelect from '../controllers/StateFormItemSelect'
 import StateLink from '../controllers/StateLink'
 import ThemeParser from '../controllers/ThemeParser'
 import {
-  BOOL_ONOFF,
-  BOOL_TRUEFALSE,
-  BOOL_YESNO,
-  BUTTON,
-  CHECKBOXES,
-  DESKTOP_DATE_PICKER,
-  FORM,
-  getBoolType,
-  INPUT,
-  INPUT_LABEL,
-  LINK,
-  MOBILE_DATE_PICKER,
-  NUMBER,
-  PASSWORD,
-  RADIO_BUTTONS,
-  SELECT,
-  STATIC_DATE_PICKER,
-  SUBMIT,
-  SWITCH,
-  TEXT,
-  TEXTAREA,
-  TEXTFIELD,
+  BOOL_ONOFF, BOOL_TRUEFALSE, BOOL_YESNO, JSON_BUTTON, CHECKBOXES,
+  DESKTOP_DATE_PICKER, FORM, getBoolType, JSON_INPUT, INPUT_LABEL, LINK,
+  MOBILE_DATE_PICKER, NUMBER, PASSWORD, RADIO_BUTTONS, JSON_SELECT,
+  STATIC_DATE_PICKER, SUBMIT, SWITCH, TEXT, TEXTAREA, TEXTFIELD, TEXT_NODE,
   TIME_PICKER
 } from '../mui/form/controller'
 import { updateCheckboxes } from '../mui/form/items/controller'
@@ -45,16 +27,23 @@ import JsonForm from '../mui/form'
 import StateForm from '../controllers/StateForm'
 import JsonTextfield from '../mui/form/items/json.textfield'
 import { postReqState } from '../state/net.controller'
-import { appUseDispatch } from '../state/actions'
+import { AppDispatch } from '../state'
+import { useDispatch } from 'react-redux'
 import store from '../state'
 
-interface IProps {
+interface IComponentsBuilderProps {
   def: StateComponent[]
   parent: any
 }
 
-export default function ComponentsBuilder({ def: allDefs, parent}: IProps) {
-  const dispatch = appUseDispatch()
+function RecursiveComponents({
+  def: allDefs,
+  parent
+}: IComponentsBuilderProps) {
+  const parserFactory = new ThemeParser({ alpha })
+  const parse   = parserFactory.getParser()
+  const components: JSX.Element[] = []
+  const dispatch = useDispatch<AppDispatch>()
 
   /** Saves the form field value to the store. */
   const onUpdateFormData = (form: StateForm) =>
@@ -70,7 +59,7 @@ export default function ComponentsBuilder({ def: allDefs, parent}: IProps) {
   }
 
   /** Saves the date value to the store. */
-  const onUpdateFormDatetime = (form: StateForm) => 
+  const onUpdateFormDatetime = (form: StateForm) =>
     (name: string, val: string) => (date: Date | null) =>
   {
     if (date) {
@@ -103,7 +92,8 @@ export default function ComponentsBuilder({ def: allDefs, parent}: IProps) {
 
   /** Save switches value to the Redux store. */
   const onHandleSwitch = (form: StateForm) =>
-      (name: string, value: any) => (e: any) => {
+    (name: string, value: any) => (e: any) =>
+  {
     switch (getBoolType(value)) {
     case BOOL_TRUEFALSE:
       dispatch({
@@ -162,164 +152,177 @@ export default function ComponentsBuilder({ def: allDefs, parent}: IProps) {
     onPostReqState(form.endpoint, body)
   }
 
-  function RecursiveComponents({
-    def: allDefs,
-    parent
-  }: IProps) {
-    const parserFactory = new ThemeParser({ alpha })
-    const parse   = parserFactory.getParser()
-    const components: JSX.Element[] = []
-  
-    for (let i = 0; i < allDefs.length; i++) {
-      const { type, getJson, props, theme: jsonTheme, items } = allDefs[i]
-      switch (type.toUpperCase()) {
-        case BUTTON:
-          components.push(
-            <JsonButton
-              key={`${type}-${i}`}
-              def={new StateFormItem(getJson(), parent)}
-            />
-          )
-          break
-        case CHECKBOXES: {
-          const checkboxes = new StateFormItem(getJson(), parent)
-          if (parent instanceof StateForm) {
-            checkboxes.onChange = onHandleCheckbox(parent)
-          }
-          components.push(
-            <JsonCheckboxes key={`${type}-${i}`} def={checkboxes} />
-          )
-          break
+  for (let i = 0; i < allDefs.length; i++) {
+    const d = allDefs[i]
+    const { type, getJson, props, theme: jsonTheme, items } = allDefs[i]
+    switch (type.toUpperCase()) {
+      case JSON_BUTTON:
+        components.push(
+          <JsonButton
+            key={`${type}-${i}`}
+            def={new StateFormItem(getJson(), parent)}
+          />
+        )
+        break
+      case CHECKBOXES: {
+        const checkboxes = new StateFormItem(getJson(), parent)
+        if (parent instanceof StateForm) {
+          checkboxes.onChange = onHandleCheckbox(parent)
         }
-        case FORM: {
-          const form = new StateForm(getJson(), parent)
-          components.push(
-            <JsonForm key={`${type}-${i}`} def={form}>
-              <RecursiveComponents key={`rc-${i}`} def={items} parent={form} />
-            </JsonForm>
-          )
-          break
+        components.push(
+          <JsonCheckboxes key={`${type}-${i}`} def={checkboxes} />
+        )
+        break
+      }
+      case FORM: {
+        const form = new StateForm(getJson(), parent)
+        components.push(
+          <JsonForm key={`${type}-${i}`} def={form}>
+            <RecursiveComponents
+              key={`rc-${type}-${i}`}
+              def={items}
+              parent={form}
+            />
+          </JsonForm>
+        )
+        break
+      }
+      case JSON_INPUT:
+        components.push(
+          <JsonInput
+            key={`${type}-${i}`}
+            def={new StateFormItem(getJson(), parent)}
+          />
+        )
+        break
+      case INPUT_LABEL:
+        components.push(
+          <InputLabel
+            key={`${type}-${i}`}
+            className={makeStyles((theme: Theme) => ({
+              json: parse(theme, jsonTheme)
+            }))()}
+            {...props}
+          />
+        )
+        break
+      case LINK:
+        components.push(
+          <JsonLink
+            key={`${type}-${i}`}
+            def={new StateLink(getJson(), parent)}
+          />
+        )
+        break
+      case RADIO_BUTTONS:
+        components.push(
+          <JsonRadio
+            key={`${type}-${i}`}
+            def={new StateFormItemRadio(getJson(), parent)}
+          />
+        )
+        break
+      case JSON_SELECT:
+        components.push(
+          <JsonSelect
+            key={`${type}-${i}`}
+            def={new StateFormItemSelect(getJson(), parent)}
+          />
+        )
+        break
+      case SUBMIT: {
+        const button = new StateFormItem(getJson(), parent)
+        if (parent instanceof StateForm) {
+          button.onClick = button.hasNoOnClickCallback
+            ? onFormSubmitDefault(parent)
+            : button.onClick
         }
-        case INPUT:
-          components.push(
-            <JsonInput
-              key={`${type}-${i}`}
-              def={new StateFormItem(getJson(), parent)}
-            />
-          )
-          break
-        case INPUT_LABEL:
-          components.push(
-            <InputLabel
-              key={`${type}-${i}`}
-              className={makeStyles((theme: Theme) => ({
-                json: parse(theme, jsonTheme)
-              }))()}
-              {...props}
-            />
-          )
-          break
-        case LINK:
-          components.push(
-            <JsonLink
-              key={`${type}-${i}`}
-              def={new StateLink(getJson(), parent)}
-            />
-          )
-          break
-        case RADIO_BUTTONS:
-          components.push(
-            <JsonRadio
-              key={`${type}-${i}`}
-              def={new StateFormItemRadio(getJson(), parent)}
-            />
-          )
-          break
-        case SELECT:
-          components.push(
-            <JsonSelect
-              key={`${type}-${i}`}
-              def={new StateFormItemSelect(getJson(), parent)}
-            />
-          )
-          break
-        case SUBMIT: {
-          const button = new StateFormItem(getJson(), parent)
-          if (parent instanceof StateForm) {
-            button.onClick = button.hasNoOnClickCallback
-              ? onFormSubmitDefault(parent)
-              : button.onClick
-          }
-          components.push(<JsonButton key={`${type}-${i}`} def={button} />)
-          break
+        components.push(<JsonButton key={`${type}-${i}`} def={button} />)
+        break
+      }
+      case SWITCH: {
+        const $witch = new StateFormItem(getJson(), parent)
+        if (parent instanceof StateForm) {
+          $witch.onChange = onHandleSwitch(parent)
         }
-        case SWITCH: {
-          const $witch = new StateFormItem(getJson(), parent)
-          if (parent instanceof StateForm) {
-            $witch.onChange = onHandleSwitch(parent)
-          }
-          components.push(
-            <JsonSwitch
-              key={`${type}-${i}`}
-              def={$witch}
+        components.push(
+          <JsonSwitch
+            key={`${type}-${i}`}
+            def={$witch}
+          />
+        )
+        break
+      }
+      case TEXTAREA:
+      case TEXTFIELD:
+      case NUMBER:
+      case PASSWORD:
+      case TEXT: {
+        const textfield = new StateFormItem(getJson(), parent)
+        if (parent instanceof StateForm) {
+          textfield.onChange = onUpdateFormData(parent)
+        }
+        components.push(
+          <JsonTextfield
+            key={`${type}-${i}`}
+            def={textfield}
+          />
+        )
+        break
+      }
+      case TEXT_NODE: {
+        const node = new StateFormItem(d.getJson(), parent)
+        components.push(
+          <Fragment key={`${type}-${i}`}>
+            { node.text }
+          </Fragment>
+        )
+        break
+      }
+      case TIME_PICKER:
+      case DESKTOP_DATE_PICKER:
+      case MOBILE_DATE_PICKER:
+      case STATIC_DATE_PICKER: {
+        const picker = new StateFormItem(getJson(), parent)
+        if (parent instanceof StateForm) {
+          picker.onChange = onUpdateFormDatetime(parent)
+        }
+        components.push(
+          <JsonPicker
+            key={`${type}-${i}`}
+            def={picker}
+          />
+        )
+        break
+      }
+      default: {
+        const C = styled(type as keyof JSX.IntrinsicElements)(
+          ({ theme }) => parse(theme, jsonTheme)
+        )
+        components.push(
+          <C key={`${type}-${i}`} {...props}>
+            <RecursiveComponents
+              key={`rc-${type}-${i}`}
+              def={items}
+              parent={parent}
             />
-          )
-          break
-        }
-        case TEXTAREA:
-        case TEXTFIELD:
-        case NUMBER:
-        case PASSWORD:
-        case TEXT: {
-          const textfield = new StateFormItem(getJson(), parent)
-          if (parent instanceof StateForm) {
-            textfield.onChange = onUpdateFormData(parent)
-          }
-          components.push(
-            <JsonTextfield
-              key={`${type}-${i}`}
-              def={textfield}
-            />
-          )
-          break
-        }
-        case TIME_PICKER:
-        case DESKTOP_DATE_PICKER:
-        case MOBILE_DATE_PICKER:
-        case STATIC_DATE_PICKER: {
-          const picker = new StateFormItem(getJson(), parent)
-          if (parent instanceof StateForm) {
-            picker.onChange = onUpdateFormDatetime(parent)
-          }
-          components.push(
-            <JsonPicker
-              key={`${type}-${i}`}
-              def={picker}
-            />
-          )
-          break
-        }
-        default: {
-          const C = styled(type as keyof JSX.IntrinsicElements)(
-            ({ theme }) => parse(theme, jsonTheme)
-          )
-          components.push(
-            <C key={`${type}-${i}`} {...props}>
-              <RecursiveComponents key={`rc-${i}`} def={items} parent={parent} />
-            </C>
-          )
-          break
-        }
-      } // END switch
-    }
-  
-    return (
-      <Fragment>
-        { components }
-      </Fragment>
-    )
-  } // END RecursiveComponents()
+          </C>
+        )
+        break
+      }
+    } // END switch
+  }
 
+  return (
+    <Fragment>
+      { components }
+    </Fragment>
+  )
+} // END RecursiveComponents()
+
+export default function ComponentsBuilder({
+  def: allDefs,
+  parent}: IComponentsBuilderProps
+) {
   return <RecursiveComponents def={allDefs} parent={parent} />
-} // END ComponentBuilder()
-
+}

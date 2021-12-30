@@ -1,4 +1,4 @@
-import { IStateComponent } from '../interfaces';
+import { IStateComponent } from '../interfaces'
 import AbstractState from './AbstractState'
 
 export default class StateComponent<P = any>
@@ -7,6 +7,7 @@ export default class StateComponent<P = any>
 {
   private componentJson: IStateComponent
   private parentObj: P
+  private componentItems?: StateComponent[]
 
   constructor (componentJson: IStateComponent, parent: P) {
     super()
@@ -25,7 +26,12 @@ export default class StateComponent<P = any>
     delete props.items
     return props
   }
-  get items() { return this.componentJson.items || [] }
+  get items() {
+    return this.componentItems = this.componentItems
+      || (this.componentItems = (this.componentJson.items || []).map(
+        (item: IStateComponent) => new StateComponent(item, this)
+      ))
+  }
 
   getJson = <T = any>() => this.componentJson as T
 }

@@ -3,15 +3,16 @@ import { makeStyles } from '@mui/styles'
 import { connect } from 'react-redux'
 import StateFormItem from '../../../controllers/StateFormItem'
 import ThemeParser from '../../../controllers/ThemeParser'
-import { IParentState, IState } from '../../../interfaces'
+import { IParentState } from '../../../interfaces'
+import { RootState } from '../../../state'
 import { getStoredValue, getLocallyStoredValue } from './controller'
 import { getAdornment } from './json.input.adornment'
 
-const mapStateToProps = (state: IState) => ({
+const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
 })
 
-interface IProps {
+interface IJsonInputProps {
   def: StateFormItem
   formsData: any
   state?: IParentState
@@ -19,7 +20,7 @@ interface IProps {
 
 export default connect(mapStateToProps)(
 
-function ({ def: input, formsData, state }: IProps) {
+function JsonInput ({ def: input, formsData, state }: IJsonInputProps) {
   const parse = new ThemeParser({ alpha }).getParser()
   const classes = makeStyles((theme: Theme) => ({
     json: parse(theme, input.theme)
