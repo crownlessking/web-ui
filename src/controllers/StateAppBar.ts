@@ -13,18 +13,18 @@ import StateLink from './StateLink'
 export default class StateAppBar<P = State>
   extends AbstractState implements IStateAppBar {
 
-  static EMPTY_APPBAR_BACKGROUND :IStateBackground = { type: 'none' }
-  static EMPTY_APPBAR_TYPOGRAPHY :IStateTypography = {}
+  static EMPTY_APPBAR_BACKGROUND: IStateBackground = { type: 'none' }
+  static EMPTY_APPBAR_TYPOGRAPHY: IStateTypography = {}
 
-  protected parentObj :P
-  protected appBarJson :IStateAppBar
-  protected appBarLayout ?:IStateAppBar['layout']
-  protected appBarItems ?:StateLink<this>[]
-  protected appBarTypographyJson :IStateTypography
-  protected appBarTypography ?:StateAppBarTypography<P>
-  protected appBarBackgroundJson :IStateBackground
-  protected appBarBackground ?:StateAppBarBackground<P>
-  protected appBarComponents ?:StateComponent<this>[]
+  protected parentObj: P
+  protected appBarJson: IStateAppBar
+  protected appBarLayout?: IStateAppBar['layout']
+  protected appBarItems?: StateLink<this>[]
+  protected appBarTypographyJson: IStateTypography
+  protected appBarTypography?: StateAppBarTypography<P>
+  protected appBarBackgroundJson: IStateBackground
+  protected appBarBackground?: StateAppBarBackground<P>
+  protected appBarComponents?: StateComponent<this>[]
 
   /**
   * Constructor

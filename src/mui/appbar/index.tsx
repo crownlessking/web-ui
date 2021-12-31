@@ -61,10 +61,12 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
   const appbar = page.appBar
   const parse = new ThemeParser({ alpha }).getParser()
 
-  const appBarClasses = makeStyles((theme: Theme) => ({
+  const toolbarClasses = makeStyles((theme: Theme) => ({
     root: parse(theme, {
       ...appbar.theme,
-      ...appbar.background.getJss()
+      ...appbar.background.getJss(),
+      fontFamily: appbar.typography.fontFamily,
+      color: appbar.typography.color,
     })
   }))()
 
@@ -235,7 +237,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
       <AppBar
         {...appbar.props}
       >
-        <Toolbar className={appBarClasses.root} {...appbar.toolbarProps}>
+        <Toolbar className={toolbarClasses.root} {...appbar.toolbarProps}>
           <IconButton {...appbar.menuIconProps}>
             <MenuIcon />
           </IconButton>
