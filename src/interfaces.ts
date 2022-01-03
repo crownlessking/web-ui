@@ -2,7 +2,7 @@ import { SelectProps } from '@mui/material/Select'
 import { Action } from 'redux'
 import { RadioProps } from '@mui/material/Radio'
 import {
-  AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
+  AppBarProps, BadgeProps, BoxProps, IconButtonProps, MenuProps, ToolbarProps
 } from '@mui/material'
 import enhancedStore from './state'
 import allActions from './state/actions'
@@ -267,6 +267,8 @@ export interface IStateAppBar extends IAbstractState {
   mobileMenuItemsProps?: BoxProps
   /** when web page is in mobile view, this icon will show */
   mobileMenuIconProps?: IconButtonProps
+  /** each individual items */
+  menuItemsProps?: any
   /** mui5 logo wrapper styles */
   logoTheme?: any
   /** Appbar background color, image, gradient... etc. */

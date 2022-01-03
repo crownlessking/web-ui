@@ -31,6 +31,9 @@ export default class JsonLink extends Component<IJsonLinkProps> {
     const redux = { store, actions, route: has.route }
     const route = getFormattedRoute(def, has.route)
     const props = getLinkProps(def.json)
+    const menuItemStyle = {
+      fontFamily: def.parent.typography.fontFamily
+    }
 
     switch (type) {
 
@@ -53,6 +56,7 @@ export default class JsonLink extends Component<IJsonLinkProps> {
     case 'text':
       return (
         <Button
+          style={menuItemStyle}
           component={RouterLink}
           color='inherit'
           aria-label={has.label}

@@ -7,7 +7,6 @@ import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
-import _ from 'lodash'
 import ThemeParser from '../../controllers/ThemeParser'
 import Logo from './logo'
 import AppBarIcon from '../link'
@@ -59,14 +58,14 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
 
   const app = page.parent.parent.app
   const appbar = page.appBar
+  const typography = appbar.typography
   const parse = new ThemeParser({ alpha }).getParser()
 
   const toolbarClasses = makeStyles((theme: Theme) => ({
     root: parse(theme, {
       ...appbar.theme,
       ...appbar.background.getJss(),
-      fontFamily: appbar.typography.fontFamily,
-      color: appbar.typography.color,
+      color: typography.color,
     })
   }))()
 
@@ -130,16 +129,8 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
       id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
+      {...appbar.menuItemsProps}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -154,9 +145,9 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
 
   const LayoutFactory = () => {
     const factory: JSX.Element[] = []
-    const LogoWrapper = styled('div')(({ theme }) => (_.extend({
-      // [TODO] insert default logo wrapper theme here
-    }, parse(theme, appbar.logoTheme))))
+    const LogoWrapper = styled('div')(({ theme }) => (
+      parse(theme, appbar.logoTheme)
+    ))
     for (let i = 0; i < appbar.layout.length; i++) {
       switch (appbar.layout[i]) {
       case 'logo':
@@ -167,7 +158,12 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
                 <Logo def={page} />
               </LogoWrapper>
             ) : (
-              <Typography {...appbar.textLogoProps}>{ app.title }</Typography>
+              <Typography
+                style={{ fontFamily: typography.fontFamily }}
+                {...appbar.textLogoProps}
+              >
+                { app.title }
+              </Typography>
             )}
           </Fragment>
         )

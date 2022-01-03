@@ -102,6 +102,21 @@ export default class StateAppBar<P = State>
     return this.appBarJson.mobileMenuIconProps || {}
   }
 
+  get menuItemsProps() {
+    return {
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'right',
+      },
+      keepMounted: true,
+      transformOrigin: {
+        vertical: 'top',
+        horizontal: 'right',
+      },
+      ...this.appBarJson.menuItemsProps
+    }
+  }
+
   get logoTheme() { return this.appBarJson.logoTheme || {} }
 
   get hasLogo () {
@@ -109,12 +124,13 @@ export default class StateAppBar<P = State>
   }
 
   get textLogoProps() {
-    return _.extend({
+    return {
       variant: 'h6',
       noWrap: true,
       component: 'div',
-      sx: { display: { xs: 'none', sm: 'block' } }
-    }, this.appBarJson.textLogoProps)
+      sx: { display: { xs: 'none', sm: 'block' } },
+      ...this.appBarJson.textLogoProps
+    }
   }
 
   /**

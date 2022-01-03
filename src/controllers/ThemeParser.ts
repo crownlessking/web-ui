@@ -232,14 +232,26 @@ export default class ThemeParser {
     }
   }
 
+  /** Returns true if a value is a falsy. */
+  private _bad(val: any) {
+    if (!val) return true
+    switch (typeof val) {
+      case 'string':
+        return !val.replace(/\s+/,'')
+      case 'object': {
+        return (!Array.isArray(val) && Object.keys(val).length <= 0)
+          || (Array.isArray(val) && val.length <= 0)
+      }
+    }
+  }
+
   /** Applies theme function values */
   private _parse (rules : any) {
-    if (!rules || Object.keys(rules).length <= 0) {
-      return {}
-    }
+    if (this._bad(rules)) { return {} }
     const propertyBin: string[] = []
     for (const prop in rules) {
       const val = rules[prop]
+      if (this._bad(val)) { continue }
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
         rules[prop] = this._parse(val)
@@ -258,6 +270,7 @@ export default class ThemeParser {
     this._deleteProperties(propertyBin, rules)
     for (const prop in rules) {
       const val = rules[prop]
+      if (this._bad(val)) { continue }
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
         rules[prop] = this._parse(val)
@@ -277,5 +290,5 @@ export default class ThemeParser {
       }
     }
     return rules
-  }
+  } // END _parse()
 }
