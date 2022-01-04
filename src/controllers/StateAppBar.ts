@@ -1,5 +1,4 @@
-import { IconButtonProps } from '@mui/material'
-import _ from 'lodash'
+import { AppBarProps, IconButtonProps } from '@mui/material'
 import {
   IStateAppBar, IStateBackground, IStateTypography
 } from '../interfaces'
@@ -45,8 +44,11 @@ export default class StateAppBar<P = State>
   get json() { return this.appBarJson }
   /** Chain-access to root definition. */
   get parent() { return this.parentObj }
-  get props() {
-    return this.appBarJson.props || { position: 'static' }
+  get props(): AppBarProps {
+    return {
+      position: 'static',
+      ...this.appBarJson.props
+    }
   }
   get theme() { return this.appBarJson.theme || {} }
 

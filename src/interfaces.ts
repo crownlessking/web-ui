@@ -2,7 +2,7 @@ import { SelectProps } from '@mui/material/Select'
 import { Action } from 'redux'
 import { RadioProps } from '@mui/material/Radio'
 import {
-  AppBarProps, BadgeProps, BoxProps, IconButtonProps, MenuProps, ToolbarProps
+  AppBarProps, BadgeProps, BoxProps, IconButtonProps, ToolbarProps
 } from '@mui/material'
 import enhancedStore from './state'
 import allActions from './state/actions'
