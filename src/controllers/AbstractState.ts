@@ -1,4 +1,18 @@
 
+export interface IAbstractState {
+  /** Spreadable props */
+  [props: string]: any
+}
+
+interface IAbstractStateDrawer {
+  /** List of icons with the descriptions */
+  items?: IStateLink[],
+  /** Whether the drawer is open or not. */
+  open?: boolean
+  /** Drawer's width in pixels. */
+  width?: number
+}
+
 export default abstract class AbstractState {
 
   /**

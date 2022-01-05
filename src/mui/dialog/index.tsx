@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { createStyles, WithStyles, withStyles } from '@mui/styles'
 import { RootState } from '../../state'
-import { closeDialog } from './actions'
+import { dialogClose } from '../../slices/dialog.slice'
 import { dummyCallback } from '../../controllers'
 import { postReqState } from '../../state/net.controller'
 import FormItems from '../form/items'
@@ -41,7 +41,7 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispachToProps = {
-  onCloseDialog: closeDialog,
+  onCloseDialog: dialogClose,
   onUpdateFormData: formsDataUpdate,
   onPostReqState: postReqState
 }

@@ -29,6 +29,9 @@ export const dialogSlice = createSlice({
     dialogOnSubmitUpdate: (state, action) => {
       state.onSubmit = action.payload
     },
+    dialogClose: (state) => {
+      state.open = false
+    }
   }
 })
 
@@ -37,6 +40,7 @@ export const {
   dialogActionUpdate,
   dialogTitleUpdate,
   dialogLabelUpdate,
+  dialogClose,
   dialogContenUpdate,
   dialogContentTextUpdate,
   dialogContentTypeUpdate,

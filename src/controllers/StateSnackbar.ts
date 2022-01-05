@@ -1,7 +1,30 @@
-import { IStateSnackbar } from '../interfaces'
 import AbstractState from './AbstractState'
 import State from './State'
 import StateAnchorOrigin from './StateAnchorOrigin'
+
+export type AnchorHorizontal = 'left' | 'center' | 'right'
+export type AnchorVertical = 'top' | 'bottom'
+
+export interface IStateAnchorOrigin {
+  vertical: AnchorVertical,
+  horizontal: AnchorHorizontal
+}
+
+/**
+ * Redux store snackbar state.
+ */
+export interface IStateSnackbar {
+  anchorOrigin: IStateAnchorOrigin
+  autoHideDuration: number
+  open?: boolean
+  content?: JSX.Element
+  message?: string
+  actions?: JSX.Element[]
+  id?: string
+  defaultId: string
+  type: 'message' | 'customized' | 'void'
+  variant: 'success' | 'error' | 'info' | 'warning'
+}
 
 export default class StateSnackbar
     extends AbstractState implements IStateSnackbar {

@@ -4,6 +4,9 @@ import AbstractState from './AbstractState'
 import StateLink from './StateLink'
 import State from './State'
 
+/** Default drawer state. Contains icons and descriptions. */
+export type IStateDrawer = Required<IAbstractStateDrawer>
+
 /**
  * Get the default drawer width.
  */

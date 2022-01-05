@@ -1,26 +1,63 @@
-import { IStatePage, IStateBackground } from '../interfaces'
+import { IStatePage, IStateBackground, IStateApp, IJsonapiError, IStateSnackbar } from '../interfaces'
 import { RootState } from '../state'
 import _ from 'lodash'
 import { getVal, setVal } from '.'
-import StateAllPages from './StateAllPages'
+import StateAllPages, { IStateAllPages } from './StateAllPages'
 import AbstractState from './AbstractState'
 import StateBackground from './StateBackground'
 import StateApp from './StateApp'
-import StateDrawer from './StateDrawer'
-import StateAppBar from './StateAppBar'
-import StateAllForms from './StateAllForms'
+import StateDrawer, { IStateDrawer } from './StateDrawer'
+import StateAppBar, { IStateAppBar, IStateAppBarSearches } from './StateAppBar'
+import StateAllForms, { IStateAllForms } from './StateAllForms'
 import StateFormsData from './StateFormsData'
 import StateMeta from './StateMeta'
-import StateTypography from './StateTypography'
+import StateTypography, { IStateTypography } from './StateTypography'
 import StateData from './StateData'
-import StateDialog from './StateDialog'
+import StateDialog, { IStateDialog } from './StateDialog'
 import StateAllErrors from './StateAllErrors'
-import StateAllDialogs from './StateAllDialogs'
+import StateAllDialogs, { IStateAllDialogs } from './StateAllDialogs'
 import StatePagesData from './StatePagesData'
 import StateSnackbar from './StateSnackbar'
 import StateTmp from './StateTmp'
 import StateTopLevelLinks from './StateTopLevelLinks'
 import StateNet from './StateNet'
+
+/**
+ * Redux store (root) state
+ */
+ export interface IState {
+  app: IStateApp
+  appBar: IStateAppBar
+  appBarSearches: IStateAppBarSearches
+  background: IStateBackground
+  typography: IStateTypography
+  data: any
+  dialog: IStateDialog
+  dialogs: IStateAllDialogs
+  drawer: IStateDrawer
+  errors: IJsonapiError[]
+  forms: IStateAllForms
+  formsData: any
+  meta: any
+  pages: IStateAllPages
+  pagesData: any
+  snackbar: IStateSnackbar
+  /**
+   * Holds temporary data.
+   *
+   * The data must be volatile. As in, if it is retrieved, it must be removed.
+   * The key names are similar to those found in other state objects. e.g.
+   * If temporary data is stored for a page, the key name should end with `Page`.
+   * i.e. `userPage` is a valid key. Or `newUserForm` is a valid one too. The
+   * `suffix` `Form` indicates that the temporary data is stored for a form and
+   * when the `newUserForm` accesses this data, it will be removed.
+   */
+  tmp: { [prop: string]: any }
+  topLevelLinks: IStateTopLevelLinks
+  /** Material-ui `ThemeOptions` */
+  theme: any
+  net: IStateNet
+}
 
 export default class State extends AbstractState {
 

@@ -1,6 +1,15 @@
 import AbstractState from './AbstractState'
-import { IStateTypography } from '../interfaces'
 import State from './State'
+
+/**
+ * Type for changing the font and color of the appbar.
+ */
+ export interface IStateTypography {
+  /** Any valid CSS color. */
+  color?: string
+  /** Any valid value for the `font-family` CSS property. */
+  fontFamily?: string
+}
 
 export default class StateTypography<P = State>
   extends AbstractState implements IStateTypography {

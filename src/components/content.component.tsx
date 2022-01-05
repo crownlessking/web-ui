@@ -59,7 +59,9 @@ class Content extends Component<IContentProps> {
       break
     }
 
-    case APP_CONTENT_VIEW: // Content type to display data
+    // Hard coded pages which can be used to display default
+    // pages or web-ui related data.
+    case APP_CONTENT_VIEW:
       currentContentJsx = contentJsx = <View def={page} />
       break
 

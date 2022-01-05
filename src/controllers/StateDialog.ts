@@ -1,8 +1,47 @@
-import { IStateDialog, IStateFormItem } from '../interfaces'
 import AbstractState from './AbstractState'
 import State from './State'
-import StateFormItem from './StateFormItem'
+import StateFormItem, { IStateFormItem } from './StateFormItem'
 import { getDudEventCallback } from '.'
+import { IStateForm } from './StateForm'
+
+/**
+ * Dialog base state
+ */
+ export interface IStateDialogBase {
+  title?: string
+  label?: string
+  contentType?: 'form' | 'any'
+  contentText?: string
+  content?: any
+  actions?: IStateFormItem[] // for defining the dialog actions
+  showActions?: boolean
+  onSubmit?: () => void
+}
+
+/**
+ * Dialog locale state
+ *
+ * **optional form state**
+ */
+export interface IStateDialogLocal extends IStateDialogBase {
+  items?: IStateFormItem[]
+}
+
+/**
+ * Dialog state that includes a form.
+ *
+ * **required form state**
+ */
+export interface IStateDialogForm extends IStateDialogBase, IStateForm {
+  items: IStateFormItem[]
+}
+
+/**
+ * Redux store dialog state
+ */
+export interface IStateDialog extends IStateDialogLocal {
+  open: boolean
+}
 
 export default class StateDialog extends AbstractState implements IStateDialog {
 

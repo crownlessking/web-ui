@@ -8,9 +8,12 @@ import {
   getMetaDialogContentText, ISingleRow, getMetaDialogTitle,
   getMetaDialogShowActions, getMetaDialogOnSubmit, getMetaDialogActions
 } from './controller'
-import { IDelegated, IStateFormItem } from '../../../interfaces'
+import { IDelegated } from '../../../controllers'
+import { IStateFormItem } from '../../../interfaces'
 import Items from '../../form/items/local'
-import { delegatedSetState, delegatedState, safelyGet, getDudEventCallback } from '../../../controllers'
+import {
+  delegatedSetState, delegatedState, safelyGet, getDudEventCallback
+} from '../../../controllers'
 import dateFormat from 'dateformat'
 import StatePage from '../../../controllers/StatePage'
 

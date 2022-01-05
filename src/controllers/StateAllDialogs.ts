@@ -1,5 +1,13 @@
 import AbstractState from './AbstractState'
 import State from './State'
+import { IStateDialog } from './StateDialog'
+
+/**
+ * Contains all dialog states.
+ */
+ export interface IStateAllDialogs {
+  [x: string]: IStateDialog
+}
 
 export default class StateAllDialogs extends AbstractState {
 

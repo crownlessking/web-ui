@@ -1,7 +1,17 @@
-import { IRedux, IDelegated } from '../interfaces'
+import { IRedux } from '../interfaces'
 import Config from '../config'
 import AbstractState from './AbstractState'
 import StateLink from './StateLink'
+
+/**
+ * A way of delegating data handling to sub or dumb components.
+ */
+ export interface IDelegated {
+  state?: any, // parent component's state
+  setState?: (state: any) => void // parent component's setState()
+  data?: any, // additional data the parent component wants to pass to the
+  // child
+}
 
 // layouts
 

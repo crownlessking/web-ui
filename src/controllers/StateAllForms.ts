@@ -1,8 +1,12 @@
 import Controller from './AbstractState'
-import { IStateAllForms } from '../interfaces'
 import State from './State'
-import StateForm from './StateForm'
+import StateForm, { IStateForm } from './StateForm'
 import { err } from '.'
+
+/** Contains all form states. */
+export interface IStateAllForms {
+  [prop: string]: IStateForm
+}
 
 export default class StateAllForms extends Controller {
 
