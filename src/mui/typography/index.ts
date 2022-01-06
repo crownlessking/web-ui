@@ -1,6 +1,6 @@
 import store from '../../state'
 import { getVal } from '../../controllers'
-import { IStatePage } from '../../interfaces'
+import { IStatePage } from '../../controllers/StatePage'
 
 export function getAppBarFontColor(page: IStatePage) {
   const state = store.getState()

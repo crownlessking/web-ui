@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ButtonProps
+  Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
+  ButtonProps
 } from '@mui/material'
 import { createStyles, WithStyles, withStyles } from '@mui/styles'
 import { RootState } from '../../state'

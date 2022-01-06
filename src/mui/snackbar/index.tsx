@@ -9,9 +9,10 @@ import ErrorIcon from '@mui/icons-material/Error'
 import InfoIcon from '@mui/icons-material/Info'
 import { amber, green } from '@mui/material/colors'
 import { connect } from 'react-redux'
-import { IStateAnchorOrigin, IStateSnackbar } from '../../interfaces'
+import { IStateSnackbar } from '../../controllers/StateSnackbar'
 import { RootState } from '../../state'
-import { openSnackbar, closeSnackbar, clearMessage } from './actions'
+import { snackbarOpen, snackbarClose, snackbarClear } from '../../slices/snackbar.slice'
+import { IStateAnchorOrigin } from '../../controllers/StateAnchorOrigin'
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -62,9 +63,9 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = {
-  onOpen: openSnackbar,
-  onClose: closeSnackbar,
-  clearMessage
+  onOpen: snackbarOpen,
+  onClose: snackbarClose,
+  snackbarClear
 }
 
 interface IJsonSnackbarProps extends WithStyles<typeof styles> {
@@ -79,7 +80,7 @@ interface IJsonSnackbarProps extends WithStyles<typeof styles> {
   variant: keyof typeof variantIcon // ISnackbarState['variant']
   onOpen: () => void
   onClose: () => void
-  clearMessage: () => void
+  snackbarClear: () => void
 }
 
 interface ISnackbarProps {
@@ -103,7 +104,7 @@ export default connect(mapStateToProps, mapDispatchToProps)
     }
     if (this.props.open) {
       this.setOpen(false)
-      this.clearMessage()
+      this.snackbarClear()
     }
   }
 
@@ -177,5 +178,5 @@ export default connect(mapStateToProps, mapDispatchToProps)
 
   setOpen = (val: boolean) => val ? this.props.onOpen() : this.props.onClose()
 
-  clearMessage = () => this.props.clearMessage()
+  snackbarClear = () => this.props.snackbarClear()
 }))

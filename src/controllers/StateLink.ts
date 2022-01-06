@@ -1,7 +1,15 @@
 import { defaultCallback } from '.'
+import { IRedux } from '../state'
 import AbstractState from './AbstractState'
-import { IStateFormItemCustom, IStateLink } from '../interfaces'
-import StateFormItemCustom from './StateFormItemCustom'
+import StateFormItemCustom, { IStateFormItemCustom } from './StateFormItemCustom'
+
+export interface IStateLink {
+  type: 'text' | 'textlogo' | 'icon' | 'hybrid' | 'link'
+  onClick?: (redux: IRedux) => (e: any) => void
+  has?: IStateFormItemCustom
+  href?: string
+  [attr: string]: any
+}
 
 export function getLinkProps(def: IStateLink) {
   const props = { ...def } as any

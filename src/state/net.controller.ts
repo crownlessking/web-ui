@@ -1,7 +1,6 @@
 import fetch from 'cross-fetch'
 import { Dispatch } from 'redux'
 import { errorsAdd } from '../slices/errors.slice'
-import { IAbstractResponse } from '../interfaces'
 import { toJsonapiError } from './errors.controller'
 import { _cancelSpinner, _scheduleSpinner } from './app.controller'
 import runDefaultDriver from './default.driver.net.c'
@@ -10,6 +9,7 @@ import { appRequestFailed, appRequestStart, appRequestSuccess } from '../slices/
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
 import { RootState } from '.'
+import { IAbstractResponse } from '../controllers/StateNet'
 
 // Response identification constants ------------------------------------------
 

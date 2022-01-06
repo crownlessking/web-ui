@@ -2,15 +2,15 @@ import {
   defaultCallback, dummyCallback, err, getVal
 } from '.'
 import AbstractState, { IAbstractState } from './AbstractState'
-import { IRedux, IStateFormItemCustom } from '../interfaces'
 import StateForm from './StateForm'
 import {
   HTML, SUBMIT, JSON_BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, BOX,
   FORM_CONTROL, FORM_CONTROL_LABEL, FORM_GROUP, INDETERMINATE, LOCALIZED,
   STACK
 } from '../mui/form/controller'
-import StateFormItemCustom from './StateFormItemCustom'
+import StateFormItemCustom, { IStateFormItemCustom } from './StateFormItemCustom'
 import { RadioProps } from '@mui/material'
+import { IRedux } from '../state'
 
 export interface IStateFormItem extends IAbstractState {
   /** Form field type e.g. textfield, select, radio... etc. */

@@ -8,7 +8,7 @@ import { createStyles, WithStyles, withStyles } from '@mui/styles'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { RootState } from '../../state'
-import { closeDrawer, openDrawer } from './actions'
+import { drawerClose, drawerOpen } from '../../slices/drawer.slice'
 import { connect } from 'react-redux'
 import { getDrawerWidth } from '../../controllers/StateDrawer'
 import store from '../../state'
@@ -71,8 +71,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = {
-  onCloseDrawer: closeDrawer,
-  onOpenDrawer: openDrawer
+  onCloseDrawer: drawerClose,
+  onOpenDrawer: drawerOpen
 }
 
 interface IMiniDrawerProps extends WithStyles<typeof styles> {

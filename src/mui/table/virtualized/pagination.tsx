@@ -5,15 +5,12 @@ import {
   ArrowBackIos, ArrowForwardIos, FirstPage, LastPage
 } from '@mui/icons-material'
 import { connect } from 'react-redux'
-import {
-  IStateTopLevelLinks,
-  IJsonapiLink,
-  IJsonapiPaginationLinks,
-} from '../../../interfaces'
 import { RootState } from '../../../state'
 import { getLinkUri, getOriginEndingFixed } from './controller'
 import { getReqState } from '../../../state/net.controller'
 import { getVal, getDudEventCallback, getUriQuery } from '../../../controllers'
+import { IStateTopLevelLinks } from '../../../controllers/StateTopLevelLinks'
+import { IJsonapiLink, IJsonapiPaginationLinks } from '../../../controllers/StateNet'
 
 const styles = () => createStyles({
   root: {

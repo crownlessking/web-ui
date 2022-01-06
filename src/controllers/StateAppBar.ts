@@ -1,11 +1,12 @@
-import { AppBarProps, IconButtonProps, ToolbarProps } from '@mui/material'
-import { IStateBackground, IStateTypography } from '../interfaces'
+import { AppBarProps, BoxProps, IconButtonProps, ToolbarProps } from '@mui/material'
 import AbstractState, { IAbstractState } from './AbstractState'
 import State from './State'
 import StateAppBarBackground from './StateAppBarBackground'
 import StateAppBarTypography from './StateAppBarTypography'
+import { IStateBackground } from './StateBackground'
 import StateComponent from './StateComponent'
-import StateLink from './StateLink'
+import StateLink, { IStateLink } from './StateLink'
+import { IStateTypography } from './StateTypography'
 
 export interface IStateAppBar extends IAbstractState {
   /** navigation layout */
@@ -57,7 +58,7 @@ export interface IStateAppBar extends IAbstractState {
    * With this function, you can insert a JSON defined components
    * into existing component to customize them even further.
    */
-   components?: IStateComponent[]
+   components?: StateComponent[]
 }
 
 export interface IStateAppBarSearches {
@@ -106,7 +107,6 @@ export default class StateAppBar<P = State>
     }
   }
   get theme() { return this.appBarJson.theme || {} }
-
   get layout() {
     return this.appBarLayout
       || (this.appBarLayout = (
@@ -115,7 +115,6 @@ export default class StateAppBar<P = State>
             : ['logo','space','menu']
           )
   }
-
   get logoTag() { return this.appBarJson.logoTag || 'img' }
   get toolbarProps() {
     return this.appBarJson.toolbarProps || {}

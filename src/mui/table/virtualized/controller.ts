@@ -1,10 +1,9 @@
-
-import { IStateDialogForm, IJsonapiLink } from '../../../interfaces'
 import { getTableViewColumns } from '../controller'
 import { getDudEventCallback, log } from '../../../controllers'
 import dateFormat from 'dateformat'
 import StatePage from '../../../controllers/StatePage'
-import StateDialogForm from '../../../controllers/StateDialogForm'
+import StateDialogForm, { IStateDialogForm } from '../../../controllers/StateDialogForm'
+import { IJsonapiLink } from '../../../controllers/StateNet'
 
 /**
  * Represents the type of the row object provided by `onRowClick` attribute on

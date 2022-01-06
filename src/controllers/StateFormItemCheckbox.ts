@@ -1,7 +1,7 @@
-import { IStateFormItemCustom } from '../interfaces'
 import AbstractState from './AbstractState'
 import StateForm from './StateForm'
 import StateFormItem, { IFormChoices } from './StateFormItem'
+import { IStateFormItemCustom } from './StateFormItemCustom'
 
 export interface IStateFormItemCheckbox extends IFormChoices { }
 

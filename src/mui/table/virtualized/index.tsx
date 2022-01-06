@@ -45,8 +45,11 @@ import { RootState } from '../../../state'
 import Pagination from './pagination'
 import { postRequest } from '../../../state/net.controller'
 import TableDialog from './dialog'
-import { writeSuccess, writeError } from '../../snackbar/actions'
 import StatePage from '../../../controllers/StatePage'
+import {
+  snackbarWriteError,
+  snackbarWriteSuccess
+} from '../../../slices/snackbar.slice'
 
 const styles = ({ spacing, palette }: Theme) => createStyles({
   root: {
@@ -84,7 +87,11 @@ const styles = ({ spacing, palette }: Theme) => createStyles({
 //   linkSource: state.topLevelLinks
 // })
 
-const mapDispatchToProps = { postRequest, writeSuccess, writeError }
+const mapDispatchToProps = {
+  postRequest,
+  writeSuccess: snackbarWriteSuccess,
+  writeError: snackbarWriteError
+}
 
 interface ITableProps extends WithStyles<typeof styles> {
   // dataSource: any

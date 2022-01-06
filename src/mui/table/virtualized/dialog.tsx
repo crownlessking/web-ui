@@ -9,13 +9,13 @@ import {
   getMetaDialogShowActions, getMetaDialogOnSubmit, getMetaDialogActions
 } from './controller'
 import { IDelegated } from '../../../controllers'
-import { IStateFormItem } from '../../../interfaces'
 import Items from '../../form/items/local'
 import {
   delegatedSetState, delegatedState, safelyGet, getDudEventCallback
 } from '../../../controllers'
 import dateFormat from 'dateformat'
 import StatePage from '../../../controllers/StatePage'
+import { IStateFormItem } from '../../../controllers/StateFormItem'
 
 interface IVirtualizedDialogProps {
   open: boolean

@@ -2,14 +2,13 @@ import { Component } from 'react'
 import {
   APP_CONTENT_FORM, APP_CONTENT_WEBAPP, APP_CONTENT_VIEW, APP_CONTENT_HTML
 } from '../controllers'
-import {
-  IStatePage, IStateAllForms, IStateApp,
-} from '../interfaces'
 import Form from '../mui/form'
 import FormItems from '../mui/form/items'
 import View from './view.component'
-import StatePage from '../controllers/StatePage'
+import StatePage, { IStatePage } from '../controllers/StatePage'
 import { createStyles, withStyles, WithStyles } from '@mui/styles'
+import { IStateAllForms } from '../controllers/StateAllForms'
+import { IStateApp } from '../controllers/StateApp'
 
 const styles = () => createStyles({
   htmlContent: {

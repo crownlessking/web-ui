@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { IStateDialogForm } from '../../../interfaces'
 import { RootState } from '../../../state'
 import {
   BREAK_LINE, JSON_BUTTON, SUBMIT, HTML, JSON_SELECT, NUMBER, PASSWORD, TEXTFIELD,
@@ -24,7 +23,7 @@ import { ISingleRow, getMetaDialog } from '../../table/virtualized/controller'
 import Highlight from 'react-highlight.js'
 import '../../../styles/atelier-forest-light.css'
 import StatePage from '../../../controllers/StatePage'
-import StateDialogForm from '../../../controllers/StateDialogForm'
+import StateDialogForm, { IStateDialogForm } from '../../../controllers/StateDialogForm'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 

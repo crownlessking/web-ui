@@ -1,4 +1,4 @@
-import { IJsonapiError } from '../interfaces'
+import { IJsonapiError } from '../controllers/StateNet'
 
 /**
  * Set the error code in a Jsonapi error object.

@@ -1,5 +1,5 @@
-import { BadgeProps } from '@mui/material'
-import { IRedux } from '../interfaces'
+import { BadgeProps, SelectProps } from '@mui/material'
+import { IRedux } from '../state'
 import AbstractState from './AbstractState'
 
 /**
@@ -83,6 +83,10 @@ export interface IStateFormItemCustom<T = any> {
   theme?: any
   formControlLabelProps?: any
   inputLabelProps?: any
+}
+
+export interface IStateFormSelect extends SelectProps {
+  has?: IStateFormItemCustom
 }
 
 export default class StateFormItemCustom<P, T = any>

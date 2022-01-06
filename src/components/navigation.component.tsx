@@ -1,6 +1,6 @@
-import React from 'react'
 import AppBar from '../mui/appbar'
 import StatePage from '../controllers/StatePage'
+import ComponentBuilder from '../components'
 
 interface INavigationProps {
   def: StatePage
@@ -11,23 +11,23 @@ interface INavigationProps {
  *
  * Also updates the browser's tab title
  */
-export default class Navigation extends React.Component<INavigationProps> {
-
-  /**
-   * render
-   */
-  render() {
-    const page = this.props.def
-
-    if (page.hideAppBar) {
-      return ( null )
-    }
-
-    if (page.hasAppBar) {
-      return <AppBar def={page} />
-    }
-
+export default function Navigation ({ def: page }: INavigationProps) {
+  if (page.hideAppBar) {
     return ( null )
-  } // render() END
+  }
 
+  if (page.hasAppBar) {
+    return <AppBar def={page} />
+  }
+
+  if (page.hasCustomAppBar) {
+    return (
+      <ComponentBuilder
+        def={page.appBarCustom.items}
+        parent={page}
+      />
+    )
+  }
+
+  return ( null )
 }

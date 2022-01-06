@@ -5,9 +5,9 @@ import { topLevelLinksAdd } from '../slices/topLevelLinks.slice'
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
 import { errorsAdd } from '../slices/errors.slice'
 import { _cancelSpinner } from './app.controller'
-import { IAbstractResponse, IJsonapiResponse } from '../interfaces'
 import { RootState } from '.'
 import { netStatePatch } from '../slices/net.slice'
+import { IAbstractResponse, IJsonapiResponse } from '../controllers/StateNet'
 
 /**
  * Once the server response is received, this function can be used to process it.

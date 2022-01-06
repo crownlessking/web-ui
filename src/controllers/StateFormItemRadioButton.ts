@@ -1,7 +1,7 @@
 import AbstractState from './AbstractState'
-import { IStateFormItemCustom } from '../interfaces'
 import StateFormItemRadioCustom from './StateFormItemRadioCustom'
 import { IFormChoices } from './StateFormItem'
+import { IStateFormItemCustom } from './StateFormItemCustom'
 
 export interface IStateFormItemRadioButton extends IFormChoices { }
 

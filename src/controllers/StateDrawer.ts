@@ -1,6 +1,5 @@
 import store from '../state'
-import { IStateDrawer } from '../interfaces'
-import AbstractState from './AbstractState'
+import AbstractState, { IAbstractStateDrawer } from './AbstractState'
 import StateLink from './StateLink'
 import State from './State'
 

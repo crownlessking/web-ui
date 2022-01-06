@@ -1,11 +1,10 @@
-import { IStatePage, IStateBackground, IStateApp, IJsonapiError, IStateSnackbar } from '../interfaces'
 import { RootState } from '../state'
 import _ from 'lodash'
 import { getVal, setVal } from '.'
 import StateAllPages, { IStateAllPages } from './StateAllPages'
 import AbstractState from './AbstractState'
-import StateBackground from './StateBackground'
-import StateApp from './StateApp'
+import StateBackground, { IStateBackground } from './StateBackground'
+import StateApp, { IStateApp } from './StateApp'
 import StateDrawer, { IStateDrawer } from './StateDrawer'
 import StateAppBar, { IStateAppBar, IStateAppBarSearches } from './StateAppBar'
 import StateAllForms, { IStateAllForms } from './StateAllForms'
@@ -17,15 +16,24 @@ import StateDialog, { IStateDialog } from './StateDialog'
 import StateAllErrors from './StateAllErrors'
 import StateAllDialogs, { IStateAllDialogs } from './StateAllDialogs'
 import StatePagesData from './StatePagesData'
-import StateSnackbar from './StateSnackbar'
+import StateSnackbar, { IStateSnackbar } from './StateSnackbar'
 import StateTmp from './StateTmp'
-import StateTopLevelLinks from './StateTopLevelLinks'
-import StateNet from './StateNet'
+import StateTopLevelLinks, { IStateTopLevelLinks } from './StateTopLevelLinks'
+import StateNet, { IJsonapiError, IStateNet } from './StateNet'
+import { IStatePage } from './StatePage'
+
+/**
+ * Use when component receives its parent state
+ */
+export interface IParentState {
+  state: any
+  setState: Function
+}
 
 /**
  * Redux store (root) state
  */
- export interface IState {
+export interface IState {
   app: IStateApp
   appBar: IStateAppBar
   appBarSearches: IStateAppBarSearches
@@ -58,6 +66,14 @@ import StateNet from './StateNet'
   theme: any
   net: IStateNet
 }
+
+/**
+ * Type for state retrieved remotely.
+ *
+ * It is similar to `IState` except that properties are optional to keep
+ * the payload minimal.
+ */
+export type INetState = Partial<IState>
 
 export default class State extends AbstractState {
 

@@ -10,6 +10,7 @@ import { IStateAppBar } from './StateAppBar'
 import { IStateBackground } from './StateBackground'
 import { IStateTypography } from './StateTypography'
 import { IStateDrawer } from './StateDrawer'
+import StateComponent, { IStateComponent } from './StateComponent'
 
 /**
  * Page with content, an appbar, background, drawer... etc.
@@ -22,6 +23,8 @@ import { IStateDrawer } from './StateDrawer'
   forcedTitle?: string
   /** Page appBar */
   appBar?: IStateAppBar
+  /** Page custom appBar */
+  appBarCustom?: IStateComponent
   /** Page background */
   background?: IStateBackground
   /** Page's font color and family. */
@@ -52,6 +55,8 @@ import { IStateDrawer } from './StateDrawer'
   inherited?: string
   /** Inherits the appBar of a page that has a defined appBar. */
   appBarInherited?: string
+  /** Inherits a valid custom appbar from another page  */
+  appBarCustomInherited?: string
   /** Route of another page with a valid drawer to use. */
   drawerInherited?: string
   /** Route of another page with a valid content to use. */
@@ -95,6 +100,8 @@ export default class StatePage extends AbstractState implements IStatePage {
   private pageAppBarJson: IStateAppBar
   private pageAppBar?: StatePageAppBar
   private noPageAppBar: boolean
+  private pageAppBarCustomJson: IStateComponent
+  private pageAppBarCustom?: StateComponent<this>
   private pageDrawerJson: IStateDrawer
   private noPageDrawer: boolean
   private pageContentJson: IStatePageContent
@@ -117,6 +124,7 @@ export default class StatePage extends AbstractState implements IStatePage {
     this._pageId = this.pageJson._id
     this.noPageAppBar = !this.pageJson.appBar
     this.pageAppBarJson = StatePage.EMPTY_APPBAR // this.initPageAppBar()
+    this.pageAppBarCustomJson = {}
     this.noPageDrawer = !this.pageJson.drawer
     this.pageDrawerJson = StatePage.EMPTY_DRAWER // this.initPageDrawer()
     this.pageContentJson = this.parseContent()
@@ -151,6 +159,15 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageAppBarJson = this.initPageAppBar()
     this.pageAppBar = new StatePageAppBar(this.pageAppBarJson, this)
     return this.pageAppBar
+  }
+
+  get appBarCustom() {
+    if (this.pageAppBarCustom) {
+      return this.pageAppBarCustom
+    }
+    this.pageAppBarCustomJson = this.initPageAppBarCustom()
+    this.pageAppBarCustom = new StateComponent(this.pageAppBarCustomJson, this)
+    return this.pageAppBarCustom
   }
 
   /**
@@ -235,6 +252,12 @@ export default class StatePage extends AbstractState implements IStatePage {
     return !this.noPageAppBar
       || !!this.pageJson.appBarInherited
       || !!this.pageJson.useDefaultAppBar
+  }
+
+  /** Check if a custom appbar was defined for the current page. */
+  get hasCustomAppBar() {
+    return !!this.pageJson.appBarCustom
+      || !!this.pageJson.appBarCustomInherited
   }
 
   /**
@@ -382,6 +405,18 @@ export default class StatePage extends AbstractState implements IStatePage {
     }
 
     return StatePage.EMPTY_APPBAR
+  }
+
+  /** There's no default custom appbar but you can inherit one. */
+  private initPageAppBarCustom = (): IStateComponent => {
+    if (this.pageJson.appBarCustom) {
+      return this.pageJson.appBarCustom
+    }
+    if (this.pageJson.appBarCustomInherited) {
+      const route = this.pageJson.appBarCustomInherited
+      return this.parent.pageAt(route).json.appBarCustom || {}
+    }
+    return this.pageAppBarCustomJson
   }
 
   /**

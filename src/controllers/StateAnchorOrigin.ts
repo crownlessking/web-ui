@@ -1,6 +1,14 @@
-import { IStateAnchorOrigin } from '../interfaces'
+
 import StateSnackbar from './StateSnackbar'
 import AbstractState from './AbstractState'
+
+export type AnchorHorizontal = 'left' | 'center' | 'right'
+export type AnchorVertical = 'top' | 'bottom'
+
+export interface IStateAnchorOrigin {
+  vertical: AnchorVertical,
+  horizontal: AnchorHorizontal
+}
 
 export default class StateAnchorOrigin
     extends AbstractState implements IStateAnchorOrigin {

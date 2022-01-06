@@ -2,10 +2,10 @@ import {
   TEXTFIELD, TEXTAREA, BREAK_LINE, HTML, RADIO_BUTTONS, CHECKBOXES, SWITCH,
   JSON_SELECT,
 } from '../controller'
-import {
-  IStateFormItem, IStateFormItemCustom, IStateFormItemCheckbox
-} from '../../../interfaces'
 import { log } from '../../../controllers'
+import { IStateFormItem } from '../../../controllers/StateFormItem'
+import { IStateFormItemCustom } from '../../../controllers/StateFormItemCustom'
+import { IStateFormItemCheckbox } from '../../../controllers/StateFormItemCheckbox'
 
 /**
  * Get form field value from redux store.

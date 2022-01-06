@@ -1,5 +1,5 @@
-import { IRedux } from '../interfaces'
 import Config from '../config'
+import { IRedux } from '../state'
 import AbstractState from './AbstractState'
 import StateLink from './StateLink'
 

@@ -2,7 +2,6 @@ import AbstractState from './AbstractState'
 import State from './State'
 import StateFormItem, { IStateFormItem } from './StateFormItem'
 import { getDudEventCallback } from '.'
-import { IStateForm } from './StateForm'
 
 /**
  * Dialog base state
@@ -25,15 +24,6 @@ import { IStateForm } from './StateForm'
  */
 export interface IStateDialogLocal extends IStateDialogBase {
   items?: IStateFormItem[]
-}
-
-/**
- * Dialog state that includes a form.
- *
- * **required form state**
- */
-export interface IStateDialogForm extends IStateDialogBase, IStateForm {
-  items: IStateFormItem[]
 }
 
 /**

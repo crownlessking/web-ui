@@ -2,7 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Icon, InputAdornment } from '@mui/material'
 import { getFontAwesomeIconProp } from '../../../controllers'
-import { IAdornment } from '../../../interfaces'
+import { IAdornment } from '../../../controllers/StateFormItemCustom'
 
 interface IGetTextFieldAdornmentProps {
   startAdornment ?:IAdornment | JSX.Element

@@ -1,4 +1,4 @@
-import { IState } from '../interfaces'
+import { IState } from '../controllers/State'
 import { getGlobalVar, getHeadMetaContent } from '../controllers'
 import { orange } from '@mui/material/colors'
 import { ThemeOptions } from '@mui/material'

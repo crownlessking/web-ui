@@ -1,8 +1,6 @@
-import React from 'react'
+import { IStateDrawer } from '../controllers/StateDrawer'
 import StatePage from '../controllers/StatePage'
-import { IStateDrawer } from '../interfaces'
 import MiniDrawer from '../mui/drawer'
-
 
 let lastStateDrawer: IStateDrawer | undefined
 

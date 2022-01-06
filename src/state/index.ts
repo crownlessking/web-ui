@@ -22,6 +22,7 @@ import tmpReducer from '../slices/tmp.slice'
 import topLevelLinksReducer from '../slices/topLevelLinks.slice'
 import themeReducer from '../slices/theme.slice'
 import netReducer from '../slices/net.slice'
+import allActions from './actions'
 
 // https://redux-toolkit.js.org/usage/usage-with-typescript
 // https://redux-toolkit.js.org/api/configureStore
@@ -62,5 +63,22 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
+
+/**
+ * Ensures that callbacks for buttons, links (, and more) can access the redux
+ * store and fire all available redux actions...
+ * Even if the callback is implemented in a pure javascript file.
+ */
+ export interface IRedux {
+  store: typeof store
+  actions: typeof allActions
+
+  /**
+   * If you don't want to define a callback for your button or link,
+   * you can use the href prop to set the target page. It's value will
+   * then be passed to this route key.
+   */
+  route?: string
+}
 
 export default store
