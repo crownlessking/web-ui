@@ -293,7 +293,6 @@ window.appForms = {
         type: 'text',
         label: 'Username',
         name: 'username',
-        margin: 'normal', // material-ui margin
       },
 
       // Object defining the password field
@@ -301,7 +300,6 @@ window.appForms = {
         type: 'password',
         label: 'Password',
         name: 'password',
-        margin: 'normal',
       },
 
       // Object defining the form's submit button
