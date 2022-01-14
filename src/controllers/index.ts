@@ -24,10 +24,7 @@ export const LAYOUT_NONE = 'LAYOUT_NONE'
 
 // content types
 
-export const APP_CONTENT_FORM = '$form'
-export const APP_CONTENT_WEBAPP = '$webapp'
 export const APP_CONTENT_VIEW = '$view'
-export const APP_CONTENT_HTML = '$html'
 
 // miscellanous
 

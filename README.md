@@ -147,7 +147,7 @@ Then, import your custom javascript file:
 </html>
 ```
 
-**NOTE**: You do not need to set `appInfo.origin` unless you intend to connect to an API at a different URL address than your single-page app.  
+**NOTE**: Generally, you do not need to set `appInfo.origin` unless you intend to connect to an API at a different URL address than your single-page app.  
 `appInfo.origin` is only mentioned for the sake of completion.
 
 From here on out, we will use the custom file example.

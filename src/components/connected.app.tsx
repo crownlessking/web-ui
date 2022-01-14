@@ -70,7 +70,7 @@ class App extends Component<IAppProps> {
   componentDidMount() {
 
     // Get a page from server if none was provided.
-    if (this.pageID === StatePage.HARD_CODED_PAGE) {
+    if (this.pageID === StatePage.PAGE_HARD_CODED) {
       this.onPostReqHomePageState()
     }
   }

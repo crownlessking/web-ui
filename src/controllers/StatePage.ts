@@ -85,7 +85,7 @@ import StateComponent, { IStateComponent } from './StateComponent'
 
 export default class StatePage extends AbstractState implements IStatePage {
 
-  static HARD_CODED_PAGE = '613a6550a5cf801a95fb23c8'
+  static PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
   static EMPTY_APPBAR: IStateAppBar = { items: [] }
   static EMPTY_DRAWER: IStateDrawer = {
     items: [],
