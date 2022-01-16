@@ -8,6 +8,7 @@ import { IStateApp } from '../controllers/StateApp'
 import { APP_CONTENT_VIEW } from '../controllers'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../state'
+import { postReqState } from '../state/net.controller'
 
 const styles = () => createStyles({
   htmlContent: {
@@ -112,6 +113,7 @@ function Content (props: IContentProps) {
 
   case APP_CONTENT_FORM_LOAD:
     const dispatch = useDispatch<AppDispatch>()
+    dispatch(postReqState(page.contentEndpoint))
     currentContentJsx = contentJsx = ( null )
     break
 

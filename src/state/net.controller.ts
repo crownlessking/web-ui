@@ -158,7 +158,7 @@ export const getRequest = (
  */
 export const postReqState = (
   endpoint: string,
-  body: RequestInit['body'],
+  body?: RequestInit['body'],
   headers?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
