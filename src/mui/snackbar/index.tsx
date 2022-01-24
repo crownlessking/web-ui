@@ -91,8 +91,7 @@ interface ISnackbarProps {
 /**
  * @see https://material-ui.com/components/snackbars/
  */
-export default connect(mapStateToProps, mapDispatchToProps)
-(withStyles(styles)(class JsonSnackbar extends Component<IJsonSnackbarProps> {
+ class JsonSnackbar extends Component<IJsonSnackbarProps> {
 
   handleClick = () => {
     this.setOpen(true)
@@ -179,4 +178,9 @@ export default connect(mapStateToProps, mapDispatchToProps)
   setOpen = (val: boolean) => val ? this.props.onOpen() : this.props.onClose()
 
   snackbarClear = () => this.props.snackbarClear()
-}))
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(JsonSnackbar as any))

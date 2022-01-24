@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { Component, Fragment } from 'react'
 import { CssBaseline, Theme } from '@mui/material'
+import { connect } from 'react-redux'
 import {
   createStyles, withStyles, WithStyles
 } from '@mui/styles'
@@ -43,11 +43,7 @@ const mapDispatchToProps = {
 
 interface IAppProps extends WithStyles<typeof styles> {
   state: RootState
-  onPostReqState: (
-    endpoint: string,
-    body: RequestInit['body'],
-    headers?: RequestInit['headers']
-  ) => void
+  onPostReqState: typeof mapDispatchToProps['onPostReqState']
 }
 
 /**
@@ -84,7 +80,7 @@ class App extends Component<IAppProps> {
     page.setTabTitle()
 
     return (
-      <React.Fragment>
+      <Fragment>
         <Background def={page.background} />
         <div className={classes.root}>
           <CssBaseline />
@@ -97,7 +93,7 @@ class App extends Component<IAppProps> {
         <Dialog pageDef={page} />
         <Snackbar />
         <Spinner />
-      </React.Fragment>
+      </Fragment>
     )
   }
 
@@ -106,4 +102,4 @@ class App extends Component<IAppProps> {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(App))
+)(withStyles(styles)(App as any))

@@ -51,6 +51,7 @@ function Content (props: IContentProps) {
 
   const type = page.contentType.toLowerCase()
   let contentJsx: JSX.Element | null
+  const dispatch = useDispatch<AppDispatch>()
 
   switch (type) {
 
@@ -112,7 +113,6 @@ function Content (props: IContentProps) {
     break // END of APP_CONTENT_HTML ----------------------------------------
 
   case APP_CONTENT_FORM_LOAD:
-    const dispatch = useDispatch<AppDispatch>()
     dispatch(postReqState(page.contentEndpoint))
     currentContentJsx = contentJsx = ( null )
     break

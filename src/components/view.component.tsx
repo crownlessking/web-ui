@@ -1,4 +1,3 @@
-import Table from '../mui/table/virtualized'
 import SuccessPage from './pages/success'
 import PageNotFound from './pages/pagenotfound'
 import StatePage from '../controllers/StatePage'
@@ -9,7 +8,7 @@ export default function View ({ def: page }: { def: StatePage }) {
   switch (view) {
 
   case 'TABLEVIEW':
-    return <Table def={page} />
+    throw new Error('Not implemented yet.')
 
   case 'SUCCESS_PAGEVIEW':
     return <SuccessPage def={page} />

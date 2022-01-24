@@ -131,7 +131,7 @@ export default class State extends AbstractState {
   /**
    * Chain-access to app definition.
    */
-  get app() {
+  get app(): StateApp {
     return this.storeApp
       || (this.storeApp = new StateApp(
           this.storeJson.app,

@@ -277,10 +277,7 @@ class ResponsiveDialog extends React.Component<IResponsiveDialogProps> {
 
 } // END class ResponsiveDialog
 
-export default connect(mapStateToProps, mapDispachToProps)
-(
-  withStyles(styles)
-  (
-    ResponsiveDialog
-  )
-)
+export default connect(
+  mapStateToProps,
+  mapDispachToProps
+)(withStyles(styles)(ResponsiveDialog as any))
