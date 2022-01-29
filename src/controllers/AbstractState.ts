@@ -1,5 +1,10 @@
 import { IStateLink } from './StateLink'
 
+export interface IAbstractState {
+  /** Spreadable props */
+  [props: string]: any
+}
+
 export interface IAbstractStateDrawer {
   /** List of icons with the descriptions */
   items?: IStateLink[],
