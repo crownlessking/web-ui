@@ -28,8 +28,14 @@ import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
 import { AppDispatch } from '../../../state'
+import StateFormItem from '../../../controllers/StateFormItem'
 
-const RecursiveFormItems = ({ form }: { form: StateForm }) => {
+interface IRecursiveFormBuilder {
+  form: StateForm
+  items?: StateFormItem['items']
+}
+
+const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
   const dispatch = useDispatch<AppDispatch>()
 
   /** Saves the form field value to the store. */
@@ -130,7 +136,7 @@ const RecursiveFormItems = ({ form }: { form: StateForm }) => {
 
   return (
     <Fragment>
-      {form.items.map((item, i) => {
+      {(items || form.items).map((item, i) => {
         switch (item.typeCheckingName()) {
         case HTML:
           return (
@@ -196,7 +202,7 @@ const RecursiveFormItems = ({ form }: { form: StateForm }) => {
         case INDETERMINATE:
           return (
             <FormItemGroup key={i} def={item}>
-              <RecursiveFormItems key={`rif-${i}`} form={form} />
+              <RecursiveFormItems key={`rif-${i}`} form={form} items={item.items} />
             </FormItemGroup>
           )
         case FORM_LABEL:

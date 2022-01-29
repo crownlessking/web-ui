@@ -32,6 +32,7 @@ export default function FormItemGroup (
       </Box>
     )
   case STACK:
+    console.log(item.props)
     return (
       <Stack className={classes.json} {...item.props}>
         { children }

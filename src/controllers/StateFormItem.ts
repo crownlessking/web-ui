@@ -43,6 +43,7 @@ export default class StateFormItem<P = StateForm, T = any>
   protected itemDisabled: boolean
   protected itemOnClick?: (redux: IRedux) => (e: any) => void
   protected itemOnChange?: Function
+  protected recursiveItems?: StateFormItem<P, T>[]
 
   constructor(itemJson: IStateFormItem, parent: P) {
     super()
@@ -115,6 +116,19 @@ export default class StateFormItem<P = StateForm, T = any>
   /** Used with a textfield. */
   get inputProps() {
     return this.itemJson.inputProps || {}
+  }
+  /** Must return undefined if not defined. */
+  get items(): StateFormItem<P, T>[] | undefined {
+    if (this.recursiveItems) {
+      return this.recursiveItems
+    }
+    if (this.itemJson.items) {
+      this.recursiveItems = (this.itemJson.items as IStateFormItem[]).map(
+        item => new StateFormItem(item, this.parentObj)
+      )
+      return this.recursiveItems
+    }
+    return undefined
   }
 
   /** Set form field `onClick` attribute */
