@@ -5,8 +5,7 @@ import { topLevelLinksAdd } from '../slices/topLevelLinks.slice'
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
 import { errorsAdd } from '../slices/errors.slice'
 import { _cancelSpinner } from './app.controller'
-import { RootState } from '.'
-import { netStatePatch } from '../slices/net.slice'
+import { netPatchState, RootState } from '.'
 import { IAbstractResponse, IJsonapiResponse } from '../controllers/StateNet'
 
 /**
@@ -64,7 +63,7 @@ export default function runDefaultDriver (
 
   // This if-condition handles redux state loaded from the server (remote).
   if (doc.state) {
-    dispatch(netStatePatch(doc.state))
+    dispatch(netPatchState(doc.state))
   }
 
   if (!!(doc.meta || doc.data || doc.links || doc.state)) {

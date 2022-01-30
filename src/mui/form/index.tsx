@@ -10,11 +10,11 @@ interface IJsonFormProps {
 }
 
 function ConditionalPaper (
-  { show: showPaper, children }:{ show: boolean, children: any }
+  { form, children }:{ form: StateForm, children: any }
 ) {
-  if (showPaper) {
+  if (form.paperBackground) {
     return (
-      <Paper>
+      <Paper {...form.paperProps}>
         { children }
       </Paper>
     )
@@ -38,7 +38,7 @@ export default function JsonForm (
   default:
   case 'default':
     return (
-      <ConditionalPaper show={form.paperBackground}>
+      <ConditionalPaper form={form}>
         <Box
           className={classes.json}
           {...form.props}
@@ -49,7 +49,7 @@ export default function JsonForm (
     )
   case 'stack':
     return (
-      <ConditionalPaper show={form.paperBackground}>
+      <ConditionalPaper form={form}>
         <Stack {...form.props}>
           { children }
         </Stack>

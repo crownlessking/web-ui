@@ -39,6 +39,7 @@ export default class StateForm extends AbstractState implements IStateForm {
     delete props.paperBackground
     delete props.type
     delete props.theme
+    delete props.paperProps
     return {
       autoComplete: 'off',
       component: 'form',
@@ -71,6 +72,10 @@ export default class StateForm extends AbstractState implements IStateForm {
 
   get endpoint() {
     return this.ePoint || ''
+  }
+
+  get paperProps() {
+    return this.formJson.paperProps
   }
 
   set endpoint(endpoint: string) {

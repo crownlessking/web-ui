@@ -4,18 +4,11 @@ import { errorsAdd } from '../slices/errors.slice'
 import { toJsonapiError } from './errors.controller'
 import { _cancelSpinner, _scheduleSpinner } from './app.controller'
 import runDefaultDriver from './default.driver.net.c'
-import runGnscDriver from './gnsc.driver.net.c'
 import { appRequestFailed, appRequestStart, appRequestSuccess } from '../slices/app.slice'
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
 import { RootState } from '.'
 import { IAbstractResponse } from '../controllers/StateNet'
-
-// Response identification constants ------------------------------------------
-
-const DRIVER_GNSC_RESPONSE = 'geniuscove'
-
-// ----------------------------------------------------------------------------
 
 const DEFAULT_POST_PAYLOAD: RequestInit = {
   method: 'post',
@@ -67,13 +60,9 @@ const delegateDataHandling = (
   // We need to apply the right drivers to the JSON response
   try {
     switch (json.driver) {
-      case DRIVER_GNSC_RESPONSE:
-        runGnscDriver(dispatch, endpoint, json)
-        break
       default:
         runDefaultDriver(dispatch, getState, endpoint, json)
     }
-    return
   } catch (e) {
     const jsonApiError = toJsonapiError(e)
     dispatch(errorsAdd(jsonApiError))

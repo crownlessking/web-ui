@@ -1,68 +1,45 @@
 import { createSlice } from '@reduxjs/toolkit'
 import initialState from '../state/initial.state'
-import Config from '../config'
-
-/**
- * Merges fragment state received from server into the current redux state.
- *
- * @param state current redux state
- * @param fragment fragment state received from server
- *
- * @returns void
- *
- * [TODO] Write a unit test for this function
- */
- function netStateMerge(state: any, fragment: any) {
-  try {
-    for (const prop in fragment) {
-      const newStateVal = fragment[prop]
-
-      switch (typeof newStateVal) {
-
-      case 'object':
-        if (newStateVal === null) continue
-
-        if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
-          state[prop] = { ...state[prop] }
-          netStateMerge(state[prop], newStateVal)
-        } else {
-
-          // arrays are never deeply copied
-          state[prop] = [ ...newStateVal ]
-        }
-
-        break
-
-      case 'symbol':
-      case 'bigint':
-      case 'number':
-      case 'function':
-      case 'boolean':
-        state[prop] = newStateVal
-        break
-      case 'string':
-        state[prop] = newStateVal
-        break
-      } // END switch
-
-    }
-  } catch (e: any) {
-    if (Config.DEBUG) console.error(e.stack)
-  }
-
-}
 
 export const netSlice = createSlice({
   name: 'net',
   initialState: initialState.net,
   reducers: {
-    netStatePatch: (state, action) => {
-      netStateMerge(state, action.payload)
+    netClear: state => {
+      state.csrfTokenName = undefined
+      state.csrfTokenMethod = undefined
+      state.csrfToken = undefined
+      state.headers = undefined
     },
+    netSet: (state, { payload }) => {
+      state.csrfTokenName = payload.csrfTokenName
+      state.csrfTokenMethod = payload.csrfTokenMethod
+      state.csrfToken = payload.csrfToken
+      state.headers = payload.headers
+    },
+    netSetCsrfTokenName: (state, action) => {
+      state.csrfTokenName = action.payload
+    },
+    netSetCsrfTokenMethod: (state, action) => {
+      state.csrfTokenMethod = action.payload
+    },
+    netSetCsrfToken: (state, action) => {
+      state.csrfToken = action.payload
+    },
+    netSetHeaders: (state, action) => {
+      state.headers = action.payload
+    }
   }
 })
 
 export const netActions = netSlice.actions
-export const { netStatePatch } = netSlice.actions
+export const {
+  netSet,
+  netClear,
+  netSetCsrfToken,
+  netSetCsrfTokenMethod,
+  netSetCsrfTokenName,
+  netSetHeaders
+} = netSlice.actions
 
 export default netSlice.reducer
