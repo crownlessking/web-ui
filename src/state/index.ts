@@ -105,6 +105,7 @@ const appReducer = combineReducers({
   typography: typographyReducer,
 })
 
+// https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
 const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_PATCH_STATE) {

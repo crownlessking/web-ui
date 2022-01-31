@@ -1,6 +1,4 @@
-import {
-  defaultCallback, dummyCallback, err, getVal
-} from '.'
+import { dummyCallback, err, getVal } from '.'
 import AbstractState, { IAbstractState } from './AbstractState'
 import StateForm from './StateForm'
 import {
@@ -97,10 +95,12 @@ export default class StateFormItem<P = StateForm, T = any>
   /** Get form field `onClick` value. */
   get onClick() {
     return this.itemOnClick
-      || (this.itemOnClick = this.itemJson.onClick || defaultCallback)
+      || (
+        this.itemOnClick = this.itemJson.onClick || dummyCallback
+      )
   }
   get hasNoOnClickCallback() {
-    return !!this.itemJson.onClick
+    return !this.itemJson.onClick
   }
   get hasNoOnChangeCallback() {
     return !!this.itemJson.onChange
@@ -108,7 +108,9 @@ export default class StateFormItem<P = StateForm, T = any>
   /** Callback to run on 'onChange' event. */
   get onChange() {
     return this.itemOnChange
-      || (this.itemOnChange = this.itemJson.onChange || dummyCallback)
+      || (
+        this.itemOnChange = this.itemJson.onChange || dummyCallback
+      )
   }
   get disabled() { return this.itemDisabled }
   get label(): string { return this.itemJson.label || '' }

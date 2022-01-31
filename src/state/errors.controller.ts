@@ -1,3 +1,4 @@
+import { mongoObjectId } from '../controllers'
 import { IJsonapiError } from '../controllers/StateNet'
 
 /**
@@ -35,7 +36,7 @@ export function setDateErrorCode(error: IJsonapiError) {
  */
 export function toJsonapiError(error: any): IJsonapiError {
   return {
-    code: Date.now().toString(),
+    code: mongoObjectId(),
     title: error.message,
     detail: error.stack
   }

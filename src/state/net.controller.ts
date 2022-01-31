@@ -37,7 +37,10 @@ const delegateErrorHandling = (dispatch: Dispatch, error: any) => {
 
   if (error) {
     const jsonapiError = toJsonapiError(error)
-    dispatch(errorsAdd(jsonapiError))
+    dispatch(errorsAdd({
+      id: jsonapiError.code,
+      error: jsonapiError
+    }))
   }
 
   _cancelSpinner()

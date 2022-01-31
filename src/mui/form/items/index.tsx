@@ -148,8 +148,8 @@ const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
           )
         case SUBMIT:
           item.onClick = item.hasNoOnClickCallback
-            ? onFormSubmitDefault(form)
-            : item.onClick
+          ? onFormSubmitDefault(form)
+          : item.onClick
           return <JsonButton key={i} def={item} />
         case JSON_BUTTON:
           return <JsonButton key={i} def={item} />

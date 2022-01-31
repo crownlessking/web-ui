@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState'
 import State from './State'
-import Config from '../config'
+import { log } from '.'
 
 export default class StateFormsData extends AbstractState {
   
@@ -33,9 +33,7 @@ export default class StateFormsData extends AbstractState {
 
       // TODO Implement logic to save error and view it later
 
-      if (Config.DEBUG) {
-        console.log(e.stack)
-      }
+      log(e.stack)
     }
   }
 
