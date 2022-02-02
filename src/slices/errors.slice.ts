@@ -6,15 +6,15 @@ export const errorsSlice = createSlice({
   initialState: initialState.errors,
   reducers: {
     errorsAdd: (state, action) => {
-      const { id, error } = action.payload
-      state[id] = error
+      state.push(action.payload)
     },
     errorsRemove: (state, action) => {
-      delete state[action.payload]
+      // [TODO] Implement logic to remove an error element
+      throw new Error('Not implemented yet.')
     },
     errorsClear: (state) => {
-      for (const prop in state) {
-        delete state[prop]
+      while(state.length > 0) {
+        state.pop()
       }
     },
   }

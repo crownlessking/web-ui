@@ -59,7 +59,7 @@ class App extends Component<IAppProps> {
 
     if (this.root && key) {
       const headers = this.root.net.headers
-      this.props.onPostReqState(key, '', headers)
+      this.props.onPostReqState(key, {}, headers)
     }
   }
 

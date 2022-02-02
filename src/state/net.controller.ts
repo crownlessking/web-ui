@@ -4,20 +4,23 @@ import { errorsAdd } from '../slices/errors.slice'
 import { toJsonapiError } from './errors.controller'
 import { _cancelSpinner, _scheduleSpinner } from './app.controller'
 import runDefaultDriver from './default.driver.net.c'
-import { appRequestFailed, appRequestStart, appRequestSuccess } from '../slices/app.slice'
+import {
+  appHideSpinner, appRequestEnd, appRequestFailed, appRequestStart, appRequestSuccess
+} from '../slices/app.slice'
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
 import { RootState } from '.'
 import { IAbstractResponse } from '../controllers/StateNet'
 
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options
+ */
 const DEFAULT_POST_PAYLOAD: RequestInit = {
   method: 'post',
   headers: {
-    'Accept': 'application/json',
     'Content-Type': 'application/json',
-    // 'Access-Control-Allow-Origin': '*'
   },
-  body: {} as RequestInit['body'] // the raw data will be store in this property
+  body: {} as RequestInit['body']
 }
 
 /**
@@ -36,14 +39,10 @@ const delegateErrorHandling = (dispatch: Dispatch, error: any) => {
   dispatch(appRequestFailed())
 
   if (error) {
-    const jsonapiError = toJsonapiError(error)
-    dispatch(errorsAdd({
-      id: jsonapiError.code,
-      error: jsonapiError
-    }))
+    dispatch(errorsAdd(toJsonapiError(error)))
   }
 
-  _cancelSpinner()
+  dispatch(appHideSpinner())
 }
 
 /**
@@ -150,7 +149,7 @@ export const getRequest = (
  */
 export const postReqState = (
   endpoint: string,
-  body?: RequestInit['body'],
+  body?: any,
   headers?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -166,7 +165,7 @@ export const postReqState = (
       )
       const response = await fetch(
         url,
-        { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
+        { ...DEFAULT_POST_PAYLOAD, body: JSON.stringify(body) }
       )
       const json = await response.json()
       delegateDataHandling(dispatch, getState, endpoint, json)

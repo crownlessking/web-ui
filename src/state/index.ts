@@ -24,7 +24,7 @@ import topLevelLinksReducer from '../slices/topLevelLinks.slice'
 import themeReducer from '../slices/theme.slice'
 import netReducer from '../slices/net.slice'
 import allActions from './actions'
-import Config from '../config'
+import { err } from '../controllers'
 
 export const NET_PATCH_STATE = 'NET_PATCH_STATE'
 export const netPatchState = (stateFragment: any) => ({
@@ -42,7 +42,8 @@ export const netPatchState = (stateFragment: any) => ({
  *
  * [TODO] Write a unit test for this function
  */
-function netPatchStateReducer(state: any, fragment: any) {
+function netPatchStateReducer(oldState: any, fragment: any) {
+  const state = { ...oldState }
   try {
     for (const prop in fragment) {
       const newStateVal = fragment[prop]
@@ -53,8 +54,7 @@ function netPatchStateReducer(state: any, fragment: any) {
         if (newStateVal === null) continue
 
         if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
-          state[prop] = { ...state[prop] }
-          netPatchStateReducer(state[prop], newStateVal)
+          state[prop] = netPatchStateReducer(state[prop], newStateVal)
         } else {
 
           // arrays are never deeply copied
@@ -77,9 +77,10 @@ function netPatchStateReducer(state: any, fragment: any) {
 
     }
   } catch (e: any) {
-    if (Config.DEBUG) console.error(e.stack)
+    err(e.stack)
   }
 
+  return state
 }
 
 const appReducer = combineReducers({
@@ -109,9 +110,8 @@ const appReducer = combineReducers({
 const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_PATCH_STATE) {
-    netPatchStateReducer(state, action.payload)
-
-    return appReducer(state, action)
+    const newState = netPatchStateReducer(state, action.payload)
+    return appReducer(newState, action)
   }
 
   return appReducer(state, action)

@@ -3,7 +3,7 @@ import State from './State'
 import { log } from '.'
 
 export default class StateFormsData extends AbstractState {
-  
+
   private formsDataJson: any
   private parentObj: State
 
@@ -17,6 +17,7 @@ export default class StateFormsData extends AbstractState {
   get parent() { return this.parentObj }
   get props() { throw new Error('Not implemented yet.') }
   get theme() { throw new Error('Not implemented yet.') }
+
   /**
    * Get form field value from redux store.
    *
