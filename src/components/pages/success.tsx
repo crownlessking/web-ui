@@ -5,7 +5,7 @@ import { getPageName } from '../../controllers'
 
 const useStyles = makeStyles(() => ({
   resultSymbol: {
-    fontSize: '300px'
+    fontSize: '29.5rem !important'
   },
   messageDiv: {
     width: '100%',

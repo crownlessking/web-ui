@@ -15,7 +15,6 @@ import {
   FORM_LABEL, FORM_HELPER_TEXT, BOX, STACK, LOCALIZED, FORM_GROUP,
   FORM_CONTROL, FORM_CONTROL_LABEL, INDETERMINATE, INPUT_LABEL, ICON
 } from '../controller'
-import store from '../../../state'
 import { postReqState } from '../../../state/net.controller'
 import { getProps, updateCheckboxes } from './controller'
 import {

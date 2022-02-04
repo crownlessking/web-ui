@@ -4,7 +4,6 @@ import { metaAdd } from '../slices/meta.slice'
 import { topLevelLinksAdd } from '../slices/topLevelLinks.slice'
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
 import { errorsAdd } from '../slices/errors.slice'
-import { _cancelSpinner } from './app.controller'
 import { netPatchState, RootState } from '.'
 import { IAbstractResponse, IJsonapiResponse } from '../controllers/StateNet'
 
