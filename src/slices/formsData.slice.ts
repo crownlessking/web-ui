@@ -21,6 +21,7 @@ export const formsDataSlice = createSlice({
       state[formName] = state[formName] || {}
       state[formName][name] = value
     },
+    /** pass the form name */
     formsDataClear: (state, action) => {
       delete state[action.payload]
     },

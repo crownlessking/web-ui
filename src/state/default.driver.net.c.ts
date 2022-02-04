@@ -17,7 +17,6 @@ export default function runDefaultDriver (
   endpoint: string,
   json: IAbstractResponse
 ) {
-  _cancelSpinner()
   const doc = json as IJsonapiResponse
 
   if (doc.meta) {

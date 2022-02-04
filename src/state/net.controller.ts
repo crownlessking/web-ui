@@ -5,7 +5,7 @@ import { toJsonapiError } from './errors.controller'
 import { _cancelSpinner, _scheduleSpinner } from './app.controller'
 import runDefaultDriver from './default.driver.net.c'
 import {
-  appHideSpinner, appRequestEnd, appRequestFailed, appRequestStart, appRequestSuccess
+  appHideSpinner, appRequestFailed, appRequestStart, appRequestSuccess
 } from '../slices/app.slice'
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
@@ -58,6 +58,7 @@ const delegateDataHandling = (
   endpoint: string,
   json: IAbstractResponse
 ) => {
+  _cancelSpinner()
 
   // We need to apply the right drivers to the JSON response
   try {
@@ -66,10 +67,8 @@ const delegateDataHandling = (
         runDefaultDriver(dispatch, getState, endpoint, json)
     }
   } catch (e) {
-    const jsonApiError = toJsonapiError(e)
-    dispatch(errorsAdd(jsonApiError))
+    dispatch(errorsAdd(toJsonapiError(e)))
   }
-
 }
 
 /**

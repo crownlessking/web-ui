@@ -29,6 +29,7 @@ import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
 import { AppDispatch } from '../../../state'
 import StateFormItem from '../../../controllers/StateFormItem'
+import { formsDataClear } from '../../../slices/formsData.slice'
 
 interface IRecursiveFormBuilder {
   form: StateForm
@@ -131,7 +132,10 @@ const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
     e.preventDefault()
     const formsData = form.parent.parent.formsData
     const body = formsData.getStoredValues(form.name)
-    store.dispatch(postReqState(form.endpoint, body))
+    if (body) {
+      dispatch(postReqState(form.endpoint, body))
+      dispatch(formsDataClear(form.name))
+    }
   }
 
   return (
