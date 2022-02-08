@@ -1,10 +1,6 @@
 import AbstractState from './AbstractState'
+import IStateTopLevelLinks from './interfaces/IStateTopLevelLinks'
 import State from './State'
-import { IJsonapiPaginationLinks } from './StateNet'
-
-export interface IStateTopLevelLinks {
-  [endpoint: string]: IJsonapiPaginationLinks
-}
 
 export default class StateTopLevelLinks extends AbstractState {
 

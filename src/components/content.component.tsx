@@ -1,14 +1,15 @@
 import Form from '../mui/form'
 import FormItems from '../mui/form/items'
 import View from './view.component'
-import StatePage, { IStatePage } from '../controllers/StatePage'
+import StatePage from '../controllers/StatePage'
 import { createStyles, withStyles, WithStyles } from '@mui/styles'
-import { IStateAllForms } from '../controllers/StateAllForms'
-import { IStateApp } from '../controllers/StateApp'
 import { APP_CONTENT_VIEW } from '../controllers'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../state'
 import { postReqState } from '../state/net.controller'
+import IStateApp from '../controllers/interfaces/IStateApp'
+import IStateAllForms from '../controllers/interfaces/IStateAllForms'
+import IStatePage from '../controllers/interfaces/IStatePage'
 
 const styles = () => createStyles({
   htmlContent: {

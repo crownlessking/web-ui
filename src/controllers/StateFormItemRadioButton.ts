@@ -1,9 +1,7 @@
 import AbstractState from './AbstractState'
+import { IStateFormItemRadioButton } from './interfaces/IFormChoices'
+import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
 import StateFormItemRadioCustom from './StateFormItemRadioCustom'
-import { IFormChoices } from './StateFormItem'
-import { IStateFormItemCustom } from './StateFormItemCustom'
-
-export interface IStateFormItemRadioButton extends IFormChoices { }
 
 /**
  * If a set of radio buttons is a *single form item (`StateFormItemRadio`) then

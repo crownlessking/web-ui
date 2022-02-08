@@ -3,9 +3,9 @@ import {
   JSON_SELECT,
 } from '../controller'
 import { log } from '../../../controllers'
-import { IStateFormItem } from '../../../controllers/StateFormItem'
-import { IStateFormItemCustom } from '../../../controllers/StateFormItemCustom'
 import { IStateFormItemCheckbox } from '../../../controllers/StateFormItemCheckbox'
+import IStateFormItem from '../../../controllers/interfaces/IStateFormItem'
+import IStateFormItemCustom from '../../../controllers/interfaces/IStateFormItemCustom'
 
 /**
  * Get form field value from redux store.

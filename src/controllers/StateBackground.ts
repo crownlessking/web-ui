@@ -1,15 +1,6 @@
-import AbstractState, { IAbstractState } from './AbstractState'
+import AbstractState from './AbstractState'
+import IStateBackground from './interfaces/IStateBackground'
 import State from './State'
-
-/**
- * Background color, image, gradient... etc. Any valid CSS background.
- */
- export interface IStateBackground extends IAbstractState {
-  /** The background type. */
-  type: 'none' | 'color' | 'gradient' | 'image'
-  /** Any valid CSS value for the background property. */
-  value?: string | number
-}
 
 export default class StateBackground<P = State>
   extends AbstractState implements IStateBackground {

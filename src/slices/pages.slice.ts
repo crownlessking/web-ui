@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IStatePage } from '../controllers/StatePage'
+import IStatePage from '../controllers/interfaces/IStatePage'
 import initialState from '../state/initial.state'
 
 export interface IPagesArgs {

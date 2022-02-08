@@ -1,9 +1,9 @@
-import { IState } from '../controllers/State'
 import { getGlobalVar, getHeadMetaContent } from '../controllers'
 import { orange } from '@mui/material/colors'
 import { ThemeOptions } from '@mui/material'
 import _ from 'lodash'
 import StatePage from '../controllers/StatePage'
+import IState from '../controllers/interfaces/IState'
 
 /** Allows you to rename global variables to prevent conflicts. */
 const GLOBAL_PREFIX = getHeadMetaContent('web-ui') || 'app'

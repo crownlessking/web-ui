@@ -1,21 +1,9 @@
 import AbstractState from './AbstractState'
 import State from './State'
-import StateFormItem, { IStateFormItem } from './StateFormItem'
+import StateFormItem from './StateFormItem'
 import { getDudEventCallback } from '.'
-
-/**
- * Dialog base state
- */
- export interface IStateDialogBase {
-  title?: string
-  label?: string
-  contentType?: 'form' | 'any'
-  contentText?: string
-  content?: any
-  actions?: IStateFormItem[] // for defining the dialog actions
-  showActions?: boolean
-  onSubmit?: () => void
-}
+import IStateDialogBase from './interfaces/IStateDialogBase'
+import IStateFormItem from './interfaces/IStateFormItem'
 
 /**
  * Dialog locale state

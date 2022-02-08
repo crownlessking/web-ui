@@ -1,16 +1,6 @@
 import StatePage from './StatePage'
-import StateForm, { IStateForm } from './StateForm'
-import { IStateDialogBase } from './StateDialog'
-import { IStateFormItem } from './StateFormItem'
-
-/**
- * Dialog state that includes a form.
- *
- * **required form state**
- */
- export interface IStateDialogForm extends IStateDialogBase, IStateForm {
-  items: IStateFormItem[]
-}
+import StateForm from './StateForm'
+import IStateDialogForm from './interfaces/IStateDialogForm'
 
 export default class StateDialogForm extends StateForm implements IStateDialogForm {
 

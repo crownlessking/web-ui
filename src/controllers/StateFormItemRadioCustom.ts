@@ -1,6 +1,6 @@
+import { IStateFormItemRadioButton } from './interfaces/IFormChoices'
 import StateFormItemCustom from './StateFormItemCustom'
 import StateFormItemRadio from './StateFormItemRadio'
-import { IStateFormItemRadioButton } from './StateFormItemRadioButton'
 
 /**
  * A custom version of the `StateFormItemCustom` class defined to be used with

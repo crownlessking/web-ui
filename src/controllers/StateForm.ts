@@ -1,18 +1,7 @@
 import StateAllForms from './StateAllForms'
-import AbstractState, { IAbstractState } from './AbstractState'
-import StateFormItem, { IStateFormItem } from './StateFormItem'
-
-/**
- * Form with a list of fields and optional background.
- */
- export interface IStateForm extends IAbstractState {
-  /** List of field states. e.g. textfield, select, radio... etc. */
-  items: IStateFormItem[]
-  /** Whether the generated form should have a paper background or not. */
-  paperBackground?: boolean
-  /** Switch layout effects */
-  type?: 'stack' | 'default'
-}
+import AbstractState from './AbstractState'
+import StateFormItem from './StateFormItem'
+import IStateForm from './interfaces/IStateForm'
 
 export default class StateForm extends AbstractState implements IStateForm {
 

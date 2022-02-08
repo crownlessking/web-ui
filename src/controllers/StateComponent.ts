@@ -1,9 +1,5 @@
-import AbstractState, { IAbstractState } from './AbstractState'
-
-export interface IStateComponent extends IAbstractState {
-  type?: string
-  items?: IStateComponent
-}
+import AbstractState from './AbstractState'
+import IStateComponent from './interfaces/IStateComponent'
 
 export default class StateComponent<P = any>
   extends AbstractState

@@ -1,7 +1,8 @@
 import store from '../state'
-import AbstractState, { IAbstractStateDrawer } from './AbstractState'
+import AbstractState from './AbstractState'
 import StateLink from './StateLink'
 import State from './State'
+import IAbstractStateDrawer from './interfaces/IAbstracStateDrawer'
 
 /** Default drawer state. Contains icons and descriptions. */
 export type IStateDrawer = Required<IAbstractStateDrawer>

@@ -10,7 +10,7 @@ import {
 import { getEndpoint, getOriginEndingFixed } from '../controllers'
 import _ from 'lodash'
 import { RootState } from '.'
-import { IAbstractResponse } from '../controllers/StateNet'
+import { IAbstractResponse } from '../controllers/interfaces/IStateNet'
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options

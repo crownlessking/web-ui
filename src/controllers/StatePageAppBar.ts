@@ -1,4 +1,5 @@
-import StateAppBar, { IStateAppBar } from './StateAppBar'
+import IStateAppBar from './interfaces/IStateAppBar'
+import StateAppBar from './StateAppBar'
 import StatePage from './StatePage'
 import StatePageAppBarBackground from './StatePageAppBarBackground'
 import StatePageAppBarTypography from './StatePageAppBarTypography'

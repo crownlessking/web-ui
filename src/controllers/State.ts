@@ -1,26 +1,27 @@
 import { RootState } from '../state'
 import _ from 'lodash'
 import { getVal, setVal } from '.'
-import StateAllPages, { IStateAllPages } from './StateAllPages'
+import StateAllPages from './StateAllPages'
 import AbstractState from './AbstractState'
-import StateBackground, { IStateBackground } from './StateBackground'
-import StateApp, { IStateApp } from './StateApp'
-import StateDrawer, { IStateDrawer } from './StateDrawer'
-import StateAppBar, { IStateAppBar, IStateAppBarSearches } from './StateAppBar'
-import StateAllForms, { IStateAllForms } from './StateAllForms'
+import StateBackground from './StateBackground'
+import StateApp from './StateApp'
+import StateDrawer from './StateDrawer'
+import StateAppBar from './StateAppBar'
+import StateAllForms from './StateAllForms'
 import StateFormsData from './StateFormsData'
 import StateMeta from './StateMeta'
-import StateTypography, { IStateTypography } from './StateTypography'
+import StateTypography from './StateTypography'
 import StateData from './StateData'
-import StateDialog, { IStateDialog } from './StateDialog'
+import StateDialog from './StateDialog'
 import StateAllErrors from './StateAllErrors'
-import StateAllDialogs, { IStateAllDialogs } from './StateAllDialogs'
+import StateAllDialogs from './StateAllDialogs'
 import StatePagesData from './StatePagesData'
-import StateSnackbar, { IStateSnackbar } from './StateSnackbar'
+import StateSnackbar from './StateSnackbar'
 import StateTmp from './StateTmp'
-import StateTopLevelLinks, { IStateTopLevelLinks } from './StateTopLevelLinks'
-import StateNet, { IJsonapiError, IStateNet } from './StateNet'
-import { IStatePage } from './StatePage'
+import StateTopLevelLinks from './StateTopLevelLinks'
+import StateNet from './StateNet'
+import IStatePage from './interfaces/IStatePage'
+import IStateBackground from './interfaces/IStateBackground'
 
 /**
  * Use when component receives its parent state
@@ -29,51 +30,6 @@ export interface IParentState {
   state: any
   setState: Function
 }
-
-/**
- * Redux store (root) state
- */
-export interface IState {
-  app: IStateApp
-  appBar: IStateAppBar
-  appBarSearches: IStateAppBarSearches
-  background: IStateBackground
-  typography: IStateTypography
-  data: any
-  dialog: IStateDialog
-  dialogs: IStateAllDialogs
-  drawer: IStateDrawer
-  errors: IJsonapiError[]
-  forms: IStateAllForms
-  formsData: any
-  meta: any
-  pages: IStateAllPages
-  pagesData: any
-  snackbar: IStateSnackbar
-  /**
-   * Holds temporary data.
-   *
-   * The data must be volatile. As in, if it is retrieved, it must be removed.
-   * The key names are similar to those found in other state objects. e.g.
-   * If temporary data is stored for a page, the key name should end with `Page`.
-   * i.e. `userPage` is a valid key. Or `newUserForm` is a valid one too. The
-   * `suffix` `Form` indicates that the temporary data is stored for a form and
-   * when the `newUserForm` accesses this data, it will be removed.
-   */
-  tmp: { [prop: string]: any }
-  topLevelLinks: IStateTopLevelLinks
-  /** Material-ui `ThemeOptions` */
-  theme: any
-  net: IStateNet
-}
-
-/**
- * Type for state retrieved remotely.
- *
- * It is similar to `IState` except that properties are optional to keep
- * the payload minimal.
- */
-export type INetState = Partial<IState>
 
 export default class State extends AbstractState {
 

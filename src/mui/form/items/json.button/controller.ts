@@ -2,7 +2,7 @@
  * Controller file
  */
 import { ButtonProps } from '@mui/material/Button'
-import { IStateFormItem } from '../../../../controllers/StateFormItem'
+import IStateFormItem from '../../../../controllers/interfaces/IStateFormItem'
 
 /**
  * Converts to a valid `props` object for a _material-ui_ button.

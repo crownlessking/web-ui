@@ -1,14 +1,9 @@
 import { DEFAULT_LANDING_PAGE, DEFAULT_PAGE_NOT_FOUND, log } from '.'
 import AbstractState from './AbstractState'
+import IStateAllPages from './interfaces/IStateAllPages'
+import IStatePage from './interfaces/IStatePage'
 import State from './State'
-import StatePage, { IStatePage } from './StatePage'
-
-/**
- * Contains all page states.
- */
- export interface IStateAllPages {
-  [prop: string]: IStatePage
-}
+import StatePage from './StatePage'
 
 export default class StateAllPages extends AbstractState {
 

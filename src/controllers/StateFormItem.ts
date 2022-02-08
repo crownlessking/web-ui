@@ -1,39 +1,19 @@
 import { dummyCallback, err, getVal } from '.'
-import AbstractState, { IAbstractState } from './AbstractState'
+import AbstractState from './AbstractState'
 import StateForm from './StateForm'
 import {
   HTML, SUBMIT, JSON_BUTTON, BREAK_LINE, FORM_LABEL, FORM_HELPER_TEXT, BOX,
   FORM_CONTROL, FORM_CONTROL_LABEL, FORM_GROUP, INDETERMINATE, LOCALIZED,
   STACK
 } from '../mui/form/controller'
-import StateFormItemCustom, { IStateFormItemCustom } from './StateFormItemCustom'
-import { RadioProps } from '@mui/material'
+import StateFormItemCustom from './StateFormItemCustom'
 import { IRedux } from '../state'
-
-export interface IStateFormItem extends IAbstractState {
-  /** Form field type e.g. textfield, select, radio... etc. */
-  type: string
-  /** Form field `id` */
-  id?: string
-  /** Form field `name` */
-  name?: string
-  /** Form field `value` */
-  value?: any
-  /** Contains members that are generally not `JSX.Element` props. */
-  has?: IStateFormItemCustom
-}
-
-export interface IFormChoices {
-  value: string
-  label?: string
-  color?: RadioProps['color']
-  disabled?: boolean
-  has?: IStateFormItemCustom
-}
+import IStateFormItem from './interfaces/IStateFormItem'
+import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
 
 export default class StateFormItem<P = StateForm, T = any>
-    extends AbstractState implements IStateFormItem {
-
+  extends AbstractState implements IStateFormItem
+{
   protected itemJson: IStateFormItem
   protected parentObj: P
   protected itemHasJson: IStateFormItemCustom<T>

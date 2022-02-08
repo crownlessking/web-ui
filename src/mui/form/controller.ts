@@ -1,4 +1,4 @@
-import { IStateDialogForm } from '../../controllers/StateDialogForm'
+import IStateDialogForm from "../../controllers/interfaces/IStateDialogForm"
 
 export const BREAK_LINE = 'BR' // 'br'
 export const BOOL_ONOFF = 'BOOL_ONOFF'

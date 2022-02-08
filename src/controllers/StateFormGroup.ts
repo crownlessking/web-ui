@@ -1,9 +1,6 @@
+import IStateFormItemGroup from './interfaces/IStateFormItemGroup'
 import StateForm from './StateForm'
-import StateFormItem, { IStateFormItem } from './StateFormItem'
-
-export interface IStateFormItemGroup extends IStateFormItem {
-  items ?:IStateFormItem[]
-}
+import StateFormItem from './StateFormItem'
 
 export default class StateFormItemGroup
   extends StateFormItem implements IStateFormItemGroup

@@ -9,10 +9,10 @@ import ErrorIcon from '@mui/icons-material/Error'
 import InfoIcon from '@mui/icons-material/Info'
 import { amber, green } from '@mui/material/colors'
 import { connect } from 'react-redux'
-import { IStateSnackbar } from '../../controllers/StateSnackbar'
 import { RootState } from '../../state'
 import { snackbarOpen, snackbarClose, snackbarClear } from '../../slices/snackbar.slice'
-import { IStateAnchorOrigin } from '../../controllers/StateAnchorOrigin'
+import IStateAnchorOrigin from '../../controllers/interfaces/IStateAnchorOrigin'
+import IStateSnackbar from '../../controllers/interfaces/IStateSnackbar'
 
 const variantIcon = {
   success: CheckCircleIcon,
