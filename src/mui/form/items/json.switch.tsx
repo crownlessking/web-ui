@@ -1,5 +1,6 @@
 import {
-  FormControl, FormLabel, FormGroup, FormControlLabel, Switch, FormHelperText
+  FormControl, FormLabel, FormGroup, FormControlLabel, Switch, FormHelperText,
+  TextField
 } from '@mui/material'
 import { getBoolValue } from '../controller'
 import { RadioProps } from '@mui/material/Radio'
@@ -8,6 +9,7 @@ import { getStoredValue, getLocallyStoredValue } from './controller'
 import { connect } from 'react-redux'
 import StateFormItem from '../../../controllers/StateFormItem'
 import { IParentState } from '../../../controllers/State'
+import { FIELD_NAME_NOT_SET } from '../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
@@ -34,7 +36,7 @@ function JsonSwitch ({ def, formsData, state }: IJsonSwitchProps) {
     return getStoredValue(formsData, def.parent.name, def.name)
     || getValueFromParent()
   }
-  return (
+  return name ? (
     <FormControl component="fieldset">
       <FormLabel component="legend">&nbsp;</FormLabel>
       <FormGroup>
@@ -54,6 +56,8 @@ function JsonSwitch ({ def, formsData, state }: IJsonSwitchProps) {
       </FormGroup>
       <FormHelperText>{has.text || ' '}</FormHelperText>
     </FormControl>
+  ) : (
+    <TextField value={`SWITCH ${FIELD_NAME_NOT_SET}`} disabled />
   )
 
 })

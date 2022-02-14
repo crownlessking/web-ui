@@ -1,57 +1,59 @@
-import React, { Component } from 'react'
+import { Fragment } from 'react'
 import {
   LAYOUT_NONE,
   LAYOUT_DEFAULT,
   LAYOUT_CENTERED,
   LAYOUT_CENTERED_NO_SCROLL,
-  LAYOUT_TABLE_VIRTUALIZED
+  LAYOUT_TABLE_VIRTUALIZED,
+  log
 } from '../controllers'
 import {
   LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout,
   DefaultLayoutToolbared
 } from '../mui/layouts'
 import StatePage from '../controllers/StatePage'
+import { errorsAdd } from '../slices/errors.slice'
+import { toJsonapiError } from '../state/errors.controller'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../state'
+
+interface ILayoutProps {
+  def: StatePage
+  children: any
+}
+
+interface ILayoutTable {
+  [constant: string]: () => JSX.Element
+}
 
 /**
  * Application layout
  */
-export default class Layout extends Component<{ def: StatePage }> {
+export default function Layout ({ def: page, children }: ILayoutProps) {
+  const dispatch = useDispatch<AppDispatch>()
 
-  render() {
-    const { children, def: page } = this.props
-
-    switch (page.layout) {
-
-    case LAYOUT_CENTERED_NO_SCROLL:
-      return (
-        <LayoutCenteredNoScroll>
-          { children }
-        </LayoutCenteredNoScroll>
-      )
-
-    case LAYOUT_CENTERED:
-      return (
-        <LayoutCentered>
-          { children }
-        </LayoutCentered>
-      )
-
-    case LAYOUT_DEFAULT:
-      return (
-        <DefaultLayout>
-          { children }
-        </DefaultLayout>
-      )
-
-    case LAYOUT_TABLE_VIRTUALIZED:
-      return (
-        <VirtualizedTableLayout>
-          { children }
-        </VirtualizedTableLayout>
-      )
-
-    case LAYOUT_NONE:
-    default:
+  const layoutTable: ILayoutTable = {
+    [LAYOUT_CENTERED_NO_SCROLL]: () => (
+      <LayoutCenteredNoScroll>
+        { children }
+      </LayoutCenteredNoScroll>
+    ),
+    [LAYOUT_CENTERED]: () => (
+      <LayoutCentered>
+        { children }
+      </LayoutCentered>
+    ),
+    [LAYOUT_DEFAULT]: () => (
+      <DefaultLayout>
+        { children }
+      </DefaultLayout>
+    ),
+    [LAYOUT_TABLE_VIRTUALIZED]: () => (
+      <VirtualizedTableLayout>
+        { children }
+      </VirtualizedTableLayout>
+    ),
+    [LAYOUT_NONE]: () => {
       if (page.hasAppBar) {
         return (
           <DefaultLayoutToolbared>
@@ -60,14 +62,28 @@ export default class Layout extends Component<{ def: StatePage }> {
         )
       }
       return (
-        <React.Fragment>
+        <Fragment>
           { children }
-        </React.Fragment>
+        </Fragment>
       )
+    },
 
     // TODO Add cases here for different types of layout
-
-    }
   }
 
+  try {
+    const constant = page.layout.replace(/\s+/, '').toUpperCase()
+    if (constant) {
+      return layoutTable[constant]()
+    }
+    return (
+      <Fragment>
+        { children }
+      </Fragment>
+    )
+  } catch (e: any) {
+    dispatch(errorsAdd(toJsonapiError(e)))
+    log(e.message)
+  }
+  return ( null )
 }

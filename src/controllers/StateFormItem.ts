@@ -113,6 +113,34 @@ export default class StateFormItem<P = StateForm, T = any>
     return undefined
   }
 
+  /**
+   * Some form items require `name` to be defined.
+   */
+   get nameProvided() {
+    if (this.itemJson.name) {
+      return true
+    }
+    switch (this.itemJson.type.toUpperCase()) {
+      case HTML:
+      case SUBMIT:
+      case JSON_BUTTON:
+      case BREAK_LINE:
+      case FORM_LABEL:
+      case FORM_HELPER_TEXT:
+      case BOX:
+      case STACK:
+      case LOCALIZED:
+      case FORM_GROUP:
+      case FORM_CONTROL:
+      case FORM_CONTROL_LABEL:
+      case INDETERMINATE:
+        return true
+    }
+    err('`formItem.name` is NOT defined.')
+
+    return false
+  }
+
   /** Set form field `onClick` attribute */
   set onClick(cb: (redux: IRedux) => (e: any) => void) {
     this.itemOnClick = cb
@@ -131,6 +159,8 @@ export default class StateFormItem<P = StateForm, T = any>
   * missing. However, not all defined form items are fields. If the name is
   * missing from one of those definitions, the application should not throw an
   * exception.
+  *
+  * @deprecated
   */
   typeCheckingName = () => {
     const type = this.itemJson.type.toUpperCase()

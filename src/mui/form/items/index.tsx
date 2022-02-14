@@ -22,20 +22,31 @@ import {
 } from '../controller'
 import setFormDefaultValues from './defaultvalues'
 import StateForm from '../../../controllers/StateForm'
+import StateFormItem from '../../../controllers/StateFormItem'
 import FormItemGroup from '../group'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
 import { AppDispatch } from '../../../state'
-import StateFormItem from '../../../controllers/StateFormItem'
 import { formsDataClear } from '../../../slices/formsData.slice'
+import { errorsAdd } from '../../../slices/errors.slice'
+import { toJsonapiError } from '../../../state/errors.controller'
+import { log } from '../../../controllers'
 
 interface IRecursiveFormBuilder {
   form: StateForm
   items?: StateFormItem['items']
 }
 
+interface IItemTable {
+  [constant: string]: (
+    item: StateFormItem,
+    key?: string | number
+  ) => JSX.Element | JSX.Element[]
+}
+
 const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
+
   const dispatch = useDispatch<AppDispatch>()
 
   /** Saves the form field value to the store. */
@@ -137,92 +148,118 @@ const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
     }
   }
 
+  const textItem = (item: StateFormItem, key?: string|number) => {
+    item.onChange = onUpdateFormData(form)
+    return <JsonTextfield key={key} def={item} />
+  }
+
+  const dateTimePickerItem = (item: StateFormItem, key?: string|number) => {
+    item.onChange = onUpdateFormDatetime(form)
+    return <JsonPicker key={key} def={item} />
+  }
+
+  const groupItem = (item: StateFormItem, key?: string|number) => (
+    <FormItemGroup key={key} def={item}>
+      <RecursiveFormItems key={`rif-${key}`} form={form} items={item.items} />
+    </FormItemGroup>
+  )
+
+  const itemsTable: IItemTable = {
+    [HTML]: (item: StateFormItem, key?: string | number) => (
+      <div
+        key={key}
+        dangerouslySetInnerHTML={{__html: item.has.content}}
+        {...getProps(item.json, ['value','type'])}
+      />
+    ),
+    [SUBMIT]: (item: StateFormItem, key?: string | number) => {
+      item.onClick = item.hasNoOnClickCallback
+        ? onFormSubmitDefault(form)
+        : item.onClick
+        return <JsonButton key={key} def={item} />
+    },
+    [JSON_BUTTON]: (item: StateFormItem, key?: string | number) => (
+      <JsonButton key={key} def={item} />
+    ),
+    [BREAK_LINE]: (_item: StateFormItem, key?: string|number) => <br key={key} />,
+    [JSON_SELECT]: (item: StateFormItem, key?: string|number) => {
+      item.onChange = onUpdateFormData(form)
+      return (
+        <JsonSelect
+          key={key}
+          def={new StateFormItemSelect(
+            item.json, item.parent
+          )}
+        />
+      )
+    },
+    [TEXT]: textItem,
+    [NUMBER]: textItem,
+    [PASSWORD]: textItem,
+    [TEXTFIELD]: textItem,
+    [TEXTAREA]: textItem,
+    [RADIO_BUTTONS]: (item: StateFormItem, key?: string|number) => {
+      item.onChange = onUpdateFormData(form)
+      return (
+        <JsonRadio
+          key={key}
+          def={new StateFormItemRadio(item.json, item.parent)}
+        />
+      )
+    },
+    [CHECKBOXES]: (item: StateFormItem, key?: string|number) => {
+      item.onChange = onHandleCheckbox(form)
+      return <JsonCheckboxes key={key} def={item} />
+    },
+    [SWITCH]: (item: StateFormItem, key?: string|number) => {
+      item.onChange = onHandleSwitch(form)
+      return <JsonSwitch key={key} def={item} />
+    },
+    [STATIC_DATE_PICKER]: dateTimePickerItem,
+    [DESKTOP_DATE_PICKER]: dateTimePickerItem,
+    [MOBILE_DATE_PICKER]: dateTimePickerItem,
+    [TIME_PICKER]: dateTimePickerItem,
+    [DATE_TIME_PICKER]: dateTimePickerItem,
+    [BOX]: groupItem,
+    [STACK]: groupItem,
+    [LOCALIZED]: groupItem,
+    [FORM_GROUP]: groupItem,
+    [FORM_CONTROL]: groupItem,
+    [FORM_CONTROL_LABEL]: groupItem,
+    [INDETERMINATE]: groupItem,
+    [FORM_LABEL]: (item: StateFormItem, key?: string|number) => (
+      <FormLabel {...item.props} key={key}>{ item.text }</FormLabel>
+    ),
+    [FORM_HELPER_TEXT]: (item: StateFormItem, key?: string|number) => (
+      <FormHelperText key={key}>{ item.text }</FormHelperText>
+    ),
+    [INPUT_LABEL]: (item: StateFormItem, key?: string|number) => (
+      <InputLabel key={key}>{ item.text }</InputLabel>
+    ),
+    [ICON]: (item: StateFormItem, key?: string|number) => (
+      <JsonIcon key={key} def={item} />
+    )
+  }
+
   return (
     <Fragment>
       {(items || form.items).map((item, i) => {
-        switch (item.typeCheckingName()) {
-        case HTML:
-          return (
-            <div
-              key={i}
-              dangerouslySetInnerHTML={{__html: item.has.content}}
-              {...getProps(item.json, ['value','type'])}
-            />
-          )
-        case SUBMIT:
-          item.onClick = item.hasNoOnClickCallback
-          ? onFormSubmitDefault(form)
-          : item.onClick
-          return <JsonButton key={i} def={item} />
-        case JSON_BUTTON:
-          return <JsonButton key={i} def={item} />
-        case BREAK_LINE:
-          return <br key={i} />
-        case JSON_SELECT:
-          item.onChange = onUpdateFormData(form)
-          return (
-            <JsonSelect
-              key={i}
-              def={new StateFormItemSelect(
-                item.json, item.parent
-              )}
-            />
-          )
-        case NUMBER:
-        case PASSWORD:
-        case TEXT:
-        case TEXTFIELD:
-        case TEXTAREA:
-          item.onChange = onUpdateFormData(form)
-          return <JsonTextfield key={i} def={item} />
-        case RADIO_BUTTONS:
-          item.onChange = onUpdateFormData(form)
-          return (
-            <JsonRadio
-              key={i}
-              def={new StateFormItemRadio(item.json, item.parent)}
-            />
-          )
-        case CHECKBOXES:
-          item.onChange = onHandleCheckbox(form)
-          return <JsonCheckboxes key={i} def={item} />
-        case SWITCH:
-          item.onChange = onHandleSwitch(form)
-          return <JsonSwitch key={i} def={item} />
-        case STATIC_DATE_PICKER:
-        case DESKTOP_DATE_PICKER:
-        case MOBILE_DATE_PICKER:
-        case TIME_PICKER:
-        case DATE_TIME_PICKER:
-          item.onChange = onUpdateFormDatetime(form)
-          return <JsonPicker key={i} def={item} />
-        case BOX:
-        case STACK:
-        case LOCALIZED:
-        case FORM_GROUP:
-        case FORM_CONTROL:
-        case FORM_CONTROL_LABEL:
-        case INDETERMINATE:
-          return (
-            <FormItemGroup key={i} def={item}>
-              <RecursiveFormItems key={`rif-${i}`} form={form} items={item.items} />
-            </FormItemGroup>
-          )
-        case FORM_LABEL:
-          return <FormLabel {...item.props}>{ item.text }</FormLabel>
-        case FORM_HELPER_TEXT:
-          return <FormHelperText>{ item.text }</FormHelperText>
-        case INPUT_LABEL:
-          return <InputLabel>{ item.text }</InputLabel>
-        case ICON:
-          return <JsonIcon key={i} def={item} />
-        } // switch END
+        try {
+          return itemsTable[item.type.toUpperCase()](item, i)
+        } catch (e: any) {
+          const message = `Form item type (${item.type}) does not exist.`
+          dispatch(errorsAdd(toJsonapiError({
+            message,
+            stack: e.stack
+          })))
+          log(message)
 
-        return ( null )
+          return <div>!❌!</div>
+        }
       })}
     </Fragment>
   )
-} // RecursiveFormItems END
+}
 
 export default function FormItems ({ def: form }:{ def: StateForm }) {
 

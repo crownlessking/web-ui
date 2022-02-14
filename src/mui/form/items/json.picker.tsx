@@ -1,8 +1,8 @@
 import { alpha, TextField, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { getStoredValue, getLocallyStoredValue } from './controller'
-import { connect } from 'react-redux'
-import { RootState } from '../../../state'
+import { connect, useDispatch } from 'react-redux'
+import { AppDispatch, RootState } from '../../../state'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import {
@@ -14,6 +14,9 @@ import {
   STATIC_DATE_PICKER, TIME_PICKER
 } from '../controller'
 import ThemeParser from '../../../controllers/ThemeParser'
+import { errorsAdd } from '../../../slices/errors.slice'
+import { toJsonapiError } from '../../../state/errors.controller'
+import { FIELD_NAME_NOT_SET, log } from '../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
@@ -30,10 +33,22 @@ interface IJsonPickerProps {
   state?: IParentState
 }
 
+interface IPickerTableCallback {
+  classes: any,
+  props: any,
+  value: any,
+  name: string
+}
+
+interface IPickerTable {
+  [constant: string]: (picker: IPickerTableCallback) => JSX.Element
+}
+
 export default connect(mapStateToProps)(
 
 function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
   const parse = new ThemeParser({ alpha }).getParser()
+  const dispatch = useDispatch<AppDispatch>()
   const classes = makeStyles((theme: Theme) =>({
     json: parse(theme, def.theme)
   }))()
@@ -51,88 +66,71 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
   const value = getValue()
   // json.format = json.format || 'MM/dd/yyyy'
 
-  switch (type) {
-  case DATE_TIME_PICKER:
-    return (
+  const pickerTable: IPickerTable = {
+    [DATE_TIME_PICKER]:(picker: IPickerTableCallback) => (
       <DateTimePicker
-        className={classes.json}
+        className={picker.classes.json}
         label="Date&Time picker"
-        {...props}
-        value={value}
-        onChange={onChange(name)}
+        {...picker.props}
+        value={picker.value}
+        onChange={onChange(picker.name)}
         renderInput={(params) => <TextField {...params} />}
       />
-    )
-  case DESKTOP_DATE_PICKER:
-    return (
+    ),
+    [DESKTOP_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <DesktopDatePicker
-        className={classes.json}
+        className={picker.classes.json}
         label="Date desktop"
         inputFormat="MM/dd/yyyy"
-        {...props}
-        value={value}
-        onChange={onChange(name)}
+        {...picker.props}
+        value={picker.value}
+        onChange={onChange(picker.name)}
         renderInput={(params) => <TextField {...params} />}
       />
-    )
-  case MOBILE_DATE_PICKER:
-    return (
+    ),
+    [MOBILE_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <MobileDatePicker
-        className={classes.json}
+        className={picker.classes.json}
         label="Date mobile"
         inputFormat="MM/dd/yyyy"
-        {...props}
-        value={value}
-        onChange={onChange(name)}
+        {...picker.props}
+        value={picker.value}
+        onChange={onChange(picker.name)}
         renderInput={(params) => <TextField {...params} />}
       />
-    )
-  case TIME_PICKER:
-    return (
+    ),
+    [TIME_PICKER]:(picker: IPickerTableCallback) => (
       <TimePicker
-        className={classes.json}
+        className={picker.classes.json}
         label="Time"
-        {...props}
-        value={value}
-        onChange={onChange(name)}
+        {...picker.props}
+        value={picker.value}
+        onChange={onChange(picker.name)}
         renderInput={(params) => <TextField {...params} />}
       />
-    )
-  case STATIC_DATE_PICKER:
-    return (
+    ),
+    [STATIC_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <StaticDatePicker
-        className={classes.json}
+        className={picker.classes.json}
         displayStaticWrapperAs="desktop"
         openTo="year"
-        {...props}
-        value={value}
-        onChange={onChange(name)}
+        {...picker.props}
+        value={picker.value}
+        onChange={onChange(picker.name)}
         renderInput={(params) => <TextField {...params} />}
       />
-    )
-  default:
-    return ( null )
+    ),
   }
 
+  try {
+    const constant = type.replace(/\s+/,'').toUpperCase()
+    return def.nameProvided
+      ? pickerTable[constant]({classes, props, value, name})
+      : <TextField value={`PICKER ${FIELD_NAME_NOT_SET}`} disabled />
+  } catch (e: any) {
+    dispatch(errorsAdd(toJsonapiError(e)))
+    log(e.message)
+  }
 
-  // return (
-  //   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-  //     <DatePicker
-  //       className={classes.field}
-  //       label='Date'
-  //       id={`date-${def.id}`}
-  //       value={value}
-  //       onChange={onChange(name)}
-  //     />
-  //     <TimePicker
-  //       className={classes.field}
-  //       label='Time'
-  //       id={`time-${def.id}`}
-  //       value={value}
-  //       onChange={onChange(name)}
-  //       format='h:mm a'
-  //     />
-  //   </MuiPickersUtilsProvider>
-  // )
-
+  return ( null )
 })

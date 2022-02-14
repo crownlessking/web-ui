@@ -8,6 +8,7 @@ import { RootState } from '../../../state'
 import getTextFieldAdornment from './json.input.adornment'
 import ThemeParser from '../../../controllers/ThemeParser'
 import StateFormItem from '../../../controllers/StateFormItem'
+import { FIELD_NAME_NOT_SET } from '../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
@@ -53,7 +54,7 @@ function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProp
   )
 
   const value = getValue()
-  return (
+  return textfield.name ? (
     <TextField
       className={classes.json}
       {...props}
@@ -61,6 +62,14 @@ function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProp
       value={value}
       onChange={textfield.onChange(textfield.name)}
       InputProps={getTextFieldAdornment(textfield.inputProps)}
+    />
+  ) : (
+    <TextField
+      className={classes.json}
+      {...props}
+      value={FIELD_NAME_NOT_SET}
+      InputProps={getTextFieldAdornment(textfield.inputProps)}
+      disabled
     />
   )
 

@@ -1,6 +1,8 @@
 import store from '../../../state'
 import {
-  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, JSON_SELECT, TEXT
+  TEXTFIELD, TEXTAREA, RADIO_BUTTONS, SWITCH, NUMBER, JSON_SELECT, TEXT,
+  DATE_TIME_PICKER, STATIC_DATE_PICKER, MOBILE_DATE_PICKER, DESKTOP_DATE_PICKER,
+  TIME_PICKER
 } from '../controller'
 import {
   formsDataUpdate, IFormsDataArgs
@@ -42,7 +44,10 @@ function noFormDataExist (formName: string, name?: string) {
  * @param formName 
  */
 function _setDefaultValue(field: StateFormItem, formName: string) {
-  if (noFormDataExist(formName, field.name) && field.has.defaultValue) {
+  if (field.has.defaultValue
+    && field.name
+    && noFormDataExist(formName, field.name)
+  ) {
     const { type, name, has: { defaultValue : value } } = field
     switch (type.toUpperCase()) {
 
@@ -55,6 +60,11 @@ function _setDefaultValue(field: StateFormItem, formName: string) {
     case TEXT:
     case RADIO_BUTTONS:
     case SWITCH:
+    case STATIC_DATE_PICKER:
+    case DESKTOP_DATE_PICKER:
+    case MOBILE_DATE_PICKER:
+    case TIME_PICKER:
+    case DATE_TIME_PICKER:
       saveFormData({formName, name, value})
       break
 

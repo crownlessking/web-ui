@@ -1,11 +1,14 @@
 import { Fragment } from 'react'
-import { FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
+import {
+  FormLabel, RadioGroup, FormControlLabel, Radio, TextField
+} from '@mui/material'
 import {
   getProps, getStoredValue, getLocallyStoredValue
 } from '../controller'
 import { RootState } from '../../../../state'
 import { connect } from 'react-redux'
 import StateFormItemRadio from '../../../../controllers/StateFormItemRadio'
+import { FIELD_NAME_NOT_SET } from '../../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData
@@ -35,45 +38,49 @@ function JsonRadio ({ def: radio, formsData, state }: IJsonRadioProps) {
     || getValueFromParent()
   }
   const currentValue = getValue()
-  return radio.hasLabel
-    ? (
-      <Fragment>
-        <FormLabel component="legend">
-          { radio.text }
-          &nbsp;
-        </FormLabel>
-        <RadioGroup
-          {...getProps(radio.json)}
-          aria-label={radio.text}
-          onChange={radio.onChange(radio.name)}
-        >
+  return radio.nameProvided
+    ? (radio.hasLabel
+      ? (
+        <Fragment>
+          <FormLabel component="legend">
+            { radio.text }
+            &nbsp;
+          </FormLabel>
+          <RadioGroup
+            {...getProps(radio.json)}
+            aria-label={radio.text}
+            onChange={radio.onChange(radio.name)}
+          >
+            {radio.has.items.map((radioButton, i) => (
+              <FormControlLabel
+                {...radioButton.formControlLabelProps}
+                key={i}
+                value={radioButton.value}
+                control={
+                  <Radio
+                    {...radioButton.props}
+                    color={radioButton.json.color}
+                  />
+                }
+                label={radioButton.label}
+                checked={radioButton.value === currentValue}
+                disabled={radioButton.disabled}
+              />
+            ))}
+          </RadioGroup>
+        </Fragment>
+      ) : (
+        <Fragment>
           {radio.has.items.map((radioButton, i) => (
-            <FormControlLabel
-              {...radioButton.formControlLabelProps}
-              key={i}
-              value={radioButton.value}
-              control={
-                <Radio
-                  {...radioButton.props}
-                  color={radioButton.json.color}
-                />
-              }
-              label={radioButton.label}
-              checked={radioButton.value === currentValue}
-              disabled={radioButton.disabled}
+            <Radio
+              {...radioButton.props}
+              key={`radio-button-${i}`}
+              color={radioButton.json.color}
             />
           ))}
-        </RadioGroup>
-      </Fragment>
+        </Fragment>
+      )
     ) : (
-      <Fragment>
-        {radio.has.items.map((radioButton, i) => (
-          <Radio
-            {...radioButton.props}
-            key={`radio-button-${i}`}
-            color={radioButton.json.color}
-          />
-        ))}
-      </Fragment>
+      <TextField value={`RADIO ${FIELD_NAME_NOT_SET}`} disabled />
     )
 })

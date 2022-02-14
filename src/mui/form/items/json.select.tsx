@@ -1,9 +1,10 @@
-import { InputLabel, Select } from '@mui/material'
+import { InputLabel, Select, TextField } from '@mui/material'
 import { getStoredValue, getLocallyStoredValue } from './controller'
 import { RootState } from '../../../state'
 import { connect } from 'react-redux'
 import { Fragment } from 'react'
 import StateFormItemSelect from '../../../controllers/StateFormItemSelect'
+import { FIELD_NAME_NOT_SET } from '../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData,
@@ -36,7 +37,7 @@ function JsonSelect ({ def: select, formsData, state }: IJsonSelectProps) {
     || getValueFromParent()
   }
 
-  return (
+  return name ? (
     <Fragment>
       <InputLabel
         {...select.inputLabelProps}
@@ -60,5 +61,7 @@ function JsonSelect ({ def: select, formsData, state }: IJsonSelectProps) {
         ))}
       </Select>
     </Fragment>
+  ) : (
+    <TextField value={`SELECT ${FIELD_NAME_NOT_SET}`} disabled />
   )
 })

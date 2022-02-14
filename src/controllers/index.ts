@@ -32,6 +32,10 @@ export const DEFAULT_LANDING_PAGE = 'default-landing'
 export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
 export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
 
+// messages
+
+export const FIELD_NAME_NOT_SET = 'FIELD NAME NOT SET!'
+
 /**
  * Sometimes, you don't want a hard crash. Sometimes, you want a simple
  * console print out.
