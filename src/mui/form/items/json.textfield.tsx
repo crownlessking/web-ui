@@ -8,7 +8,7 @@ import { RootState } from '../../../state'
 import getTextFieldAdornment from './json.input.adornment'
 import ThemeParser from '../../../controllers/ThemeParser'
 import StateFormItem from '../../../controllers/StateFormItem'
-import { FIELD_NAME_NOT_SET } from '../../../controllers'
+import { err, FIELD_NAME_NOT_SET } from '../../../controllers'
 
 const mapStateToProps = (state: RootState) => ({
   formsData: state.formsData

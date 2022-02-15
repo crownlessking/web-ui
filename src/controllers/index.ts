@@ -1,7 +1,9 @@
 import Config from '../config'
-import { IRedux } from '../state'
+import { IRedux, RootState } from '../state'
 import AbstractState from './AbstractState'
 import StateLink from './StateLink'
+
+export type TCallback = (e: any) => void
 
 /**
  * A way of delegating data handling to sub or dumb components.
@@ -11,6 +13,11 @@ import StateLink from './StateLink'
   setState?: (state: any) => void // parent component's setState()
   data?: any, // additional data the parent component wants to pass to the
   // child
+}
+
+export interface IViewportSize {
+  width: number
+  height: number
 }
 
 // layouts
@@ -40,7 +47,7 @@ export const FIELD_NAME_NOT_SET = 'FIELD NAME NOT SET!'
  * Sometimes, you don't want a hard crash. Sometimes, you want a simple
  * console print out.
  */
-export function log(message: string) {
+export function log(message: string): void {
   if (Config.DEBUG) {
     console.log(message)
   }
@@ -50,7 +57,7 @@ export function log(message: string) {
  * A simple shortcut for triggering exceptions and preventing unecessarily
  * inflated code blocks.
  */
-export function err(message?: string) {
+export function err(message?: string): void {
   if (Config.DEBUG) {
     throw new Error (message)
   }
@@ -63,7 +70,7 @@ export function err(message?: string) {
  *
  * @param name 
  */
- export function getPageName(name: string) {
+ export function getPageName(name: string): string {
   return name + 'Page'
 }
 
@@ -71,7 +78,7 @@ export function err(message?: string) {
  * If a callback is required for a link or button but is not defined, then this
  * method will provide a dummy one.
  */
-export function getDudEventCallback () {
+export function getDudEventCallback (): TCallback {
   return (e: any) => { }
 }
 
@@ -79,7 +86,7 @@ export function getDudEventCallback () {
  * If a callback is required for a link or button but is not defined, then this
  * method will provide a dummy one.
  */
-export function dummyCallback (redux: IRedux) {
+export function dummyCallback (redux: IRedux): TCallback {
   return (e: any) => { }
 }
 
@@ -89,7 +96,7 @@ export function dummyCallback (redux: IRedux) {
  *
  * The app page will be updated based on the URL change triggered by the link.
  */
-export function defaultCallback ({store, actions, route}:IRedux) {
+export function defaultCallback ({store, actions, route}:IRedux): TCallback {
   return (e: any) => {
     if (route) {
       store.dispatch(actions.appUrlPageUpdate(route))
@@ -103,7 +110,7 @@ export function defaultCallback ({store, actions, route}:IRedux) {
  * @param delegation 
  * @param key 
  */
-export function delegatedState(delegation: IDelegated, key?: string) {
+export function delegatedState(delegation: IDelegated, key?: string): any {
   try {
     if (key) {
       return delegation.state[key]
@@ -121,7 +128,7 @@ export function delegatedState(delegation: IDelegated, key?: string) {
  *
  * @param delegation
  */
-export function delegatedSetState(delegation: IDelegated) {
+export function delegatedSetState(delegation: IDelegated): (state: any) => void {
   return delegation.setState || getDudEventCallback()
 }
 
@@ -177,7 +184,7 @@ export function getFontAwesomeIconProp(iconDef: string): string[]|string {
  * @param array 
  * @param key 
  */
-export function arrayToEntities(array: any[], key: string) {
+export function arrayToEntities(array: any[], key: string): any {
   if (key in array[0]) {
     const object: any = {}
     for (const obj of array) {
@@ -194,7 +201,7 @@ export function arrayToEntities(array: any[], key: string) {
  * Creedit:
  * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
  */
-export function getViewportSize()
+export function getViewportSize(): IViewportSize
 {
   let e: any = window, a = 'inner'
   if ( !( 'innerWidth' in window ) ) {
@@ -213,7 +220,7 @@ export function getViewportSize()
  *               e.g. How much space do you want between the bottom of the
  *                    viewport and your element
  */
-export function stretchToBottom(bottom: number) {
+export function stretchToBottom(bottom: number): number {
   const height = getViewportSize().height
 
   return height - bottom
@@ -227,7 +234,7 @@ export function stretchToBottom(bottom: number) {
  *
  * @param uri
  */
-export function getUriQuery(uri: string) {
+export function getUriQuery(uri: string): string {
   const i = uri.indexOf('?')
   if (i > 3) {
     return uri.substring(i)
@@ -240,7 +247,7 @@ export function getUriQuery(uri: string) {
  *
  * @param str 
  */
-export function trimSlashes(str: string) {
+export function trimSlashes(str: string): string {
   let s = str
   while(s.charAt(0) === '/' || s.charAt(0) === '\\')
   {
@@ -263,7 +270,7 @@ export function trimSlashes(str: string) {
  *
  * @param pathname 
  */
-export function getEndpoint(pathname: string) {
+export function getEndpoint(pathname: string): string {
   let pname = trimSlashes(pathname);
   const argsIndex = pathname.indexOf('?')
   if (argsIndex >= 0) {
@@ -292,7 +299,7 @@ export function getEndpoint(pathname: string) {
  * @param obj 
  * @param path dot-separated object (nested) keys
  */
-export function getVal(obj: any, path: string) {
+export function getVal(obj: any, path: string): any {
   const paths = path.split('.')
   let i = 0,
     key = paths[i],
@@ -319,7 +326,7 @@ export function getVal(obj: any, path: string) {
  * @param prop new property name of object
  * @param val the value at that object property
  */
-const createWritableProperty = (data: any, prop: string, val: any) => {
+const createWritableProperty = (data: any, prop: string, val: any): void => {
   Object.defineProperty(data, prop, {
     value: val,
     writable: true
@@ -336,7 +343,7 @@ const createWritableProperty = (data: any, prop: string, val: any) => {
  *
  * @todo NOT TESTED, please test
  */
-export function setVal(obj: any, path: string, val: any) {
+export function setVal(obj: any, path: string, val: any): void {
   const propArray = path.split('.')
   let o = obj,
       candidate: any,
@@ -372,7 +379,7 @@ export function setVal(obj: any, path: string, val: any) {
  * @returns object or throws an exception
  * @throws an exception if the global variable name is invalid.
  */
-export function getGlobalVar(varName: string) {
+export function getGlobalVar(varName: string): any {
   try {
     return window[varName]
   } catch (e: any) {
@@ -387,7 +394,7 @@ export function getGlobalVar(varName: string) {
  * @param name 
  * @returns 
  */
-export function getHeadMetaContent(name: string) {
+export function getHeadMetaContent(name: string): string {
   const meta = document.querySelector(`meta[name="${name}"]`)
 
   if (meta) {
@@ -415,7 +422,7 @@ export function getHeadMetaContent(name: string) {
  *
  * @param route
  */
-export function getFormattedRoute(def: StateLink, href?: string) {
+export function getFormattedRoute(def: StateLink, href?: string): string {
   const route = def.has.route
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route
@@ -429,7 +436,7 @@ export function getFormattedRoute(def: StateLink, href?: string) {
  *
  * @param endpoint
  */
-export function camelize(endpoint: string) {
+export function camelize(endpoint: string): string {
   return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase())
 }
 
@@ -438,7 +445,7 @@ export function camelize(endpoint: string) {
  *
  * @see https://gist.github.com/solenoid/1372386
  */
-export function mongoObjectId() {
+export function mongoObjectId(): string {
   const timestamp = (new Date().getTime() / 1000 | 0).toString(16)
   return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function() {
       return (Math.random() * 16 | 0).toString(16)
@@ -456,7 +463,7 @@ export function mongoObjectId() {
  *                 properties.
  * @param _default value to return if `obj[key]` is undefined
  */
-export function safelyGet(obj: any, path?: string, _default?: any) {
+export function safelyGet(obj: any, path?: string, _default?: any): any {
   const value = getVal(obj, path || '')
 
   if (value !== null) {
@@ -493,7 +500,7 @@ export function safelyGet(obj: any, path?: string, _default?: any) {
  *
  * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
  */
-export function httpGet(theUrl: string)
+export function httpGet(theUrl: string): void
 {
   // code for IE7+, Firefox, Chrome, Opera, Safari
   const xmlhttp = new XMLHttpRequest()
@@ -512,7 +519,7 @@ export function httpGet(theUrl: string)
  *
  * @returns string
  */
-export function getOriginEndingFixed(origin?: string) {
+export function getOriginEndingFixed(origin?: string): string {
   if (origin) {
     const endingChar = origin.charAt(origin.length - 1)
 
@@ -542,7 +549,7 @@ export function getOriginEndingFixed(origin?: string) {
  * @param cone  the cone expression
  * @returns 
  */
-export function parseConeExp(state: AbstractState, cone: string) {
+export function parseConeExp(state: AbstractState, cone: string): string {
   if (/^<([-$_a-zA-Z0-9\\/]+)(\.[-$_a-zA-Z0-9\\/]+)*>$/.test(cone)) {
     const value = getVal(state, cone.substring(1).substring(0, cone.length - 2))
     if (!value) {

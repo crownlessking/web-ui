@@ -17,7 +17,7 @@ import { getErrorCode } from '../state/errors.controller'
  * @param currentList 
  * @param list 
  */
-export function listMergeNew(current: any[], $new: any[]) {
+export function listMergeNew(current: any[], $new: any[]): any[] {
   if (current && $new) {
     return [ ...current, ...$new ]
   } else if (current) {
@@ -69,6 +69,6 @@ export function getData(endpoint: string): any[] {
  * @param endpoint 
  * @param doc 
  */
-export function saveData(endpoint: string, doc: any) {
+export function saveData(endpoint: string, doc: any): void {
   store.dispatch(dataAdd({endpoint, data: doc}))
 }

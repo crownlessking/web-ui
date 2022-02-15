@@ -17,7 +17,7 @@ export default function runDefaultDriver (
   getState: ()=> RootState,
   endpoint: string,
   json: IAbstractResponse
-) {
+): void {
   const doc = json as IJsonapiResponse
 
   if (doc.meta) {

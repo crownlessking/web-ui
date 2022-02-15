@@ -25,6 +25,7 @@ import themeReducer from '../slices/theme.slice'
 import netReducer from '../slices/net.slice'
 import allActions from './actions'
 import { err } from '../controllers'
+import { setConfiguration } from './app.controller'
 
 export const NET_PATCH_STATE = 'NET_PATCH_STATE'
 export const netPatchState = (stateFragment: any) => ({
@@ -35,10 +36,10 @@ export const netPatchState = (stateFragment: any) => ({
 /**
  * Merges fragment state received from server into the current redux state.
  *
- * @param state current redux state
- * @param fragment fragment state received from server
+ * @param oldState current redux state
+ * @param fragment piece of state received from server
  *
- * @returns void
+ * @returns RootState
  *
  * [TODO] Write a unit test for this function
  */
@@ -111,6 +112,7 @@ const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_PATCH_STATE) {
     const newState = netPatchStateReducer(state, action.payload)
+    setConfiguration(newState)
     return appReducer(newState, action)
   }
 

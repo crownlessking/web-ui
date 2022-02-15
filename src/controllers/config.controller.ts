@@ -24,7 +24,7 @@ let writable: boolean = false
  * @param prop new property name
  * @param val the value at that property
  */
-const createProperty = (obj: any, prop: string, val: any) => {
+const createProperty = (obj: any, prop: string, val: any): void => {
   Object.defineProperty(obj, prop, {
     value: val,
     writable
@@ -53,7 +53,7 @@ const invalidKeys = { 'init': 1, 'set': 1, 'read': 1, 'write': 1, 'clear': 1 }
  * @param path a string containing the dot-separated list of object properties.
  *             e.g. "pagination.users.limit"
  */
-const resolve = (obj: any, path: string, val?: any) => {
+const resolve = (obj: any, path: string, val?: any): any => {
   const propArray = path.split('.')
   let o = obj,
     candidate: any,
@@ -83,7 +83,7 @@ const resolve = (obj: any, path: string, val?: any) => {
 
 const config: IConfiguration = {
 
-  init: (data?: any) => {
+  init: (data?: any): void => {
     writable = false
     if (data && typeof data === 'object' && !Array.isArray(data)) {
       for (const key in data) {
@@ -98,7 +98,7 @@ const config: IConfiguration = {
     }
   },
 
-  set: (path: string, val: any) => {
+  set: (path: string, val: any): void => {
     resolve(config, path, val)
   },
 
@@ -107,7 +107,7 @@ const config: IConfiguration = {
    *
    * @param prop period-seperated list of properties
    */
-  read: (path: string) => {
+  read: (path: string): any => {
     return resolve(config, path)
   },
 
@@ -119,7 +119,7 @@ const config: IConfiguration = {
    * @param prop period-seprated list of properties
    * @param val value to be saved.
    */
-  write: (path: string, val: any) => {
+  write: (path: string, val: any): void => {
     writable = true
     resolve(config, path, val)
     writable = false
@@ -128,7 +128,7 @@ const config: IConfiguration = {
   /**
    * Use this method if you want to remove all values from the config object.
    */
-  clear: () => {
+  clear: (): void => {
     for (const configKey in config) {
       delete config[configKey]
     }

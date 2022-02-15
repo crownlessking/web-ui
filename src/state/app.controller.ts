@@ -1,6 +1,7 @@
-import store from '.'
+import store, { RootState } from '.'
 import { appShowSpinner } from '../slices/app.slice'
 import { err } from '../controllers'
+import Config from '../config'
 
 /**
  * Temporarily holds the handle id of a `setTimeout` function which has been
@@ -11,7 +12,7 @@ import { err } from '../controllers'
  */
 let handle: any
 
-export function getBootstrapKey() {
+export function getBootstrapKey(): string {
   const key = document.querySelector('meta[name="bootstrap"]')
 
   if (key) {
@@ -33,11 +34,11 @@ export function getBootstrapKey() {
  *
  * @param name 
  */
-export function getStateFormName(name: string) {
+export function getStateFormName(name: string): string {
   return name + 'Form'
 }
 
-export function getStateDialogName(name: string) {
+export function getStateDialogName(name: string): string {
   return name + 'Dialog'
 }
 
@@ -47,7 +48,7 @@ export function getStateDialogName(name: string) {
  *
  * @param time when is the spinner scheduled to appear in milliseconds 
  */
-export function _scheduleSpinner(time = 200) {
+export function _scheduleSpinner(time = 200): void {
   if (!handle) {
     const callback = () => store.dispatch(appShowSpinner())
     handle = setTimeout(callback, time)
@@ -66,9 +67,18 @@ export function _scheduleSpinner(time = 200) {
  * Note: consider using another type of spinner e.i. the thin spinner bar that
  *       can be placed at the top of the page.
  */
-export function _cancelSpinner() {
+export function _cancelSpinner(): void {
   if (handle) {
     clearTimeout(handle)
     handle = null
   }
+}
+
+/**
+ * Configuration might need to be updated if state is loaded remotely.
+ *
+ * @param state
+ */
+ export function setConfiguration(state: RootState): void {
+  Config.write('DEBUG', state.app.inDebugMode)
 }

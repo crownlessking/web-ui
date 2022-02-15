@@ -76,11 +76,11 @@ export default class State extends AbstractState {
   /**
    * Chain-access to parent definition.
    */
-  get parent() {
+  get parent(): undefined | null {
     throw new Error('Root state has no parent.')
   }
 
-  get props() {
+  get props(): undefined | null {
     throw new Error('Root state props cannot be used for component spreading.')
   }
 
@@ -98,7 +98,7 @@ export default class State extends AbstractState {
   /**
    * Get the default appbar definition.
    */
-  get appBar() {
+  get appBar(): StateAppBar {
     return this.storeAppBar
       || (this.storeAppBar = new StateAppBar(
           this.storeJson.appBar,
@@ -109,7 +109,7 @@ export default class State extends AbstractState {
   /**
    * Get the default background definition.
    */
-  get background() {
+  get background(): StateBackground {
     return this.storeBackground
       || (this.storeBackground = new StateBackground(
           this.storeJson.background,
@@ -117,7 +117,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get typography() {
+  get typography(): StateTypography {
     return this.storeTypography
       || (this.storeTypography = new StateTypography(
           this.storeJson.typography,
@@ -125,7 +125,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get data() {
+  get data(): StateData {
     return this.storeData
       || (this.storeData = new StateData(
           this.storeJson.data,
@@ -133,7 +133,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get dialog() {
+  get dialog(): StateDialog {
     return this.storeDialog
       || (this.storeDialog = new StateDialog(
           this.storeJson.dialog,
@@ -141,7 +141,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get allDialogs() {
+  get allDialogs(): StateAllDialogs {
     return this.storeAllDialogs
       || (this.storeAllDialogs = new StateAllDialogs(
           this.storeJson.dialogs,
@@ -150,12 +150,12 @@ export default class State extends AbstractState {
     // throw new Error(`'Patched all dialogs' NOT implemented.`)
   }
 
-  get dialogs() { return this.allDialogs }
+  get dialogs(): StateAllDialogs { return this.allDialogs }
 
   /**
    * Get the default drawer definition.
    */
-  get drawer() {
+  get drawer(): StateDrawer {
     return this.storeDrawer
       || (this.storeDrawer = new StateDrawer(
           this.storeJson.drawer,
@@ -163,7 +163,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get allErrors() {
+  get allErrors(): StateAllErrors {
     return this.storeAllErrors
       || (this.storeAllErrors = new StateAllErrors(
           this.storeJson.errors,
@@ -171,12 +171,12 @@ export default class State extends AbstractState {
         ))
   }
 
-  get errors() { return this.allErrors }
+  get errors(): StateAllErrors { return this.allErrors }
 
   /**
    * Chain-access to all form definitions.
    */
-  get allForms() {
+  get allForms(): StateAllForms {
     return this.storeAllForms
       || (this.storeAllForms = new StateAllForms(
           this.storeJson.forms,
@@ -184,12 +184,12 @@ export default class State extends AbstractState {
         ))
   }
 
-  get forms() { return this.allForms }
+  get forms(): StateAllForms { return this.allForms }
 
   /**
    * Chain-access to forms data.
    */
-  get formsData() {
+  get formsData(): StateFormsData {
     return this.storeFormsData
       || (this.storeFormsData = new StateFormsData(
           this.storeJson.formsData,
@@ -200,7 +200,7 @@ export default class State extends AbstractState {
   /**
    * Chain-access to metadata.
    */
-  get meta() {
+  get meta(): StateMeta {
     return this.storeMeta
       || (this.storeMeta = new StateMeta(
           this.storeJson.meta,
@@ -211,7 +211,7 @@ export default class State extends AbstractState {
   /**
    * Chain-access to all page definitions.
    */
-  get allPages() {
+  get allPages(): StateAllPages {
     return this.storeAllPages
       || (this.storeAllPages = new StateAllPages(
           this.storeJson.pages,
@@ -219,9 +219,9 @@ export default class State extends AbstractState {
         ))
   }
 
-  get pages () { return this.allPages }
+  get pages (): StateAllPages { return this.allPages }
 
-  get pagesData() {
+  get pagesData(): StatePagesData {
     return this.storePagesData
       || (this.storePagesData = new StatePagesData(
           this.storeJson.pagesData,
@@ -229,7 +229,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get snackbar() {
+  get snackbar(): StateSnackbar {
     return this.storeSnackbar
       || (this.storeSnackbar = new StateSnackbar(
           this.storeJson.snackbar,
@@ -237,7 +237,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get tmp() {
+  get tmp(): StateTmp {
     return this.storeTmp
       || (this.storeTmp = new StateTmp(
           this.storeJson.tmp,
@@ -245,7 +245,7 @@ export default class State extends AbstractState {
         ))
   }
 
-  get topLevelLinks() {
+  get topLevelLinks(): StateTopLevelLinks {
     return this.storeTopLevelLinks
       || (this.storeTopLevelLinks = new StateTopLevelLinks(
           this.storeJson.topLevelLinks,
@@ -253,9 +253,9 @@ export default class State extends AbstractState {
         ))
   }
 
-  get theme() { return this.storeJson.theme }
+  get theme(): any { return this.storeJson.theme }
 
-  get net() {
+  get net(): StateNet {
     return this.storeNet
       || (this.storeNet = new StateNet(
         this.storeJson.net,
@@ -301,7 +301,7 @@ export const setStatePageBackground = (
   return EMPTY_STATE_BACKGROUND
 }
 
-export function patchStatePageAppBarTypography (page: IStatePage) {
+export function patchStatePageAppBarTypography (page: IStatePage): void {
   const fontColor = getVal(page, 'appBar.typography.color')
 
   if (!fontColor) {

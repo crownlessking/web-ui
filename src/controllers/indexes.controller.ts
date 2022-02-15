@@ -34,7 +34,7 @@ let indexes: any = {}
  * @param endpoint 
  * @param res server response
  */
-export function insertIndexes(endpoint: string, res: any) {
+export function insertIndexes(endpoint: string, res: any): void {
   const update = arrayToEntities(res.data, 'id')
 
   indexes = { ...indexes, [endpoint]: { ...indexes[endpoint], ...update }}
@@ -46,7 +46,7 @@ export function insertIndexes(endpoint: string, res: any) {
  * @param endpoint
  * @param data
  */
-export function removeIndexes(endpoint: string, data: any) {
+export function removeIndexes(endpoint: string, data: any): void {
   const update = arrayToEntities(data, 'id')
 
   for (const key in update) {
@@ -63,7 +63,7 @@ export function removeIndexes(endpoint: string, data: any) {
  * @param endpoint 
  * @param id 
  */
-export function select(endpoint: string, id: string) {
+export function select(endpoint: string, id: string): any {
   try {
     return indexes[endpoint][id]
   } catch (e: any) {

@@ -29,7 +29,10 @@ interface ILayoutTable {
 /**
  * Application layout
  */
-export default function Layout ({ def: page, children }: ILayoutProps) {
+export default function Layout ({
+  def: page,
+  children
+}: ILayoutProps): JSX.Element | null {
   const dispatch = useDispatch<AppDispatch>()
 
   const layoutTable: ILayoutTable = {
@@ -68,11 +71,11 @@ export default function Layout ({ def: page, children }: ILayoutProps) {
       )
     },
 
-    // TODO Add cases here for different types of layout
+    // TODO Add properties here for different types of layout
   }
 
   try {
-    const constant = page.layout.replace(/\s+/, '').toUpperCase()
+    const constant = page.layout.replace(/\s+/g, '').toUpperCase()
     if (constant) {
       return layoutTable[constant]()
     }

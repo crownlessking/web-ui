@@ -9,7 +9,7 @@ import { IJsonapiError } from '../controllers/interfaces/IStateNet'
  *
  * @param error 
  */
-export function getErrorCode(error?: IJsonapiError) {
+export function getErrorCode(error?: IJsonapiError): string {
   return (error && error.code) ? error.code : Date.now().toString()
 }
 
@@ -22,7 +22,7 @@ export function getErrorCode(error?: IJsonapiError) {
  * the redux `state.error` object an array. This function is meant to assist
  * in doing that by giving a code to error object who do not have one.
  */
-export function setDateErrorCode(error: IJsonapiError) {
+export function setDateErrorCode(error: IJsonapiError): void {
   error.code = Date.now().toString()
 }
 
