@@ -5,30 +5,6 @@ import { errorsAdd } from '../slices/errors.slice'
 import { getErrorCode } from '../state/errors.controller'
 
 /**
- * Use this function to merge an existing array of resources with a new array
- * of resources.
- *
- * #### purpose
- * The purpose of this function is to merge the array of resource document from
- * the server into existing array of resource received prior.
- *
- * Use this function if you want to preserve existing data
- *
- * @param currentList 
- * @param list 
- */
-export function listMergeNew(current: any[], $new: any[]): any[] {
-  if (current && $new) {
-    return [ ...current, ...$new ]
-  } else if (current) {
-    return current
-  } else if ($new) {
-    return $new
-  }
-  return []
-}
-
-/**
  * After making a request to get data from the server, use this function to
  * access that data.
  *

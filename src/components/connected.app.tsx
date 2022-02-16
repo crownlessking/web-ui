@@ -12,8 +12,8 @@ import State from '../controllers/State'
 import Spinner from './spinner.component'
 import Snackbar from '../mui/snackbar'
 import StatePage from '../controllers/StatePage'
-import { postReqState } from '../state/net.controller'
-import { getBootstrapKey } from '../state/app.controller'
+import { postReqState } from '../state/net.actions'
+import { getBootstrapKey } from '../state/state.controller'
 
 const mapStateToProps = (state: RootState) => ({ state })
 

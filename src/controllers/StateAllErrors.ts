@@ -13,9 +13,9 @@ export default class StateAllErrors extends AbstractState {
     this.allErrorsJson = allErrorsJson
   }
 
-  get json() { return this.allErrorsJson }
+  get json(): IJsonapiError[] { return this.allErrorsJson }
   /** Chain-access to root definition. */
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.')}
-  get theme() { throw new Error('Not implemented yet.') }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.')}
+  get theme(): any { throw new Error('Not implemented yet.') }
 }

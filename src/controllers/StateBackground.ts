@@ -1,3 +1,4 @@
+import { CSSProperties } from '@mui/styles'
 import AbstractState from './AbstractState'
 import IStateBackground from './interfaces/IStateBackground'
 import State from './State'
@@ -20,14 +21,14 @@ export default class StateBackground<P = State>
   }
 
   /** Get the background json. */
-  get json() { return this.backgroundJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
-  get type() { return this.backgroundJson.type }
-  get value() { return this.backgroundJson.value }
+  get json(): IStateBackground { return this.backgroundJson }
+  get parent(): P { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
+  get type(): IStateBackground['type'] { return this.backgroundJson.type }
+  get value(): IStateBackground['value'] { return this.backgroundJson.value }
 
-  getJss() {
+  getJss(): CSSProperties {
     switch (this.type) {
     case 'color':
       return { backgroundColor: this.value+'' }

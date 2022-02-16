@@ -1,4 +1,6 @@
 import IStateAppBar from './interfaces/IStateAppBar'
+import IStateBackground from './interfaces/IStateBackground'
+import IStateTypography from './interfaces/IStateTypography'
 import StateAppBar from './StateAppBar'
 import StatePage from './StatePage'
 import StatePageAppBarBackground from './StatePageAppBarBackground'
@@ -40,11 +42,11 @@ export default class StatePageAppBar
   }
 
   /** Returns `true` if the appbar has a search field. */
-  get hasSearchField () {
+  get hasSearchField(): boolean {
     return (this.appBarJson.layout || []).includes('search')
   }
 
-  private initBackground = () => {
+  private initBackground = (): IStateBackground => {
     if (this.noAppBarBackground) {
       if (this.appBarJson.useDefaultBackground) {
         return this.parent.parent.parent.appBar.background
@@ -57,7 +59,7 @@ export default class StatePageAppBar
     return StateAppBar.EMPTY_APPBAR_BACKGROUND
   }
 
-  private initTypography = () => {
+  private initTypography = (): IStateTypography => {
     if (this.noAppBarTypography) {
       if (this.appBarJson.useDefaultTypography) {
         return this.parent.parent.parent.appBar.typography

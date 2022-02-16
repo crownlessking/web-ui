@@ -1,24 +1,9 @@
 import Config from '../config'
-import { IRedux, RootState } from '../state'
+import { IRedux } from '../state'
 import AbstractState from './AbstractState'
 import StateLink from './StateLink'
 
 export type TCallback = (e: any) => void
-
-/**
- * A way of delegating data handling to sub or dumb components.
- */
- export interface IDelegated {
-  state?: any, // parent component's state
-  setState?: (state: any) => void // parent component's setState()
-  data?: any, // additional data the parent component wants to pass to the
-  // child
-}
-
-export interface IViewportSize {
-  width: number
-  height: number
-}
 
 // layouts
 
@@ -105,34 +90,6 @@ export function defaultCallback ({store, actions, route}:IRedux): TCallback {
 }
 
 /**
- * Get data from the parent component state.
- * 
- * @param delegation 
- * @param key 
- */
-export function delegatedState(delegation: IDelegated, key?: string): any {
-  try {
-    if (key) {
-      return delegation.state[key]
-    } else if (delegation.state) {
-      return delegation.state
-    }
-  } catch (e) {
-    // TODO Display this error in the error table view
-  }
-  return null
-}
-
-/**
- * Get the `setState()` function of the parent component.
- *
- * @param delegation
- */
-export function delegatedSetState(delegation: IDelegated): (state: any) => void {
-  return delegation.setState || getDudEventCallback()
-}
-
-/**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
  * element.
  *
@@ -164,44 +121,12 @@ export function getFontAwesomeIconProp(iconDef: string): string[]|string {
 }
 
 /**
- * Use this method to convert an array (of objects) to an object containing
- * nested objects.
- *
- * The array must contain entities object. This means, every single object
- * within the array have the same properties.
- * Then, you must choose an existing property of the entities as the key
- * which will be used to access the object.
- *
- * e.g.
- *  var array = [ {_id: 'abc'}, {_id: 'abcd'} ]
- *
- * using:
- *  var object = arrayToObject(array, '_id')
- *
- * yields:
- *  object = { abc: {_id: 'abc'}, abcd: {_id: 'abcd'} }
- *
- * @param array 
- * @param key 
- */
-export function arrayToEntities(array: any[], key: string): any {
-  if (key in array[0]) {
-    const object: any = {}
-    for (const obj of array) {
-      object[obj[key]] = obj
-    }
-    return object
-  }
-  return null
-}
-
-/**
  * Get viewport size.
  *
  * Creedit:
  * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
  */
-export function getViewportSize(): IViewportSize
+export function getViewportSize(): { width: number; height: number }
 {
   let e: any = window, a = 'inner'
   if ( !( 'innerWidth' in window ) ) {
@@ -224,61 +149,6 @@ export function stretchToBottom(bottom: number): number {
   const height = getViewportSize().height
 
   return height - bottom
-}
-
-/**
- * Get the query string part of a URI.
- *
- * e.i with http://domain.com?page=1
- *     you will get the "?page=1" part
- *
- * @param uri
- */
-export function getUriQuery(uri: string): string {
-  const i = uri.indexOf('?')
-  if (i > 3) {
-    return uri.substring(i)
-  }
-  return ''
-}
-
-/**
- * Removes leading and ending forward and back slashes.
- *
- * @param str 
- */
-export function trimSlashes(str: string): string {
-  let s = str
-  while(s.charAt(0) === '/' || s.charAt(0) === '\\')
-  {
-    s = s.substring(1);
-  }
-  while (s.charAt(s.length - 1) === '/' || s.charAt(s.length - 1) === '\\')
-  {
-    s = s.substring(0, s.length - 1)
-  }
-  return s
-}
-
-/**
- * Extracts the endpoint from the pathname.
- *
- * The pathname can include a query string e.g. `name1/name2?q=123`
- *
- * This function will not work with whole URL that includes the domain name
- * and/or the protocol.
- *
- * @param pathname 
- */
-export function getEndpoint(pathname: string): string {
-  let pname = trimSlashes(pathname);
-  const argsIndex = pathname.indexOf('?')
-  if (argsIndex >= 0) {
-    pname = pathname.substring(0, argsIndex)
-  }
-  const params = pname.split(/\/|\\/)
-
-  return params[params.length - 1]
 }
 
 /**

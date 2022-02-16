@@ -1,7 +1,38 @@
-import { arrayToEntities } from '.'
 import { errorsAdd } from '../slices/errors.slice'
 import store from '../state'
 import { getErrorCode } from '../state/errors.controller'
+
+/**
+ * Use this method to convert an array (of objects) to an object containing
+ * nested objects.
+ *
+ * The array must contain entities object. This means, every single object
+ * within the array have the same properties.
+ * Then, you must choose an existing property of the entities as the key
+ * which will be used to access the object.
+ *
+ * e.g.
+ *  var array = [ {_id: 'abc'}, {_id: 'abcd'} ]
+ *
+ * using:
+ *  var object = arrayToObject(array, '_id')
+ *
+ * yields:
+ *  object = { abc: {_id: 'abc'}, abcd: {_id: 'abcd'} }
+ *
+ * @param array 
+ * @param key 
+ */
+ export function arrayToEntities(array: any[], key: string): any {
+  if (key in array[0]) {
+    const object: any = {}
+    for (const obj of array) {
+      object[obj[key]] = obj
+    }
+    return object
+  }
+  return null
+}
 
 /**
  * Indexes is a copy of the data received from the server.

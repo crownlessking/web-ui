@@ -20,16 +20,18 @@ export default class StateFormItemCheckbox
     this.checkboxHasJson = checkboxJson.has || {}
   }
 
-  get json() { return this.checkboxJson }
-  get parent() { return this.parentObj }
-  get value() { return this.checkboxJson.value }
-  get label() { return this.checkboxJson.label || '' }
-  get color() { return this.checkboxJson.color || 'default' }
-  get disabled() { return this.checkboxJson.disabled }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
-  get hasLabel() { return !!this.checkboxJson.label }
-  get formControlLabelProps() {
+  get json(): IStateFormItemCheckbox { return this.checkboxJson }
+  get parent(): StateFormItem<StateForm, this> { return this.parentObj }
+  get value(): string { return this.checkboxJson.value }
+  get label(): string { return this.checkboxJson.label || '' }
+  get color(): Required<IStateFormItemCheckbox>['color'] {
+    return this.checkboxJson.color || 'default'
+  }
+  get disabled(): boolean|undefined { return this.checkboxJson.disabled }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
+  get hasLabel(): boolean { return !!this.checkboxJson.label }
+  get formControlLabelProps(): any {
     return this.checkboxHasJson.formControlLabelProps || {}
   }
 }

@@ -1,4 +1,4 @@
-import { IStateDialog } from '../StateDialog'
+import IStateDialog from './IStateDialog'
 
 /**
  * Contains all dialog states.

@@ -204,16 +204,7 @@ export default {
   'formsData': {},
 
   /** material-ui snackbar redux store data */
-  'snackbar': {
-    'anchorOrigin': {
-      'vertical': 'bottom',
-      'horizontal': 'left'
-    },
-    'autoHideDuration': 6000,
-    'defaultId': 'message-id',
-    'type': 'void',
-    'variant': 'info'
-  },
+  'snackbar': {},
 
   'tmp': {},
 

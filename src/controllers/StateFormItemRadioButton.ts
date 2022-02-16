@@ -22,21 +22,21 @@ export default class StateFormItemRadioButton
     this.radioButtonHasJson = radioButtonJson.has || {}
   }
 
-  get json() { return this.radioButtonJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
-  get value() { return this.radioButtonJson.value }
-  get label() {
+  get json(): IStateFormItemRadioButton { return this.radioButtonJson }
+  get parent(): StateFormItemRadioCustom { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
+  get value(): string { return this.radioButtonJson.value }
+  get label(): string {
     return this.radioButtonJson.label || this.radioButtonJson.value
   }
-  get color() {
+  get color(): Required<IStateFormItemRadioButton>['color'] {
     return this.radioButtonJson.color || 'default'
   }
-  get disabled() {
+  get disabled(): boolean {
     return this.radioButtonJson.disabled === true
   }
-  get formControlLabelProps() {
+  get formControlLabelProps(): any {
     return this.radioButtonHasJson.formControlLabelProps || {}
   }
 }

@@ -12,9 +12,9 @@ export default class StatePagesData extends AbstractState {
     this.pagesDataJson = pagesDataJson
   }
 
-  get json() { return this.pagesDataJson }
+  get json(): any { return this.pagesDataJson }
   /** Chain-access to the root definition. */
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 }

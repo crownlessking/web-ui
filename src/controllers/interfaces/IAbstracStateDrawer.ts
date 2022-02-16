@@ -8,6 +8,7 @@ export default interface IAbstractStateDrawer {
   /** Drawer's width in pixels. */
   width?: number
 }
-
 /** Type for a drawer defined within a page. */
 export interface IStatePageDrawer extends IAbstractStateDrawer { }
+/** Default drawer state. Contains icons and descriptions. */
+export type IStateDrawer = Required<IAbstractStateDrawer>

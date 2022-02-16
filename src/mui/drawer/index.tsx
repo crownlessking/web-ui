@@ -10,7 +10,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { RootState } from '../../state'
 import { drawerClose, drawerOpen } from '../../slices/drawer.slice'
 import { connect } from 'react-redux'
-import { getDrawerWidth } from '../../controllers/StateDrawer'
 import store from '../../state'
 import actions from '../../state/actions'
 import { getFormattedRoute } from '../../controllers'
@@ -18,6 +17,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import JsonIcon from '../json.icons'
 import StatePage from '../../controllers/StatePage'
 import StateLink from '../../controllers/StateLink'
+import { getDrawerWidth } from '../../state/state.controller'
 
 const styles = (theme: Theme) => createStyles({
   drawer: {

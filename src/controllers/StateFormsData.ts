@@ -13,10 +13,10 @@ export default class StateFormsData extends AbstractState {
     this.formsDataJson = formsDataJson
   }
 
-  get json() { return this.formsDataJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get json(): any { return this.formsDataJson }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 
   /**
    * Get form field value from redux store.
@@ -24,7 +24,7 @@ export default class StateFormsData extends AbstractState {
    * Also sets the form fields default value if specified in the from definition.
    *
    */
-  getStoredValues = (formName: string, name?: string) => {
+  getStoredValues = (formName: string, name?: string): any => {
     try {
       if (name) {
         return this.formsDataJson[formName][name]
@@ -44,7 +44,7 @@ export default class StateFormsData extends AbstractState {
    * @param formName
    * @param name
    */
-  get = (formName: string, name?: string) => {
+  get = (formName: string, name?: string): any => {
     return this.getStoredValues(formName, name)
   }
 

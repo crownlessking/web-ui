@@ -5,10 +5,10 @@ import StateFormItem from './StateFormItem'
 export default class StateFormItemSelect
   extends StateFormItem<StateForm, IStateFormSelectOption>
 {
-  get formControlLabelProps() {
+  get formControlLabelProps(): any {
     return this.itemHasJson.formControlLabelProps || {}
   }
-  get inputLabelProps() {
+  get inputLabelProps(): any {
     return this.itemHasJson.inputLabelProps || {}
   }
 }

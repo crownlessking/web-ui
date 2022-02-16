@@ -15,27 +15,30 @@ export default class StateComponent<P = any>
     this.parentObj     = parent
   }
 
-  get json() { return this.componentJson }
-  get parent() { return this.parentObj }
-  get type() { return this.componentJson.type || 'div' }
-  get theme() { return this.componentJson.theme || {} }
-  get props() {
+  get json(): IStateComponent { return this.componentJson }
+  get parent(): P { return this.parentObj }
+  get type(): string { return this.componentJson.type || 'div' }
+  get theme(): any { return this.componentJson.theme || {} }
+  get props(): any {
     const props: any = { ...this.componentJson }
     delete props.type
     delete props.theme
     delete props.items
     return props
   }
-  get items() {
+  get items(): StateComponent<P>[] {
     return this.componentItems = this.componentItems
       || (this.componentItems = (this.componentJson.items || []).map(
         (item: IStateComponent) => new StateComponent(item, this)
       ))
   }
 
-  getJson = <T = any>() => this.componentJson as T
+  getJson = <T = any>(): T => this.componentJson as T
 }
 
-export function getStateComponents<T>(sc: IStateComponent[], parent: T) {
+export function getStateComponents<T>(
+  sc: IStateComponent[],
+  parent: T
+): StateComponent<T>[] {
   return sc.map(component => new StateComponent<T>(component, parent))
 }

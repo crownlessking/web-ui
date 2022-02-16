@@ -17,11 +17,11 @@ export default class StateAllPages extends AbstractState {
   }
 
   /** Get a copy of all pages json. */
-  get json() { return this.allPagesJson }
+  get json(): IStateAllPages { return this.allPagesJson }
   /** Chain-access root definition. */
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 
   /**
    * Prevents app from crashing when given a bad route.
@@ -33,7 +33,7 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  private getPageJson = (route: string) => {
+  private getPageJson = (route: string): IStatePage => {
     return this.allPagesJson[route]
       || this.allPagesJson[`/${route}`]
       || this.allPagesJson[route.substring(1)]
@@ -45,7 +45,7 @@ export default class StateAllPages extends AbstractState {
    * @param route key of page. These can be valid URI parameters. Therefore,
    *             they should not be accessed using the (dot) `.` operator.
    */
-  pageAt = (route: string) => {
+  pageAt = (route: string): StatePage => {
     const pageJson = this.getPageJson(route)
 
     return new StatePage(pageJson, this)
@@ -56,7 +56,7 @@ export default class StateAllPages extends AbstractState {
    *
    * @returns 
    */
-  getPage = () => {
+  getPage = (): StatePage => {
     const route = this.parent.app.route
     let page: IStatePage
 

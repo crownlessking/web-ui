@@ -34,8 +34,8 @@ export default class StateFormItem<P = StateForm, T = any>
 
   get json(): IStateFormItem { return this.itemJson }
   /** Chain-access to parent object (form). */
-  get parent() { return this.parentObj }
-  get props() {
+  get parent(): P { return this.parentObj }
+  get props(): any {
     const componentProps: any = { ...this.itemJson }
     delete componentProps.has
     delete componentProps.onChange
@@ -46,23 +46,23 @@ export default class StateFormItem<P = StateForm, T = any>
   
     return componentProps
   }
-  get theme() { return this.itemJson.theme || this.itemHasJson.theme || {} }
-  get type() { return this.itemJson.type || '' }
-  get id() { return this.itemJson.id || '' }
+  get theme(): any { return this.itemJson.theme || this.itemHasJson.theme || {} }
+  get type(): IStateFormItem['type'] { return this.itemJson.type || '' }
+  get id(): string { return this.itemJson.id || '' }
   /** Get the current form field name. */
-  get name() { return this.itemJson.name || '' }
+  get name(): string { return this.itemJson.name || '' }
   /** Get the current form field custom definition. */
-  get has() {
+  get has(): StateFormItemCustom<StateFormItem<P, T>, T> {
     return this.itemHas
       || (this.itemHas = new StateFormItemCustom(
         this.itemHasJson,
         this
       ))
   }
-  get style() { return this.itemJson.style || {} }
+  get style(): any { return this.itemJson.style || {} }
   /** Get the current form field `href` attribute. */
-  get href() { return this.itemJson.href }
-  get value() { return this.itemJson.value }
+  get href(): string { return this.itemJson.href }
+  get value(): string { return this.itemJson.value }
   /** Get human-readable text. */
   get text(): string {
     return this.itemHasJson.label
@@ -92,11 +92,11 @@ export default class StateFormItem<P = StateForm, T = any>
         this.itemOnChange = this.itemJson.onChange || dummyCallback
       )
   }
-  get disabled() { return this.itemDisabled }
+  get disabled(): boolean { return this.itemDisabled }
   get label(): string { return this.itemJson.label || '' }
   get language(): string { return this.itemJson.highlight }
   /** Used with a textfield. */
-  get inputProps() {
+  get inputProps(): any {
     return this.itemJson.inputProps || {}
   }
   /** Must return undefined if not defined. */
@@ -116,7 +116,7 @@ export default class StateFormItem<P = StateForm, T = any>
   /**
    * Some form items require `name` to be defined.
    */
-   get nameProvided() {
+   get nameProvided(): boolean {
     if (this.itemJson.name) {
       return true
     }
@@ -152,17 +152,17 @@ export default class StateFormItem<P = StateForm, T = any>
   set disabled(b: boolean) { this.itemDisabled = b }
 
   /**
-  * Prevents the app from throwing an exception because of the missing `name`
-  * attribute in specific form item definitions.
-  *
-  * The application is set to throw an exception if the name of a form field is
-  * missing. However, not all defined form items are fields. If the name is
-  * missing from one of those definitions, the application should not throw an
-  * exception.
-  *
-  * @deprecated
-  */
-  typeCheckingName = () => {
+   * Prevents the app from throwing an exception because of the missing `name`
+   * attribute in specific form item definitions.
+   *
+   * The application is set to throw an exception if the name of a form field is
+   * missing. However, not all defined form items are fields. If the name is
+   * missing from one of those definitions, the application should not throw an
+   * exception.
+   *
+   * @deprecated
+   */
+  typeCheckingName = (): string => {
     const type = this.itemJson.type.toUpperCase()
     if (this.itemJson.name) {
       return type
@@ -208,7 +208,7 @@ export default class StateFormItem<P = StateForm, T = any>
     }
   }
 
-  private assignCallback = (event: string, callback: any) => {
+  private assignCallback = (event: string, callback: any): void => {
     switch (event.toLowerCase()) {
       case 'onchange':
         this.itemOnChange = callback
@@ -222,7 +222,7 @@ export default class StateFormItem<P = StateForm, T = any>
   }
 
   /** Set callback */
-  private setHandleCallback = () => {
+  private setHandleCallback = (): void => {
     if (!this.itemHasJson.handle) {
       return
     }

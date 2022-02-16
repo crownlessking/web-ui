@@ -16,15 +16,17 @@ export default class StateNet extends AbstractState implements IStateNet {
     this.parentObj = parent
   }
 
-  get json() { return this.netJson }
-  get parent(): any { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
-  get csrfTokenName() { return this.netJson.csrfTokenName || '' }
-  get csrfTokenMethod() { return this.netJson.csrfTokenMethod || 'meta' }
+  get json(): IStateNet { return this.netJson }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
+  get csrfTokenName(): string { return this.netJson.csrfTokenName || '' }
+  get csrfTokenMethod(): Required<IStateNet>['csrfTokenMethod'] {
+    return this.netJson.csrfTokenMethod || 'meta'
+  }
 
   /** Attempts to locate the CSRF token. */
-  private locateCsrfToken = () => {
+  private locateCsrfToken = (): string => {
     let token = ''
     switch (this.csrfTokenMethod) {
     case 'meta':
@@ -39,14 +41,14 @@ export default class StateNet extends AbstractState implements IStateNet {
     return token
   }
 
-  get csrfToken() {
+  get csrfToken(): string {
     return this.netCsrfToken = this.netCsrfToken || (
       this.netCsrfToken = this.locateCsrfToken()
     )
   }
 
   /** Helper function for `get headers()`.  */
-  private parseHeadersConeExp() {
+  private parseHeadersConeExp(): IStateNet['headers'] {
     if (this.netJson.headers) {
       const netHeaders: IStateNet['headers'] = {}
       for (const p in this.netJson.headers) {
@@ -57,13 +59,13 @@ export default class StateNet extends AbstractState implements IStateNet {
     return {}
   }
 
-  get headers() {
+  get headers(): IStateNet['headers'] {
     return this.netHeaders || (
       this.netHeaders = this.parseHeadersConeExp()
     )
   }
 
-  setHeader(prop: string, value: string) {
+  setHeader(prop: string, value: string): void {
     const parsedValue = parseConeExp(this, value)
     this.netHeaders = this.netHeaders || {}
     this.netHeaders[prop] = parsedValue

@@ -41,17 +41,17 @@ export default class StateAppBar<P = State>
   }
 
   /** Get a copy of the `appBar` json. */
-  get json() { return this.appBarJson }
+  get json(): IStateAppBar { return this.appBarJson }
   /** Chain-access to root definition. */
-  get parent() { return this.parentObj }
+  get parent(): P { return this.parentObj }
   get props(): AppBarProps {
     return {
       position: 'static',
       ...this.appBarJson.props
     }
   }
-  get theme() { return this.appBarJson.theme || {} }
-  get layout() {
+  get theme(): any { return this.appBarJson.theme || {} }
+  get layout(): Required<IStateAppBar>['layout'] {
     return this.appBarLayout
       || (this.appBarLayout = (
             this.appBarJson.layout && this.appBarJson.layout.length > 0
@@ -59,11 +59,13 @@ export default class StateAppBar<P = State>
             : ['logo','space','menu']
           )
   }
-  get logoTag() { return this.appBarJson.logoTag || 'img' }
-  get toolbarProps() {
+  get logoTag(): Required<IStateAppBar>['logoTag'] {
+    return this.appBarJson.logoTag || 'img'
+  }
+  get toolbarProps(): Required<IStateAppBar>['toolbarProps'] {
     return this.appBarJson.toolbarProps || {}
   }
-  get logoProps() { return this.appBarJson.logoProps || {} }
+  get logoProps(): any { return this.appBarJson.logoProps || {} }
 
   get menuIconProps(): IconButtonProps {
     return {
@@ -76,7 +78,7 @@ export default class StateAppBar<P = State>
     }
   }
 
-  get searchFieldProps() {
+  get searchFieldProps(): any {
     return {
       placeholder: 'Search…',
       inputProps: { 'aria-label': 'search' },
@@ -84,25 +86,25 @@ export default class StateAppBar<P = State>
     }
   }
 
-  get desktopMenuItemsProps() {
+  get desktopMenuItemsProps(): Required<IStateAppBar>['desktopMenuItemsProps'] {
     return {
       sx : { display: { xs: 'none', md: 'flex' } },
       ...this.appBarJson.desktopMenuItemsProps
     }
   }
 
-  get mobileMenuItemsProps() {
+  get mobileMenuItemsProps(): Required<IStateAppBar>['mobileMenuItemsProps'] {
     return {
       sx : { display: { xs: 'flex', md: 'none' } },
       ...this.appBarJson.mobileMenuItemsProps
     }
   }
 
-  get mobileMenuIconProps() {
+  get mobileMenuIconProps(): Required<IStateAppBar>['mobileMenuIconProps'] {
     return this.appBarJson.mobileMenuIconProps || {}
   }
 
-  get menuItemsProps() {
+  get menuItemsProps(): any {
     return {
       anchorOrigin: {
         vertical: 'top',
@@ -117,13 +119,13 @@ export default class StateAppBar<P = State>
     }
   }
 
-  get logoTheme() { return this.appBarJson.logoTheme || {} }
+  get logoTheme(): any { return this.appBarJson.logoTheme || {} }
 
-  get hasLogo () {
+  get hasLogo (): boolean {
     return Object.keys(this.logoProps).length > 0
   }
 
-  get textLogoProps() {
+  get textLogoProps(): any {
     return {
       variant: 'h6',
       noWrap: true,
@@ -136,7 +138,7 @@ export default class StateAppBar<P = State>
   /**
   * Get appbar icon objects.
   */
-  get items() {
+  get items(): StateLink<this>[] {
     return this.appBarItems || (
       this.appBarItems = this.appBarJson.items.map(
         item => new StateLink(item, this)
@@ -147,7 +149,7 @@ export default class StateAppBar<P = State>
   /**
   * Chain-access to appbar background definition.
   */
-  get background() {
+  get background(): StateAppBarBackground<P> {
     return this.appBarBackground
       || (this.appBarBackground = new StateAppBarBackground<P>(
         this.appBarBackgroundJson,
@@ -158,7 +160,7 @@ export default class StateAppBar<P = State>
   /**
   * Chain-access to typography definition.
   */
-  get typography() {
+  get typography(): StateAppBarTypography<P> {
     return this.appBarTypography
       || (this.appBarTypography = new StateAppBarTypography<P>(
         this.appBarTypographyJson,
@@ -166,7 +168,7 @@ export default class StateAppBar<P = State>
       ))
   }
 
-  get components() {
+  get components(): StateComponent<this>[] {
     return this.appBarComponents || (
       this.appBarComponents = (this.appBarJson.components || []).map(
         c => new StateComponent(c, this)

@@ -12,17 +12,17 @@ export default class StateData extends AbstractState {
     this.dataJson = dataJson
   }
 
-  get json() { return this.dataJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get json(): any { return this.dataJson }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
   /**
    * Get a collection or a single document in a collection.
    *
    * @param endpoint
    * @param index
    */
-  get = (endpoint: string, index?: number) => {
+  get = (endpoint: string, index?: number): any => {
     const collection = this.dataJson[endpoint]
 
     if (index && index >= 0) {

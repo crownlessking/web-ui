@@ -18,11 +18,10 @@ export default class StateForm extends AbstractState implements IStateForm {
     this.fName = this.parentObj.getLastFormName()
   }
 
-  get json() { return this.formJson }
+  get json(): IStateForm { return this.formJson }
   /** Chain-access to all forms definition. */
-  get parent() { return this.parentObj }
-
-  get props() {
+  get parent(): StateAllForms { return this.parentObj }
+  get props(): any {
     const props :any = { ...this.formJson}
     delete props.items
     delete props.paperBackground
@@ -35,39 +34,23 @@ export default class StateForm extends AbstractState implements IStateForm {
       ...props
     }
   }
-
-  /**
-   * Whether the form should have a paper background or not.
-   */
-  get paperBackground() { return !!this.formJson.paperBackground }
-
-  get type() { return this.formJson.type || 'default' }
-  get theme() { return this.formJson.theme || {} }
-
-  /**
-   * Get (chain-access) list of form fields definition.
-   */
-  get items() {
+  /** Whether the form should have a paper background or not. */
+  get paperBackground(): boolean { return !!this.formJson.paperBackground }
+  get type(): Required<IStateForm>['type'] {
+    return this.formJson.type || 'default'
+  }
+  get theme(): any { return this.formJson.theme || {} }
+  /** Get (chain-access) list of form fields definition. */
+  get items(): StateFormItem[] {
     return this.formItems
       || (this.formItems = this.formJson.items.map(
           item => new StateFormItem(item, this
         )))
   }
+  /** Get the form name (`formName`) */
+  get name(): string { return this.fName }
+  get endpoint(): string { return this.ePoint || '' }
+  get paperProps(): any { return this.formJson.paperProps }
+  set endpoint(endpoint: string) { this.ePoint = endpoint }
 
-  /**
-   * Get the form name (`formName`)
-   */
-  get name() { return this.fName }
-
-  get endpoint() {
-    return this.ePoint || ''
-  }
-
-  get paperProps() {
-    return this.formJson.paperProps
-  }
-
-  set endpoint(endpoint: string) {
-    this.ePoint = endpoint
-  }
 }

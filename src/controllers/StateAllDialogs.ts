@@ -12,8 +12,8 @@ export default class StateAllDialogs extends AbstractState {
     this.allDialogsJson = allDialogsJson
   }
 
-  get json() { return this.allDialogsJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get json(): any { return this.allDialogsJson }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 }

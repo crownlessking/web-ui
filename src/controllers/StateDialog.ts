@@ -2,24 +2,8 @@ import AbstractState from './AbstractState'
 import State from './State'
 import StateFormItem from './StateFormItem'
 import { getDudEventCallback } from '.'
-import IStateDialogBase from './interfaces/IStateDialogBase'
 import IStateFormItem from './interfaces/IStateFormItem'
-
-/**
- * Dialog locale state
- *
- * **optional form state**
- */
-export interface IStateDialogLocal extends IStateDialogBase {
-  items?: IStateFormItem[]
-}
-
-/**
- * Redux store dialog state
- */
-export interface IStateDialog extends IStateDialogLocal {
-  open: boolean
-}
+import IStateDialog from './interfaces/IStateDialog'
 
 export default class StateDialog extends AbstractState implements IStateDialog {
 
@@ -35,23 +19,27 @@ export default class StateDialog extends AbstractState implements IStateDialog {
     this.dialogActionsJson = this.dialogJson.actions || []
   }
 
-  get json() { return this.dialogJson }
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
-  get title() { return this.dialogJson.title || '' }
-  get label() { return this.dialogJson.label || '' }
-  get contentType() { return this.dialogJson.contentType }
-  get contentText() { return this.dialogJson.contentText || '' }
-  get content() { return this.dialogJson.content }
-  get actions() {
+  get json(): IStateDialog { return this.dialogJson }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
+  get title(): string { return this.dialogJson.title || '' }
+  get label(): string { return this.dialogJson.label || '' }
+  get contentType(): IStateDialog['contentType'] {
+    return this.dialogJson.contentType
+  }
+  get contentText(): string { return this.dialogJson.contentText || '' }
+  get content(): any { return this.dialogJson.content }
+  get actions(): StateFormItem<StateDialog>[] {
     return this.dialogActions
       || (this.dialogActions = this.dialogActionsJson.map(
           item => new StateFormItem<StateDialog>(item, this)
         ))
   }
-  get showActions() { return this.dialogJson.showActions }
+  get showActions(): IStateDialog['showActions'] {
+    return this.dialogJson.showActions
+  }
   get onSubmit() { return this.dialogJson.onSubmit || getDudEventCallback }
-  get items() { return this.dialogJson.items || [] }
-  get open() { return this.dialogJson.open }
+  get items(): IStateFormItem[] { return this.dialogJson.items || [] }
+  get open(): boolean { return this.dialogJson.open }
 }

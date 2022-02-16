@@ -1,6 +1,4 @@
 import { RootState } from '../state'
-import _ from 'lodash'
-import { getVal, setVal } from '.'
 import StateAllPages from './StateAllPages'
 import AbstractState from './AbstractState'
 import StateBackground from './StateBackground'
@@ -20,8 +18,6 @@ import StateSnackbar from './StateSnackbar'
 import StateTmp from './StateTmp'
 import StateTopLevelLinks from './StateTopLevelLinks'
 import StateNet from './StateNet'
-import IStatePage from './interfaces/IStatePage'
-import IStateBackground from './interfaces/IStateBackground'
 
 /**
  * Use when component receives its parent state
@@ -264,47 +260,3 @@ export default class State extends AbstractState {
   }
 
 } // END class ----------------------------------------------------------------
-
-/**
- * Sets the background of a page definition.
- *
- * A page is customizable. Which means, it is possible for it to not have a
- * background, inherit a background from another page, or use a default
- * background defined at the `state` root.
- *
- * @param pageJson 
- * @param _default 
- */
-export const setStatePageBackground = (
-  pageJson?: IStatePage,
-  _default?: IStateBackground
-): IStateBackground => {
-  const EMPTY_STATE_BACKGROUND: IStateBackground = { type: 'none' }
-
-  if (pageJson) {
-    let backgroundJson: IStateBackground = EMPTY_STATE_BACKGROUND
-
-    if (pageJson.useDefaultBackground === true) {
-      backgroundJson = _.merge<IStateBackground, IStateBackground|undefined>(
-        EMPTY_STATE_BACKGROUND,
-        _default
-      )
-    } if (pageJson.backgroundInherited) {
-      // [TODO] Implement inheriting the background of another page here.
-    }
-
-    pageJson.background = _.merge(backgroundJson, pageJson.background)
-  
-    return pageJson.background
-  }
-
-  return EMPTY_STATE_BACKGROUND
-}
-
-export function patchStatePageAppBarTypography (page: IStatePage): void {
-  const fontColor = getVal(page, 'appBar.typography.color')
-
-  if (!fontColor) {
-    setVal(page, 'appBar.typography.color', 'inherit')
-  }
-}

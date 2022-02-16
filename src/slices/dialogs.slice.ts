@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getStateDialogName } from '../state/app.controller'
+import { getStateDialogName } from '../state/state.controller'
 import initialState from '../state/initial.state'
 
 export const dialogsSlice = createSlice({

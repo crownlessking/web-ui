@@ -8,7 +8,8 @@ interface IEval {
   str       : string
 }
 
-type ParsingType = 'value' | 'property'
+type TParsingType = 'value' | 'property'
+type TThemeFuncArgs = string | number | (string | number)[]
 
 export default class ThemeParser {
 
@@ -40,10 +41,10 @@ export default class ThemeParser {
     this.fnList = fnList
   }
 
-  getTheme() { return this.theme }
+  getTheme(): Theme|undefined { return this.theme }
 
   /** Get a simplified parser */
-  getParser () {
+  getParser (): any {
     return  (theme: Theme, rules: any) => {
       this.theme = theme
       return this._parse({ ...rules })
@@ -51,7 +52,7 @@ export default class ThemeParser {
   }
 
   /** Pass a set of required function to be executed */
-  setFnList (fnList: any) {
+  setFnList (fnList: any): void {
     this.fnList = fnList
   }
 
@@ -62,7 +63,7 @@ export default class ThemeParser {
    *
    * @param strFn 
    */
-  private _parseStrFn (strFn: string | number) {
+  private _parseStrFn (strFn: string|number): TThemeFuncArgs {
     if (typeof strFn !== 'string') {
       return strFn
     }
@@ -89,7 +90,7 @@ export default class ThemeParser {
   }
 
   /** Runs theme functions */
-  private _runFn (fname: string, args: (string | number)[]) {
+  private _runFn (fname: string, args: (string | number)[]): any {
     let fn = getVal(this.fnList, fname)
     if (typeof fn === 'function') {
       return fn(...args)
@@ -105,7 +106,7 @@ export default class ThemeParser {
   }
 
   /** Prevents unintended values */
-  private _filter (result: any) {
+  private _filter (result: any): any {
     switch (typeof result) {
     case 'function':
       return undefined
@@ -192,7 +193,7 @@ export default class ThemeParser {
 
   /** Saves theme functions changes to rules */
   private _apply (
-    type: ParsingType,
+    type: TParsingType,
     rules: any,
     prop: string,
     tokens: (string|number)[]

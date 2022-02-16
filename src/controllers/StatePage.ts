@@ -7,12 +7,12 @@ import StatePageDrawer from './StatePageDrawer'
 import StatePageTypography from './StatePageTypography'
 import AbstractState from './AbstractState'
 import IStateAppBar from './interfaces/IStateAppBar'
-import { IStateDrawer } from './StateDrawer'
 import StateComponent from './StateComponent'
 import IStatePage, { IStatePageContent } from './interfaces/IStatePage'
 import IStateBackground from './interfaces/IStateBackground'
 import IStateComponent from './interfaces/IStateComponent'
 import IStateTypography from './interfaces/IStateTypography'
+import { IStateDrawer } from './interfaces/IAbstracStateDrawer'
 
 export default class StatePage extends AbstractState implements IStatePage {
 
@@ -65,25 +65,22 @@ export default class StatePage extends AbstractState implements IStatePage {
   }
 
   /** Get the page json. */
-  get json() { return this.pageJson }
+  get json(): IStatePage { return this.pageJson }
   /** Chain-access to all pages definition. */
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get parent(): StateAllPages { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 
   /**
    * A unique id is assigned if you would like to use an identifier for the
    * page besides its title.
    */
-  get _id() { return this._pageId || (this._pageId = mongoObjectId()) }
+  get _id(): string { return this._pageId || (this._pageId = mongoObjectId()) }
+  get title(): string { return this.pageJson.title || '' }
+  get forcedTitle(): string { return this.pageJson.forcedTitle || '' }
 
-  get title() { return this.pageJson.title || '' }
-  get forcedTitle() { return this.pageJson.forcedTitle || '' }
-
-  /**
-   * Chain-access to the page appbar definition.
-   */
-  get appBar() {
+  /** Chain-access to the page appbar definition. */
+  get appBar(): StatePageAppBar {
     if (this.pageAppBar) {
       return this.pageAppBar
     }
@@ -92,7 +89,7 @@ export default class StatePage extends AbstractState implements IStatePage {
     return this.pageAppBar
   }
 
-  get appBarCustom() {
+  get appBarCustom(): StateComponent<this> {
     if (this.pageAppBarCustom) {
       return this.pageAppBarCustom
     }
@@ -101,10 +98,8 @@ export default class StatePage extends AbstractState implements IStatePage {
     return this.pageAppBarCustom
   }
 
-  /**
-   * Chain-access to the page background definition.
-   */
-  get background() {
+  /** Chain-access to the page background definition. */
+  get background(): StatePageBackground {
     if (this.pageBackground) {
       return this.pageBackground
     }
@@ -116,53 +111,34 @@ export default class StatePage extends AbstractState implements IStatePage {
     return this.pageBackground
   }
 
-  /**
-   * Get font family and color of the currently displayed page.
-   */
-  get typography() {
+  /** Get font family and color of the currently displayed page. */
+  get typography(): StatePageTypography {
     return this.pageTypography
       || (this.pageTypography = new StatePageTypography(
         this.pageTypographyJson,
         this
       ))
   }
-
-  /**
-   * Chain-access to the page content definition.
-   */
-  get content() { return this.pageJson.content || '' }
-
-  /**
-   * The type of the page content represented by a special symbol.
-   */
-  get contentType() { return this.pageContentJson.type }
-
+  /** Chain-access to the page content definition. */
+  get content(): string { return this.pageJson.content || '' }
+  /** The type of the page content represented by a special symbol. */
+  get contentType(): string { return this.pageContentJson.type }
   /**
    * Identifier for a a specific content.  
    * e.g. name of a form, a page... etc.
    */
-  get contentName() { return this.pageContentJson.name }
-
-  /**
-   * Endpoint to which data may be sent or retrieve for the page.
-   */
-  get contentEndpoint() { return this.pageContentJson.endpoint || '' }
-
+  get contentName(): string { return this.pageContentJson.name }
+  /** Endpoint to which data may be sent or retrieve for the page. */
+  get contentEndpoint(): string { return this.pageContentJson.endpoint || '' }
   /**
    * Miscellanous URL arguments to be inserted when making a server request
    * at the endpoint specified in the page definition.
    */
-  get contentArgs() { return this.pageContentJson.args || '' }
+  get contentArgs(): string { return this.pageContentJson.args || '' }
+  get view(): string { return this.pageContentJson.name + 'View' }
 
-  /**
-   * 
-   */
-  get view() { return this.pageContentJson.name + 'View' }
-
-  /**
-   * Chain-access to the page drawer definition.
-   */
-  get drawer() {
+  /** Chain-access to the page drawer definition. */
+  get drawer(): StatePageDrawer {
     if (this.pageDrawer) {
       return this.pageDrawer
     }
@@ -170,80 +146,52 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageDrawer = new StatePageDrawer(this.pageDrawerJson, this)
     return this.pageDrawer
   }
-
-  /**
-   * Chain-access to the page's layout definition
-   */
-  get layout() { return this.pageJson.layout || '' }
-
-  /**
-   * Check if an appbar was defined for the current page.
-   */
-  get hasAppBar() {
+  /** Chain-access to the page's layout definition */
+  get layout(): string { return this.pageJson.layout || '' }
+  /** Check if an appbar was defined for the current page. */
+  get hasAppBar(): boolean {
     return !this.noPageAppBar
       || !!this.pageJson.appBarInherited
       || !!this.pageJson.useDefaultAppBar
   }
-
   /** Check if a custom appbar was defined for the current page. */
-  get hasCustomAppBar() {
+  get hasCustomAppBar(): boolean {
     return !!this.pageJson.appBarCustom
       || !!this.pageJson.appBarCustomInherited
   }
-
-  /**
-   * Check if a drawer was defined for the current page.
-   */
-  get hasDrawer() {
+  /** Check if a drawer was defined for the current page. */
+  get hasDrawer(): boolean {
     return !this.noPageDrawer
       || !!this.pageJson.drawerInherited
       || !!this.pageJson.useDefaultDrawer
   }
-
-  get hideAppBar() { return this.pageJson.hideAppBar === true }
-
-  get hideDrawer() { return this.pageJson.hideDrawer === true }
-
-  get useDefaultAppBar() { return !!this.pageJson.useDefaultAppBar }
-
-  get useDefaultDrawer() { return !!this.pageJson.useDefaultDrawer }
-
-  get useDefaultBackground() { return !!this.pageJson.useDefaultBackground }
-
-  get useDefaultTypography() { return !!this.pageJson.useDefaultTypography }
-
-  get inherit() { return this.pageJson.inherited || '' }
-
-  get appBarInherited() { return this.pageJson.appBarInherited || '' }
-
-  get drawerInherited() { return this.pageJson.drawerInherited || '' }
-
-  get contentInherited() { return this.pageJson.contentInherited || '' }
-
-  get backgroundInherited() { return this.pageJson.backgroundInherited || '' }
-
-  get data() { return this.pageJson.data || {} }
-
-  get meta() { return this.pageJson.meta || {} }
-
-  get links() { return this.pageJson.links || {} }
+  get hideAppBar(): boolean { return this.pageJson.hideAppBar === true }
+  get hideDrawer(): boolean { return this.pageJson.hideDrawer === true }
+  get useDefaultAppBar(): boolean { return !!this.pageJson.useDefaultAppBar }
+  get useDefaultDrawer(): boolean { return !!this.pageJson.useDefaultDrawer }
+  get useDefaultBackground(): boolean { return !!this.pageJson.useDefaultBackground }
+  get useDefaultTypography(): boolean { return !!this.pageJson.useDefaultTypography }
+  get inherit(): string { return this.pageJson.inherited || '' }
+  get appBarInherited(): string { return this.pageJson.appBarInherited || '' }
+  get drawerInherited(): string { return this.pageJson.drawerInherited || '' }
+  get contentInherited(): string { return this.pageJson.contentInherited || '' }
+  get backgroundInherited(): string { return this.pageJson.backgroundInherited || '' }
+  get data(): any { return this.pageJson.data || {} }
+  get meta(): any { return this.pageJson.meta || {} }
+  get links(): any { return this.pageJson.links || {} }
 
   /**
    * Define an appbar for the current page.
    *
    * @deprecated
    */
-  setAppBar = (appBar: IStateAppBar) => {
+  setAppBar = (appBar: IStateAppBar): void => {
     this.pageAppBarJson = appBar
     this.noPageAppBar = !appBar
   }
 
-  /**
-   * Define a drawer for the current page.
-   *
-   * @param drawer
-   */
-  setDrawer = (drawer: IStateDrawer) => {
+  /** Define a drawer for the current page. */
+  setDrawer = (drawer: IStateDrawer): void => {
     this.pageDrawerJson = drawer
     this.noPageDrawer = !drawer
   }
@@ -264,7 +212,7 @@ export default class StatePage extends AbstractState implements IStatePage {
    * @param content contains multiple values that have been joined as one
    *                string
    */
-  parseContent = (content?: string) => {
+  parseContent = (content?: string): IStatePageContent => {
     const options = (content || this.content).replace(/\s+/g, '').split(':')
 
     if (options.length <= 1) {
@@ -292,10 +240,8 @@ export default class StatePage extends AbstractState implements IStatePage {
     return contentObj
   }
 
-  /**
-   * Get browser tab's title
-   */
-  getTabTitle = () => {
+  /** Get browser tab's title */
+  getTabTitle = (): string => {
     if (this.forcedTitle) {
       return this.forcedTitle
     }
@@ -309,10 +255,8 @@ export default class StatePage extends AbstractState implements IStatePage {
     return appTitle
   }
 
-  /**
-   * Set the browser tab's title
-   */
-  setTabTitle = () => {
+  /** Set the browser tab's title */
+  setTabTitle = (): void => {
     document.title = this.getTabTitle()
   }
 

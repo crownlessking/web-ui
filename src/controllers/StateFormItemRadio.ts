@@ -11,5 +11,5 @@ export default class StateFormItemRadio extends StateFormItem<
   StateForm,
   StateFormItemRadioButton
 > {
-  get hasLabel() { return !!this.itemHasJson.label }
+  get hasLabel(): boolean { return !!this.itemHasJson.label }
 }

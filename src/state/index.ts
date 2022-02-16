@@ -25,7 +25,7 @@ import themeReducer from '../slices/theme.slice'
 import netReducer from '../slices/net.slice'
 import allActions from './actions'
 import { err } from '../controllers'
-import { setConfiguration } from './app.controller'
+import { setConfiguration } from './state.controller'
 
 export const NET_PATCH_STATE = 'NET_PATCH_STATE'
 export const netPatchState = (stateFragment: any) => ({

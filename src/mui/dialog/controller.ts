@@ -2,9 +2,9 @@ import StatePage from '../../controllers/StatePage'
 import StateAllPages from '../../controllers/StateAllPages'
 import store from '../../state'
 import Config from '../../config'
-import { IStateDialog } from '../../controllers/StateDialog'
 import IStateFormItem from '../../controllers/interfaces/IStateFormItem'
 import IStateForm from '../../controllers/interfaces/IStateForm'
+import IStateDialog from '../../controllers/interfaces/IStateDialog'
 
 /**
  * Get a `stateForm` object so that a form can be displayed in the dialog.

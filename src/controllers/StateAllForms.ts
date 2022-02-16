@@ -18,11 +18,11 @@ export default class StateAllForms extends Controller {
   }
 
   /** Get all forms json. */
-  get json() { return this.allFormsJson }
+  get json(): IStateAllForms { return this.allFormsJson }
   /** Chain-access to root definition. */
-  get parent() { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get parent(): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 
   /**
    * Get (chain-access to) the form definition.
@@ -36,7 +36,7 @@ export default class StateAllForms extends Controller {
    *
    * @param name 
    */
-  getForm = (name: string) => {
+  getForm = (name: string): StateForm => {
     const formName = this.getStateFormName(name)
     const stateForm = this.allFormsJson[formName]
 
@@ -54,7 +54,7 @@ export default class StateAllForms extends Controller {
   /**
    * Get the (`formName`) name of the last form that was retrieved.
    */
-  getLastFormName = () => this.lastFormName
+  getLastFormName = (): string => this.lastFormName
 
   /**
    * Get the form state name
@@ -66,7 +66,7 @@ export default class StateAllForms extends Controller {
    *
    * @param name 
    */
-  private getStateFormName = (name: string) => {
+  private getStateFormName = (name: string): string => {
     return name + 'Form'
   }
 

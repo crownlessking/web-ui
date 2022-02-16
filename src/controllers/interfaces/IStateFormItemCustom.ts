@@ -69,7 +69,3 @@ export default interface IStateFormItemCustom<T = any> {
   formControlLabelProps?: any
   inputLabelProps?: any
 }
-
-export interface IStateFormSelect extends SelectProps {
-  has?: IStateFormItemCustom
-}

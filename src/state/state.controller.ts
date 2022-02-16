@@ -82,3 +82,47 @@ export function _cancelSpinner(): void {
  export function setConfiguration(state: RootState): void {
   Config.write('DEBUG', state.app.inDebugMode)
 }
+
+/** Get the default drawer width. */
+export function getDrawerWidth(): number {
+  return store.getState().drawer.width
+}
+
+/**
+ * Removes leading and ending forward and back slashes.
+ *
+ * @param str 
+ */
+ export function trimSlashes(str: string): string {
+  let s = str
+  while(s.charAt(0) === '/' || s.charAt(0) === '\\')
+  {
+    s = s.substring(1);
+  }
+  while (s.charAt(s.length - 1) === '/' || s.charAt(s.length - 1) === '\\')
+  {
+    s = s.substring(0, s.length - 1)
+  }
+  return s
+}
+
+/**
+ * Extracts the endpoint from the pathname.
+ *
+ * The pathname can include a query string e.g. `name1/name2?q=123`
+ *
+ * This function will not work with whole URL that includes the domain name
+ * and/or the protocol.
+ *
+ * @param pathname 
+ */
+export function getEndpoint(pathname: string): string {
+  let pname = trimSlashes(pathname);
+  const argsIndex = pathname.indexOf('?')
+  if (argsIndex >= 0) {
+    pname = pathname.substring(0, argsIndex)
+  }
+  const params = pname.split(/\/|\\/)
+
+  return params[params.length - 1]
+}

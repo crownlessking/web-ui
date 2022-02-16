@@ -13,10 +13,10 @@ export default class StateMeta extends AbstractState {
     this.parentObj = parent
   }
 
-  get json() { return this.metaJson }
-  get parent () { return this.parentObj }
-  get props() { throw new Error('Not implemented yet.') }
-  get theme() { throw new Error('Not implemented yet.') }
+  get json(): any { return this.metaJson }
+  get parent (): State { return this.parentObj }
+  get props(): any { throw new Error('Not implemented yet.') }
+  get theme(): any { throw new Error('Not implemented yet.') }
 
   /**
    * Get the metadata retrieved form the server.
@@ -24,7 +24,7 @@ export default class StateMeta extends AbstractState {
    * @param endpoint from which the metadata was retrieved.
    * @param key      of the exact metadata you want.
    */
-  get = (endpoint: string, key: string) => {
+  get = (endpoint: string, key: string): any => {
     try {
       return this.metaJson[endpoint][key]
     } catch (e: any) {
