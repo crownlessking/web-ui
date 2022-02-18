@@ -15,7 +15,7 @@ import StateFormItem from '../../../controllers/StateFormItem'
  *
  * @param payload 
  */
-function saveFormData(payload: IFormsDataArgs) {
+function saveFormData(payload: IFormsDataArgs): void {
   store.dispatch(formsDataUpdate(payload))
 }
 
@@ -27,7 +27,7 @@ function saveFormData(payload: IFormsDataArgs) {
  * @param formName 
  * @param name 
  */
-function noFormDataExist (formName: string, name?: string) {
+function noFormDataExist (formName: string, name?: string): boolean {
   try {
     if (name) {
       return !(store.getState().formsData[formName][name])
@@ -43,7 +43,7 @@ function noFormDataExist (formName: string, name?: string) {
  * @param field 
  * @param formName 
  */
-function _setDefaultValue(field: StateFormItem, formName: string) {
+function _setDefaultValue(field: StateFormItem, formName: string): void {
   if (field.has.defaultValue
     && field.name
     && noFormDataExist(formName, field.name)
@@ -79,7 +79,7 @@ function _setDefaultValue(field: StateFormItem, formName: string) {
  * @param form form definition
  * @param formName 
  */
-export default function setDefaultValue (form: StateForm) {
+export default function setDefaultValue (form: StateForm): void {
   const { items: formFields } = form
   for (const field of formFields) {
     _setDefaultValue(field, form.name)

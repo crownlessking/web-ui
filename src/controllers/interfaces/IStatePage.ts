@@ -1,4 +1,4 @@
-import { IStatePageDrawer } from './IAbstracStateDrawer'
+import { IStatePageDrawer } from './IStateDrawer'
 import IStateAppBar from './IStateAppBar'
 import IStateBackground from './IStateBackground'
 import IStateComponent from './IStateComponent'

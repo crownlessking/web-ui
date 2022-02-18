@@ -12,7 +12,7 @@ import IStatePage, { IStatePageContent } from './interfaces/IStatePage'
 import IStateBackground from './interfaces/IStateBackground'
 import IStateComponent from './interfaces/IStateComponent'
 import IStateTypography from './interfaces/IStateTypography'
-import { IStateDrawer } from './interfaces/IAbstracStateDrawer'
+import IStateDrawer, { IStatePageDrawer } from './interfaces/IStateDrawer'
 
 export default class StatePage extends AbstractState implements IStatePage {
 
@@ -191,8 +191,8 @@ export default class StatePage extends AbstractState implements IStatePage {
   }
 
   /** Define a drawer for the current page. */
-  setDrawer = (drawer: IStateDrawer): void => {
-    this.pageDrawerJson = drawer
+  setDrawer = (drawer: IStatePageDrawer): void => {
+    this.pageDrawerJson = { ...StatePage.EMPTY_DRAWER, ...drawer }
     this.noPageDrawer = !drawer
   }
 

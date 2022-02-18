@@ -1,4 +1,4 @@
-import { IStateDrawer } from '../controllers/interfaces/IAbstracStateDrawer'
+import IStateDrawer from '../controllers/interfaces/IStateDrawer'
 import StatePage from '../controllers/StatePage'
 import MiniDrawer from '../mui/drawer'
 

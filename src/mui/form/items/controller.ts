@@ -17,7 +17,7 @@ import IStateFormItemCustom from '../../../controllers/interfaces/IStateFormItem
  *
  * @deprecated
  */
-export function getStoredValue(formsData: any, formName: string, name: string) {
+export function getStoredValue(formsData: any, formName: string, name: string): any {
   try {
     return formsData[formName][name]
   } catch (e) {  }
@@ -33,7 +33,7 @@ export function getStoredValue(formsData: any, formName: string, name: string) {
  * @param formData 
  * @param name 
  */
-export function getLocallyStoredValue(formData: any, item: IStateFormItem) {
+export function getLocallyStoredValue(formData: any, item: IStateFormItem): any {
   const copyItem = { ...item }
   const { name } = copyItem
   copyItem.has = copyItem.has || { }
@@ -56,7 +56,7 @@ export function getLocallyStoredValue(formData: any, item: IStateFormItem) {
 export function getProps<T extends IStateFormItem>(
   item: T,
   removalList?: string[]
-) {
+): T {
   const itemCopy = { ...item }
   delete itemCopy.has
   delete itemCopy.onChange
@@ -95,7 +95,7 @@ export function getProps<T extends IStateFormItem>(
  *
  * @param hasJson
  */
-function getCheckboxValues(hasJson: IStateFormItemCustom<IStateFormItemCheckbox>) {
+function getCheckboxValues(hasJson: IStateFormItemCustom<IStateFormItemCheckbox>): string[] {
   return hasJson.items ? hasJson.items.map(item => item.value) : []
 }
 
@@ -109,7 +109,7 @@ function getCheckboxValues(hasJson: IStateFormItemCustom<IStateFormItemCheckbox>
  * @param value currently evaluated checkbox value
  * @param checkedValues array of all checkbox values that are checked.
  */
-function setCheckedValue(obj: any, value: string, checkedValues: string[]) {
+function setCheckedValue(obj: any, value: string, checkedValues: string[]): void {
   for (const checkedValue of checkedValues) {
     if (value === checkedValue) {
       obj[value] = true
@@ -136,7 +136,7 @@ function setCheckedValue(obj: any, value: string, checkedValues: string[]) {
 export function getCheckboxesStatus(
   hasJson: IStateFormItemCustom,
   checkedValues: string[]
-) {
+): any {
   const allValues = getCheckboxValues(hasJson)
   const obj: any = {}
   for (const value of allValues) {
@@ -156,7 +156,7 @@ export function getCheckboxesStatus(
  * @param value 
  * @param checked 
  */
-export function updateCheckboxes(checkedValues: string[], value: string, checked: boolean) {
+export function updateCheckboxes(checkedValues: string[], value: string, checked: boolean): string[] {
   const newValues = [ ...checkedValues ]
   const valueIndex = newValues.indexOf(value)
   const containsValue = (valueIndex >= 0)
@@ -168,7 +168,7 @@ export function updateCheckboxes(checkedValues: string[], value: string, checked
   return newValues
 }
 
-export function getMeta(stateMeta: any, endpoint: string, key?: string) {
+export function getMeta(stateMeta: any, endpoint: string, key?: string): any {
   try {
     return key ? stateMeta[endpoint][key] : stateMeta[endpoint]
   } catch (e) {

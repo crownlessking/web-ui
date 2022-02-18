@@ -38,10 +38,9 @@ export default class StateApp extends AbstractState implements IStateApp {
   get logo(): string { return this.appJson.logo || ''}
   get lastRoute(): string { return this.appJson.lastRoute || '' }
   /**
-   * The default page can and should be dynamically update to the most relevant
-   * page based on the session (e.g. whether the user is logged in or not).
-   * 
-   * [TODO] Remember
+   * [TODO] The default page can and should be dynamically update to the most
+   *        relevant page based on the session (e.g. whether the user is logged
+   *        in or not).
    */
   get defaultPage(): string { return this.appJson.defaultPage || '' }
 }

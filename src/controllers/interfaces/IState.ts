@@ -1,4 +1,4 @@
-import { IStateDrawer } from './IAbstracStateDrawer'
+import IStateDrawer from './IStateDrawer'
 import IStateAllDialogs from './IStateAllDialogs'
 import IStateAllForms from './IStateAllForms'
 import IStateAllPages from './IStateAllPages'

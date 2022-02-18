@@ -136,11 +136,7 @@ export default {
    *
    * @see https://material-ui.com/demos/drawers/
    */
-  'drawer': {
-    'items': [],
-    'open': false,
-    'width': 300
-  },
+  'drawer': { 'width': 300 },
 
   /**
    * Object containing all form definitions
@@ -177,8 +173,15 @@ export default {
     'default-landing': {
       '_id': StatePage.PAGE_HARD_CODED,
       'content': '$view : landing_page'
-    }
+    },
 
+    'default-errors-view': {
+      'content': '$view : errors_page',
+      'background': {
+        'type': 'color',
+        'value': '#fcfcfc'
+      }
+    }
   }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
 
   /**
