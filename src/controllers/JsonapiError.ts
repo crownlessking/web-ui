@@ -1,15 +1,19 @@
+import { mongoObjectId } from '.'
 import {
   IJsonapiError, IJsonapiErrorLinks, IJsonapiErrorSource, IJsonapiMeta
 } from './interfaces/IStateNet'
 
 export default class JsonapiError implements IJsonapiError {
   private e: IJsonapiError
+  private idJson?: string
 
   constructor(e: IJsonapiError) {
     this.e = e
   }
 
-  get id(): string { return this.e.id || '' }
+  get id(): string {
+    return this.idJson || (this.idJson = this.e.id || mongoObjectId())
+  }
   get links(): IJsonapiErrorLinks { return this.e.links || {} }
   get status(): string { return this.e.status || '' }
   get code()  { return this.e.code }
