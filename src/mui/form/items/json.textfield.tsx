@@ -1,63 +1,25 @@
-import { alpha, TextField, Theme } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import {
-  getProps, getStoredValue, getLocallyStoredValue
-} from './controller'
-import { connect } from 'react-redux'
+import { TextField } from '@mui/material'
+import { getFieldValue } from './controller'
 import { RootState } from '../../../state'
 import getTextFieldAdornment from './json.input.adornment'
-import ThemeParser from '../../../controllers/ThemeParser'
 import StateFormItem from '../../../controllers/StateFormItem'
-import { err, FIELD_NAME_NOT_SET } from '../../../controllers'
-
-const mapStateToProps = (state: RootState) => ({
-  formsData: state.formsData
-})
-
-interface IParentState {
-  state: any
-  setState: Function
-}
+import { FIELD_NAME_NOT_SET } from '../../../controllers'
+import { useSelector } from 'react-redux'
 
 interface IJsonTextfieldProps {
   def: StateFormItem
-  formsData: any
-  state?: IParentState
 }
 
 /**
  * Textfield
  */
-export default connect(mapStateToProps)(
+export default function JsonTextfield({ def: textfield }: IJsonTextfieldProps) {
+  const formsData = useSelector<RootState>(state => state.formsData)
+  const value = getFieldValue(formsData, textfield.parent.name, textfield.name)
 
-function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProps) {
-  const props = getProps(textfield.json)
-  const parse = new ThemeParser({ alpha }).getParser()
-  const classes = makeStyles((theme: Theme) => ({
-    json: parse(theme, textfield.theme)
-  }))()
-
-  const getValueFromParent = () => {
-    if (state) {
-      const localValue = getLocallyStoredValue(
-        state.state.formData,
-        textfield.json
-      )
-      return localValue
-    }
-  }
-
-  const getValue = () => (
-    getStoredValue(formsData, textfield.parent.name, textfield.name)
-    || getValueFromParent()
-    || ''
-  )
-
-  const value = getValue()
   return textfield.name ? (
     <TextField
-      className={classes.json}
-      {...props}
+      {...textfield.props}
       error={textfield.has.regexError(value)}
       value={value}
       onChange={textfield.onChange(textfield.name)}
@@ -65,8 +27,6 @@ function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProp
     />
   ) : (
     <TextField
-      className={classes.json}
-      {...props}
       value={FIELD_NAME_NOT_SET}
       InputProps={getTextFieldAdornment(textfield.inputProps)}
       disabled
@@ -74,5 +34,3 @@ function JsonTextfield ({ def: textfield, formsData, state }: IJsonTextfieldProp
   )
 
 }
-
-) // END export default

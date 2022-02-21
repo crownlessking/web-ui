@@ -5,7 +5,7 @@ import { IParentState } from '../../../controllers/State'
 import StateFormItem from '../../../controllers/StateFormItem'
 import ThemeParser from '../../../controllers/ThemeParser'
 import { RootState } from '../../../state'
-import { getStoredValue, getLocallyStoredValue } from './controller'
+import { getFieldValue, getLocallyStoredValue } from './controller'
 import { getAdornment } from './json.input.adornment'
 
 const mapStateToProps = (state: RootState) => ({
@@ -37,7 +37,7 @@ function JsonInput ({ def: input, formsData, state }: IJsonInputProps) {
   }
 
   
-    const value = getStoredValue(formsData, input.parent.name, input.name)
+    const value = getFieldValue(formsData, input.parent.name, input.name)
     || getValueFromParent()
     || ''
 

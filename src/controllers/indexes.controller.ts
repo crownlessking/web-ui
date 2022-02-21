@@ -1,6 +1,5 @@
 import { errorsAdd } from '../slices/errors.slice'
 import store from '../state'
-import { getErrorCode } from '../state/errors.controller'
 
 /**
  * Use this method to convert an array (of objects) to an object containing
@@ -99,14 +98,11 @@ export function select(endpoint: string, id: string): any {
     return indexes[endpoint][id]
   } catch (e: any) {
     store.dispatch(errorsAdd({
-      id,
-      error: {
-        'code': getErrorCode(),
-        'title': e.message,
-        'detail': e.stack,
-        'source': {
-          parameter: `${endpoint}/${id}`
-        }
+      'code': '404',
+      'title': e.message,
+      'detail': e.stack,
+      'source': {
+        parameter: `${endpoint}/${id}`
       }
     }))
   }

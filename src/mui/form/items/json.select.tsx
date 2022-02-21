@@ -1,5 +1,5 @@
 import { InputLabel, Select, TextField } from '@mui/material'
-import { getStoredValue, getLocallyStoredValue } from './controller'
+import { getFieldValue, getLocallyStoredValue } from './controller'
 import { RootState } from '../../../state'
 import { connect } from 'react-redux'
 import { Fragment } from 'react'
@@ -33,7 +33,7 @@ function JsonSelect ({ def: select, formsData, state }: IJsonSelectProps) {
     }
   }
   const getValue = () => {
-    return getStoredValue(formsData, select.parent.name, select.name)
+    return getFieldValue(formsData, select.parent.name, select.name)
     || getValueFromParent()
   }
 

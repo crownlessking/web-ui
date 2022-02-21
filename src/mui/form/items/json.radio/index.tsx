@@ -3,7 +3,7 @@ import {
   FormLabel, RadioGroup, FormControlLabel, Radio, TextField
 } from '@mui/material'
 import {
-  getProps, getStoredValue, getLocallyStoredValue
+  getProps, getFieldValue, getLocallyStoredValue
 } from '../controller'
 import { RootState } from '../../../../state'
 import { connect } from 'react-redux'
@@ -34,7 +34,7 @@ function JsonRadio ({ def: radio, formsData, state }: IJsonRadioProps) {
     }
   }
   const getValue = () => {
-    return getStoredValue(formsData, radio.parent.name, radio.name)
+    return getFieldValue(formsData, radio.parent.name, radio.name)
     || getValueFromParent()
   }
   const currentValue = getValue()

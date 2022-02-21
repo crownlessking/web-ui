@@ -5,37 +5,21 @@ import {
 import { getBoolValue } from '../controller'
 import { RadioProps } from '@mui/material/Radio'
 import { RootState } from '../../../state'
-import { getStoredValue, getLocallyStoredValue } from './controller'
-import { connect } from 'react-redux'
+import { getFieldValue } from './controller'
 import StateFormItem from '../../../controllers/StateFormItem'
-import { IParentState } from '../../../controllers/State'
 import { FIELD_NAME_NOT_SET } from '../../../controllers'
-
-const mapStateToProps = (state: RootState) => ({
-  formsData: state.formsData
-})
+import { useSelector } from 'react-redux'
 
 interface IJsonSwitchProps {
   def: StateFormItem
-  formsData: any
-  state?: IParentState
-  [prop: string]: any
 }
 
-export default connect(mapStateToProps)(
-
-function JsonSwitch ({ def, formsData, state }: IJsonSwitchProps) {
+export default function JsonSwitch ({ def }: IJsonSwitchProps) {
   const { disabled, name, onChange } = def
   const has = def.has
-  const getValueFromParent = () => {
-    if (state) {
-      return getLocallyStoredValue(state.state.formData, def)
-    }
-  }
-  const getValue = () => {
-    return getStoredValue(formsData, def.parent.name, def.name)
-    || getValueFromParent()
-  }
+  const formsData = useSelector<RootState>(state => state.formsData)
+  const getValue = () => getFieldValue(formsData, def.parent.name, def.name)
+
   return name ? (
     <FormControl component="fieldset">
       <FormLabel component="legend">&nbsp;</FormLabel>
@@ -59,5 +43,4 @@ function JsonSwitch ({ def, formsData, state }: IJsonSwitchProps) {
   ) : (
     <TextField value={`SWITCH ${FIELD_NAME_NOT_SET}`} disabled />
   )
-
-})
+}

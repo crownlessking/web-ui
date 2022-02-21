@@ -3,6 +3,7 @@ import StatePage from '../../controllers/StatePage'
 import _ from 'lodash'
 import { makeStyles, StyleRules } from '@mui/styles'
 import Fade from '@mui/material/Fade'
+import { Box } from '@mui/material'
 
 interface IBackgroundProps {
   def: StateBackground<StatePage>,
@@ -12,23 +13,20 @@ interface IBackgroundProps {
 export const Background = function (
   { def: background, children }: IBackgroundProps
 ) {
-  const useStyles = makeStyles({
-    background: _.extend<StyleRules>({
-      height: 'inherit',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      zIndex: -9999
-    }, background.getJss())
-  });
-
-  const classes = useStyles()
-
   return (
     <Fade in={true}>
-      <div className={classes.background}>
+      <Box
+        sx={{
+          height: 'inherit',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          zIndex: -9999,
+          ...background.getJss()
+        }}
+      >
         { children }
-      </div>
+      </Box>
     </Fade>
   )
 }

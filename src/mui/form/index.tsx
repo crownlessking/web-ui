@@ -1,8 +1,11 @@
 import { Fragment } from 'react'
-import { alpha, Box, Paper, Stack, Theme } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import ThemeParser from '../../controllers/ThemeParser'
+import { Box, Paper, Stack } from '@mui/material'
 import StateForm from '../../controllers/StateForm'
+import { useDispatch } from 'react-redux'
+import { errorsAdd } from '../../slices/errors.slice'
+import { toJsonapiError } from '../../state/errors.controller'
+import { log } from '../../controllers'
+import { AppDispatch } from '../../state'
 
 interface IJsonFormProps {
   def: StateForm
@@ -30,25 +33,17 @@ function ConditionalPaper (
 export default function JsonForm (
   { def: form, children }: IJsonFormProps
 ) {
-  const parse = new ThemeParser({ alpha }).getParser()
-  const classes = makeStyles((theme: Theme) => ({
-    json: parse(theme, form.theme)
-  }))({ def: form, children})
-  switch (form.type) {
-  default:
-  case 'default':
-    return (
+  const map: {[constant: string]: () => JSX.Element} = {
+    'default': () => (
       <ConditionalPaper form={form}>
         <Box
-          className={classes.json}
           {...form.props}
         >
           { children }
         </Box>
       </ConditionalPaper>
-    )
-  case 'stack':
-    return (
+    ),
+    'stack': () => (
       <ConditionalPaper form={form}>
         <Stack {...form.props}>
           { children }
@@ -56,4 +51,13 @@ export default function JsonForm (
       </ConditionalPaper>
     )
   }
+
+  const dispatch = useDispatch<AppDispatch>()
+  try {
+    return map[form.type]()
+  } catch (e: any) {
+    dispatch(errorsAdd(toJsonapiError(e)))
+    log(e.message)
+  }
+  return map['default']()
 }

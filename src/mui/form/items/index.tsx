@@ -50,16 +50,14 @@ const RecursiveFormItems = ({ form, items }: IRecursiveFormBuilder) => {
   const dispatch = useDispatch<AppDispatch>()
 
   /** Saves the form field value to the store. */
-  const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => {
-    dispatch({
-      type: 'formsData/formsDataUpdate',
-      payload: {
-        formName: form.name,
-        name,
-        value: e.target.value
-      }
-    })
-  }
+  const onUpdateFormData = (form: StateForm) => (name: string) => (e: any) => dispatch({
+    type: 'formsData/formsDataUpdate',
+    payload: {
+      formName: form.name,
+      name,
+      value: e.target.value
+    }
+  })
 
   /** Saves the date value to the store. */
   const onUpdateFormDatetime = (form: StateForm) => 

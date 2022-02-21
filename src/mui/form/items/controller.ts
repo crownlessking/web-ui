@@ -14,13 +14,13 @@ import IStateFormItemCustom from '../../../controllers/interfaces/IStateFormItem
  *
  * @param that
  * @param def
- *
- * @deprecated
  */
-export function getStoredValue(formsData: any, formName: string, name: string): any {
+export function getFieldValue(formsData: any, formName: string, name: string): any {
   try {
-    return formsData[formName][name]
+    const value = formsData[formName][name]
+    return value ? value : ''
   } catch (e) {  }
+  return ''
 }
 
 /**
@@ -30,8 +30,10 @@ export function getStoredValue(formsData: any, formName: string, name: string): 
  * If no value is found in the state, will return the field definition's
  * default value if possible.
  *
- * @param formData 
- * @param name 
+ * @param formData
+ * @param name
+ *
+ * @depecated
  */
 export function getLocallyStoredValue(formData: any, item: IStateFormItem): any {
   const copyItem = { ...item }
@@ -52,6 +54,8 @@ export function getLocallyStoredValue(formData: any, item: IStateFormItem): any 
  *
  * @param item 
  * @param removalList list of key to be remove from form definition
+ *
+ * @deprecated
  */
 export function getProps<T extends IStateFormItem>(
   item: T,

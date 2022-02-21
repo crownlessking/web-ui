@@ -3,7 +3,7 @@ import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import {
   getCheckboxesStatus,
-  getStoredValue,
+  getFieldValue,
   getLocallyStoredValue
 } from './controller'
 import { FormControlLabel, Checkbox } from '@mui/material'
@@ -39,7 +39,7 @@ function JsonCheckboxes (
     }
   }
   const getValue = () => {
-    return getStoredValue(formsData, formName, checkboxes.name)
+    return getFieldValue(formsData, formName, checkboxes.name)
     || getValueFromParent()
     || []
   }

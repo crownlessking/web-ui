@@ -21,6 +21,8 @@ import StateNet from './StateNet'
 
 /**
  * Use when component receives its parent state
+ *
+ * @deprecated
  */
 export interface IParentState {
   state: any

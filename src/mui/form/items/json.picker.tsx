@@ -1,6 +1,6 @@
 import { alpha, TextField, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { getStoredValue, getLocallyStoredValue } from './controller'
+import { getFieldValue, getLocallyStoredValue } from './controller'
 import { connect, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../../state'
 import StateForm from '../../../controllers/StateForm'
@@ -59,7 +59,7 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
     }
   }
   const getValue = () => {
-    return getStoredValue(formsData, def.parent.name, def.name)
+    return getFieldValue(formsData, def.parent.name, def.name)
     || getValueFromParent()
     || null
   }
