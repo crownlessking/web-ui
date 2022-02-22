@@ -1,7 +1,7 @@
 import { useState, Fragment } from 'react'
 import {
   alpha, AppBar, Box, Toolbar, IconButton, Typography, InputBase, MenuItem,
-  Menu, styled, Theme
+  Menu, styled,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
@@ -12,7 +12,6 @@ import Logo from './logo'
 import AppBarIcon from '../link'
 import AppBarIconText from '../link/text'
 import ComponentBuilder from '../../components'
-import { makeStyles } from '@mui/styles'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,14 +59,6 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
   const appbar = page.appBar
   const typography = appbar.typography
   const parse = new ThemeParser({ alpha }).getParser()
-
-  const toolbarClasses = makeStyles((theme: Theme) => ({
-    root: parse(theme, {
-      ...appbar.theme,
-      ...appbar.background.getJss(),
-      color: typography.color,
-    })
-  }))()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -233,7 +224,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
       <AppBar
         {...appbar.props}
       >
-        <Toolbar className={toolbarClasses.root} {...appbar.toolbarProps}>
+        <Toolbar {...appbar.toolbarProps}>
           <IconButton {...appbar.menuIconProps}>
             <MenuIcon />
           </IconButton>

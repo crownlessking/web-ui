@@ -1,12 +1,10 @@
 import { LocalizationProvider } from '@mui/lab'
 import DateAdapter from '@mui/lab/AdapterDateFns'
 import {
-  alpha, Box, FormControl, FormControlLabel, FormGroup, Stack, Theme
+  Box, FormControl, FormControlLabel, FormGroup, Stack,
 } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 import { Fragment } from 'react'
 import StateFormItem from '../../controllers/StateFormItem'
-import ThemeParser from '../../controllers/ThemeParser'
 import {
   BOX, STACK, LOCALIZED, FORM_GROUP, FORM_CONTROL, FORM_CONTROL_LABEL,
   INDETERMINATE, DIV, NONE
@@ -20,20 +18,16 @@ interface IFormItemGroupProps {
 export default function FormItemGroup (
   { def: item, children }: IFormItemGroupProps
 ) {
-  const parse   = new ThemeParser({ alpha }).getParser()
-  const classes = makeStyles((theme: Theme) => ({
-    json : parse(theme, item.has.props)
-  }))()
   switch (item.type.toUpperCase()) {
   case BOX:
     return (
-      <Box className={classes.json} {...item.props}>
+      <Box {...item.props}>
         { children }
       </Box>
     )
   case STACK:
     return (
-      <Stack className={classes.json} {...item.props}>
+      <Stack {...item.props}>
         { children }
       </Stack>
     )
@@ -45,13 +39,13 @@ export default function FormItemGroup (
     )
   case FORM_GROUP:
     return (
-      <FormGroup className={classes.json} {...item.props}>
+      <FormGroup {...item.props}>
         { children }
       </FormGroup>
     )
   case FORM_CONTROL:
     return (
-      <FormControl className={classes.json} {...item.props}>
+      <FormControl {...item.props}>
         { children }
       </FormControl>
     )
@@ -59,7 +53,6 @@ export default function FormItemGroup (
     return (
       <FormControlLabel
         {...item.props}
-        className={classes.json}
         control={children}
       />
     )
@@ -69,7 +62,6 @@ export default function FormItemGroup (
       <div>
         <FormControlLabel
           {...item.props}
-          className={classes.json}
           control={parent}
         />
         { children }
@@ -78,7 +70,7 @@ export default function FormItemGroup (
   }
   case DIV:
     return (
-      <div className={classes.json} {...item.props}>
+      <div {...item.props}>
         { children }
       </div>
     )

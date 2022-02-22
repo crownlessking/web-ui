@@ -1,13 +1,11 @@
 import { Fragment } from 'react'
-import { Icon, Button, Theme, alpha } from '@mui/material'
+import { Icon, Button } from '@mui/material'
 import { getFontAwesomeIconProp } from '../../../../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import store from '../../../../state'
 import allActions from '../../../../state/actions'
 import StateFormItem from '../../../../controllers/StateFormItem'
-import ThemeParser from '../../../../controllers/ThemeParser'
-import { makeStyles } from '@mui/styles'
 
 interface IJsonButtonProps { def: StateFormItem }
 
@@ -18,10 +16,6 @@ export default function JsonButton ({ def: button }: IJsonButtonProps) {
     route: button.json.href
   }
   const onClick = button.onClick || button.has.callback
-  const parse = new ThemeParser({ alpha }).getParser()
-  const classes = makeStyles((theme: Theme) => ({
-    json: parse(theme, button.theme)
-  }))({ def: button })
 
   const ButtonContent = ({ def: button }: { def: StateFormItem}) => {
     if (button.text) {
@@ -92,7 +86,6 @@ export default function JsonButton ({ def: button }: IJsonButtonProps) {
   return (
     <Button
       {...button.props}
-      className={classes.json}
       onClick={onClick(redux)}
     >
       <ButtonContent def={button} />

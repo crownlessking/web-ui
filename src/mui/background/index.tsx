@@ -1,7 +1,6 @@
 import StateBackground from '../../controllers/StateBackground'
 import StatePage from '../../controllers/StatePage'
 import _ from 'lodash'
-import { makeStyles, StyleRules } from '@mui/styles'
 import Fade from '@mui/material/Fade'
 import { Box } from '@mui/material'
 

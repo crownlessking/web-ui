@@ -10,6 +10,14 @@ interface IJsonTextfieldProps {
   def: StateFormItem
 }
 
+const typeMap: { [constant: string]: string } = {
+  text: 'text',
+  textfield: 'text',
+  textarea: 'text',
+  password: 'password',
+  number: 'number'
+}
+
 /**
  * Textfield
  */
@@ -20,6 +28,7 @@ export default function JsonTextfield({ def: textfield }: IJsonTextfieldProps) {
   return textfield.name ? (
     <TextField
       {...textfield.props}
+      type={typeMap[textfield.type]}
       error={textfield.has.regexError(value)}
       value={value}
       onChange={textfield.onChange(textfield.name)}

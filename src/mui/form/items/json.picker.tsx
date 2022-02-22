@@ -1,6 +1,5 @@
-import { alpha, TextField, Theme } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import { getFieldValue, getLocallyStoredValue } from './controller'
+import { TextField } from '@mui/material'
+import { getFieldValue } from './controller'
 import { connect, useDispatch } from 'react-redux'
 import { AppDispatch, RootState } from '../../../state'
 import StateForm from '../../../controllers/StateForm'
@@ -13,7 +12,6 @@ import {
   DATE_TIME_PICKER, DESKTOP_DATE_PICKER, MOBILE_DATE_PICKER,
   STATIC_DATE_PICKER, TIME_PICKER
 } from '../controller'
-import ThemeParser from '../../../controllers/ThemeParser'
 import { errorsAdd } from '../../../slices/errors.slice'
 import { toJsonapiError } from '../../../state/errors.controller'
 import { FIELD_NAME_NOT_SET, log } from '../../../controllers'
@@ -34,7 +32,6 @@ interface IJsonPickerProps {
 }
 
 interface IPickerTableCallback {
-  classes: any,
   props: any,
   value: any,
   name: string
@@ -46,30 +43,15 @@ interface IPickerTable {
 
 export default connect(mapStateToProps)(
 
-function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
-  const parse = new ThemeParser({ alpha }).getParser()
+function JsonPicker ({ def, formsData }: IJsonPickerProps) {
   const dispatch = useDispatch<AppDispatch>()
-  const classes = makeStyles((theme: Theme) =>({
-    json: parse(theme, def.theme)
-  }))()
   const { type, name, onChange, props } = def
-  const getValueFromParent = () => {
-    if (state) {
-      return getLocallyStoredValue(state.state.formData, def)
-    }
-  }
-  const getValue = () => {
-    return getFieldValue(formsData, def.parent.name, def.name)
-    || getValueFromParent()
-    || null
-  }
-  const value = getValue()
+  const value = getFieldValue(formsData, def.parent.name, def.name)
   // json.format = json.format || 'MM/dd/yyyy'
 
   const pickerTable: IPickerTable = {
     [DATE_TIME_PICKER]:(picker: IPickerTableCallback) => (
       <DateTimePicker
-        className={picker.classes.json}
         label="Date&Time picker"
         {...picker.props}
         value={picker.value}
@@ -79,7 +61,6 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
     ),
     [DESKTOP_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <DesktopDatePicker
-        className={picker.classes.json}
         label="Date desktop"
         inputFormat="MM/dd/yyyy"
         {...picker.props}
@@ -90,7 +71,6 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
     ),
     [MOBILE_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <MobileDatePicker
-        className={picker.classes.json}
         label="Date mobile"
         inputFormat="MM/dd/yyyy"
         {...picker.props}
@@ -101,7 +81,6 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
     ),
     [TIME_PICKER]:(picker: IPickerTableCallback) => (
       <TimePicker
-        className={picker.classes.json}
         label="Time"
         {...picker.props}
         value={picker.value}
@@ -111,7 +90,6 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
     ),
     [STATIC_DATE_PICKER]:(picker: IPickerTableCallback) => (
       <StaticDatePicker
-        className={picker.classes.json}
         displayStaticWrapperAs="desktop"
         openTo="year"
         {...picker.props}
@@ -125,7 +103,7 @@ function JsonPicker ({ def, formsData, state }: IJsonPickerProps) {
   try {
     const constant = type.replace(/\s+/,'').toUpperCase()
     return def.nameProvided
-      ? pickerTable[constant]({classes, props, value, name})
+      ? pickerTable[constant]({props, value, name})
       : <TextField value={`PICKER ${FIELD_NAME_NOT_SET}`} disabled />
   } catch (e: any) {
     dispatch(errorsAdd(toJsonapiError(e)))

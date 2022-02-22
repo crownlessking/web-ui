@@ -22,20 +22,20 @@ interface ILayoutProps {
   children: any
 }
 
-interface ILayoutTable {
+interface ILayoutMap {
   [constant: string]: () => JSX.Element
 }
 
 /**
  * Application layout
  */
-export default function Layout ({
+export default function Layout({
   def: page,
   children
 }: ILayoutProps): JSX.Element | null {
   const dispatch = useDispatch<AppDispatch>()
 
-  const layoutTable: ILayoutTable = {
+  const layoutsMap: ILayoutMap = {
     [LAYOUT_CENTERED_NO_SCROLL]: () => (
       <LayoutCenteredNoScroll>
         { children }
@@ -75,9 +75,9 @@ export default function Layout ({
   }
 
   try {
-    const constant = page.layout.replace(/\s+/g, '').toUpperCase()
-    if (constant) {
-      return layoutTable[constant]()
+    const layout = page.layout.replace(/\s+/g, '').toUpperCase()
+    if (layout) {
+      return layoutsMap[layout]()
     }
     return (
       <Fragment>
@@ -88,5 +88,10 @@ export default function Layout ({
     dispatch(errorsAdd(toJsonapiError(e)))
     log(e.message)
   }
-  return ( null )
+  return (
+    <Fragment>
+      { children }
+    </Fragment>
+  )
+
 }

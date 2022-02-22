@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import { styled, alpha, InputLabel, Theme } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 import StateComponent from '../controllers/StateComponent'
 import StateFormItem from '../controllers/StateFormItem'
 import StateFormItemRadio from '../controllers/StateFormItemRadio'
@@ -33,6 +32,7 @@ import store from '../state'
 import { errorsAdd } from '../slices/errors.slice'
 import { toJsonapiError } from '../state/errors.controller'
 import { log } from '../controllers'
+import { formsDataClear } from '../slices/formsData.slice'
 
 interface IComponentsBuilderProps {
   def: StateComponent[]
@@ -163,7 +163,10 @@ function RecursiveComponents({
     e.preventDefault()
     const formsData = form.parent.parent.formsData
     const body = formsData.getStoredValues(form.name)
-    onPostReqState(form.endpoint, body)
+    if (body) {
+      onPostReqState(form.endpoint, body)
+      dispatch(formsDataClear(form.name))
+    }
   }
 
   const textComponent = ({ type, key, getJson }:IDefProps) => {
@@ -226,12 +229,9 @@ function RecursiveComponents({
         def={new StateFormItem(getJson(), parent)}
       />
     ),
-    [INPUT_LABEL]:({ type, key, props, jsonTheme }:IDefProps): number => components.push(
+    [INPUT_LABEL]:({ type, key, props }:IDefProps): number => components.push(
       <InputLabel
         key={`${type}-${key}`}
-        className={makeStyles((theme: Theme) => ({
-          json: parse(theme, jsonTheme)
-        }))()}
         {...props}
       />
     ),

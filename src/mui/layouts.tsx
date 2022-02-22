@@ -1,6 +1,11 @@
 import React from 'react'
-import { makeStyles, CSSProperties } from '@mui/styles'
-import { Grid, Theme } from '@mui/material'
+import { makeStyles, CSSProperties, useTheme } from '@mui/styles'
+import { Box, Grid, Theme } from '@mui/material'
+
+interface IMainProps {
+  p?: string | number
+  children: any
+}
 
 const defaultClasses: { [key: string]: CSSProperties } = {
   container: {
@@ -14,6 +19,31 @@ const defaultClasses: { [key: string]: CSSProperties } = {
   }
 }
 
+const Main = ({ p, children }: IMainProps) => (
+  <Box
+    component='main'
+    sx={{...defaultClasses.content, p}}
+  >
+    { children }
+  </Box>
+)
+
+const Toolbar = ({ mHeight }: { mHeight?: string|number }) => {
+  const { mixins } = useTheme<Theme>()
+  const minHeight = (mHeight !== undefined)
+    ? mHeight
+    // info: https://stackoverflow.com/questions/52995225/how-does-one-use-or-get-started-with-theme-mixins-toolbar-in-material-ui
+    : mixins.toolbar.minHeight
+  return (
+    <Box>
+      sx={{
+        ...defaultClasses.container,
+        minHeight
+      }}
+    </Box>
+  )
+}
+
 /**
  * NON-SCROLLING CENTERED LAYOUT.
  *
@@ -22,15 +52,11 @@ const defaultClasses: { [key: string]: CSSProperties } = {
  * resize.
  */
 export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) => {
-  const classes = makeStyles(() => ({
-    container: {
-      // fontWeight: 'bold',
-      minHeight: '100vh'
-    }
-  }))()
   return (
     <Grid
-      className={classes.container}
+      sx={{
+        minHeight: '100vh'
+      }}
       container={true}
       spacing={0}
       alignItems='center'
@@ -49,31 +75,16 @@ export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) 
  * The greater the number, the greater the gap.
  *
  * @param mHeight height of content in pixels
+ *
+ * @see https://stackoverflow.com/a/56497384/1875859
  */
 const LayoutCenteredFactory = (mHeight?: number) => {
   return React.forwardRef(({ children }: any, ref) => {
-    const classes = makeStyles(({ mixins, spacing }: Theme) => ({
-      toolbar: {
-        ...defaultClasses.container,
-    
-        // info: https://stackoverflow.com/questions/52995225/how-does-one-use-or-get-started-with-theme-mixins-toolbar-in-material-ui
-        minHeight: mHeight !== undefined
-          ? mHeight
-          : mixins.toolbar.minHeight // '29px', // ...theme.mixins.toolbar
-      },
-      content: {
-        ...defaultClasses.content,
-
-        padding: spacing(3),
-      },
-
-      // TODO put your styles here
-
-    }))()
+    const theme = useTheme<Theme>()
 
     return (
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      <Main p={theme.spacing(3)}>
+        <Toolbar mHeight={mHeight} />
         <Grid
           container
           spacing={0}
@@ -82,10 +93,10 @@ const LayoutCenteredFactory = (mHeight?: number) => {
         >
           { children }
         </Grid>
-      </main>
+      </Main>
     )
   })
-} // 
+}
 
 /**
  * LAYOUT CENTERED with the default `AppBar` space top margin.
@@ -104,6 +115,7 @@ export const LayoutCenteredDialog = LayoutCenteredFactory(0)
  */
 const LayoutDefaultFactory = (mHeight = 0) => {
   return React.forwardRef(({children}: any, ref) => {
+    const { spacing } = useTheme<Theme>()
     const classes = makeStyles(({mixins, spacing}: Theme) => ({
       toolbar: {
         ...defaultClasses.container,
@@ -118,10 +130,10 @@ const LayoutDefaultFactory = (mHeight = 0) => {
       },
     }))()
     return (
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      <Main p={spacing(0, 2)}>
+        <Toolbar mHeight={mHeight} />
         { children }
-      </main>
+      </Main>
     )
   })
 }
@@ -129,21 +141,14 @@ const LayoutDefaultFactory = (mHeight = 0) => {
 export const DefaultLayout = LayoutDefaultFactory()
 export const VirtualizedTableLayout = LayoutDefaultFactory(49) // 29
 
-/** Created to apply toolbar space at the top if the page has an appBar */
+/** Applies toolbar space at the top if the page has an appBar */
 const LayoutNoneFactory = (mHeight = 0) => {
   return React.forwardRef(({children}: any, ref) => {
-    const classes = makeStyles(({mixins}: Theme) => ({
-      toolbar: {
-        ...defaultClasses.container,
-        minHeight: mHeight || mixins.toolbar.minHeight
-      },
-      main: { width: '100%' }
-    }))()
     return (
-      <main className={classes.main}>
-        <div className={classes.toolbar} />
+      <Box component='main' sx={{ w: '100%' }}>
+        <Toolbar mHeight={mHeight} />
         { children }
-      </main>
+      </Box>
     )
   })
 }
