@@ -1,4 +1,4 @@
-// import * as c from '../../controllers'
+import * as c from '../../controllers'
 // import store from '../../state'
 // import actions from '../../state/actions'
 
@@ -25,14 +25,6 @@
   // done()
 // })
 
-// test('delegatedState()', done => {
-//   const dish = {
-//     state: { name: 'Potage le magnifique', price: 1400 }
-//   }
-//   expect(c.delegatedState(dish, 'price')).toBe(1400)
-//   expect(c.delegatedState(dish)).toEqual(dish)
-  // done()
-// })
 
 // test('getVal()', (done) => {
 //   const obj = {
@@ -50,5 +42,21 @@
 
   // done()
 // })
+
+test('export function safelyGet()', done => {
+  const obj1 = {
+    basicInfo: {
+      firstname: 'Koolio'
+    },
+  }
+
+  expect(c.safelyGet(obj1, 'basicInfo.firstname')).toBe('Koolio')
+  expect(c.safelyGet(obj1, 'occupation')).toBeNull()
+
+  const obj2 = undefined
+  expect(c.safelyGet(obj2)).toBeDefined()
+
+  done()
+})
 
 export default undefined

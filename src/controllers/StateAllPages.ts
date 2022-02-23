@@ -70,7 +70,7 @@ export default class StateAllPages extends AbstractState {
     page = this.getPageJson(route)
     if (page) { return new StatePage(page, this) }
 
-    // Maybe its a url switch to the default page
+    // Maybe its a url switched to the default page
     if (route === '/' ) {
       page = this.allPagesJson[this.parent.app.defaultPage]
       if (page) { return new StatePage(page, this) }

@@ -170,6 +170,9 @@ export function stretchToBottom(bottom: number): number {
  * @param path dot-separated object (nested) keys
  */
 export function getVal(obj: any, path: string): any {
+  if (obj === undefined || Array.isArray(obj) || typeof obj !== 'object') {
+    return null
+  }
   const paths = path.split('.')
   let i = 0,
     key = paths[i],
@@ -331,7 +334,7 @@ export function mongoObjectId(): string {
  * @param obj 
  * @param path     an existing property of `obj` or a dot-separated list of
  *                 properties.
- * @param _default value to return if `obj[key]` is undefined
+ * @param _default value to return if `obj[path]` is undefined
  */
 export function safelyGet(obj: any, path?: string, _default?: any): any {
   const value = getVal(obj, path || '')
@@ -340,25 +343,21 @@ export function safelyGet(obj: any, path?: string, _default?: any): any {
     return value
   }
 
-  switch (_default) {
-
   // force function to return undefined
-  case 'undefined':
+  if (_default === 'undefined') {
     return undefined
+  }
 
-  case undefined:
-
+  if (_default === undefined) {
+  
     // If a path was not provided, we can safely assume that the object is being
     // tested for a valid value
     if (!path) return {}
-
+  
     return null
-
-  default:
-    return _default
-
   }
 
+  return _default
 }
 
 /**

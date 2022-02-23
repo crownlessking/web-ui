@@ -108,38 +108,26 @@ function RecursiveComponents({
   const onHandleSwitch = (form: StateForm) =>
     (name: string, value: any) => (e: any) =>
   {
-    switch (getBoolType(value)) {
-    case BOOL_TRUEFALSE:
+    const map: { [constant: string]: string[] } = {
+      [BOOL_TRUEFALSE]: ['true', 'false'],
+      [BOOL_ONOFF]:['on', 'off'],
+      [BOOL_YESNO]:['yes', 'no']
+    }
+
+    const constant = getBoolType(value)
+
+    if (constant) {
       dispatch({
         type: 'formsData/formsDataUpdate',
         payload: {
           formName: form.name,
           name,
-          value: e.target.checked ? 'true' : 'false'
+          value: e.target.checked
+            ? map[constant][0]
+            : map[constant][1]
         }
       })
-      break
-    case BOOL_ONOFF:
-      dispatch({
-        type: 'formsData/formsDataUpdate',
-        payload: {
-          formName: form.name,
-          name,
-          value: e.target.checked ? 'on' : 'off'
-        }
-      })
-      break
-    case BOOL_YESNO:
-      dispatch({
-        type: 'formsData/formsDataUpdate',
-        payload: {
-          formName: form.name,
-          name,
-          value: e.target.checked ? 'yes' : 'no'
-        }
-      })
-      break
-    default:
+    } else {
       dispatch({
         type: 'formsData/formsDataUpdate',
         payload: {

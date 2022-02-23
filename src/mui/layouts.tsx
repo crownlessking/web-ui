@@ -116,19 +116,6 @@ export const LayoutCenteredDialog = LayoutCenteredFactory(0)
 const LayoutDefaultFactory = (mHeight = 0) => {
   return React.forwardRef(({children}: any, ref) => {
     const { spacing } = useTheme<Theme>()
-    const classes = makeStyles(({mixins, spacing}: Theme) => ({
-      toolbar: {
-        ...defaultClasses.container,
-    
-        // info: https://stackoverflow.com/questions/52995225/how-does-one-use-or-get-started-with-theme-mixins-toolbar-in-material-ui
-        minHeight: mHeight || mixins.toolbar.minHeight // '29px', // ...theme.mixins.toolbar
-      },
-      content: {
-        ...defaultClasses.content,
-
-        padding: spacing(0, 2),
-      },
-    }))()
     return (
       <Main p={spacing(0, 2)}>
         <Toolbar mHeight={mHeight} />
