@@ -1,7 +1,7 @@
 import { mongoObjectId } from '.'
 import {
   IJsonapiError, IJsonapiErrorLinks, IJsonapiErrorSource, IJsonapiMeta
-} from './interfaces/IStateNet'
+} from './interfaces/IJsonapi'
 
 export default class JsonapiError implements IJsonapiError {
   private e: IJsonapiError

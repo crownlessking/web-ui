@@ -33,7 +33,7 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  private getPageJson = (route: string): IStatePage => {
+  getPageJson = (route: string): IStatePage => {
     return this.allPagesJson[route]
       || this.allPagesJson[`/${route}`]
       || this.allPagesJson[route.substring(1)]
@@ -60,14 +60,17 @@ export default class StateAllPages extends AbstractState {
     const route = this.parent.app.route
     let page: IStatePage
 
-    // If this is the first page to be rendered
-    if (!this.parent.app.status) {
+    // If a page that is NOT the landing page is requested
+    if (window.location.pathname.length > 1) {
       page = this.allPagesJson[window.location.pathname.substring(1)]
-        || this.allPagesJson[window.location.pathname]
-      if (page) { return new StatePage(page, this) }
+      || this.allPagesJson[window.location.pathname]
+      if (page) {
+        return new StatePage(page, this)
+      }
+      return new StatePage(this.allPagesJson[DEFAULT_PAGE_NOT_FOUND], this)
     }
-
     page = this.getPageJson(route)
+
     if (page) { return new StatePage(page, this) }
 
     // Maybe its a url switched to the default page

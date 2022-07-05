@@ -35,7 +35,7 @@ export default interface IStatePage {
   useDefaultAppBar?: boolean
   /** If `true`, the page will use the default drawer at `IState.drawer`. */
   useDefaultDrawer?: boolean
-  /** If `true`, the `IState.background` will be used. */
+  /** If `false`, the `IState.background` will NOT be used. */
   useDefaultBackground?: boolean
   /** If `true`, the `IState.typography` will be used. */
   useDefaultTypography?: boolean
@@ -71,6 +71,8 @@ export default interface IStatePage {
 export interface IStatePageContent {
   type: string
   name: string
+  /** As of now, endpoint is for form contents.
+   * It allows the usage of an automatic callback. */
   endpoint?: string
   args?: string
 }

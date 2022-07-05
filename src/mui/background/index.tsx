@@ -1,6 +1,5 @@
 import StateBackground from '../../controllers/StateBackground'
 import StatePage from '../../controllers/StatePage'
-import _ from 'lodash'
 import Fade from '@mui/material/Fade'
 import { Box } from '@mui/material'
 
@@ -21,7 +20,7 @@ export const Background = function (
           left: 0,
           right: 0,
           zIndex: -9999,
-          ...background.getJss()
+          ...background.sx
         }}
       >
         { children }

@@ -2,13 +2,17 @@ import { getGlobalVar, getHeadMetaContent } from '../controllers'
 import { orange } from '@mui/material/colors'
 import { ThemeOptions } from '@mui/material'
 import _ from 'lodash'
-import StatePage from '../controllers/StatePage'
 import IState from '../controllers/interfaces/IState'
+
+/*
+ * WARNING: Be careful what you import in here. It might cause WEBPACK errors.
+ */
 
 /** Allows you to rename global variables to prevent conflicts. */
 const GLOBAL_PREFIX = getHeadMetaContent('web-ui') || 'app'
 
-const DEFAULT_BACKGROUND_COLOR = '#af74b0'
+export const PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
+export const DEFAULT_BACKGROUND_COLOR = '#af74b0'
 
 /**
  * Raw data obtained from server will be stored in this object as an
@@ -86,8 +90,7 @@ export default {
 
   'appBar': {
     'background': {
-      'type': 'color',
-      'value': DEFAULT_BACKGROUND_COLOR, // 'radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)'
+      'color' : DEFAULT_BACKGROUND_COLOR, // 'radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)'
     },
     'items': [],
     'typography': { }
@@ -102,8 +105,7 @@ export default {
    * Application background color
    */
   'background': _.extend({
-    'type': 'color',
-    'value': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
+    'color': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
   }, getGlobalVar(`${GLOBAL_PREFIX}Background`)),
 
   /**
@@ -155,7 +157,7 @@ export default {
 
     // Default success feedback page
     'default-success': {
-      'content': '$view : success_page',
+      'content': '$view : default_success_page_view',
       'layout': 'LAYOUT_CENTERED_NO_SCROLL',
       'typography': { color: '#74d2b3' },
       'data': {
@@ -165,18 +167,22 @@ export default {
 
     // Default 404 not found page
     'default-notfound': {
-      'content': '$view : notfound_page',
+      'content': '$view : default_notfound_page_view',
       'layout': 'LAYOUT_CENTERED',
-      'data': { 'message': 'Not found!' }
+      'data': { 'message': 'Not found!' },
+      'background': {
+        'type': 'color',
+        'value': 'white'
+      }
     },
 
     'default-landing': {
-      '_id': StatePage.PAGE_HARD_CODED,
-      'content': '$view : landing_page'
+      '_id': PAGE_HARD_CODED,
+      'content': '$view : default_landing_page_view'
     },
 
     'default-errors-view': {
-      'content': '$view : errors_page',
+      'content': '$view : default_errors_page_view',
       'background': {
         'type': 'color',
         'value': '#fcfcfc'

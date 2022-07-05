@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { mongoObjectId, APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE, err } from '.'
+import { mongoObjectId, APP_CONTENT_VIEW, log, err } from '.'
 import StatePageAppBar from './StatePageAppBar'
 import StatePageBackground from './StatePageBackground'
 import StateAllPages from './StateAllPages'
@@ -13,32 +13,32 @@ import IStateBackground from './interfaces/IStateBackground'
 import IStateComponent from './interfaces/IStateComponent'
 import IStateTypography from './interfaces/IStateTypography'
 import IStateDrawer, { IStatePageDrawer } from './interfaces/IStateDrawer'
+import { DEFAULT_LANDING_PAGE_VIEW } from '../components/view.component'
+import Config from '../config'
 
 export default class StatePage extends AbstractState implements IStatePage {
 
-  static PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
   static EMPTY_APPBAR: IStateAppBar = { items: [] }
   static EMPTY_DRAWER: IStateDrawer = {
     items: [],
     open: false,
     width: 300
   }
-  static EMPTY_BACKGROUND: IStateBackground = { type: 'none' }
 
   private parentObj: StateAllPages
   private pageJson: IStatePage
   private _pageId?: string
-  private pageAppBarJson: IStateAppBar
+  private pageAppBarJson?: IStateAppBar
   private pageAppBar?: StatePageAppBar
   private noPageAppBar: boolean
-  private pageAppBarCustomJson: IStateComponent
+  private pageAppBarCustomJson?: IStateComponent
   private pageAppBarCustom?: StateComponent<this>
-  private pageDrawerJson: IStateDrawer
+  private pageDrawerJson?: IStateDrawer
   private noPageDrawer: boolean
   private pageContentJson: IStatePageContent
-  private pageBackgroundJson: IStateBackground
+  private pageBackgroundJson?: IStateBackground
   private pageBackground?: StatePageBackground
-  private noPageBackground: boolean
+  // private noPageBackground: boolean
   private pageTypographyJson: IStateTypography
   private pageTypography?: StatePageTypography
   private pageDrawer?: StatePageDrawer
@@ -54,13 +54,9 @@ export default class StatePage extends AbstractState implements IStatePage {
     this.pageJson = pageJson
     this._pageId = this.pageJson._id
     this.noPageAppBar = !this.pageJson.appBar
-    this.pageAppBarJson = StatePage.EMPTY_APPBAR // this.initPageAppBar()
-    this.pageAppBarCustomJson = {}
     this.noPageDrawer = !this.pageJson.drawer
-    this.pageDrawerJson = StatePage.EMPTY_DRAWER // this.initPageDrawer()
     this.pageContentJson = this.parseContent()
-    this.noPageBackground = !this.pageJson.background
-    this.pageBackgroundJson = StatePage.EMPTY_BACKGROUND // this.initPageBackground()
+    // this.noPageBackground = !this.pageJson.background
     this.pageTypographyJson = this.pageJson.typography || {}
   }
 
@@ -194,6 +190,7 @@ export default class StatePage extends AbstractState implements IStatePage {
   setDrawer = (drawer: IStatePageDrawer): void => {
     this.pageDrawerJson = { ...StatePage.EMPTY_DRAWER, ...drawer }
     this.noPageDrawer = !drawer
+    this.pageDrawer = new StatePageDrawer(this.pageDrawerJson, this)
   }
 
   /**
@@ -220,7 +217,7 @@ export default class StatePage extends AbstractState implements IStatePage {
 
       return {
         type: APP_CONTENT_VIEW,
-        name: DEFAULT_LANDING_PAGE
+        name: DEFAULT_LANDING_PAGE_VIEW
       }
     }
 
@@ -291,7 +288,7 @@ export default class StatePage extends AbstractState implements IStatePage {
       const route = this.pageJson.appBarCustomInherited
       return this.parent.pageAt(route).json.appBarCustom || {}
     }
-    return this.pageAppBarCustomJson
+    return this.pageAppBarCustomJson || {}
   }
 
   /**
@@ -321,24 +318,23 @@ export default class StatePage extends AbstractState implements IStatePage {
    * Initializes and ensures that the page has the correct background.
    */
   private initPageBackground = (): IStateBackground => {
-    if (this.pageJson.background) {
-      return _.extend(StatePage.EMPTY_BACKGROUND, this.pageJson.background)
-    }
+    if (this.pageJson.background) { return this.pageJson.background }
 
-    // [TODO] Potential issue: route variable could be undefined.
-    //        Compensate with a try-catch statement where error messages
-    //        are printed if Config.DEBUG is true.
-    if (this.noPageBackground && this.pageJson.backgroundInherited) {
+    // if background should be inherited from another page
+    if (this.pageJson.backgroundInherited) {
       const route = this.pageJson.backgroundInherited
-      return this.parent.pageAt(route).background.json
+      try {
+        return this.parent.parent.allPages.getPageJson(route)
+      } catch (e: any) {
+        log(`[inheriting background]: Page ${route} does not exist.`)
+        log(e.stack)
+      }
     }
 
-    if (this.noPageBackground
-      && this.pageJson.useDefaultBackground === false
-    ) {
-      return StatePage.EMPTY_BACKGROUND
-    }
+    // If explicitly set to not use the default background.
+    if (this.pageJson.useDefaultBackground === false) { return {} }
 
+    // if no background was defined, pages will automatically use the default.
     return this.parent.parent.background.json
   }
 

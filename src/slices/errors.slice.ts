@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IJsonapiError } from '../controllers/interfaces/IStateNet'
+import { IJsonapiError } from '../controllers/interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
 interface IErrorsSliceAction {

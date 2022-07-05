@@ -1,10 +1,8 @@
-import { makeStyles } from '@mui/styles'
+import { styled } from '@mui/material'
 import StatePage from '../../controllers/StatePage'
 
-const useStyles = makeStyles(() => ({
-  htmlContent: {
-    width: '100%'
-  }
+const Wrapper = styled('div')(() => ({
+  width: '100%'
 }))
 
 interface IHtmlContent {
@@ -12,14 +10,12 @@ interface IHtmlContent {
 }
 
 export default function HtmlContent ({ def: page }: IHtmlContent) {
-  const classes = useStyles()
   const domElement = document.getElementById(page.contentName)
 
   if (domElement) {
     return (
-      <div
+      <Wrapper
         dangerouslySetInnerHTML={{__html: domElement.innerHTML}}
-        className={classes.htmlContent}
         style={{
           fontFamily: page.typography.fontFamily,
           color: page.typography.color

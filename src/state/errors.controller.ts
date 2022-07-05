@@ -1,5 +1,5 @@
 import { mongoObjectId } from '../controllers'
-import { IJsonapiError } from '../controllers/interfaces/IStateNet'
+import { IJsonapiError } from '../controllers/interfaces/IJsonapi'
 
 /**
  * Set the error code in a Jsonapi error object.

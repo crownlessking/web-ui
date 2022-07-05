@@ -1,6 +1,6 @@
 import State from './State'
 import AbstractState from './AbstractState'
-import { IJsonapiError } from './interfaces/IStateNet'
+import { IJsonapiError } from './interfaces/IJsonapi'
 
 export default class StateAllErrors extends AbstractState {
 

@@ -1,13 +1,15 @@
 import { AppBarProps, ToolbarProps, IconButtonProps, BoxProps } from '@mui/material'
-import StateComponent from '../StateComponent'
 import IAbstractState from './IAbstractState'
 import IStateBackground from './IStateBackground'
+import IStateComponent from './IStateComponent'
 import IStateLink from './IStateLink'
 import IStateTypography from './IStateTypography'
 
 export default interface IStateAppBar extends IAbstractState {
   /** navigation layout */
-  layout?: ('logo' | 'search' | 'menu' | 'space' | 'components')[]
+  layout?: (
+    'logo' | 'search' | 'menu' | 'space' | string
+  )[]
   /** mui5 logo tag. i.e. "img" */
   logoTag?: keyof JSX.IntrinsicElements
   /** app bar component props */
@@ -52,8 +54,10 @@ export default interface IStateAppBar extends IAbstractState {
   typographyInherited?: string
   /**
    * There are times when the available options are not enough.
-   * With this function, you can insert a JSON defined components
-   * into existing component to customize them even further.
+   * With this function, you can insert JSON defined components
+   * into an existing component to customize it even further.
    */
-   components?: StateComponent[]
+  components?: {
+    [comp: string]: IStateComponent[]
+  }
 }

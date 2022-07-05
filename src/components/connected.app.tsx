@@ -11,9 +11,9 @@ import Drawer from './drawer.component'
 import State from '../controllers/State'
 import Spinner from './spinner.component'
 import Snackbar from '../mui/snackbar'
-import StatePage from '../controllers/StatePage'
 import { postReqState } from '../state/net.actions'
 import { getBootstrapKey } from '../state/state.controller'
+import { PAGE_HARD_CODED } from '../state/initial.state'
 
 const mapStateToProps = (state: RootState) => ({ state })
 
@@ -46,7 +46,7 @@ class App extends Component<IAppProps> {
   componentDidMount() {
 
     // Get a page from server if none was provided.
-    if (this.pageID === StatePage.PAGE_HARD_CODED) {
+    if (this.pageID === PAGE_HARD_CODED) {
       this.onPostReqHomePageState()
     }
   }

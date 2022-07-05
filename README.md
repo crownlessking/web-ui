@@ -33,8 +33,14 @@
 - [JSON definition](#json-definition)
   - [How to load page definition remotely](#how-to-load-page-definition-remotely)
   - [JSON structure](#json-structure)
-- [Navigation (appBar)](#navigation-appbar)
-  - [Appbar link](#appbar-link)
+- [Navigation (app bar)](#navigation-app-bar)
+  - [App Bar link](#app-bar-link)
+  - [App Bar Elements Order](#app-bar-elements-order)
+    - [App bar Element Order List of Possible Strings](#app-bar-element-order-list-of-possible-strings)
+    - [Custom app bar element order string](#custom-app-bar-element-order-string)
+  - [Navigation App Bar Custom](#navigation-app-bar-custom)
+    - [Navigation App Bar Custom Items Definition](#navigation-app-bar-custom-items-definition)
+    - [Navigation App Bar Custom List of Predefined Tags](#navigation-app-bar-custom-list-of-predefined-tags)
 - [Drawer](#drawer)
   - [Drawer mechanics](#drawer-mechanics)
   - [How to define a drawer](#how-to-define-a-drawer)
@@ -926,11 +932,11 @@ The general rules is that the JSON equivalent of a global variable is all lowerc
 
 [[top](#web-ui)]
 
-## Navigation (appBar)
+## Navigation (app bar)
 
-This is the [appbar](https://material-ui.com/components/app-bar/#app-bar) with its link or the navigation bar at the very top of the page.
+This is the [app bar](https://material-ui.com/components/app-bar/#app-bar) with its link, the navigation bar at the very top of the page... usually.
 
-If you want your page to have an appbar, define the `appBar` property in your page definition:
+If you want your page to have an app bar, insert the `appBar` property in your page definition:
 
 ```ts
 // In your custom js file
@@ -938,12 +944,12 @@ If you want your page to have an appbar, define the `appBar` property in your pa
 window.appPages = {
   '/my-page': {
     content: '$form : survey : my-page',
-    appBar: { } // <-- there it is!
+    appBar: { } // <-- right here!
   }
 };
 ```
 
-To add links to your appbar, define the `items` property in the `appBar` object.
+To add links to your app bar, define the `items` property in the `appBar` object.
 
 ```ts
 // In your custom js file
@@ -952,13 +958,13 @@ window.appPages = {
   '/my-page': {
     content: '$form : survey : my-page',
     appBar: {
-      items: [] // <-- right here
+      items: [] // <-- here!
     }
   }
 };
 ```
 
-### Appbar link
+### App bar link
 
 `items` is an array of link objects. Let's define a link.
 
@@ -989,6 +995,253 @@ window.appPages = {
 The `link.has.route` will cause the * *Login* * page to load when the link is clicked.
 
 Jump to the [link object section](#link-object) for more information on the link object.
+
+[[top](#web-ui)]
+
+### App Bar Elements Order
+
+The logo and navigation menu (links) are usually found in the app bar. What if 
+there's a need to put the logo in the center of the app bar, for example?  
+With the `layout` property, you can do just that.
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      layout: ['logo', 'space', 'menu'], // <-- right here!
+      items: []
+    }
+  }
+};
+```
+
+As the example above shows, it is an array which contains string identifiers. The 
+order of the strings is very important. That is the order in which the 
+corresponding elements of the app bar will be rendered. In this case, the logo 
+will be located on the left, then there is a space in the middle, and the 
+navigation links (menu) are found on the right.  
+
+Now, if we want to move the logo to the middle, we do something like this:
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      layout: ['space','logo', 'space', 'menu'], // <-- right here
+      items: []
+    }
+  }
+};
+```
+
+**Note:** Noticed how another `space` string was inserted? If we did not, the logo 
+would pressed against the menu links on the right and would not be in the middle.
+
+#### App bar Element Order List of Possible Strings
+
+* `logo` the website logo
+* `space` just plain space
+* `menu` navigation links
+* `search` This is the search field that is located in the app bar
+
+#### Custom app bar element order string
+
+Only four order element string was listed but you can define your own custom
+string if you wish. For example, what if you need two sets of menu links? You 
+can create a second menu link set using the `components` property of the 
+`appBar` object.
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      components: {} // <-- Here!
+    }
+  }
+};
+```
+
+It is an object in which each property is an independent app bar item definition.
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      components: {
+        'learn-more': [] // <-- here!
+      }
+    }
+  }
+};
+```
+
+In the example above, the `learn-more` is an app bar order element string and 
+its value is an array of component definition. As in, you could define a set of 
+menu links then insert `learn-more` inside the `appBar.layout` array at the 
+position you wish.
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      layout: ['learn-more','logo', 'space', 'menu'],  // <-- here!
+      components: {
+        'learn-more': []
+      }
+    }
+  }
+};
+```
+
+From the example above, `learn-more` will be the first element rendered on the 
+app bar. Let's elaborate a little bit more on the content of `learn-more`.
+
+```ts
+// In your custom js file
+
+window.appPages = {
+  '/my-page': {
+    content: '$form : survey : my-page',
+    appBar: {
+      components: {
+        'learn-more': [
+          {
+            type: 'a',
+            theme: {}, // CSS properties
+            items: [] // child component definition
+          }
+        ]
+      }
+    }
+  }
+};
+```
+
+The object contained within the array at `learn-more` is a custom definition. 
+There's more information about it in a 
+[section below](#navigation-app-bar-custom-items-definition).
+
+### Navigation App Bar Custom
+
+Although defining an app bar as previously demonstrated would be enough for most 
+situations, there are instances where there's a need for deeper customization. 
+That is where `appBarCustom` comes in handy. With `appBarCustom` you directly 
+define *Material-UI* components using object definitions, as always.
+
+```ts
+windows.appPages = {
+  home: {}
+};
+```
+
+We've got a page called `home`. We are going to give it a custom app bar.
+
+```ts
+window.appPages = {
+  home: {
+    appBarCustom: { } // So far so good
+  }
+};
+```
+
+To add content to our custom app bar we define an array of items, in this case,
+it is an array of Material-ui component definition.
+
+```ts
+window.appPages = {
+  home: {
+    appBarCustom: {
+      items: [] // <-- Right here
+    }
+  }
+};
+```
+
+Now, let us add a simple link to it. First, we will need a `<nav>` tag.
+
+```ts
+window.appPages = {
+  home: {
+    appBarCustom: {
+      items: [
+        {
+          type: 'nav', // <nav>
+          theme: {
+            background: 'rgb(245, 235, 220)',
+            color: 'rgb(31, 31, 31)',
+            margin: '0 auto',
+            padding: 30,
+            boxSizing: 'inherited',
+            display: 'block',
+            '-webkit-font-smoothing': 'antialiased'
+          },
+          items: [], // <-- Pay attention!
+        }
+      ]
+    }
+  }
+};
+```
+
+**Note:** This looks complicated, but that is a result of the deeper customization.
+
+#### Navigation App Bar Custom Items Definition
+
+The definition here is each individual object in the array `items` which is of type `StateComponent`. 
+
+##### `StateComponent.type`
+In the code example above, the `StateComponent.type` is `'nav'`. It will generate a `<nav>` tag.
+
+##### `StateComponent.theme`
+Used to apply CSS style the generated element.
+
+##### `StateComponent.items`
+From the code example above, `StateComponent.items` would contain the definitions of the `<nav>` child elements.  
+e.g. If you want to insert a `<div>` in the `<nav>`, add the `<div>` object definition inside the `items` array of `<nav>`.
+
+#### Navigation App Bar Custom List of Predefined Tags
+Lis tof predefined values for `StateComponent.type`.
+
+* BOOL_ONOFF
+* BOOL_TRUEFALSE
+* BOOL_YESNO
+* JSON_BUTTON
+* CHECKBOXES
+* DESKTOP_DATE_PICKER
+* FORM
+* JSON_INPUT
+* INPUT_LABEL
+* LINK
+* MOBILE_DATE_PICKER
+* NUMBER
+* PASSWORD
+* RADIO_BUTTONS
+* JSON_SELECT
+* STATIC_DATE_PICKER
+* SUBMIT
+* SWITCH
+* TEXT
+* TEXTAREA
+* TEXTFIELD
+* TEXT_NODE
+* TIME_PICKER
+
+**Note:** As a rule of thumb, any valid HTML tag as a `StateComponent.type` e.g. `div`
 
 [[top](#web-ui)]
 
@@ -1118,7 +1371,7 @@ For more information on theming, visit:
 - `./src/App.tsx` In this file, the overall application implementation style can be swapped. Think of it as having multiple application in one or having different versions of the application. To make that happen, all you would need to do is create a _new component_ in `./src/components/` i.e. `new.app.component.tsx` and insert it in the `render()` of the exported class. Using a switch statement here would be a great idea. Different application implementations could be loaded based on the provided version or a passsed-in argument.
 - `./src/components/connected.app.tsx` You could consider this file as the real start of the application, (in some sense) since it contains the main logic of the application. I named it _connected app_ because it is a _Redux_ implementation and it is connected to the _store_. Yes, this does insinuate that a version of the app could have been implemented which does not use Redux.<br>
 **The main idea**: I wanted to be able to divide parts of the application in sections. Each section could be updated or modified without disturbing (so to speak) the others. Different sections could be swapped out on the fly. The sections are: 
-  * __Navigation__ (the appbar and its links)
+  * __Navigation__ (the app bar and its links)
   * __Drawer__ (the sidebar)
   * __Layout__ (the content layout. Switch the layout of the content anytime)
   * __Dialog__ (popups such as modals... etc.)
@@ -1509,7 +1762,7 @@ window.appPages = {
 };
 ```
 
-`page.appBar` is an optional property which contains an object that defines the page navigation bar (appBar). See the [navigation](#navigation-appbar) section for more information. In short, each page can define its own appBar using the `page.appBar` property.
+`page.appBar` is an optional property which contains an object that defines the page navigation bar (app bar). See the [navigation](#navigation-app-bar) section for more information. In short, each page can define its own app bar using the `page.appBar` property.
 
 [[back](#page-object)] [[top](#web-ui)]
 
@@ -1613,8 +1866,8 @@ window.appPages = {
 };
 ```
 
-If your page has an appBar but for some reason you do not want it to be rendered, use `page.hideAppBar` to hide it.  
-It is a good way to remove the appBar without actually deleting it.
+If your page has an app bar but for some reason you do not want it to be rendered, use `page.hideAppBar` to hide it.  
+It is a good way to remove the app bar without actually deleting it.
 
 [[back](#page-object)] [[top](#web-ui)]
 
@@ -1642,7 +1895,7 @@ window.appPages = {
 };
 ```
 
-If the default appBar is defined, use `page.useDefaultAppBar` to cause your page to make use of it so that you don't have to give your page its own appBar.
+If the default app bar is defined, use `page.useDefaultAppBar` to cause your page to make use of it so that you don't have to give your page its own app bar.
 
 [[back](#page-object)] [[top](#web-ui)]
 
@@ -1717,10 +1970,10 @@ window.appPages = {
 };
 ```
 
-If you want your page to inherit the appBar of a specific page, use `page.appBarInherited` to do it.
-In the code example, the '/login' page is inheriting the appBar of the '/home' page.
+If you want your page to inherit the app bar of a specific page, use `page.appBarInherited` to do it.
+In the code example, the '/login' page is inheriting the app bar of the '/home' page.
 
-**NOTE:** the '/home' page must have its own appBar defined for this to work.
+**NOTE:** the '/home' page must have its own app bar defined for this to work.
 
 [[back](#page-object)] [[top](#web-ui)]
 

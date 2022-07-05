@@ -1,13 +1,14 @@
-import React from 'react'
-import { makeStyles, CSSProperties, useTheme } from '@mui/styles'
-import { Box, Grid, Theme } from '@mui/material'
+import { Box, Grid } from '@mui/material'
+import { createTheme } from '@mui/material/styles'
+
+const theme = createTheme()
 
 interface IMainProps {
   p?: string | number
   children: any
 }
 
-const defaultClasses: { [key: string]: CSSProperties } = {
+const defaultClasses = {
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -29,18 +30,17 @@ const Main = ({ p, children }: IMainProps) => (
 )
 
 const Toolbar = ({ mHeight }: { mHeight?: string|number }) => {
-  const { mixins } = useTheme<Theme>()
   const minHeight = (mHeight !== undefined)
     ? mHeight
     // info: https://stackoverflow.com/questions/52995225/how-does-one-use-or-get-started-with-theme-mixins-toolbar-in-material-ui
-    : mixins.toolbar.minHeight
+    : theme.mixins.toolbar.minHeight
   return (
-    <Box>
+    <Box
       sx={{
         ...defaultClasses.container,
         minHeight
       }}
-    </Box>
+    />
   )
 }
 
@@ -51,21 +51,19 @@ const Toolbar = ({ mHeight }: { mHeight?: string|number }) => {
  * enough to fit the available viewport space. The content should automatically
  * resize.
  */
-export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) => {
-  return (
-    <Grid
-      sx={{
-        minHeight: '100vh'
-      }}
-      container={true}
-      spacing={0}
-      alignItems='center'
-      justifyContent='center'
-    >
-      { children }
-    </Grid>
-  )
-})
+export const LayoutCenteredNoScroll = ({ children }: any) => (
+  <Grid
+    sx={{
+      minHeight: '100vh'
+    }}
+    container={true}
+    spacing={0}
+    alignItems='center'
+    justifyContent='center'
+  >
+    { children }
+  </Grid>
+)
 
 /**
  * Centered layout factory.
@@ -78,25 +76,19 @@ export const LayoutCenteredNoScroll = React.forwardRef(({ children }: any, ref) 
  *
  * @see https://stackoverflow.com/a/56497384/1875859
  */
-const LayoutCenteredFactory = (mHeight?: number) => {
-  return React.forwardRef(({ children }: any, ref) => {
-    const theme = useTheme<Theme>()
-
-    return (
-      <Main p={theme.spacing(3)}>
-        <Toolbar mHeight={mHeight} />
-        <Grid
-          container
-          spacing={0}
-          alignItems='center'
-          justifyContent='center'
-        >
-          { children }
-        </Grid>
-      </Main>
-    )
-  })
-}
+const LayoutCenteredFactory = (mHeight?: number) => ({ children }: any) => (
+  <Main p={theme.spacing(3)}>
+    <Toolbar mHeight={mHeight} />
+    <Grid
+      container
+      spacing={0}
+      alignItems='center'
+      justifyContent='center'
+    >
+      { children }
+    </Grid>
+  </Main>
+)
 
 /**
  * LAYOUT CENTERED with the default `AppBar` space top margin.
@@ -113,32 +105,23 @@ export const LayoutCenteredDialog = LayoutCenteredFactory(0)
  *
  * @param mHeight 
  */
-const LayoutDefaultFactory = (mHeight = 0) => {
-  return React.forwardRef(({children}: any, ref) => {
-    const { spacing } = useTheme<Theme>()
-    return (
-      <Main p={spacing(0, 2)}>
-        <Toolbar mHeight={mHeight} />
-        { children }
-      </Main>
-    )
-  })
-}
+const LayoutDefaultFactory = (mHeight = 0) => ({children}: any) => (
+  <Main p={theme.spacing(0, 2)}>
+    <Toolbar mHeight={mHeight} />
+    { children }
+  </Main>
+)
 
 export const DefaultLayout = LayoutDefaultFactory()
 export const VirtualizedTableLayout = LayoutDefaultFactory(49) // 29
 
 /** Applies toolbar space at the top if the page has an appBar */
-const LayoutNoneFactory = (mHeight = 0) => {
-  return React.forwardRef(({children}: any, ref) => {
-    return (
-      <Box component='main' sx={{ w: '100%' }}>
-        <Toolbar mHeight={mHeight} />
-        { children }
-      </Box>
-    )
-  })
-}
+const LayoutNoneFactory = (mHeight = 0) => ({children}: any) => (
+  <Box component='main' sx={{ w: '100%' }}>
+    <Toolbar mHeight={mHeight} />
+    { children }
+  </Box>
+)
 
 /**
  * Applies toolbar space to prevent content from being hidden under the

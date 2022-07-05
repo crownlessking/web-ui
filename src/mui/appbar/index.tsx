@@ -1,7 +1,7 @@
 import { useState, Fragment } from 'react'
 import {
   alpha, AppBar, Box, Toolbar, IconButton, Typography, InputBase, MenuItem,
-  Menu, styled,
+  Menu, styled
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
@@ -202,11 +202,11 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
           </Fragment>
         )
         break
-      case 'components':
+      default:
         factory.push(
           <ComponentBuilder
             key={`custom-${i}`}
-            def={appbar.components}
+            def={appbar.getComponentItem(appbar.layout[i])}
             parent={appbar}
           />
         )
@@ -224,7 +224,7 @@ export default function AppBarMui5({ def: page }:{ def: StatePage }) {
       <AppBar
         {...appbar.props}
       >
-        <Toolbar {...appbar.toolbarProps}>
+        <Toolbar sx={appbar.background.sx} {...appbar.toolbarProps}>
           <IconButton {...appbar.menuIconProps}>
             <MenuIcon />
           </IconButton>

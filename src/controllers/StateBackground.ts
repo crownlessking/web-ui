@@ -1,4 +1,5 @@
-import { CSSProperties } from '@mui/styles'
+import { CSSProperties } from 'react'
+import { SxProps } from '@mui/material'
 import AbstractState from './AbstractState'
 import IStateBackground from './interfaces/IStateBackground'
 import State from './State'
@@ -25,18 +26,15 @@ export default class StateBackground<P = State>
   get parent(): P { return this.parentObj }
   get props(): any { throw new Error('Not implemented yet.') }
   get theme(): any { throw new Error('Not implemented yet.') }
-  get type(): IStateBackground['type'] { return this.backgroundJson.type }
-  get value(): IStateBackground['value'] { return this.backgroundJson.value }
+  get color(): CSSProperties['backgroundColor'] { return this.backgroundJson.color }
+  get image(): CSSProperties['backgroundImage'] { return this.backgroundJson.image }
+  get repeat(): CSSProperties['backgroundRepeat'] { return this.backgroundJson.repeat }
 
-  getJss(): CSSProperties {
-    switch (this.type) {
-    case 'color':
-      return { backgroundColor: this.value+'' }
-    case 'gradient':
-    case 'image':
-      return { backgroundImage: this.value+'' }
-    case 'none':
-      return {}
+  get sx(): SxProps {
+    return {
+      backgroundColor: this.backgroundJson.color,
+      backgroundImage: this.backgroundJson.image,
+      backgroundRepeat: this.backgroundJson.repeat
     }
   }
 }

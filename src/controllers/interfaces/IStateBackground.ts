@@ -1,11 +1,12 @@
+import { CSSProperties } from 'react'
 import IAbstractState from './IAbstractState'
 
 /**
  * Background color, image, gradient... etc. Any valid CSS background.
  */
 export default interface IStateBackground extends IAbstractState {
-  /** The background type. */
-  type: 'none' | 'color' | 'gradient' | 'image'
-  /** Any valid CSS value for the background property. */
-  value?: string | number
+  color?: string
+  /** CSS url or gradient functions */
+  image?: string
+  repeat?: CSSProperties['backgroundRepeat']
 }

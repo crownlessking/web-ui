@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 // import logger from 'redux-logger'// TODO Uncomment when debugging Redux
 // import thunk from 'redux-thunk'
-import preloadedState from './initial.state'
 import infoReducer from '../slices/app.slice'
 import appBarReducer from '../slices/appBar.slice'
 import metaReducer from '../slices/meta.slice'
@@ -123,7 +122,7 @@ const rootReducer = (state: any, action: any) => {
 // https://redux-toolkit.js.org/api/configureStore
 const store = configureStore({
   reducer: rootReducer,
-  preloadedState,
+  // preloadedState,
   // middleware: (getDefaultMiddleware) =>
   // getDefaultMiddleware()
   //   .prepend(

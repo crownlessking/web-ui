@@ -10,6 +10,7 @@ import IStateApp from '../controllers/interfaces/IStateApp'
 import IStateAllForms from '../controllers/interfaces/IStateAllForms'
 import IStatePage from '../controllers/interfaces/IStatePage'
 import HtmlContent from './content/html.component'
+import { getWebApp } from './content/webapp.component'
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -59,17 +60,20 @@ export default function Content (props: IContentProps) {
     [APP_CONTENT_VIEW]: () => {
       currentContentJsx = contentJsx = <View def={page} />
     },
-    [APP_CONTENT_WEBAPP]: () => { // full-fledge application content type
-      // Think of WebApp as independent pieces of software
-      // Any component which has dual purpose (e.g. read and edit) is a WebApp
-
-      // [TODO] When that time comes, the web app will receive the JSON data
-      //        from children e.g.
-      //        <WebApp>
-      //          { data }
-      //        </WebApp>
-      //        Then it will take the data and display it like its suppose to
-      currentContentJsx = contentJsx = ( null )
+    // full-fledge application content type
+    // Think of WebApp as independent pieces of software
+    // Any component which has dual purpose (e.g. read and edit) is a WebApp
+    [APP_CONTENT_WEBAPP]: () => {
+      try {
+        contentJsx = getWebApp(page.contentName)
+        if (contentJsx) {
+          currentContentJsx = contentJsx
+        } else {
+          currentContentJsx = contentJsx = ( null )
+        }
+      } catch (_e) {
+        currentContentJsx = contentJsx = ( null )
+      }
     },
     /*
      * [TODO] Implement a solution for loading html files from server

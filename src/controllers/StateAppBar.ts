@@ -23,7 +23,10 @@ export default class StateAppBar<P = State>
   protected appBarTypography?: StateAppBarTypography<P>
   protected appBarBackgroundJson: IStateBackground
   protected appBarBackground?: StateAppBarBackground<P>
-  protected appBarComponents?: StateComponent<this>[]
+  protected appBarComponentsJson: Required<IStateAppBar>['components']
+  protected appBarComponents: {
+    [comp: string]: StateComponent[]
+  }
 
   /**
   * Constructor
@@ -38,6 +41,8 @@ export default class StateAppBar<P = State>
       || StateAppBar.EMPTY_APPBAR_TYPOGRAPHY
     this.appBarBackgroundJson = this.appBarJson.background
       || StateAppBar.EMPTY_APPBAR_BACKGROUND
+    this.appBarComponentsJson = this.appBarJson.components || {}
+    this.appBarComponents = {}
   }
 
   /** Get a copy of the `appBar` json. */
@@ -168,12 +173,16 @@ export default class StateAppBar<P = State>
       ))
   }
 
-  get components(): StateComponent<this>[] {
-    return this.appBarComponents || (
-      this.appBarComponents = (this.appBarJson.components || []).map(
-        c => new StateComponent(c, this)
+  getComponentItem(c: string): StateComponent<this>[] {
+    if (this.appBarComponents[c]) {
+      return this.appBarComponents[c]
+    }
+    if (this.appBarComponentsJson[c]) {
+      return this.appBarComponents[c] = this.appBarComponentsJson[c].map(
+        comp => new StateComponent(comp, this)
       )
-    )
+    }
+    return []
   }
 
 } // END class StateAppBar --------------------------------------------------

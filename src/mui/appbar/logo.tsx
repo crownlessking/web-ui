@@ -28,7 +28,7 @@ export default function Logo ({ def }: { def: StatePage }) {
   }))
 
   const PathLogo = styled('path')(() => ({}))
-  const DivLogo = styled('path')(() => ({}))
+  const DivLogo = styled('div')(() => ({}))
 
   switch (def.appBar.logoTag) {
   case 'img':

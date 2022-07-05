@@ -14,15 +14,14 @@ export const LAYOUT_TABLE_VIRTUALIZED = 'LAYOUT_TABLE_VIRTUALIZED'
 export const LAYOUT_DEFAULT = 'LAYOUT_DEFAULT'
 export const LAYOUT_NONE = 'LAYOUT_NONE'
 
-// content types
+// contents
 
 export const APP_CONTENT_VIEW = '$view'
-
-// miscellanous
-
 export const DEFAULT_LANDING_PAGE = 'default-landing'
 export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
 export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
+
+// miscellanous
 
 // messages
 
@@ -35,6 +34,13 @@ export const FIELD_NAME_NOT_SET = 'FIELD NAME NOT SET!'
 export function log(message: string): void {
   if (Config.DEBUG) {
     console.log(message)
+  }
+}
+
+/** Logs an error to the console. */
+export function ler(message: string): void {
+  if (Config.DEBUG) {
+    console.error(message)
   }
 }
 
@@ -420,7 +426,7 @@ export function getOriginEndingFixed(origin?: string): string {
  */
 export function parseConeExp(state: AbstractState, cone: string): string {
   if (/^<([-$_a-zA-Z0-9\\/]+)(\.[-$_a-zA-Z0-9\\/]+)*>$/.test(cone)) {
-    const value = getVal(state, cone.substring(1).substring(0, cone.length - 2))
+    const value = getVal(state, cone.substring(1, cone.length - 1))
     if (!value) {
       err(`Cone expression resolution on '${cone}' failed.`)
     }

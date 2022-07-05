@@ -1,4 +1,4 @@
-import { IJsonapiPaginationLinks } from './IStateNet'
+import { IJsonapiPaginationLinks } from './IJsonapi'
 
 export default interface IStateTopLevelLinks {
   [endpoint: string]: IJsonapiPaginationLinks

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IJsonapiPaginationLinks } from '../controllers/interfaces/IStateNet'
+import { IJsonapiPaginationLinks } from '../controllers/interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
 export interface ITopLevelLinksArgs {
