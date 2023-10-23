@@ -377,7 +377,7 @@ export function gen_video_url(annotation: IAnnotation): string {
 /** Get slug from URL. */
 export function get_slug(url: string) {
   const filteredUrl = url.trim().toLowerCase()
-  const match = filteredUrl.match(/https?:\/\/(w{3}\.)?rumble\.com\/([\d\w-]+).html/)
+  const match = filteredUrl.match(/https?:\/\/(w{3}\.)?rumble\.com\/([\d\w.-]+)\.html/)
   if (!match) {
     ler(`get_slug: Bad video URL: '${url}'`)
     remember_error({

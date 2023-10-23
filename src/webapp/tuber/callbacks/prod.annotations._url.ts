@@ -4,7 +4,7 @@ import { remember_error, remember_exception } from 'src/state/_errors.business.l
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { URL_DIALOG_ID_NEW } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
-import FormErrorMessages from 'src/controllers/FormErrorMessages'
+import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
@@ -58,7 +58,7 @@ export function dialog_new_annotation_from_url(redux: IRedux) {
     const url = safely_get_as<string>(state.formsData[urlFormName], `url`, '')
 
     try {
-      const errorMessage = new FormErrorMessages(redux, urlFormName)
+      const errorMessage = new FormValidationPolicy(redux, urlFormName)
       const video = await parse_platform_video_url(url)
       if (!video.urlCheck.valid) {
         ler(`dialog_new_annotation_from_url: ${video.urlCheck.message}`)

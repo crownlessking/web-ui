@@ -50,6 +50,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
   )
   const dispatch = useDispatch<AppDispatch>()
   const value = formsData.getValue(formName, name)
+  const error = formsDataErrors[formName]?.[name]?.error
 
   useEffect(() => {
     if ((textfield.has.maxLength && textfield.has.maxLength > 0)
@@ -61,7 +62,8 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
         payload: {
           formName: textfield.parent.name,
           name: textfield.name,
-          error: false,
+          required: textfield.is.required,
+          requiredMessage: textfield.has.requiredMessage,
           maxLength: textfield.has.maxLength,
           maxLengthMessage: textfield.has.state.maxLengthMessage,
           disableOnError: textfield.has.state.disableOnError,
@@ -71,22 +73,37 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
         } as ISliceFormsDataErrorsArgs
       })
     }
-  }, [ textfield, dispatch ])
+  }, [ dispatch, textfield, formName, name ])
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if ((textfield.has.maxLength && textfield.has.maxLength > 0)
+      || textfield.has.invalidationRegex
+      || textfield.has.validationRegex
+    ) {
+      dispatch({ // Temporarily clears out error state from textfield if focused.
+        type: 'formsDataErrors/formsDataErrorsUpdate',
+        payload: {
+          formName,
+          name,
+          error: false
+        }
+      })
+    }
+    textfield.onFocus(e) // User defined function to run
+  }
 
   return name ? (
     <TextField
       {...textfield.props}
       label={textfield.label}
       type={typeMap[textfield.type]}
-      error={
-        formsDataErrors[formName]?.[name]?.error
-          || textfield.has.regexError(value)
-      }
-      helperText={
-        formsDataErrors[formName]?.[name]?.message
-        || textfield.props.helperText
+      error={error || textfield.has.regexError(value)}
+      helperText={error
+        ? formsDataErrors[formName]?.[name]?.message
+        : textfield.props.helperText
       }
       value={value}
+      onFocus={handleFocus}
       onChange={textfield.onChange(textfield)}
       onKeyDown={textfield.onKeyDown(redux)}
       onBlur={textfield.onBlur(textfield, formsDataErrors[formName]?.[name])}

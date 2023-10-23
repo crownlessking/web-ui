@@ -40,7 +40,7 @@ export default class StateFormItem<P = StateForm, T = any>
   protected itemHas?: StateFormItemCustom<StateFormItem<P, T>, T>
   protected itemDisabled: boolean
   protected itemOnClick?: TReduxCallback
-  protected itemOnFocus?: TReduxCallback
+  protected itemOnFocus?: Function
   protected itemOnChange?: Function
   protected itemOnKeydown?: TReduxCallback
   protected itemOnBlur?: Function
@@ -66,6 +66,14 @@ export default class StateFormItem<P = StateForm, T = any>
   get name(): string { return this.itemState.name ?? '' }
   /** Get the current form field custom definition. */
   get has(): StateFormItemCustom<StateFormItem<P, T>, T> {
+    return this.itemHas
+      || (this.itemHas = new StateFormItemCustom(
+        this.itemHasState,
+        this
+      ))
+  }
+  /** Get the current form field custom definition. */
+  get is(): StateFormItemCustom<StateFormItem<P, T>, T> {
     return this.itemHas
       || (this.itemHas = new StateFormItemCustom(
         this.itemHasState,

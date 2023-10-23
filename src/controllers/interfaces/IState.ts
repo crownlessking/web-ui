@@ -40,6 +40,8 @@ export interface IStateData {
 export interface IFormItemDataError {
   error?: boolean
   message?: string
+  required?: boolean
+  requiredMessage?: string
   maxLength?: number
   maxLengthMessage?: string
   disableOnError?: boolean

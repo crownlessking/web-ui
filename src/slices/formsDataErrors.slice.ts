@@ -13,6 +13,8 @@ export interface ISliceFormsDataErrorsArgs {
   message?: string
 
   // Values copied over from form item state
+  required?: boolean,
+  requiredMessage?: string,
   maxLength?: number,
   maxLengthMessage?: string,
   disableOnError?: boolean,
@@ -63,6 +65,8 @@ export const formsDataErrorsSlice = createSlice({
         name,
         error,
         message,
+        required,
+        requiredMessage,
         maxLength,
         maxLengthMessage,
         disableOnError,
@@ -72,16 +76,41 @@ export const formsDataErrorsSlice = createSlice({
         validationMessage,
       } = payload
       state[formName] = state[formName] || {}
-      state[formName][name] = {
-        error,
-        message,
-        maxLength,
-        maxLengthMessage,
-        disableOnError,
-        invalidationRegex,
-        invalidationMessage,
-        validationRegex,
-        validationMessage
+      state[formName][name] = state[formName][name] ?? {}
+      state[formName][name].error = error
+      if (typeof message !== 'undefined') {
+        state[formName][name].message = message
+      }
+      if (typeof required === 'boolean') {
+        state[formName][name].required = required
+      }
+      if (typeof requiredMessage === 'string'
+        && requiredMessage.length > 0
+      ) {
+        state[formName][name].requiredMessage = requiredMessage
+      }
+      if (typeof maxLength !== 'undefined'
+        && maxLength > 0
+      ) {
+        state[formName][name].maxLength = maxLength
+      }
+      if (typeof maxLengthMessage !== 'undefined') {
+        state[formName][name].maxLengthMessage = maxLengthMessage
+      }
+      if (typeof disableOnError !== 'undefined') {
+        state[formName][name].disableOnError = disableOnError
+      }
+      if (typeof invalidationRegex !== 'undefined') {
+        state[formName][name].invalidationRegex = invalidationRegex
+      }
+      if (typeof invalidationMessage !== 'undefined') {
+        state[formName][name].invalidationMessage = invalidationMessage
+      }
+      if (typeof validationRegex !== 'undefined') {
+        state[formName][name].validationRegex = validationRegex
+      }
+      if (typeof validationMessage !== 'undefined') {
+        state[formName][name].validationMessage = validationMessage
       }
     },
     /** Deletes a form error data. Payload is the form name. */

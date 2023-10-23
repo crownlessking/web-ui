@@ -115,7 +115,10 @@ export default interface IStateFormItemCustom<T = any> {
   maxLength?: number
   /** Message to display if the value of the input field exceeds `maxLength` */
   maxLengthMessage?: string
-  /** Set to `true` to disable some fields on error. */
+  /**
+   * Set to `true` to disable some fields on error.
+   * [TODO] Does not work. Needs to be implemented.
+   */
   disableOnError?: boolean
   /**
    * Regular expression to disallow certain words or characters in an input field.  
@@ -140,6 +143,10 @@ export default interface IStateFormItemCustom<T = any> {
    * e.g. "Please enter a valid zip code."
    */
   validationMessage?: string
+  /** Input is not allowed to be empty. */
+  required?: boolean
+  /** Message to display if the input is empty. */
+  requiredMessage?: string
 }
 
 export type THandleCallback = 'onclick'

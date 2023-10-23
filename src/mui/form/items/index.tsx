@@ -74,7 +74,6 @@ import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemC
 import { remember_exception } from '../../../state/_errors.business.logic'
 import { get_styled_div, StateJsxHtml } from './state.jsx.html'
 import { get_bool_type } from '../_form.business.logic'
-// import { ISliceFormsDataErrorsArgs } from 'src/slices/formsDataErrors.slice'
 
 interface IRecursiveFormBuilder {
   form: StateForm
@@ -427,88 +426,12 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
   )
 }
 
-/** formsDataErrorsClearAll */
 export default function FormItems ({ def: form }:{ def: StateForm }) {
   const dispatch = useDispatch<AppDispatch>()
  
   useEffect(() => {
     set_all_default_values(itemsWithDefaultValues)
-    return () => {
-      dispatch({ type: 'formsDataErrors/formsDataErrorsClearAll' })
-    }
   }, [ dispatch ])
 
   return <RecursiveFormItems form={form} />
 }
-
-
-/** Saves texfield value to the store */
-  // const onUpdateInputData = (form: StateForm) =>
-  //   (input: StateFormItem, inputError?: IFormsDataErrorObj) =>
-  //   (e: React.ChangeEvent<HTMLInputElement>) =>
-  // {
-  //   const formName = form.name
-  //   const name = input.name
-  //   const value = e.target.value
-  //   if (typeof input.has.maxLength !== 'undefined'
-  //     && value.length > input.has.maxLength
-  //   ) {
-  //     dispatch({
-  //       type: 'formsDataErrors/formsDataErrorsUpdate',
-  //       payload: {
-  //         formName,
-  //         name,
-  //         error: true,
-  //         message: input.has.maxLengthMessage
-  //       }
-  //     })
-  //     const hasError = inputError?.error ?? false
-  //     const errorCount = form.errorCount + inc_decr_error_count(hasError, true)
-  //     dispatch({type:'forms/errorCountSet',payload:{formName,errorCount}})
-  //   } else if (input.has.invalidationRegex
-  //     && new RegExp(input.has.invalidationRegex).test(value)
-  //   ) {
-  //     dispatch({
-  //       type: 'formsDataErrors/formsDataErrorsUpdate',
-  //       payload: {
-  //         formName,
-  //         name,
-  //         error: true,
-  //         message: input.has.validationMessage
-  //       }
-  //     })
-  //     const hasError = inputError?.error ?? false
-  //     const errorCount = form.errorCount + inc_decr_error_count(hasError, true)
-  //     dispatch({type:'forms/errorCountSet',payload:{formName,errorCount}})
-  //   }  else if (input.has.validationRegex
-  //     && !new RegExp(input.has.validationRegex).test(value)
-  //   ) {
-  //     dispatch({
-  //       type: 'formsDataErrors/formsDataErrorsUpdate',
-  //       payload: {
-  //         formName,
-  //         name,
-  //         error: true,
-  //         message: input.has.validationMessage
-  //       }
-  //     })
-  //     const hasError = inputError?.error ?? false
-  //     const errorCount = form.errorCount + inc_decr_error_count(hasError, true)
-  //     dispatch({type:'forms/errorCountSet',payload:{formName,errorCount}})
-  //   } else {
-  //     if (inputError) {
-  //       dispatch({type:'formsDataErrors/formsDataErrorsClear',payload:formName})
-  //       const hasError = inputError?.error ?? false
-  //       const errorCount = form.errorCount + inc_decr_error_count(hasError,false)
-  //       dispatch({type:'forms/errorCountSet',payload:{formName,errorCount}})
-  //     }
-  //     dispatch({
-  //       type: 'formsData/formsDataUpdate',
-  //       payload: {
-  //         formName,
-  //         name,
-  //         value
-  //       }
-  //     })
-  //   }
-  // }

@@ -106,6 +106,8 @@ export default class StateFormItemCustom<P, T = any>
    * function. Then retrieve the result from this field.
    */
   get validInput(): boolean { return this.fieldOk }
+  get required(): boolean { return this.hasState.required === true }
+  get requiredMessage(): string { return this.hasState.requiredMessage ?? '' }
   get maxLength(): number | undefined { return this.hasState.maxLength }
   get maxLengthMessage(): string { return this.hasState.maxLengthMessage ?? '' }
   get invalidationRegex(): string | undefined { return this.hasState.invalidationRegex }

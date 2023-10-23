@@ -1,3 +1,4 @@
+import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
 import {
@@ -33,9 +34,11 @@ export function form_submit_new_daily_annotation(redux: IRedux) {
       ler(`form_submit_new_daily_annotation: '${formName}' does not exist.`)
       return
     }
+    const fem = new FormValidationPolicy<IAnnotation>(redux, formName)
     const platform = formData.platform
     if (!platform) {
       ler('form_submit_new_daily_annotation: Bad Platform!.')
+      fem.emit('platform', 'Platform is missing.')
       return
     }
     const videoid = formData.videoid
@@ -43,6 +46,15 @@ export function form_submit_new_daily_annotation(redux: IRedux) {
     const title = formData.title
     if (!title) {
       ler('form_submit_new_daily_annotation: No title!')
+      fem.emit('title', 'The title is required.')
+      return
+    }
+    const validation = fem.enforceValidationSchemes()
+    if (validation !== false && validation.length > 0) {
+      validation.forEach(vError => {
+        const message = vError.message ?? ''
+        fem.emit(vError.name, message)
+      })
       return
     }
     const note = formData.note

@@ -25,7 +25,12 @@ export default class StateFormsDataErrors<T=any> extends AbstractState {
 
   /** Returns the form's error count. */
   getCount(formName: string): number {
-    return Object.keys(this.formsDataErrorsState[formName] || {}).length
+    let errorCount = 0
+    const formErrorsState = this.formsDataErrorsState[formName]
+    for (let field in formErrorsState) {
+      formErrorsState[field].error && ++errorCount
+    }
+    return errorCount
   }
 
   hasError(name: keyof T): boolean {
