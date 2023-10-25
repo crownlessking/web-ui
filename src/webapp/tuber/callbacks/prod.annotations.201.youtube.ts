@@ -9,6 +9,7 @@ import {
 } from '../../../state/_business.logic'
 import { FORM_YOUTUBE_NEW_ID } from '../tuber.config'
 import { IAnnotation } from '../tuber.interfaces'
+import { remember_error } from '../../../state/_errors.business.logic'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
@@ -26,11 +27,28 @@ export function form_submit_new_youtube_annotation(redux: IRedux) {
       `${BOOTSTRAP_KEY}.state_registry.${FORM_YOUTUBE_NEW_ID}`,
       'form_key_not_found'
     )
+    if (!formKey) {
+      const errorMsg = 'form_submit_new_youtube_annotation: Form key not found.'
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formKey' }
+      })
+      return
+    }
     const formName = get_state_form_name(formKey)
 
     // Check if the form data exist
     if (!rootState.formsData[formName]) {
-      ler(`form_submit_new_youtube_annotation: '${formName}' does not exist.`)
+      const errorMsg = `form_submit_new_youtube_annotation: data for `
+        + `'${formName}' does not exist.`
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formData' }
+      })
       return
     }
   

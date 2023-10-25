@@ -4,7 +4,7 @@ import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config'
-import { facebook_parse_iframe } from '../tuber.controller'
+import { facebook_parse_iframe } from '../_tuber.business.logic'
 import { IAnnotation } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()

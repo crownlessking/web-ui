@@ -21,7 +21,6 @@ root.render(
 )
 
 // A solution to make the browser's forward and back buttons work.
-// see https://stackoverflow.com/questions/17071361/browser-back-and-forward-button-events-without-a-jquery-plugin
 window.addEventListener('popstate', () => {
   store.dispatch(appUrlPageUpdate(window.location.pathname))
 })

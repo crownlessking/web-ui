@@ -49,7 +49,7 @@ export default class FormValidationPolicy<T=any> {
 
   /** Get a cleaned version of the form data. */
   getFilteredData(): T {
-    return this._formData as T
+    return this._getFormData() as T
   }
 
   private _filterData(value: any) {

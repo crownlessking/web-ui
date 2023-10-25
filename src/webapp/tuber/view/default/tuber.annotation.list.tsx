@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/state'
-import { gen_video_url, get_platform_icon_src, shorten_text } from '../../tuber.controller'
+import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.business.logic'
 import LoadMoreAnnotationsFromServer, {
   LoadEarlierAnnotationsFromServer
 } from './tuber.load.more.annotation.list'

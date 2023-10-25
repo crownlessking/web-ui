@@ -11,9 +11,9 @@ export type TPlatform = '_blank'
   | 'vimeo'
   | 'dailymotion'
   | 'rumble'
-  | 'bitchute'
   | 'odysee'
   | 'facebook'
+  | 'twitch'
   | 'unknown'
 
 /** Type for annotation */
@@ -24,11 +24,10 @@ export interface IAnnotation {
   userid?: string
   author?: string
   videoid: string
-  /** When the video id is not enough e.g. Rumble */
   url?: string
   embedUrl?: string
   embed_url?: string
-  slug?: string // For Rumble and Bitchute
+  slug?: string
   platform: TPlatform
   startSeconds?: number
   start_seconds?: number

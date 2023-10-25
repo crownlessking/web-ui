@@ -10,9 +10,9 @@ import ResearchToolbar from '../tuber.toolbar.video'
 import YouTubePlayerApi from '../player.youtube.api'
 import VimeoPlayer from '../player.vimeo'
 import DailyPlayer from '../player.dailymotion'
-import BitChutePlayer from '../player.bitchute'
 import OdyseePlayer from '../player.odysee'
 import FacebookPlayer from '../player.facebook'
+import TwitchPlayer from '../player.twitch'
 import UnknownPlayer from '../player.unknown'
 
 const VideoCanvas = styled('div')(() => ({
@@ -42,11 +42,11 @@ function VideoPlayer({ annotation: receivedAnnotation }: { annotation?: IAnnotat
   const players: TTuberPlatformMap = {
     _blank: <PlayerPlaceholder id='playerPlaceholder' />,
     unknown: <UnknownPlayer annotation={annotation} />,
+    twitch: <TwitchPlayer annotation={annotation} />,
     youtube: <YouTubePlayerApi annotation={annotation} />,
     vimeo: <VimeoPlayer annotation={annotation} />,
     dailymotion: <DailyPlayer annotation={annotation} />,
     rumble: <RumblePlayer annotation={annotation} />,
-    bitchute: <BitChutePlayer annotation={annotation} />,
     odysee: <OdyseePlayer annotation={annotation} />,
     facebook: <FacebookPlayer annotation={annotation} />
   }

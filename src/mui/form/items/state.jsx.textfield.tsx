@@ -56,6 +56,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
     if ((textfield.has.maxLength && textfield.has.maxLength > 0)
       || textfield.has.invalidationRegex
       || textfield.has.validationRegex
+      || textfield.is.required
     ) {
       dispatch({
         type: 'formsDataErrors/formsDataErrorsUpdate',
@@ -79,6 +80,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
     if ((textfield.has.maxLength && textfield.has.maxLength > 0)
       || textfield.has.invalidationRegex
       || textfield.has.validationRegex
+      || textfield.is.required
     ) {
       dispatch({ // Temporarily clears out error state from textfield if focused.
         type: 'formsDataErrors/formsDataErrorsUpdate',

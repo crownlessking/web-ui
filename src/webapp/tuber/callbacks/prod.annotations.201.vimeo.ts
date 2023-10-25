@@ -1,8 +1,8 @@
+import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
-import {
-  ler, get_val, log, safely_get_as
-} from '../../../controllers'
+import { remember_error } from 'src/state/_errors.business.logic'
+import { ler, log, safely_get_as } from '../../../controllers'
 import { IRedux } from '../../../state'
 import {
   get_bootstrap_key,
@@ -16,36 +16,55 @@ const BOOTSTRAP_KEY = get_bootstrap_key()
 /**
  * [Vimeo] Save annotation to server.
  *
- * @id 12
+ * @id 14_C_1
  */
 export function form_submit_new_vimeo_annotation(redux: IRedux) {
   return () => {
     const { store: { getState, dispatch } } = redux
-    const state = getState()
+    const rootState = getState()
     const formKey = safely_get_as<string>(
-      state.meta,
+      rootState.meta,
       `${BOOTSTRAP_KEY}.state_registry.${FORM_VIMEO_NEW_ID}`,
       'form_key_not_found'
     )
+    if (!formKey) {
+      const errorMsg = 'form_submit_new_vimeo_annotation: Form key not found.'
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formKey' }
+      })
+    }
     const formName = get_state_form_name(formKey)
-    const formData = get_val<IAnnotation>(getState().formsData, formName)
-    if (!formData) {
-      ler(`form_submit_new_vimeo_annotation: '${formName}' does not exist.`)
+  
+    // Check if the form data exist
+    if (!rootState.formsData[formName]) {
+      const errorMsg = `form_submit_new_vimeo_annotation: '${formName}' does not exist.`
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formData' }
+      })
       return
     }
+  
+    const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+    const validation = policy.enforceValidationSchemes()
+    if (validation !== false && validation.length > 0) {
+      validation.forEach(vError => {
+        const message = vError.message ?? ''
+        policy.emit(vError.name, message)
+      })
+      return
+    }
+    const formData = policy.getFilteredData()
     const platform = formData.platform
-    if (!platform) {
-      ler('form_submit_new_vimeo_annotation: Bad Platform!.')
-      return
-    }
     const videoid = formData.videoid
     const start_seconds = formData.start_seconds
     const end_seconds = formData.end_seconds
     const title = formData.title
-    if (!title) {
-      ler('form_submit_new_vimeo_annotation: No title!')
-      return
-    }
     const note = formData.note
     const requestBody = new JsonapiRequest<IAnnotation>('annotations', {
       platform,

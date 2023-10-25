@@ -63,7 +63,7 @@ export function dialog_new_annotation_from_url(redux: IRedux) {
       if (!video.urlCheck.valid) {
         ler(`dialog_new_annotation_from_url: ${video.urlCheck.message}`)
         remember_error({
-          code: 'invalid_url',
+          code: 'bad_value',
           title: 'Invalid URL',
           detail: video.urlCheck.message,
           source: { pointer: url }
@@ -124,6 +124,7 @@ export function dialog_new_annotation_from_url(redux: IRedux) {
       if (video.platform === 'youtube'
         || video.platform === 'vimeo'
         || video.platform === 'dailymotion'
+        || video.platform === 'twitch'
       ) {
         redux.store.dispatch({
           type: 'formsData/formsDataUpdate',
@@ -139,8 +140,8 @@ export function dialog_new_annotation_from_url(redux: IRedux) {
         || video.platform === 'rumble'
         || video.platform === 'odysee'
         || video.platform === 'facebook'
-        // || video.platform === 'bitchute' // BitChute does not support start time
-        || video.platform === 'dailymotion' // [TODO] Dailymotion might not support start time
+        || video.platform === 'twitch'
+        || video.platform === 'dailymotion'
       ) {
         redux.store.dispatch({
           type: 'formsData/formsDataUpdate',

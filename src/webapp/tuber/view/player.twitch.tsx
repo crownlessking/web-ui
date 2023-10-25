@@ -2,39 +2,39 @@ import { styled } from '@mui/material/styles'
 import React from 'react'
 import { IAnnotation } from '../tuber.interfaces'
 
-interface IBitchutePlayerProps {
+interface ITwitchPlayerProps {
   annotation: IAnnotation
 }
 
 const StyledIframeDiv = styled('div')(() => ({
-  // paddingBottom: '56.25%',
-  // overflow: 'hidden',
   position: 'relative',
   width: '100%',
   height: '100%',
 }))
 
 const IframeStyled = styled('iframe')(() => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
   width: '100%',
   height: '100%',
-  border: 'none',
 }))
 
 /**
- * __Note:__ Feature to start at a specific time in the video is not supported
- *           by BitChute.
+ * Example URL: https://www.twitch.tv/videos/1958693814?t=00h00m38s
+ * Example Embed: https://player.twitch.tv/?video=1958693814&time=0h0m38s&parent=www.example.com
  */
-const BitChutePlayer: React.FC<IBitchutePlayerProps> = ({ annotation }) => {
-  const { videoid } = annotation
-  const src = `https://www.bitchute.com/embed/${videoid}`
+const TwitchPlayer: React.FC<ITwitchPlayerProps> = ({ annotation }) => {
+  const { videoid, start_seconds } = annotation
+  const parent = new URL(window.location.origin).hostname
+  const start = start_seconds ?? 0
+  const src = `https://player.twitch.tv/?video=${videoid}&time=${start}s&parent=${parent}`
   return (
     <>
       <StyledIframeDiv>
         <IframeStyled
-          title="BitChute Video Player"
+          title="Twitch Player"
           src={src}
-          width="100%"
-          height="100%"
           frameBorder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
@@ -44,4 +44,4 @@ const BitChutePlayer: React.FC<IBitchutePlayerProps> = ({ annotation }) => {
   )
 }
 
-export default BitChutePlayer
+export default TwitchPlayer

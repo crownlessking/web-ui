@@ -10,7 +10,8 @@ import {
   DIALOG_UNKNOWN_EDIT_ID,
   VIDEO_START_TIME_KEYS,
   DIALOG_VIMEO_EDIT_ID,
-  DIALOG_YOUTUBE_EDIT_ID
+  DIALOG_YOUTUBE_EDIT_ID,
+  DIALOG_TWITCH_EDIT_ID
 } from './tuber.config'
 import { IAnnotation, TPlatform } from './tuber.interfaces'
 
@@ -98,10 +99,31 @@ export function vimeo_get_video_id(url: string): string | undefined {
   return match[1]
 }
 
+/** 
+ * Converts a time (in seconds) in the readable format.
+ * e.g. 3661 -> 1h1m1s
+ */
+export function format_seconds_to_readable_time (timeInSeconds: number): string {
+  const remainingSeconds = timeInSeconds % 60
+  const timeInMinutes = (timeInSeconds - remainingSeconds) / 60
+  const remainingMinutes = timeInMinutes % 60
+  const timeInHours = (timeInMinutes - remainingMinutes) / 60
+  const timeInHoursStr = timeInHours < 10
+    ? `0${timeInHours}`
+    : `${timeInHours}`
+  const remainingMinutesStr = remainingMinutes < 10
+    ? `0${remainingMinutes}`
+    : `${remainingMinutes}`
+  const secondsStr = remainingSeconds < 10
+  ? `0${remainingSeconds}`
+  : `${remainingSeconds}`
+  return `${timeInHoursStr}h${remainingMinutesStr}m${secondsStr}s`
+}
+
 /** Get the video start time in seconds. */
 function _get_start_time_in_seconds(startTime: string): number {
   let timeInSeconds = 0
-  const temp = startTime.match(/\d+h|\d+m|\d+s/g)
+  const temp = startTime.toLowerCase().match(/\d+h|\d+m|\d+s/g)
   temp?.forEach(fragment => {
     if (fragment.slice(-1) === 'h') {
       timeInSeconds += parseInt(fragment.replace(/\D+/, '')) * 60 * 60
@@ -116,7 +138,6 @@ function _get_start_time_in_seconds(startTime: string): number {
 
 /**
  * Get the video start time from Vimeo URL.
- *
  * Example URL: https://vimeo.com/123456789#t=1m30s
  */
 export function vimeo_get_start_time(url: string): number {
@@ -124,6 +145,17 @@ export function vimeo_get_start_time(url: string): number {
   if (!qsTime) return 0
   const startTime = qsTime.replace(/^t=/, '')
   return _get_start_time_in_seconds(startTime)
+}
+
+/**
+ * Get the video start time from Twitch URL.
+ * Example URL: https://www.twitch.tv/videos/1958693814?t=00h00m38s
+ */
+export function twitch_get_start_time(url: string): number {
+  const twitchTime = get_query_values(url)['t']
+  if (!twitchTime) { return 0 }
+  const t = _get_start_time_in_seconds(twitchTime)
+  return t
 }
 
 /** Shorten detail text. */
@@ -145,9 +177,9 @@ export function get_platform_icon_src(platform: TPlatform): string {
     rumble: '../img/icon-rumble.png',
     vimeo: '../img/icon-vimeo.png',
     dailymotion: '../img/icon-dailymotion.png',
-    bitchute: '../img/icon-unknown.png',
     odysee: '../img/icon-odysee.png',
     facebook: '../img/icon-facebook.png',
+    twitch: '../img/icon-unknown.png' // [TODO] Get proper twitch icon.
   }
   return icons[platform] ?? icons._blank
 }
@@ -228,27 +260,6 @@ export function odysee_get_start_time(url: string): number {
   return 0
 }
 
-export function bitchute_get_video_id(url: string): string {
-  // [TODO] Implement this
-  const domain = new URL(url)
-  const path = domain.pathname
-  const match = path.match(/\/video\/(\w+)/)
-  if (!match) {
-    ler(`bitchute_get_video_id: Bad video URL: '${url}'`)
-    return ''
-  }
-  return url
-}
-
-export function bitchute_get_start_time(url: string): number {
-  // [TODO] Implement this
-  const queryValues = get_query_values(url)
-  if (queryValues.t) {
-    return parseInt(queryValues.t)
-  }
-  return 0
-}
-
 /**
  * @param iframe __Careful:__ Expects the entire iframe html code
  * @return [ 'author', 'videoid', 'start' ]
@@ -279,6 +290,11 @@ export function facebook_get_video_id(slug: string): string {
 export function facebook_get_video_author(slug: string): string {
   const author = slug.split('%2F')[0]
   return author
+}
+
+export function twitch_get_video_id(url: string): string {
+  const match = url.match(/https:\/\/www.twitch.tv\/videos\/(\d+)\/?(\?[t=0-9hms]+)?/)
+  return match ? match[1] : ''
 }
 
 export function gen_video_url(annotation: IAnnotation): string {
@@ -332,14 +348,14 @@ export function gen_video_url(annotation: IAnnotation): string {
       // ler(`gen_video_url: ${platform}'s video url logic not yet implemented`)
       return url
     }
-    case 'bitchute': {
+    case 'twitch': {
       if (start) {
-        url = `${PLATFORM_URLS['bitchute']}${videoid}`
-        ler('gen_video_url: BitChute does not support starting video as a '
+        url = `${PLATFORM_URLS['twitch']}${videoid}?t=${format_seconds_to_readable_time(start)}`
+        ler('gen_video_url: Twitch does not support starting video as a '
           + 'specific time'
         )
       } else {
-        url = `${PLATFORM_URLS['bitchute']}${videoid}`
+        url = `${PLATFORM_URLS['twitch']}${videoid}`
       }
       // ler(`gen_video_url: ${platform}'s video url logic not yet implemented`)
       return url
@@ -423,6 +439,8 @@ export function get_dialog_id_for_edit(platform: TPlatform): string {
     return DIALOG_DAILY_EDIT_ID
   case 'facebook':
     return DIALOG_FACEBOOK_EDIT_ID
+  case 'twitch':
+    return DIALOG_TWITCH_EDIT_ID
   case 'unknown':
     return DIALOG_UNKNOWN_EDIT_ID
   }

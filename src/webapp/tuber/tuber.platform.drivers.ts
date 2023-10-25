@@ -18,7 +18,9 @@ import {
   odysee_get_start_time,
   get_slug,
   odysee_get_slug,
-} from './tuber.controller'
+  twitch_get_video_id,
+  twitch_get_start_time,
+} from './_tuber.business.logic'
 import { TPlatform } from './tuber.interfaces'
 
 interface IUrlStatus {
@@ -77,8 +79,8 @@ export default async function parse_platform_video_url(url: string): Promise<IVi
     case /dailymotion/.test(url):
     case /dai\.ly/.test(url):
       return _extract_data_from_dailymotion_url(url)
-    case /bitchute/.test(url): // return _extract_data_from_bitchute_url(url)
     case /twitch/.test(url):
+      return _extract_data_from_twitch_url(url)
     default:
       return {
         ...DATA_SKELETON,
@@ -231,31 +233,31 @@ function _extract_data_from_odysee_url(url: string) {
   return data
 }
 
-// function _extract_data_from_bitchute_url(url: string) {
-//   const id = bitchute_get_video_id(url)
-//   if (!id) {
-//     remember_error({
-//       code: 'value_not_found',
-//       title: 'bitchute_get_video_id failed',
-//       detail: 'The "bitchute_get_video_id" function failed to extract the video '
-//         + 'ID from the URL.',
-//       source: { pointer: url }
-//     })
-//     return DATA_SKELETON
-//   }
-//   // const start = bitchute_get_start_time(url)
-//   const data: IVideoData = {
-//     ...DATA_SKELETON,
-//     id,
-//     platform: 'bitchute',
-//     // start, // TODO Start time not supported
-//     urlCheck: {
-//       message: 'OK',
-//       valid: true
-//     }
-//   }
-//   return data
-// }
+function _extract_data_from_twitch_url(url: string) {
+  const id = twitch_get_video_id(url)
+  if (!id) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'twitch_get_video_id failed',
+      detail: 'The "twitch_get_video_id" function failed to extract the video '
+        + 'ID from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
+  const start = twitch_get_start_time(url)
+  const data: IVideoData = {
+    ...DATA_SKELETON,
+    id,
+    platform: 'twitch',
+    start,
+    urlCheck: {
+      message: 'OK',
+      valid: true
+    }
+  }
+  return data
+}
 
 /** __Note:__ The embed URL is needed here. */
 function _extract_data_from_facebook_url() {

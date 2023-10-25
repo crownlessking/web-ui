@@ -26,6 +26,8 @@ import { form_submit_new_facebook_annotation } from './prod.annotations.201.face
 import { form_submit_edit_facebook_annotation } from './prod.annotations.204.facebook'
 import { form_submit_new_unknown_annotation } from './prod.annotations.201.unknown'
 import { form_submit_edit_unknown_annotation } from './prod.annotations.204.unknown'
+import { form_submit_new_twitch_annotation } from './prod.annotations.201.twitch'
+import { form_submit_edit_twitch_annotation } from './prod.annotations.204.twitch'
 
 /** Default callback for closing dialogs */
 function close_default (redux: IRedux) {
@@ -53,8 +55,11 @@ const prodCallbacks = {
   '_22_C_1': form_submit_edit_daily_annotation,
   '_26_C_1': form_submit_new_facebook_annotation,
   '_27_C_1': form_submit_edit_facebook_annotation,
+  '_36_C_1': form_submit_new_twitch_annotation,
+  '_37_C_1': form_submit_edit_twitch_annotation,
   '_30_C_1': form_submit_new_unknown_annotation,
-  '_31_C_1': form_submit_edit_unknown_annotation
+  '_31_C_1': form_submit_edit_unknown_annotation,
+
   // TODO Add more callbacks here
 }
 

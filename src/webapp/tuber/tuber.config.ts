@@ -12,12 +12,12 @@ export const VIDEO_START_TIME_KEYS = ['t', 'start']
 
 export const PLATFORM_URLS: {[key in TPlatform]: string} = {
   'youtube': 'https://youtu.be/',
-  'bitchute': 'https://www.bitchute.com/video/',
   'dailymotion': 'https://dai.ly/',
   'odysee': 'https://odysee.com/',
   'rumble': 'https://rumble.com/',
   'vimeo': 'https://vimeo.com/',
   'facebook': 'https://www.facebook.com/watch/?v=',
+  'twitch': 'https://www.twitch.tv/videos/',
   'unknown': '',
   '_blank': '',
 }
@@ -46,6 +46,10 @@ export const FORM_FACEBOOK_NEW_ID = '24'
 export const FORM_FACEBOOK_EDIT_ID = '25'
 export const DIALOG_FACEBOOK_NEW_ID = '26'
 export const DIALOG_FACEBOOK_EDIT_ID = '27'
+export const FORM_TWITCH_NEW_ID = '38'
+export const FORM_TWITCH_EDIT_ID = '39'
+export const DIALOG_TWITCH_NEW_ID = '36'
+export const DIALOG_TWITCH_EDIT_ID = '37'
 export const FORM_UNKNOWN_NEW_ID = '28'
 export const FORM_UNKNOWN_EDIT_ID = '29'
 export const DIALOG_UNKNOWN_NEW_ID = '30'

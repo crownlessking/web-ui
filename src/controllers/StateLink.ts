@@ -82,5 +82,5 @@ export function get_formatted_route(def: StateLink, href?: string): string {
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route
   }
-  return href || ''
+  return href || window.location.pathname
 }

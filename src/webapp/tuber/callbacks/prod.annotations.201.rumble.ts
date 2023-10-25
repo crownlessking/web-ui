@@ -4,7 +4,7 @@ import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { FORM_RUMBLE_NEW_ID } from '../tuber.config'
-import { rumble_get_video_id } from '../tuber.controller'
+import { rumble_get_video_id } from '../_tuber.business.logic'
 import { IAnnotation } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()

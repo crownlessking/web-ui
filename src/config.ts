@@ -42,6 +42,12 @@ const initConfObj = {
       console.error(msg_prefix, ...args)
     }
   },
+  /** Throws an exception if debugging. */
+  err: (msg: string): void => {
+    if (initConfObj.DEBUG) {
+      throw new Error(`${msg_prefix}${msg}`)
+    }
+  },
   /**
    * Insert prefix to help keep messages short.  
    * Works with `log()`, `warn()`, `ler()`, `msg()`.

@@ -26,9 +26,6 @@ export function get_bootstrap_key(): string {
   return ''
 }
 
-/** bootstrap key */
-export const BOOTSTRAP_KEY = get_bootstrap_key()
-
 /**
  * Get the form state name
  *

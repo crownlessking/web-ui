@@ -7,7 +7,8 @@ import {
   shorten_text,
   get_platform_icon_src,
   youtube_get_start_time,
-} from '../tuber.controller'
+  format_seconds_to_readable_time,
+} from '../_tuber.business.logic'
 
 describe('get_platform', () => {
   it('should return youtube for youtube url', () => {
@@ -62,6 +63,49 @@ describe('youtube_get_start_time', () => {
 
   it('should return undefined for url without start time', () => {
     expect(youtube_get_start_time('https://example.com/video')).toBeUndefined()
+  })
+})
+
+// Test suit for format_seconds_to_readable_time
+describe('format_seconds_to_readable_time', () => {
+  it('should return 0:00 for 0 seconds', () => {
+    expect(format_seconds_to_readable_time(0)).toBe('00h00m00s')
+  })
+
+  it('should return 0:01 for 1 second', () => {
+    expect(format_seconds_to_readable_time(1)).toBe('00h00m01s')
+  })
+
+  it('should return 0:10 for 10 seconds', () => {
+    expect(format_seconds_to_readable_time(10)).toBe('00h00m10s')
+  })
+
+  it('should return 1:00 for 60 seconds', () => {
+    expect(format_seconds_to_readable_time(60)).toBe('00h01m00s')
+  })
+
+  it('should return 1:01 for 61 seconds', () => {
+    expect(format_seconds_to_readable_time(61)).toBe('00h01m01s')
+  })
+
+  it('should return 1:10 for 70 seconds', () => {
+    expect(format_seconds_to_readable_time(70)).toBe('00h01m10s')
+  })
+
+  it('should return 10:00 for 600 seconds', () => {
+    expect(format_seconds_to_readable_time(600)).toBe('00h10m00s')
+  })
+
+  it('should return 10:01 for 601 seconds', () => {
+    expect(format_seconds_to_readable_time(601)).toBe('00h10m01s')
+  })
+
+  it('should return 10:10 for 610 seconds', () => {
+    expect(format_seconds_to_readable_time(610)).toBe('00h10m10s')
+  })
+
+  it('should return 1:00:00 for 3600 seconds', () =>  {
+    expect(format_seconds_to_readable_time(3600)).toBe('01h00m00s')
   })
 })
 
