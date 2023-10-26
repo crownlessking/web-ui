@@ -73,7 +73,7 @@ export default async function parse_platform_video_url(url: string): Promise<IVi
       return await _extract_data_from_rumble_url(url)
     case /odysee/.test(url):
       return _extract_data_from_odysee_url(url)
-    case /facebook.com\/plugins\/video/.test(url):
+    case /facebook/.test(url):
     case /fb.watch/.test(url):
       return _extract_data_from_facebook_url()
     case /dailymotion/.test(url):
@@ -146,6 +146,9 @@ function _extract_data_from_youTube_url(url: string) {
   return data
 }
 
+/**
+ * Example URL: // https://rumble.com/v38vipp-what-is-ai-artificial-intelligence-what-is-artificial-intelligence-ai-in-5-.html
+ */
 async function _extract_data_from_rumble_url(url: string): Promise<IVideoData> {
   const slug  = get_slug(url)
   const start = rumble_get_start_time(url)
@@ -216,6 +219,7 @@ function _extract_data_from_dailymotion_url(url: string) {
   return data
 }
 
+/** Example URL: https://odysee.com/@GameolioDan:6/diablo-4-playthrough-part-30-entombed:1?t=368 */
 function _extract_data_from_odysee_url(url: string) {
   const start = odysee_get_start_time(url)
   const slug = odysee_get_slug(url)
@@ -259,7 +263,10 @@ function _extract_data_from_twitch_url(url: string) {
   return data
 }
 
-/** __Note:__ The embed URL is needed here. */
+/**
+ * __Note:__ The embed URL is needed here.  
+ * Example slug: `MetroUK%2Fvideos%2F7129126943765650`
+ */
 function _extract_data_from_facebook_url() {
   const data: IVideoData = {
     ...DATA_SKELETON,

@@ -37,10 +37,9 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
       })
     }
     const formName = get_state_form_name(formKey)
-  
-    // Check if the form data exist
     if (!rootState.formsData[formName]) {
-      const errorMsg = `form_submit_new_vimeo_annotation: '${formName}' does not exist.`
+      const errorMsg = `form_submit_new_vimeo_annotation: '${formName}' data `
+        + `does not exist.`
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',

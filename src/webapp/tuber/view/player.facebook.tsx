@@ -5,6 +5,9 @@ interface IFacebookPlayerProps {
   annotation: IAnnotation
 }
 const StyledIframeWrapper = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   overflow:'hidden',
   position:'relative',
   height: '100%'
@@ -13,11 +16,6 @@ const StyledIframeWrapper = styled('div')(() => ({
 const IframeStyled = styled('iframe')(() => ({
   border: 'none',
   overflow: 'hidden',
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  top: 0,
-  bottom: 0
 }))
 
 const FacebookPlayer: React.FC<IFacebookPlayerProps> = ({ annotation }) => {

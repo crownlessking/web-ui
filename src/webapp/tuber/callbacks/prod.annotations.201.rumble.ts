@@ -1,4 +1,4 @@
-import { ler } from 'src/controllers'
+import { ler, log } from 'src/controllers'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
@@ -6,6 +6,8 @@ import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logi
 import { FORM_RUMBLE_NEW_ID } from '../tuber.config'
 import { rumble_get_video_id } from '../_tuber.business.logic'
 import { IAnnotation } from '../tuber.interfaces'
+import { remember_error } from 'src/state/_errors.business.logic'
+import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
@@ -22,53 +24,54 @@ export function form_submit_new_rumble_annotation(redux: IRedux) {
       ?.state_registry
       ?.[FORM_RUMBLE_NEW_ID] as string
     if (!formKey) {
-      ler('form_submit_new_rumble_annotation: Form key not found.')
+      const errorMsg = 'form_submit_new_rumble_annotation: Form key not found.'
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formKey' }
+      })
       return
     }
     const formName = get_state_form_name(formKey)
-    const formData = rootState.formsData?.[formName] as IAnnotation
-    if (!formData) {
-      ler(`form_submit_new_rumble_annotation: '${formName}' does not exist.`)
+    if (!rootState.formsData?.[formName]) {
+      const errorMsg = `form_submit_new_rumble_annotation: `
+        + `'${formName}' data does not exist.`
+      ler(errorMsg)
+      remember_error({
+        code: 'value_not_found',
+        title: errorMsg,
+        source: { parameter: 'formData' }
+      })
       return
     }
+
+    const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+    const validation = policy.enforceValidationSchemes()
+    if (validation !== false && validation.length > 0) {
+      validation.forEach(vError => {
+        const message = vError.message ?? ''
+        policy.emit(vError.name, message)
+      })
+      return
+    }
+    const formData = policy.getFilteredData()
     const platform = formData.platform
-    if (!platform) {
-      ler('form_submit_new_rumble_annotation: No Platform.')
-      return
-    }
-    // https://rumble.com/v38vipp-what-is-ai-artificial-intelligence-what-is-artificial-intelligence-ai-in-5-.html
     const slug = formData.slug
-    if (!slug) {
-      ler('form_submit_new_rumble_annotation: Bad Rumble URL!')
-      return
-    }
-    const embed_url = formData.embed_url
-    if (!embed_url) {
-      ler('form_submit_new_rumble_annotation: No embed IFRAME URL!')
-      return
-    }
+    const embed_url = formData.embed_url ?? ''
     const videoid = rumble_get_video_id(embed_url)
-    if (!videoid) {
-      ler('form_submit_new_rumble_annotation: Bad Rumble Embed IFRAME URL.')
-      return
-    }
     const start_seconds = formData.start_seconds
-    const end_seconds = formData.end_seconds
     const title = formData.title
-    if (!title) {
-      ler('form_submit_new_rumble_annotation: Title is empty.')
-      return
-    }
     const note = formData.note
     const requestBody = new JsonapiRequest('annotations', {
       slug,
       platform,
       videoid,
       start_seconds,
-      end_seconds,
       title,
       note
     }).build()
+    log('form_submit_new_youtube_annotation: requestBody', requestBody)
 
     dispatch(post_req_state('annotations', requestBody))
     dispatch({ type: 'dialog/dialogClose' })

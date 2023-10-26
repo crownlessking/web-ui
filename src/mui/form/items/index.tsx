@@ -229,6 +229,9 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     // if there are no errors, submit the form
     const formsData = form.parent.parent.formsData
     const body = formsData.get(form.name)
+    if (formsData.state[form.name] === undefined) {
+      return
+    }
     if (body) {
       dispatch(post_req_state(form.endpoint, body))
       dispatch(formsDataClear(form.name))

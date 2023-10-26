@@ -29,8 +29,8 @@ export default class StateFormsData extends AbstractState {
    * @param formName
    * @param name
    */
-  get = (formName: string): any => {
-    return this.formsDataState[formName] || {}
+  get = (formName: string) => {
+    return this.formsDataState[formName] ?? {}
   }
 
 }

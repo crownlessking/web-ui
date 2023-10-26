@@ -37,10 +37,9 @@ export function form_submit_new_twitch_annotation(redux: IRedux) {
       })
     }
     const formName = get_state_form_name(formKey)
-  
-    // Check if the form data exist
     if (!rootState.formsData[formName]) {
-      const errorMsg = `form_submit_new_twitch_annotation: '${formName}' does not exist.`
+      const errorMsg = `form_submit_new_twitch_annotation: '${formName}' does `
+        + `not exist.`
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -63,14 +62,12 @@ export function form_submit_new_twitch_annotation(redux: IRedux) {
     const platform = formData.platform
     const videoid = formData.videoid
     const start_seconds = formData.start_seconds
-    const end_seconds = formData.end_seconds
     const title = formData.title
     const note = formData.note
     const requestBody = new JsonapiRequest<IAnnotation>('annotations', {
       platform,
       videoid,
       start_seconds,
-      end_seconds,
       title,
       note
     }).build()

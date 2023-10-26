@@ -409,7 +409,7 @@ export function get_slug(url: string) {
 /**
  * @param iframe embed html code
  */
-export function get_url_from_iframe(iframe?: string) {
+export function get_iframe_url_src(iframe?: string) {
   if (!iframe) {
     return ''
   }
