@@ -50,7 +50,8 @@ export const appSlice = createSlice({
       state.spinnerDisabled = false
     },
     appRequestStart: (state) => {
-      state.status = APP_IS_FETCHING
+      state.status = state.fetchMessage ?? APP_IS_FETCHING
+      state.fetchMessage = undefined
     },
     appRequestSuccess: (state) => {
       state.status = APP_REQUEST_SUCCESS
@@ -61,11 +62,11 @@ export const appSlice = createSlice({
     appRequestEnd: (state) => {
       state.status = APP_IS_BOOTSTRAPPED
     },
-    appStartRequest: (state) => {
-      state.status = APP_IS_FETCHING
-    },
     appRequestProcessEnd: (state) => {
       state.status = APP_IS_BOOTSTRAPPED
+    },
+    appSetFetchMessage: (state, actions) => {
+      state.fetchMessage = actions.payload
     },
   },
 })
@@ -82,12 +83,12 @@ export const {
   appShowSpinner,
   appDisableSpinner,
   appEnableSpinner,
-  appStartRequest,
   appTaskCompleted,
   appTitleUpdate,
   appPageUpdate,
   appStatusUpdate,
-  appUrlPageUpdate
+  appUrlPageUpdate,
+  appSetFetchMessage,
 } = appSlice.actions
 
 export default appSlice.reducer

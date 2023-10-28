@@ -1,6 +1,6 @@
-import { IAnnotation } from './tuber.interfaces'
+import { IBookmark } from './tuber.interfaces'
 
-const ANNOTATION_LIST: IAnnotation[] = [
+const BOOKMARK_LIST: IBookmark[] = [
   {
     // href: '#create-property',
     // id: 'create-property',
@@ -47,4 +47,4 @@ const ANNOTATION_LIST: IAnnotation[] = [
   }
 ]
 
-export default ANNOTATION_LIST
+export default BOOKMARK_LIST

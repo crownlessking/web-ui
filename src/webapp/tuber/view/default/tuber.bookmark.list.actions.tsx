@@ -3,20 +3,20 @@ import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import StateLink from 'src/controllers/StateLink'
 import JsonLink from 'src/mui/link'
-import { dialog_edit_annotation } from '../../callbacks/prod.annotations.actions'
+import { dialog_edit_bookmark } from '../../callbacks/prod.bookmarks.actions'
 import {
-  dialog_delete_annotation
-} from '../../callbacks/prod.annotations.actions'
-import { IAnnotation } from '../../tuber.interfaces'
+  dialog_delete_bookmark
+} from '../../callbacks/prod.bookmarks.actions'
+import { IBookmark } from '../../tuber.interfaces'
 import { get_ratio_color } from './_business.logic'
 
-interface IAnnotationActionToolbarProps {
+interface IBookmarkActionToolbarProps {
   i: number
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 interface IRatingProps {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -46,7 +46,7 @@ const EditAction = (props:{index:number}) => {
   return (
     <JsonLink def={new StateLink({
       'type': 'icon',
-      'onClick': dialog_edit_annotation(props.index),
+      'onClick': dialog_edit_bookmark(props.index),
       'props': { 'size': 'small' },
       'has': {
         'faIcon': 'fa-pen-to-square',
@@ -71,7 +71,7 @@ const DeleteAction = ({ index }:{ index:number }) => {
   return (
     <JsonLink def={new StateLink({
       'type': 'icon',
-      'onClick': dialog_delete_annotation(index),
+      'onClick': dialog_delete_bookmark(index),
       'props': { 'size': 'small' },
       'has': {
         'faIcon': 'fa-trash-can',
@@ -116,8 +116,8 @@ const BookmarkAction = () => {
   )
 }
 
-const ColorCodedRating: React.FC<IRatingProps> = ({ annotation }) => {
-  const { upvotes, downvotes } = annotation
+const ColorCodedRating: React.FC<IRatingProps> = ({ bookmark }) => {
+  const { upvotes, downvotes } = bookmark
   const ratioColor = get_ratio_color(upvotes, downvotes)
   const up = parseInt(upvotes || '0')
   const down = parseInt(downvotes || '0')
@@ -149,10 +149,10 @@ const handleOnMouseLeave = (e: React.MouseEvent) => {
   element.style.opacity = '0'
 }
 
-export default function AnnotationActionsToolbar({ i, annotation }: IAnnotationActionToolbarProps) {
+export default function BookmarkActionsToolbar({ i, bookmark }: IBookmarkActionToolbarProps) {
   return (
     <Grid container direction='row'>
-      <ColorCodedRating annotation={annotation} />
+      <ColorCodedRating bookmark={bookmark} />
       <StyledPaper
         elevation={0}
         onMouseOver={handleOnMouseOver}

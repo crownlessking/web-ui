@@ -5,25 +5,27 @@ import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { remember_error } from 'src/state/_errors.business.logic'
-import { FORM_ODYSEE_NEW_ID } from '../tuber.config'
-import { IAnnotation } from '../tuber.interfaces'
+import { FORM_UNKNOWN_NEW_ID } from '../tuber.config'
+import { get_iframe_url_src } from '../_tuber.business.logic'
+import { IBookmark } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
- * [Odysee] Save annotation to server.
+ * [Unknown] Save bookmark to server.
  *
- * @id _16_C_1
+ * @id _30_C_1
  */
-export function form_submit_new_odysee_annotation(redux: IRedux) {
+export function form_submit_new_unknown_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
     const formKey = rootState.meta[BOOTSTRAP_KEY]
       ?.state_registry
-      ?.[FORM_ODYSEE_NEW_ID] as string
+      ?.[FORM_UNKNOWN_NEW_ID] as string
+
     if (!formKey) {
-      const errorMsg = 'form_submit_new_odysee_annotation: Form key not found.'
+      const errorMsg = 'form_submit_new_unknown_bookmark: Form key not found.'
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -33,9 +35,10 @@ export function form_submit_new_odysee_annotation(redux: IRedux) {
       return
     }
     const formName = get_state_form_name(formKey)
+
     if (!rootState.formsData?.[formName]) {
-      const errorMsg = `form_submit_new_odysee_annotation: '${formName}' data `
-        + `does not exist.`
+      const errorMsg = `form_submit_new_unknown_bookmark: data for `
+        + `'${formName}' does not exist.`
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -44,9 +47,11 @@ export function form_submit_new_odysee_annotation(redux: IRedux) {
       })
       return
     }
-    const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+
+    const policy = new FormValidationPolicy<IBookmark>(redux, formName)
     const validation = policy.enforceValidationSchemes()
-    if (validation !== false && validation.length > 0) {
+    if (validation && validation.length > 0) {
+      console.log('validation', validation)
       validation.forEach(vError => {
         const message = vError.message ?? ''
         policy.emit(vError.name, message)
@@ -54,21 +59,21 @@ export function form_submit_new_odysee_annotation(redux: IRedux) {
       return
     }
     const formData = policy.getFilteredData()
+    const url = formData.url
+    const embed_url = get_iframe_url_src(formData.embed_url)
     const platform = formData.platform
-    const slug = formData.slug
-    const start_seconds = formData.start_seconds
     const title = formData.title
     const note = formData.note
-    const requestBody = new JsonapiRequest('annotations', {
-      slug,
+    const requestBody = new JsonapiRequest('bookmarks', {
+      url,
+      embed_url,
       platform,
-      start_seconds,
       title,
       note
     }).build()
-    log('form_submit_new_youtube_annotation: requestBody', requestBody)
+    log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
-    dispatch(post_req_state('annotations', requestBody))
+    dispatch(post_req_state('bookmarks', requestBody))
     dispatch({ type: 'dialog/dialogClose' })
     dispatch({ type: 'formsData/formsDataClear' })
   }

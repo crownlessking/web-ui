@@ -2,6 +2,7 @@ import { CircularProgress, styled } from '@mui/material'
 import { LayoutCenteredNoScroll } from '../mui/layouts'
 import { RootState } from '../state'
 import { useSelector } from 'react-redux'
+import { APP_IS_FETCHING } from 'src/slices/app.slice'
 
 const Background = styled('div')(() => ({
   width: '100%',
@@ -18,8 +19,11 @@ const Background = styled('div')(() => ({
 /** Spinner */
 export default function Spinner() {
   const showSpinner = useSelector((state: RootState) => state.app.showSpinner)
+  const status = useSelector((state: RootState) => state.app.status)
   const spinnerDisabled = useSelector((state: RootState) => state.app.spinnerDisabled)
-  const open = showSpinner && !spinnerDisabled
+  const open = showSpinner
+    && !spinnerDisabled
+    && (status === APP_IS_FETCHING || undefined === status)
 
   return (
     <Background style={{display: open ? 'block' : 'none'}}>

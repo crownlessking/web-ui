@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 interface RumblePlayerProps {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 const StyledIframeWrapper = styled('div')(() => ({
@@ -16,8 +16,8 @@ const IframeStyled = styled('iframe')(() => ({
   height: '100%',
 }))
 
-const RumblePlayer: React.FC<RumblePlayerProps> = ({ annotation }) => {
-  const { videoid, start_seconds: start } = annotation
+const RumblePlayer: React.FC<RumblePlayerProps> = ({ bookmark }) => {
+  const { videoid, start_seconds: start } = bookmark
   const src = `https://rumble.com/embed/${videoid}?start=${start}`
   return (
     <StyledIframeWrapper>

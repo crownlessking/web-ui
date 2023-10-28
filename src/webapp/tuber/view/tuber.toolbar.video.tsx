@@ -37,9 +37,9 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
   }
 }))
 
-/** When clicked, this icon will show or hide the list of annotations. */
-// const AnnotationsListIcon = ({ callback, def: appBar }: IToolbarIcon) => {
-//   const annotationsListIconDef = new StateLink({
+/** When clicked, this icon will show or hide the list of bookmarks. */
+// const BookmarksListIcon = ({ callback, def: appBar }: IToolbarIcon) => {
+//   const bookmarksListIconDef = new StateLink({
 //     'type': 'icon',
 //     'props': {
 //       'size': 'small',
@@ -56,11 +56,11 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 //     },
 //     'onClick': callback
 //   }, appBar)
-//   return <Link def={annotationsListIconDef} />
+//   return <Link def={bookmarksListIconDef} />
 // }
 
-/** When clicked, this icon displays an interface to create a new video annotation. */
-// const AddAnnotation = ({ callback, def: appBar}: IToolbarIcon) => {
+/** When clicked, this icon displays an interface to create a new video bookmark. */
+// const AddBookmark = ({ callback, def: appBar}: IToolbarIcon) => {
 //   const iconDef = new StateLink({
 //     'type': 'icon',
 //     'props': {
@@ -80,8 +80,8 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 //   return <Link def={iconDef} />
 // }
 
-/** When clicked, this icon will show or hide the list of annotations. */
-// const ToggleAnnotationsIcon = ({ callback, def: appBar }: IToolbarIcon) => {
+/** When clicked, this icon will show or hide the list of bookmarks. */
+// const ToggleBookmarksIcon = ({ callback, def: appBar }: IToolbarIcon) => {
 //   const iconDef = new StateLink({
 //     'type': 'icon',
 //     'props': {

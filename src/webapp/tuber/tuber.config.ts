@@ -4,7 +4,7 @@
 import { TPlatform } from "./tuber.interfaces"
 
 export const TUBER_SEARCH_COLUMN_WIDTH = 300
-export const TUBER_ANNOTATIONS_COLUMN_WIDTH = 600
+export const TUBER_BOOKMARKS_COLUMN_WIDTH = 600
 
 export const SHORTENED_NOTE_MAX_LENGTH = 55
 
@@ -57,3 +57,5 @@ export const DIALOG_UNKNOWN_EDIT_ID = '31'
 
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'
+
+export const APP_IS_FETCHING_BOOKMARKS = 'APP_IS_FETCHING_BOOKMARKS'

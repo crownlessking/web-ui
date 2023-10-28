@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import JsonapiPaginationLinks from 'src/controllers/JsonapiPaginationLinks'
 import StateData from 'src/controllers/StateData'
 import StateDataPagesRange from 'src/controllers/StateDataPagesRange'
-import { APP_IS_FETCHING } from 'src/slices/app.slice'
 import { AppDispatch, RootState } from 'src/state'
 import { get_req_state } from 'src/state/net.actions'
+import { APP_IS_FETCHING_BOOKMARKS } from '../../tuber.config'
 
 interface ILoadMoreTextProps {
   def: StateData
@@ -63,9 +63,9 @@ let loadEarlier = false
 let loadMore = false
 
 /**
- * Load more annotations from the server
+ * Load more bookmarks from the server
  */
-export default function LoadMoreAnnotationsFromServer ({
+export default function LoadMoreBookmarksFromServer ({
   def,
   text,
   loadingText
@@ -76,21 +76,26 @@ export default function LoadMoreAnnotationsFromServer ({
     useSelector((state: RootState) => state.dataLoadedPages)
   )
   const links = new JsonapiPaginationLinks(
-    useSelector((state: RootState) => state.topLevelLinks.annotations)
+    useSelector((state: RootState) => state.topLevelLinks.bookmarks)
   )
 
-  pageManager.configure({ endpoint: 'annotations' })
+  pageManager.configure({ endpoint: 'bookmarks' })
   const nextPage = pageManager.lastPage + 1
   const handleOnClick = () => {
     loadMore = true
-    // dispatch({ type: 'app/appDisableSpinner' })
+    dispatch({
+      type: 'app/appSetFetchMessage',
+      payload: APP_IS_FETCHING_BOOKMARKS
+    })
     dispatch(get_req_state(
-      'annotations',
+      'bookmarks',
       links.getLinkUrl({ pageNumber: nextPage })
     ))
   }
 
-  if (appStatus !== APP_IS_FETCHING && nextPage <= links.lastPageNumber) {
+  if (appStatus !== APP_IS_FETCHING_BOOKMARKS
+    && nextPage <= links.lastPageNumber
+  ) {
     loadMore = false
     return (
       <LoadMoreText onClick={handleOnClick}>
@@ -99,12 +104,14 @@ export default function LoadMoreAnnotationsFromServer ({
     )
 
   // If clicked to load more, show the loading progress
-  } else if (appStatus === APP_IS_FETCHING && loadMore) {
+  } else if (appStatus === APP_IS_FETCHING_BOOKMARKS && loadMore) {
     return <LoadingProgess text={loadingText || 'Loading...'} />
   
-  // If there are no annotations, and we are fetching, show the loading progress.
-  // This is triggered by the search field.
-  } if (appStatus === APP_IS_FETCHING && !def.state?.annotations?.length) {
+  // If there are no bookmarks, and we are fetching, show the loading
+  // progress. This is triggered by the search field.
+  } if (appStatus === APP_IS_FETCHING_BOOKMARKS
+    && !def.state?.bookmarks?.length
+  ) {
     loadMore = false
     return <LoadingProgess text={loadingText || 'Loading...'} />
   } else {
@@ -114,9 +121,9 @@ export default function LoadMoreAnnotationsFromServer ({
 }
 
 /**
- * Load earlier annotations from the server
+ * Load earlier bookmarks from the server
  */
-export function LoadEarlierAnnotationsFromServer ({
+export function LoadEarlierBookmarksFromServer ({
   text,
   loadingText
 }: ILoadMoreTextProps) {
@@ -126,23 +133,28 @@ export function LoadEarlierAnnotationsFromServer ({
     useSelector((state: RootState) => state.dataLoadedPages)
   )
   const links = new JsonapiPaginationLinks(
-    useSelector((state: RootState) => state.topLevelLinks.annotations)
+    useSelector((state: RootState) => state.topLevelLinks.bookmarks)
   )
 
-  pageManager.configure({ endpoint: 'annotations' })
+  pageManager.configure({ endpoint: 'bookmarks' })
   const prevPage = pageManager.firstPage - 1
   const handleOnClick = () => {
     loadEarlier = true
-    // dispatch({ type: 'app/appDisableSpinner' })
+    dispatch({
+      type: 'app/appSetFetchMessage',
+      payload: APP_IS_FETCHING_BOOKMARKS
+    })
     dispatch(get_req_state(
-      'annotations',
+      'bookmarks',
       links.getLinkUrl({ pageNumber: prevPage })
     ))
   }
 
-  if (loadEarlier && appStatus === APP_IS_FETCHING) {
+  if (loadEarlier && appStatus === APP_IS_FETCHING_BOOKMARKS) {
     return <LoadingProgess text={loadingText || 'Loading...'} />
-  } else if (appStatus !== APP_IS_FETCHING && pageManager.firstPage > 1) {
+  } else if (appStatus !== APP_IS_FETCHING_BOOKMARKS
+    && pageManager.firstPage > 1
+  ) {
     loadEarlier = false
     return (
       <LoadMoreText onClick={handleOnClick}>

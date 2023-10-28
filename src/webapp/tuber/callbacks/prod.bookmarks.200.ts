@@ -1,6 +1,7 @@
 import { IRedux } from 'src/state'
 import { get_search_query } from 'src/state/_errors.business.logic'
 import { get_req_state } from 'src/state/net.actions'
+import { APP_IS_FETCHING_BOOKMARKS } from '../tuber.config'
 
 /**
  * Callback to handle the search field in the appbar when the user submits a 
@@ -9,7 +10,7 @@ import { get_req_state } from 'src/state/net.actions'
  * @param redux 
  * @returns 
  */
-export function appbar_search_for_annotations (redux: IRedux) {
+export function appbar_search_for_bookmarks (redux: IRedux) {
   return () => {
     const state = redux.store.getState()
     const route = state.app.route ?? ''
@@ -21,7 +22,11 @@ export function appbar_search_for_annotations (redux: IRedux) {
     })
     redux.store.dispatch({
       type: 'data/collectionRemove',
-      payload: 'annotations'
+      payload: 'bookmarks'
+    })
+    redux.store.dispatch({
+      type: 'app/appSetFetchMessage',
+      payload: APP_IS_FETCHING_BOOKMARKS
     })
 
     // Prevent space-filled or empty search query requests
@@ -30,6 +35,6 @@ export function appbar_search_for_annotations (redux: IRedux) {
 
     const encodedSearchQuery = encodeURIComponent(searchQuery)
     const args = `query=${encodedSearchQuery}`
-    redux.store.dispatch(get_req_state('annotations', args))
+    redux.store.dispatch(get_req_state('bookmarks', args))
   }
 }

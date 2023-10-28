@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 interface IUnknown {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 const IframeWrapperStyled = styled('div')(() => ({
@@ -16,7 +16,7 @@ const IframeStyled = styled('iframe')(() => ({
   height: '100%'
 }))
 
-const UnknownPlayer: React.FC<IUnknown> = ({ annotation: { embed_url } }) => (
+const UnknownPlayer: React.FC<IUnknown> = ({ bookmark: { embed_url } }) => (
   <IframeWrapperStyled>
     <IframeStyled
       title='Unknown Platform'

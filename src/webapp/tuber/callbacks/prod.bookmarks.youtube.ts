@@ -9,12 +9,12 @@ import { TPlatform } from '../tuber.interfaces'
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
- * [YouTube] Shows a dialog containing a form to create a new annotation.
+ * [YouTube] Shows a dialog containing a form to create a new bookmark.
  *
  * @id 6
  * @deprecated
  */
-export function dialog_new_youtube_annotation_from_video(redux: IRedux) {
+export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const state = getState()

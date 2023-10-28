@@ -1,14 +1,14 @@
 import YouTube, { YouTubeProps } from 'react-youtube'
 import Config from '../../../config'
-import { IAnnotationOrigin } from '../tuber.interfaces'
+import { IBookmarkOrigin } from '../tuber.interfaces'
 
 interface IYTPlayerProps {
-  annotation: IAnnotationOrigin
+  bookmark: IBookmarkOrigin
 }
 
 /** @see https://developers.google.com/youtube/iframe_api_reference?csw=1#Getting_Started */
 export default function YouTubePlayerApi (props: IYTPlayerProps) {
-  const { annotation: {
+  const { bookmark: {
     videoid,
     platform,
     start_seconds,

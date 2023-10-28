@@ -4,6 +4,7 @@ import {
   DIALOG_FACEBOOK_NEW_ID,
   DIALOG_ODYSEE_NEW_ID,
   DIALOG_RUMBLE_NEW_ID,
+  DIALOG_TWITCH_NEW_ID,
   DIALOG_UNKNOWN_NEW_ID,
   DIALOG_VIMEO_NEW_ID,
   DIALOG_YOUTUBE_NEW_ID
@@ -20,6 +21,7 @@ import {
   odysee_get_slug,
   twitch_get_video_id,
   twitch_get_start_time,
+  daily_get_start_time,
 } from './_tuber.business.logic'
 import { TPlatform } from './tuber.interfaces'
 
@@ -63,23 +65,24 @@ export default async function parse_platform_video_url(url: string): Promise<IVi
       urlCheck: { message, valid }
     }
   }
-  switch (true) {
-    case /youtu/.test(url):
-    case /youtube/.test(url):
+  const urlObj = new URL(url)
+  switch (urlObj.hostname) {
+    case 'youtu.be':
+    case 'youtube.com':
       return _extract_data_from_youTube_url(url)
-    case /vimeo/.test(url):
+    case 'vimeo.com':
       return _extract_data_from_vimeo_url(url)
-    case /rumble/.test(url):
+    case 'rumble.com':
       return await _extract_data_from_rumble_url(url)
-    case /odysee/.test(url):
+    case 'odysee.com':
       return _extract_data_from_odysee_url(url)
-    case /facebook/.test(url):
-    case /fb.watch/.test(url):
+    case 'www.facebook.com':
+    case 'fb.watch':
       return _extract_data_from_facebook_url()
-    case /dailymotion/.test(url):
-    case /dai\.ly/.test(url):
+    case 'www.dailymotion.com':
+    case 'dai.ly':
       return _extract_data_from_dailymotion_url(url)
-    case /twitch/.test(url):
+    case 'www.twitch.tv':
       return _extract_data_from_twitch_url(url)
     default:
       return {
@@ -151,7 +154,27 @@ function _extract_data_from_youTube_url(url: string) {
  */
 async function _extract_data_from_rumble_url(url: string): Promise<IVideoData> {
   const slug  = get_slug(url)
+  if (!slug) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'rumble_get_slug failed',
+      detail: 'The "rumble_get_slug" function failed to extract the video slug '
+        + 'from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const start = rumble_get_start_time(url)
+  if (!start) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'rumble_get_start_time failed',
+      detail: 'The "rumble_get_start_time" function failed to extract the video '
+        + 'start time from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const data: IVideoData = {
     ...DATA_SKELETON,
     start,
@@ -180,6 +203,16 @@ function _extract_data_from_vimeo_url(url: string) {
   }
   const platform: TPlatform = 'vimeo'
   const start = vimeo_get_start_time(url)
+  if (!start) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'vimeo_get_start_time failed',
+      detail: 'The "vimeo_get_start_time" function failed to extract the video '
+        + 'start time from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const data = {
     ...DATA_SKELETON,
     platform,
@@ -206,10 +239,22 @@ function _extract_data_from_dailymotion_url(url: string) {
     })
     return DATA_SKELETON
   }
+  const start = daily_get_start_time(url)
+  if (!start) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'daily_get_start_time failed',
+      detail: 'The "daily_get_start_time" function failed to extract the video '
+        + 'start time from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const data: IVideoData = {
     ...DATA_SKELETON,
     platform: 'dailymotion',
     id,
+    start,
     urlCheck: {
       message: 'OK',
       valid: true
@@ -222,7 +267,27 @@ function _extract_data_from_dailymotion_url(url: string) {
 /** Example URL: https://odysee.com/@GameolioDan:6/diablo-4-playthrough-part-30-entombed:1?t=368 */
 function _extract_data_from_odysee_url(url: string) {
   const start = odysee_get_start_time(url)
+  if (!start) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'odysee_get_start_time failed',
+      detail: 'The "odysee_get_start_time" function failed to extract the video '
+        + 'start time from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const slug = odysee_get_slug(url)
+  if (!slug) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'odysee_get_slug failed',
+      detail: 'The "odysee_get_slug" function failed to extract the video slug '
+        + 'from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const data: IVideoData = {
     ...DATA_SKELETON,
     start,
@@ -250,6 +315,16 @@ function _extract_data_from_twitch_url(url: string) {
     return DATA_SKELETON
   }
   const start = twitch_get_start_time(url)
+  if (!start) {
+    remember_error({
+      code: 'value_not_found',
+      title: 'twitch_get_start_time failed',
+      detail: 'The "twitch_get_start_time" function failed to extract the video '
+        + 'start time from the URL.',
+      source: { pointer: url }
+    })
+    return DATA_SKELETON
+  }
   const data: IVideoData = {
     ...DATA_SKELETON,
     id,
@@ -258,7 +333,8 @@ function _extract_data_from_twitch_url(url: string) {
     urlCheck: {
       message: 'OK',
       valid: true
-    }
+    },
+    dialogId: DIALOG_TWITCH_NEW_ID
   }
   return data
 }
@@ -273,7 +349,7 @@ function _extract_data_from_facebook_url() {
     platform: 'facebook',
     urlCheck: {
       message: 'OK',
-      valid: true
+      valid: false // TODO set this to true to allow facebook videos
     },
     dialogId: DIALOG_FACEBOOK_NEW_ID
   }

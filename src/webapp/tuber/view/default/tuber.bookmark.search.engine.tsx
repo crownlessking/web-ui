@@ -9,11 +9,11 @@ import { useSelector } from 'react-redux'
 import StateData from 'src/controllers/StateData'
 import { RootState } from 'src/state'
 import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.business.logic'
-import { IAnnotation, ITuberAnnotationsProps } from '../../tuber.interfaces'
-import LoadMoreAnnotationsFromServer, { LoadEarlierAnnotationsFromServer } from './tuber.load.more.annotation.list'
+import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
+import LoadMoreBookmarksFromServer, { LoadEarlierBookmarksFromServer } from './tuber.load.more.bookmark.list'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
-import AnnotationActionsToolbar from './tuber.annotation.list.actions'
+import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -81,26 +81,26 @@ const ExpandNoteIcon = styled(PlayArrowIcon)(({ theme }) => ({
 
 const expandNote: boolean[] = []
 
-export default function TuberAnnotationSearchEngine (props: ITuberAnnotationsProps) {
-  const { setAnnotationToPlay, playerOpen, setPlayerOpen } = props
+export default function TuberBookmarkSearchEngine (props: ITuberBookmarksProps) {
+  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props
   const data = new StateData(
     useSelector((state: RootState) => state.data)
   )
-  const annotations = data.configure({endpoint: 'annotations'})
+  const bookmarks = data.configure({endpoint: 'bookmarks'})
     .collection()
-    .get<IAnnotation>()
+    .get<IBookmark>()
 
   const handleOnClick = (
-    annotation: IAnnotation,
+    bookmark: IBookmark,
     playerOpen?: boolean
   ) => (e: React.MouseEvent) => {
     e.preventDefault()
     if (playerOpen) {
-      setAnnotationToPlay(annotation)
+      setBookmarkToPlay(bookmark)
       setPlayerOpen(true)
     } else {
       // [TODO] Generate platform url.
-      const url = annotation.url || gen_video_url(annotation)
+      const url = bookmark.url || gen_video_url(bookmark)
       window.open(url, '_blank')?.focus()
     }
   }
@@ -126,7 +126,7 @@ export default function TuberAnnotationSearchEngine (props: ITuberAnnotationsPro
   // }
 
   const handleExpandDetailIconOnClick = (
-    annotaion: IAnnotation,
+    annotaion: IBookmark,
     i: number
   ) => (e: React.MouseEvent) => {
     e.preventDefault()
@@ -152,44 +152,44 @@ export default function TuberAnnotationSearchEngine (props: ITuberAnnotationsPro
 
   return (
     <Container maxWidth='lg'>
-      <LoadEarlierAnnotationsFromServer def={data} />
+      <LoadEarlierBookmarksFromServer def={data} />
       <StyledList>
-        {annotations.map((annotation, i) => (
-          <StyledListItem key={`annotation[${i}]`} disablePadding>
+        {bookmarks.map((bookmark, i) => (
+          <StyledListItem key={`bookmark[${i}]`} disablePadding>
             <Stack sx={{ position: 'relative' }}>
               <Grid container direction='row'>
                 <TitleWrapper>
-                  <PlatformIcon src={get_platform_icon_src(annotation.platform)} />
-                  <Title href='#' onClick={handleOnClick(annotation, playerOpen)}>
-                    <ListItemText primary={annotation.title} />
+                  <PlatformIcon src={get_platform_icon_src(bookmark.platform)} />
+                  <Title href='#' onClick={handleOnClick(bookmark, playerOpen)}>
+                    <ListItemText primary={bookmark.title} />
                   </Title>
                 </TitleWrapper>
               </Grid>
-              { annotation.note ? (
+              { bookmark.note ? (
                 <Fragment>
                   <NoteGrid container direction='row'>
                     <NoteWrapper>
-                      {annotation.note.length > SHORTENED_NOTE_MAX_LENGTH ? (
+                      {bookmark.note.length > SHORTENED_NOTE_MAX_LENGTH ? (
                         <ExpandNoteIconWrapper
                           href='#'
-                          onClick={handleExpandDetailIconOnClick(annotation, i)}
+                          onClick={handleExpandDetailIconOnClick(bookmark, i)}
                         >
                           <ExpandNoteIcon aria-label='expand row' />
                         </ExpandNoteIconWrapper>
                       ) : ( null )}
-                      <Note>{ shorten_text(annotation.note) }</Note>
+                      <Note>{ shorten_text(bookmark.note) }</Note>
                     </NoteWrapper>
                   </NoteGrid>
-                  <AnnotationActionsToolbar i={i} annotation={annotation} />
+                  <BookmarkActionsToolbar i={i} bookmark={bookmark} />
                 </Fragment>
               ) : (
-                <AnnotationActionsToolbar i={i} annotation={annotation} />
+                <BookmarkActionsToolbar i={i} bookmark={bookmark} />
               )}
             </Stack>
           </StyledListItem>
         ))}
       </StyledList>
-      <LoadMoreAnnotationsFromServer def={data} />
+      <LoadMoreBookmarksFromServer def={data} />
     </Container>
   )
 }

@@ -9,16 +9,16 @@ import {
   get_state_form_name
 } from '../../../state/_business.logic'
 import { FORM_VIMEO_NEW_ID } from '../tuber.config'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
- * [Vimeo] Save annotation to server.
+ * [Vimeo] Save bookmark to server.
  *
  * @id 14_C_1
  */
-export function form_submit_new_vimeo_annotation(redux: IRedux) {
+export function form_submit_new_vimeo_bookmark(redux: IRedux) {
   return () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
@@ -28,7 +28,7 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
       'form_key_not_found'
     )
     if (!formKey) {
-      const errorMsg = 'form_submit_new_vimeo_annotation: Form key not found.'
+      const errorMsg = 'form_submit_new_vimeo_bookmark: Form key not found.'
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -38,7 +38,7 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
     }
     const formName = get_state_form_name(formKey)
     if (!rootState.formsData[formName]) {
-      const errorMsg = `form_submit_new_vimeo_annotation: '${formName}' data `
+      const errorMsg = `form_submit_new_vimeo_bookmark: '${formName}' data `
         + `does not exist.`
       ler(errorMsg)
       remember_error({
@@ -49,7 +49,7 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
       return
     }
   
-    const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+    const policy = new FormValidationPolicy<IBookmark>(redux, formName)
     const validation = policy.enforceValidationSchemes()
     if (validation !== false && validation.length > 0) {
       validation.forEach(vError => {
@@ -65,7 +65,7 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
     const end_seconds = formData.end_seconds
     const title = formData.title
     const note = formData.note
-    const requestBody = new JsonapiRequest<IAnnotation>('annotations', {
+    const requestBody = new JsonapiRequest<IBookmark>('bookmarks', {
       platform,
       videoid,
       start_seconds,
@@ -73,9 +73,9 @@ export function form_submit_new_vimeo_annotation(redux: IRedux) {
       title,
       note
     }).build()
-    log('form_submit_new_vimeo_annotation: requestBody', requestBody)
+    log('form_submit_new_vimeo_bookmark: requestBody', requestBody)
 
-    dispatch(post_req_state('annotations', requestBody))
+    dispatch(post_req_state('bookmarks', requestBody))
     dispatch({ type: 'dialog/dialogClose' })
     dispatch({ type: 'formsData/formsDataClear' })
   }

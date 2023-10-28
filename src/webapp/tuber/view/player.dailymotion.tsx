@@ -1,9 +1,9 @@
 import { styled } from '@mui/material/styles'
 import React from 'react'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 interface IDailyPlayerProps {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 const StyledIframeDiv = styled('div')(() => ({
@@ -26,8 +26,8 @@ const IframeStyled = styled('iframe')(() => ({
 /**
  * [TODO] You have to let user enter the start time in seconds.
  */
-const DailyPlayer: React.FC<IDailyPlayerProps> = ({ annotation }) => {
-  const { videoid, start_seconds } = annotation
+const DailyPlayer: React.FC<IDailyPlayerProps> = ({ bookmark }) => {
+  const { videoid, start_seconds } = bookmark
   const start = start_seconds ?? 0
   const src = `https://www.dailymotion.com/embed/video/${videoid}?autoplay=1&start=${start}`
   return (

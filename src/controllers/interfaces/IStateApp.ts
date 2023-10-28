@@ -49,6 +49,8 @@ export default interface IStateApp {
   session?: IStateAppSession
   /** Indicates whether the app needs to be bootstrapped */
   isBootstrapped?: boolean
+  /** Custom fetch message  */
+  fetchMessage?: string
 }
 
 /** @see https://www.npmjs.com/package/jsonwebtoken */

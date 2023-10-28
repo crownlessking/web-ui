@@ -1,34 +1,29 @@
+import { ler, log } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
+import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
+import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { remember_error } from 'src/state/_errors.business.logic'
-import { ler, log, safely_get_as } from '../../../controllers'
-import { IRedux } from '../../../state'
-import {
-  get_bootstrap_key,
-  get_state_form_name
-} from '../../../state/_business.logic'
-import { FORM_DAILY_NEW_ID } from '../tuber.config'
-import { IAnnotation } from '../tuber.interfaces'
+import { FORM_ODYSEE_NEW_ID } from '../tuber.config'
+import { IBookmark } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
- * [Dailymotion] Save annotation to server.
+ * [Odysee] Save bookmark to server.
  *
- * @id _21_C_1
+ * @id _16_C_1
  */
-export function form_submit_new_daily_annotation(redux: IRedux) {
-  return () => {
+export function form_submit_new_odysee_bookmark(redux: IRedux) {
+  return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
-    const formKey = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${FORM_DAILY_NEW_ID}`,
-      'form_key_not_found'
-    )
+    const formKey = rootState.meta[BOOTSTRAP_KEY]
+      ?.state_registry
+      ?.[FORM_ODYSEE_NEW_ID] as string
     if (!formKey) {
-      const errorMsg = 'form_submit_new_facebook_annotation: Form key not found.'
+      const errorMsg = 'form_submit_new_odysee_bookmark: Form key not found.'
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -39,8 +34,8 @@ export function form_submit_new_daily_annotation(redux: IRedux) {
     }
     const formName = get_state_form_name(formKey)
     if (!rootState.formsData?.[formName]) {
-      const errorMsg = `form_submit_new_facebook_annotation: '${formName}' `
-        + `data does not exist.`
+      const errorMsg = `form_submit_new_odysee_bookmark: '${formName}' data `
+        + `does not exist.`
       ler(errorMsg)
       remember_error({
         code: 'value_not_found',
@@ -49,7 +44,7 @@ export function form_submit_new_daily_annotation(redux: IRedux) {
       })
       return
     }
-    const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+    const policy = new FormValidationPolicy<IBookmark>(redux, formName)
     const validation = policy.enforceValidationSchemes()
     if (validation !== false && validation.length > 0) {
       validation.forEach(vError => {
@@ -60,20 +55,20 @@ export function form_submit_new_daily_annotation(redux: IRedux) {
     }
     const formData = policy.getFilteredData()
     const platform = formData.platform
-    const videoid = formData.videoid
+    const slug = formData.slug
     const start_seconds = formData.start_seconds
     const title = formData.title
     const note = formData.note
-    const requestBody = new JsonapiRequest<IAnnotation>('annotations', {
+    const requestBody = new JsonapiRequest('bookmarks', {
+      slug,
       platform,
-      videoid,
       start_seconds,
       title,
       note
     }).build()
-    log('form_submit_new_daily_annotation: requestBody', requestBody)
+    log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
-    dispatch(post_req_state('annotations', requestBody))
+    dispatch(post_req_state('bookmarks', requestBody))
     dispatch({ type: 'dialog/dialogClose' })
     dispatch({ type: 'formsData/formsDataClear' })
   }

@@ -6,9 +6,9 @@ import {
 } from 'src/state/net.actions'
 import { IRedux } from '../../../state'
 import {
-  dev_create_annotation_search_index,
-  dev_get_annotations_callback
-} from './dev.annotations.200'
+  dev_create_bookmark_search_index,
+  dev_get_bookmarks_callback
+} from './dev.bookmarks.200'
 import { safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
 
@@ -134,11 +134,11 @@ const devCallbacks = {
   devClipboardTest: dev_clipboard_test,
   devUserAdd: dev_user_add,
   devUserPopulate: dev_user_populate,
-  devGetAnnotations: dev_get_annotations_callback,
+  devGetBookmarks: dev_get_bookmarks_callback,
   devNoResponse: dev_no_response,
   devDropCollection: dev_drop_collection,
   devPopulateCollection: dev_populate_collection,
-  devCreateAnnotationSearchIndex: dev_create_annotation_search_index
+  devCreateBookmarkSearchIndex: dev_create_bookmark_search_index
 }
 
 export default devCallbacks

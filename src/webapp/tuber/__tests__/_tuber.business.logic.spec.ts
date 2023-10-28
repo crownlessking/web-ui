@@ -8,6 +8,7 @@ import {
   get_platform_icon_src,
   youtube_get_start_time,
   format_seconds_to_readable_time,
+  _get_start_time_in_seconds
 } from '../_tuber.business.logic'
 
 describe('get_platform', () => {
@@ -106,6 +107,32 @@ describe('format_seconds_to_readable_time', () => {
 
   it('should return 1:00:00 for 3600 seconds', () =>  {
     expect(format_seconds_to_readable_time(3600)).toBe('01h00m00s')
+  })
+})
+
+describe('_get_start_time_in_seconds', () => {
+  it('should return start time in seconds for youtube url', () => {
+    expect(_get_start_time_in_seconds('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1230s')).toBe(1230)
+  })
+
+  it('should return start time in seconds for vimeo url', () => {
+    expect(_get_start_time_in_seconds('https://vimeo.com/123456789#t=1m30s')).toBe(90)
+  })
+
+  it('should return start time in seconds for rumble url', () => {
+    expect(_get_start_time_in_seconds('https://rumble.com/vc12vd-test-video.html?t=1m30s')).toBe(90)
+  })
+
+  it('should return start time in seconds for odysee url', () => {
+    expect(_get_start_time_in_seconds('https://odysee.com/@NaomiBrockwell:4/Bitcoin-Is-Not-What-You-Think-It-Is:8?t=1m30s')).toBe(90)
+  })
+
+  it('should return start time in seconds for twitch url', () => {
+    expect(_get_start_time_in_seconds('https://www.twitch.tv/videos/123456789?t=1h30m')).toBe(5400)
+  })
+
+  it('should return start time in seconds for dailymotion url', () => {
+    expect(_get_start_time_in_seconds('https://www.dailymotion.com/video/123456789?t=1m30s')).toBe(90)
   })
 })
 

@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 interface IFacebookPlayerProps {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 const StyledIframeWrapper = styled('div')(() => ({
   display: 'flex',
@@ -18,8 +18,8 @@ const IframeStyled = styled('iframe')(() => ({
   overflow: 'hidden',
 }))
 
-const FacebookPlayer: React.FC<IFacebookPlayerProps> = ({ annotation }) => {
-  const { author, videoid, start_seconds } = annotation
+const FacebookPlayer: React.FC<IFacebookPlayerProps> = ({ bookmark }) => {
+  const { author, videoid, start_seconds } = bookmark
   const start = start_seconds ?? 0
   // Example slug: MetroUK%2Fvideos%2F7129126943765650
   const slug = `${author}%2Fvideos%2F${videoid}`

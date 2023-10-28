@@ -66,4 +66,7 @@ export default class StateApp extends AbstractState implements IStateApp {
   get isBootstrapped(): boolean {
     return this.appState.isBootstrapped ?? false
   }
+  get fetchMessage(): string {
+    return this.appState.fetchMessage ?? ''
+  }
 }

@@ -1,9 +1,9 @@
 import { styled } from '@mui/material/styles'
 import React from 'react'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 interface IVimeoPlayerProps {
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
 const StyledIframeDiv = styled('div')(() => ({
@@ -22,8 +22,8 @@ const IframeStyled = styled('iframe')(() => ({
 }))
 
 /** Example URL: https://vimeo.com/66507747 */
-const VimeoPlayer: React.FC<IVimeoPlayerProps> = ({ annotation }) => {
-  const { videoid, start_seconds } = annotation
+const VimeoPlayer: React.FC<IVimeoPlayerProps> = ({ bookmark }) => {
+  const { videoid, start_seconds } = bookmark
   const start = start_seconds ?? 0
   const src = `https://player.vimeo.com/video/${videoid}?autoplay=1#t=${start}s`
   return (

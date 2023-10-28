@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import { Fragment } from 'react'
 import {
-  IAnnotation,
+  IBookmark,
   IResearchToolbarProps,
   TTuberPlatformMap
 } from '../../tuber.interfaces'
@@ -28,37 +28,37 @@ export const PlayerPlaceholder = styled('div')(() => ({
 
 interface ITuberPlayer {
   isOpen?: boolean
-  annotation?: IAnnotation
+  bookmark?: IBookmark
   toolbarProps: IResearchToolbarProps
 }
 
-function VideoPlayer({ annotation: receivedAnnotation }: { annotation?: IAnnotation }) {
-  const annotation = receivedAnnotation ?? {
+function VideoPlayer({ bookmark: receivedBookmark }: { bookmark?: IBookmark }) {
+  const bookmark = receivedBookmark ?? {
     platform: '_blank',
-    videoid: 'NoVideoAnnotationId',
+    videoid: 'NoVideoBookmarkId',
     startSeconds: 0,
-    title: 'No video annotation selected!'
+    title: 'No video bookmark selected!'
   }
   const players: TTuberPlatformMap = {
     _blank: <PlayerPlaceholder id='playerPlaceholder' />,
-    unknown: <UnknownPlayer annotation={annotation} />,
-    twitch: <TwitchPlayer annotation={annotation} />,
-    youtube: <YouTubePlayerApi annotation={annotation} />,
-    vimeo: <VimeoPlayer annotation={annotation} />,
-    dailymotion: <DailyPlayer annotation={annotation} />,
-    rumble: <RumblePlayer annotation={annotation} />,
-    odysee: <OdyseePlayer annotation={annotation} />,
-    facebook: <FacebookPlayer annotation={annotation} />
+    unknown: <UnknownPlayer bookmark={bookmark} />,
+    twitch: <TwitchPlayer bookmark={bookmark} />,
+    youtube: <YouTubePlayerApi bookmark={bookmark} />,
+    vimeo: <VimeoPlayer bookmark={bookmark} />,
+    dailymotion: <DailyPlayer bookmark={bookmark} />,
+    rumble: <RumblePlayer bookmark={bookmark} />,
+    odysee: <OdyseePlayer bookmark={bookmark} />,
+    facebook: <FacebookPlayer bookmark={bookmark} />
   }
 
-  return players[annotation.platform]
+  return players[bookmark.platform]
 }
 
 export default function TuberPlayer(props: ITuberPlayer) {
   return (
     <Fragment>
       <VideoCanvas>
-        <VideoPlayer annotation={props.annotation} />
+        <VideoPlayer bookmark={props.bookmark} />
       </VideoCanvas>
       <ResearchToolbar {...props.toolbarProps} />
     </Fragment>

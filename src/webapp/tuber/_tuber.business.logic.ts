@@ -13,7 +13,7 @@ import {
   DIALOG_YOUTUBE_EDIT_ID,
   DIALOG_TWITCH_EDIT_ID
 } from './tuber.config'
-import { IAnnotation, TPlatform } from './tuber.interfaces'
+import { IBookmark, TPlatform } from './tuber.interfaces'
 
 const HOST_TO_PLATFORM_MAP: { [host: string]: TPlatform } = {
   'youtu.be': 'youtube',
@@ -121,7 +121,7 @@ export function format_seconds_to_readable_time (timeInSeconds: number): string 
 }
 
 /** Get the video start time in seconds. */
-function _get_start_time_in_seconds(startTime: string): number {
+export function _get_start_time_in_seconds(startTime: string): number {
   let timeInSeconds = 0
   const temp = startTime.toLowerCase().match(/\d+h|\d+m|\d+s/g)
   temp?.forEach(fragment => {
@@ -179,13 +179,17 @@ export function get_platform_icon_src(platform: TPlatform): string {
     dailymotion: '../img/icon-dailymotion.png',
     odysee: '../img/icon-odysee.png',
     facebook: '../img/icon-facebook.png',
-    twitch: '../img/icon-unknown.png' // [TODO] Get proper twitch icon.
+    twitch: '../img/icon-twitch.png' // [TODO] Get proper twitch icon.
   }
   return icons[platform] ?? icons._blank
 }
 
 export function rumble_get_video_id(url: string): string|undefined {
   const domain = new URL(url)
+  if (domain.hostname !== 'rumble.com') {
+    ler(`rumble_get_video_id: Bad video URL: '${url}'`)
+    return undefined
+  }
   const path = domain.pathname
   const videoId = path.replace(/\//g, ' ').trim().split(' ').pop()
   if (!videoId) {
@@ -212,7 +216,7 @@ export function rumble_get_start_time(url: string): number {
 export function daily_get_video_id(url: string): string {
   // [TODO] Implement this
   const domain = new URL(url)
-  const id = domain.pathname.substring(1).replace('video/', '')
+  const id = domain.pathname.substring(1).replace(/video\/|\//, '')
   if (!id) {
     ler(`daily_get_video_id: Bad video URL: '${url}'`)
     return ''
@@ -224,7 +228,7 @@ export function daily_get_start_time(url: string): number {
   // [TODO] Implement this
   const queryValues = get_query_values(url)
   if (queryValues.start) {
-    return parseInt(queryValues.start)
+    return _get_start_time_in_seconds(queryValues.start)
   }
   return 0
 }
@@ -297,9 +301,9 @@ export function twitch_get_video_id(url: string): string {
   return match ? match[1] : ''
 }
 
-export function gen_video_url(annotation: IAnnotation): string {
-  const { start_seconds: start, videoid, platform, slug } = annotation
-  let url = annotation.url ?? ''
+export function gen_video_url(bookmark: IBookmark): string {
+  const { start_seconds: start, videoid, platform, slug } = bookmark
+  let url = bookmark.url ?? ''
   if (url) {
     return url
   }
@@ -372,17 +376,17 @@ export function gen_video_url(annotation: IAnnotation): string {
     case '_blank': { return url }
     case 'unknown':
     default: {
-      url = annotation.url ?? ''
+      url = bookmark.url ?? ''
       if (!url) {
         ler(`gen_video_url: Bad platform: '${platform}'.`
-          + `Try setting the annotation's url`
+          + `Try setting the bookmark's url`
         )
         remember_error({
           code: 'value_not_found',
           title: 'Failed to play a video from an unknown platform',
           detail: 'When playing a video from an unknown platform, the '
-            + 'annotation url must be set.',
-          source: { 'pointer': `annotation.url` }
+            + 'bookmark url must be set.',
+          source: { 'pointer': `bookmark.url` }
         })
       }
       return url

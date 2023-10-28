@@ -16,8 +16,8 @@ export type TPlatform = '_blank'
   | 'twitch'
   | 'unknown'
 
-/** Type for annotation */
-export interface IAnnotation {
+/** Type for bookmark */
+export interface IBookmark {
   createdAt?: Date
   modifiedAt?: Date
   isPrivate?: boolean
@@ -46,9 +46,9 @@ export interface IAnnotation {
   // [TODO] Add properties what will help in bolding search terms.
 }
 
-// Annotation type from the server
-export interface IAnnotationOrigin
-  extends Omit<IAnnotation, 'userid' | 'groupid' | 'startSeconds' | 'endSeconds' | 'embedUrl'>
+// Bookmark type from the server
+export interface IBookmarkOrigin
+  extends Omit<IBookmark, 'userid' | 'groupid' | 'startSeconds' | 'endSeconds' | 'embedUrl'>
 {
   embed_url?: string
   user_id?: string
@@ -60,12 +60,12 @@ export interface IAnnotationOrigin
 export interface ITuberProps {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  annotation: IAnnotation
+  bookmark: IBookmark
 }
 
-export interface ITuberAnnotationsProps {
+export interface ITuberBookmarksProps {
   playerOpen: boolean
-  setAnnotationToPlay: React.Dispatch<React.SetStateAction<IAnnotation|undefined>>
+  setBookmarkToPlay: React.Dispatch<React.SetStateAction<IBookmark|undefined>>
   setPlayerOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -77,13 +77,13 @@ export interface ITuberPlatform {
 export type TTuberPlatformMap = {[brand in TPlatform]: JSX.Element | null }
 
 export interface IResearchToolbarProps {
-  /** This callback shows and hides the list of annotations. */
+  /** This callback shows and hides the list of bookmarks. */
   togglePlayerCallback: IStateLink['onClick']
   /**
    * This callback function displays an interface which is then used to create
-   * a new annotation.
+   * a new bookmark.
    */
-  annotationAddCallback: IStateLink['onClick']
+  bookmarkAddCallback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
   def: StatePageAppBar
 }

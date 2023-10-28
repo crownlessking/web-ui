@@ -14,7 +14,7 @@ import drawerReducer, { drawerActions } from '../slices/drawer.slice'
 import formsReducer, { formsActions } from '../slices/forms.slice'
 import pagesReducer, { pagesActions } from '../slices/pages.slice'
 import dataReducer, { dataActions } from '../slices/data.slice'
-import dataLoadedPagesSlice from 'src/slices/dataLoadedPages.slice'
+import dataLoadedPagesSlice from '../slices/dataLoadedPages.slice'
 import errorsReducer, { errorsActions } from '../slices/errors.slice'
 import pagesDataReducer, { pagesDataActions } from '../slices/pagesData.slice'
 import formsDataReducer, { formsDataActions } from '../slices/formsData.slice'
@@ -28,8 +28,6 @@ import { err, ler } from '../controllers'
 import { set_configuration } from './_business.logic'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import { remember_exception } from './_errors.business.logic'
-
-const BOOTSTRAP_CALLBACK_LIST: ((redux: IRedux) => void)[] = []
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const netPatchState = (stateFragment: any) => ({
@@ -52,22 +50,16 @@ function netPatchStateReducer(oldState: any, fragment: any) {
   try {
     for (const prop in fragment) {
       const newStateVal = fragment[prop]
-
       switch (typeof newStateVal) {
-
       case 'object':
         if (newStateVal === null) continue
-
         if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
           state[prop] = netPatchStateReducer(state[prop], newStateVal)
         } else {
-
           // arrays are never deeply copied
           state[prop] = [ ...newStateVal ]
         }
-
         break
-
       case 'symbol':
       case 'bigint':
       case 'number':
@@ -84,12 +76,18 @@ function netPatchStateReducer(oldState: any, fragment: any) {
         break
       } // END switch
 
+      // Runs a list of callbacks when a state with a certain id is loaded.
+      if (newStateVal._id) {
+        ON_NET_LOAD_CALLBACK_LIST[newStateVal._id]
+          ?.forEach(callback => callback(redux))
+        // Delete the list of callbacks after they have been run.
+        delete ON_NET_LOAD_CALLBACK_LIST[newStateVal._id]
+      }
     }
   } catch (e: any) {
     remember_exception(e)
     err(e.stack)
   }
-
   return state
 }
 
@@ -206,7 +204,7 @@ export type TReduxCallback = (redux: IRedux) => TCallback
  * method will provide a dummy one.
  */
 export function dummy_callback (_redux: IRedux): TCallback {
-  return (e: any) => {
+  return () => {
     ler('dummy_callback: No callback was assigned.')
   }
 }
@@ -218,12 +216,14 @@ export function dummy_callback (_redux: IRedux): TCallback {
  * The app page will be updated based on the URL change triggered by the link.
  */
 export function default_callback ({store, actions, route}:IRedux): TCallback {
-  return (e: any) => {
+  return () => {
     if (route) {
       store.dispatch(actions.appUrlPageUpdate(route))
     }
   }
 }
+
+const BOOTSTRAP_CALLBACK_LIST: ((redux: IRedux) => void)[] = []
 
 /** Register a callback to run when app is bootstrapped. */
 export const on_bootstrap_run = (callback: (redux: IRedux) => void) => {
@@ -243,6 +243,22 @@ export const schedule_callback_run = (
   setTimeout(() => {
     callback(redux)
   }, time)
+}
+
+interface IOnNetLoadCallbackList {
+  [_id: string]: ((redux: IRedux) => void)[]
+}
+
+/** Map list of function */
+const ON_NET_LOAD_CALLBACK_LIST: IOnNetLoadCallbackList = {}
+
+/** Run a list of function when a state with a certain id is loaded. */
+export function on_net_load_run(
+  _id: string,
+  callback: (redux: IRedux) => void
+) {
+  ON_NET_LOAD_CALLBACK_LIST[_id] = ON_NET_LOAD_CALLBACK_LIST[_id] ?? []
+  ON_NET_LOAD_CALLBACK_LIST[_id].push(callback)
 }
 
 export default store

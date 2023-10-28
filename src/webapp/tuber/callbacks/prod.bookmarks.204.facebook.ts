@@ -4,30 +4,31 @@ import { IRedux } from 'src/state'
 import { remember_error, remember_exception } from 'src/state/_errors.business.logic'
 import { put_req_state } from 'src/state/net.actions'
 import { get_state_form_name } from 'src/state/_business.logic'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
-export function form_submit_edit_youtube_annotation(redux: IRedux) {
+/** @id _27_C_1 */
+export function form_submit_edit_facebook_bookmark(redux: IRedux) {
   return async () => {
     try {
       const { store: { getState, dispatch } } = redux
       const rootState = getState()
       const tmp = new StateTmp(rootState.tmp)
       tmp.configure({ dispatch })
-      const index = tmp.get<number>('dialogEditAnnotation', 'index', -1)
-      pre('form_submit_edit_youtube_annotation:')
+      const index = tmp.get<number>('dialogEditBookmark', 'index', -1)
+      pre('form_submit_edit_facebook_bookmark:')
       if (index === -1) {
         ler('index not found.')
         remember_error({
           code: 'value_not_found',
-          title: 'Annotation resource index not found',
+          title: 'Bookmark resource index is missing',
         })
         return
       }
       const content = rootState.dialog.content as string
       const pageContentForm = get_parsed_page_content(content)
       const formName = get_state_form_name(pageContentForm.name)
-      if (!rootState.formsData?.[formName]) {
+      if (!rootState.formsData[formName]) {
         const errorMsg = msg(` '${formName}' data does not exist.`)
         ler(errorMsg)
         remember_error({
@@ -37,7 +38,7 @@ export function form_submit_edit_youtube_annotation(redux: IRedux) {
         })
         return
       }
-      const policy = new FormValidationPolicy<IAnnotation>(redux, formName)
+      const policy = new FormValidationPolicy<IBookmark>(redux, formName)
       const validation = policy.enforceValidationSchemes()
       if (validation !== false && validation.length > 0) {
         validation.forEach(vError => {
@@ -46,21 +47,20 @@ export function form_submit_edit_youtube_annotation(redux: IRedux) {
         })
         return
       }
-
-      const existingAnnotationResource = rootState
+      const existingBookmarkResource = rootState
         .data
-        .annotations?.[index]
+        .bookmarks?.[index]
 
-      if (!existingAnnotationResource) {
-        ler('bad annotation resource index.')
+      if (!existingBookmarkResource) {
+        ler('bad bookmark resource index.')
         return
       }
       pre()
       const formData = policy.getFilteredData()
-      const editedAnnotationResource = {
-        ...existingAnnotationResource,
+      const editedBookmarkResource = {
+        ...existingBookmarkResource,
         attributes: {
-          ...existingAnnotationResource.attributes,
+          ...existingBookmarkResource.attributes,
           ...formData
         }
       }
@@ -68,15 +68,15 @@ export function form_submit_edit_youtube_annotation(redux: IRedux) {
       dispatch({
         type: 'data/resourceUpdate',
         payload: {
-          endpoint: 'annotations',
+          endpoint: 'bookmarks',
           index,
-          resource: editedAnnotationResource
+          resource: editedBookmarkResource
         }
       })
 
       dispatch(put_req_state(
-        `annotations/${editedAnnotationResource.id}`,
-        { data: editedAnnotationResource }
+        `bookmarks/${editedBookmarkResource.id}`,
+        { data: editedBookmarkResource }
       ))
       dispatch({ type: 'dialog/dialogClose' })
     } catch (e: any) {

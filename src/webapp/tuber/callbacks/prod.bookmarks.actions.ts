@@ -12,36 +12,36 @@ import { remember_exception } from 'src/state/_errors.business.logic'
 import { delete_req_state } from 'src/state/net.actions'
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { get_dialog_id_for_edit } from '../_tuber.business.logic'
-import { IAnnotation } from '../tuber.interfaces'
+import { IBookmark } from '../tuber.interfaces'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
-/** Get annotations data from redux store. */
-function get_annotation_resources (data: any) {
-  return data.annotations as IJsonapiResponseResource<IAnnotation>[]
+/** Get bookmarks data from redux store. */
+function get_bookmark_resources (data: any) {
+  return data.bookmarks as IJsonapiResponseResource<IBookmark>[]
     || []
 }
 
-/** Callback to open a form within a dialog to edit an annotation. */
-export function dialog_edit_annotation (i: number) {
+/** Callback to open a form within a dialog to edit an bookmark. */
+export function dialog_edit_bookmark (i: number) {
   return (redux: IRedux) => {
     return async () => {
       const { store: { getState, dispatch } } = redux
       const rootState = getState()
-      const resourceList = get_annotation_resources(rootState.data)
-      pre('annotation_edit_callback:')
+      const resourceList = get_bookmark_resources(rootState.data)
+      pre('bookmark_edit_callback:')
       if (resourceList.length === 0) {
-        ler('No \'annotations\' found.')
+        ler('No \'bookmarks\' found.')
         return
       }
-      const annotation = resourceList[i]
-      if (!annotation) {
+      const bookmark = resourceList[i]
+      if (!bookmark) {
         ler(`resourceList['${i}'] does not exist.`)
         return
       }
 
       // Init
-      const platform = annotation.attributes.platform
+      const platform = bookmark.attributes.platform
       const dialogid = get_dialog_id_for_edit(platform)
       const dialogKey = safely_get_as<string>(
         rootState.meta,
@@ -66,7 +66,7 @@ export function dialog_edit_annotation (i: number) {
             payload: {
               formName,
               name: 'url',
-              value: annotation.attributes.url
+              value: bookmark.attributes.url
             }
           })
           dispatch({
@@ -74,7 +74,7 @@ export function dialog_edit_annotation (i: number) {
             payload: {
               formName,
               name: 'embed_url',
-              value: annotation.attributes.embed_url
+              value: bookmark.attributes.embed_url
             }
           })
         }
@@ -86,7 +86,7 @@ export function dialog_edit_annotation (i: number) {
             payload: {
               formName,
               name: 'slug',
-              value: annotation.attributes.slug
+              value: bookmark.attributes.slug
             }
           })
         }
@@ -95,7 +95,7 @@ export function dialog_edit_annotation (i: number) {
           payload: {
             formName,
             name: 'start_seconds',
-            value: annotation.attributes.start_seconds
+            value: bookmark.attributes.start_seconds
           }
         })
         if (platform === 'youtube'
@@ -109,7 +109,7 @@ export function dialog_edit_annotation (i: number) {
             payload: {
               formName,
               name: 'end_seconds',
-              value: annotation.attributes.end_seconds
+              value: bookmark.attributes.end_seconds
             }
           })
         }
@@ -119,7 +119,7 @@ export function dialog_edit_annotation (i: number) {
             payload: {
               formName,
               name: 'author',
-              value: annotation.attributes.author
+              value: bookmark.attributes.author
             }
           })
         }
@@ -128,7 +128,7 @@ export function dialog_edit_annotation (i: number) {
           payload: {
             formName,
             name: 'videoid',
-            value: annotation.attributes.videoid
+            value: bookmark.attributes.videoid
           }
         })
         dispatch({
@@ -136,7 +136,7 @@ export function dialog_edit_annotation (i: number) {
           payload: {
             formName,
             name: 'platform',
-            value: annotation.attributes.platform
+            value: bookmark.attributes.platform
           }
         })
         dispatch({
@@ -144,7 +144,7 @@ export function dialog_edit_annotation (i: number) {
           payload: {
             formName,
             name: 'title',
-            value: annotation.attributes.title
+            value: bookmark.attributes.title
           }
         })
         dispatch({
@@ -152,12 +152,12 @@ export function dialog_edit_annotation (i: number) {
           payload: {
             formName,
             name: 'note',
-            value: annotation.attributes.note
+            value: bookmark.attributes.note
           }
         })
       } catch (err: any) {
         ler(err.message)
-        remember_exception(err, `dialog_edit_annotation: ${err.message}`)
+        remember_exception(err, `dialog_edit_bookmark: ${err.message}`)
       }
       pre()
       const mountedDialogId = rootState.dialog._id
@@ -170,7 +170,7 @@ export function dialog_edit_annotation (i: number) {
       dispatch({
         type: 'tmp/tmpAdd',
         payload: {
-          id: 'dialogEditAnnotation',
+          id: 'dialogEditBookmark',
           name: 'index',
           value: i
         }
@@ -180,24 +180,24 @@ export function dialog_edit_annotation (i: number) {
   }
 }
 
-export function dialog_delete_annotation (i: number) {
+export function dialog_delete_bookmark (i: number) {
   return (redux: IRedux) => {
     return async () => {
       const { store: { getState, dispatch } } = redux
       const rootState = getState()
-      const dialogJson = rootState.dialogs['annotationDeleteDialog']
-      pre('annotation_delete_open_dialog_callback:')
+      const dialogJson = rootState.dialogs['bookmarkDeleteDialog']
+      pre('bookmark_delete_open_dialog_callback:')
       if (!dialogJson) {
-        ler('\'annotationDeleteDialog\' does not exist.')
+        ler('\'bookmarkDeleteDialog\' does not exist.')
         return
       }
-      const resourceList = get_annotation_resources(rootState.data)
+      const resourceList = get_bookmark_resources(rootState.data)
       if (resourceList.length === 0) {
-        ler('No \'annotations\' found.')
+        ler('No \'bookmarks\' found.')
         return
       }
-      const annotation = resourceList[i]
-      if (!annotation) {
+      const bookmark = resourceList[i]
+      if (!bookmark) {
         ler(`resourceList['${i}'] does not exist.`)
         return
       }
@@ -215,7 +215,7 @@ export function dialog_delete_annotation (i: number) {
       dispatch({
         type: 'tmp/tmpAdd',
         payload: {
-          id: 'annotationDeleteDialog',
+          id: 'bookmarkDeleteDialog',
           name: 'index',
           value: i
         }
@@ -224,22 +224,22 @@ export function dialog_delete_annotation (i: number) {
   }
 }
 
-/** Callback to delete annotations */
-export function form_submit_delete_annotation (redux: IRedux) {
+/** Callback to delete bookmarks */
+export function form_submit_delete_bookmark (redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
-    const resourceList = get_annotation_resources(rootState.data)
+    const resourceList = get_bookmark_resources(rootState.data)
     const tmp = new StateTmp(rootState.tmp)
     tmp.configure({ dispatch })
-    const index = tmp.get<number>('annotationDeleteDialog', 'index', -1)
-    pre('annotation_delete_callback:')
+    const index = tmp.get<number>('bookmarkDeleteDialog', 'index', -1)
+    pre('bookmark_delete_callback:')
     if (resourceList.length === 0) {
-      ler('No \'annotations\' found.')
+      ler('No \'bookmarks\' found.')
       return
     }
-    const annotation = resourceList[index]
-    if (!annotation) {
+    const bookmark = resourceList[index]
+    if (!bookmark) {
       ler(`resourceList['${index}'] does not exist.`)
       return
     }
@@ -248,10 +248,10 @@ export function form_submit_delete_annotation (redux: IRedux) {
     dispatch({
       type: 'data/resourceDelete',
       payload: {
-        endpoint: 'annotations',
+        endpoint: 'bookmarks',
         index
       }
     })
-    dispatch(delete_req_state(`annotations/${annotation.id}`))
+    dispatch(delete_req_state(`bookmarks/${bookmark.id}`))
   }
 }
