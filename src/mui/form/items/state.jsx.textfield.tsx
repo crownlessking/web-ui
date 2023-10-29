@@ -69,6 +69,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
           maxLengthMessage: textfield.has.state.maxLengthMessage,
           disableOnError: textfield.has.state.disableOnError,
           invalidationRegex: textfield.has.state.invalidationRegex,
+          invalidationMessage: textfield.has.state.invalidationMessage,
           validationRegex: textfield.has.state.validationRegex,
           validationMessage: textfield.has.state.validationMessage
         } as ISliceFormsDataErrorsArgs

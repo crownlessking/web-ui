@@ -86,7 +86,7 @@ export default interface IStateFormItem extends IAbstractState {
   /** Contains members that are generally not `JSX.Element` props. */
   has?: IStateFormItemCustom
   inputProps?: IStateFormItemInputProps
-  items?: Array<any>
+  items?: Array<IStateFormItem>
   /** Disable form item */
   disableOn?: ('click' | 'change' | 'blur' | 'error')[]
 }

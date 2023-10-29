@@ -11,7 +11,7 @@ import { RootState } from 'src/state'
 import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.business.logic'
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
-} from './tuber.load.more.bookmark.list'
+} from './tuber.bookmark.list.load.more'
 import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import StateData from 'src/controllers/StateData'

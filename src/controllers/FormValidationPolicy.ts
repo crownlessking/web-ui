@@ -108,7 +108,7 @@ export default class FormValidationPolicy<T=any> {
         vError.push({
           name: name as keyof T,
           error: true,
-          message: profile.validationMessage
+          message: profile.invalidationMessage
         })
       } else if (profile.validationRegex
         && !new RegExp(profile.validationRegex).test(value)
