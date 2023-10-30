@@ -1,9 +1,15 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
-import StateForm from 'src/controllers/StateForm'
-import StateFormItem from 'src/controllers/StateFormItem'
-import { RootState } from 'src/state'
+import StateForm from '../../../controllers/StateForm'
+import StateFormItem from '../../../controllers/StateFormItem'
+import { RootState } from '../../../state'
+import parse from 'html-react-parser'
+import { Fragment } from 'react'
+
+interface IHtmlProps {
+  def: StateFormItem<StateForm, string>
+}
 
 /* Contains HTML components which are styled so they can use the `sx` prop. */
 export const get_styled_div = () => styled('div')(() => ({}))
@@ -49,10 +55,15 @@ export function StateJsxHtml({ def: html }: { def: StateFormItem<StateForm, stri
     htmlText = parseHandlebars(html.has.content || html.has.text, pageData)
   }
 
-  return (
-    <Box
-      {...html.props}
-      dangerouslySetInnerHTML={{ __html: htmlText }}
-    />
-  )
+  return <Box {...html.props} dangerouslySetInnerHTML={{ __html: htmlText }} />
+}
+
+export const StateJsxHtmlTag: React.FC<IHtmlProps> = ({ def: htmlTag }) => {
+  if (htmlTag.has.state.content) {
+    const tag = parse(htmlTag.has.content) || null
+    if (tag) {
+      return <Fragment>{ tag }</Fragment>
+    }
+  }
+  return ( null )
 }

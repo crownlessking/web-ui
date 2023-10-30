@@ -9,42 +9,7 @@ import StateJsxSwitch from './state.jsx.switch'
 import StateJsxCheckboxes from './state.jsx.checkboxes'
 import StateJsxTextfield from './state.jsx.textfield'
 import JsonPicker from './state.jsx.picker'
-import {
-  BREAK_LINE,
-  JSON_BUTTON,
-  SUBMIT,
-  HTML,
-  TEXTFIELD,
-  TEXTAREA,
-  RADIO_BUTTONS,
-  CHECKBOXES,
-  SWITCH,
-  SINGLE_SWITCH,
-  PASSWORD,
-  JSON_SELECT,
-  NUMBER,
-  DATE_TIME_PICKER,
-  DIV,
-  TEXT,
-  TIME_PICKER,
-  FORM_LABEL,
-  FORM_HELPER_TEXT,
-  BOX,
-  STACK,
-  LOCALIZED,
-  FORM_GROUP,
-  FORM_CONTROL,
-  FORM_CONTROL_LABEL,
-  INDETERMINATE,
-  INPUT_LABEL,
-  ICON,
-  PHONE_INPUT,
-  JSON_SELECT_NATIVE,
-  MOBILE_DATE_TIME_PICKER,
-  DESKTOP_DATE_TIME_PICKER,
-  BAD_FORM_ITEM,
-  HORIZONTAL_LINE
-} from '../../../constants'
+import * as C from '../../../constants'
 import { post_req_state } from '../../../state/net.actions'
 import { ICheckboxesData, update_checkboxes } from './_items.business.logic'
 import {
@@ -72,7 +37,7 @@ import StateFormItemInput from '../../../controllers/templates/StateFormItemInpu
 import StateJsxPhoneInput from './state.jsx.phone.input'
 import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
 import { remember_exception } from '../../../state/_errors.business.logic'
-import { get_styled_div, StateJsxHtml } from './state.jsx.html'
+import { get_styled_div, StateJsxHtml, StateJsxHtmlTag } from './state.jsx.html'
 import { get_bool_type } from '../_form.business.logic'
 
 interface IRecursiveFormBuilder {
@@ -267,25 +232,28 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
   }
 
   const itemsTable: IItemTable = {
-    [HTML]: (item: StateFormItem, key: string|number) => (
+    [C.HTML]: (item: StateFormItem, key: string|number) => (
       <StateJsxHtml key={`html${depth}-${key}`} def={item} />
     ),
-    [SUBMIT]: (item: StateFormItem, key: string|number) => {
+    [C.HTML_TAG]: (item: StateFormItem, key: string|number) => (
+      <StateJsxHtmlTag key={`html-tag${depth}-${key}`} def={item} />
+    ),
+    [C.SUBMIT]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? onFormSubmitDefault(form)
         : item.onClick
         return <StateJsxButton key={`submit${depth}-${key}`} def={item} />
     },
-    [JSON_BUTTON]: (item: StateFormItem, key: string|number) => (
+    [C.JSON_BUTTON]: (item: StateFormItem, key: string|number) => (
       <StateJsxButton key={`json-button${depth}-${key}`} def={item} />
     ),
-    [BREAK_LINE]: (_item: StateFormItem, key: string|number) => (
+    [C.BREAK_LINE]: (_item: StateFormItem, key: string|number) => (
       <br key={`break-line${depth}-${key}`} />
     ),
-    [HORIZONTAL_LINE]: (_item: StateFormItem, key: string|number) => (
+    [C.HORIZONTAL_LINE]: (_item: StateFormItem, key: string|number) => (
       <hr key={`horizontal-line${depth}-${key}`} />
     ),
-    [JSON_SELECT]: (item: StateFormItem, key: string|number) => {
+    [C.JSON_SELECT]: (item: StateFormItem, key: string|number) => {
       const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
       jsonSelectDef.onChange = onUpdateFormData(form)
       return (
@@ -295,7 +263,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [JSON_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
+    [C.JSON_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
       const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
       jsonSelectDef.onChange = onUpdateFormData(form)
       return (
@@ -305,12 +273,12 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [TEXT]: textItem,
-    [NUMBER]: textItem,
-    [PASSWORD]: textItem,
-    [TEXTFIELD]: textItem,
-    [TEXTAREA]: textItem,
-    [PHONE_INPUT]: (def: StateFormItem, key: string|number) => {
+    [C.TEXT]: textItem,
+    [C.NUMBER]: textItem,
+    [C.PASSWORD]: textItem,
+    [C.TEXTFIELD]: textItem,
+    [C.TEXTAREA]: textItem,
+    [C.PHONE_INPUT]: (def: StateFormItem, key: string|number) => {
       const inputDef = new StateFormItemInput(def.state, def.parent)
       inputDef.onChange = onUpdateFormData(form)
       return (
@@ -320,7 +288,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [RADIO_BUTTONS]: (item: StateFormItem, key: string|number) => {
+    [C.RADIO_BUTTONS]: (item: StateFormItem, key: string|number) => {
       const radioDef = new StateFormItemRadio(item.state, item.parent)
       radioDef.onChange = onUpdateFormData(form)
       return (
@@ -330,7 +298,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [CHECKBOXES]: (item: StateFormItem, key: string|number) => {
+    [C.CHECKBOXES]: (item: StateFormItem, key: string|number) => {
       const checkboxesDef = new StateFormItemCheckbox(item.state, item.parent)
       checkboxesDef.onChange = onHandleCheckbox(form)
       return (
@@ -340,12 +308,12 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [SWITCH]: (item: StateFormItem, key: string|number) => {
+    [C.SWITCH]: (item: StateFormItem, key: string|number) => {
       const switchDef = new StateFormItemSwitch(item.state, item.parent)
       switchDef.onChange = handleChangeMultipleSwitches(form)
       return <StateJsxSwitch key={`switch${depth}-${key}`} def={switchDef} />
     },
-    [SINGLE_SWITCH]: (item: StateFormItem, key: string|number) => {
+    [C.SINGLE_SWITCH]: (item: StateFormItem, key: string|number) => {
       const switchDef = new StateFormItemSwitch(item.state, item.parent)
       switchDef.onChange = handleChangeSingleSwitch(form)
       return (
@@ -355,18 +323,18 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [DESKTOP_DATE_TIME_PICKER]: dateTimePickerItem,
-    [MOBILE_DATE_TIME_PICKER]: dateTimePickerItem,
-    [TIME_PICKER]: dateTimePickerItem,
-    [DATE_TIME_PICKER]: dateTimePickerItem,
-    [BOX]: groupItem,
-    [STACK]: groupItem,
-    [LOCALIZED]: groupItem,
-    [FORM_GROUP]: groupItem,
-    [FORM_CONTROL]: groupItem,
-    [FORM_CONTROL_LABEL]: groupItem,
-    [INDETERMINATE]: groupItem,
-    [FORM_LABEL]: (item: StateFormItem, key: string|number) => (
+    [C.DESKTOP_DATE_TIME_PICKER]: dateTimePickerItem,
+    [C.MOBILE_DATE_TIME_PICKER]: dateTimePickerItem,
+    [C.TIME_PICKER]: dateTimePickerItem,
+    [C.DATE_TIME_PICKER]: dateTimePickerItem,
+    [C.BOX]: groupItem,
+    [C.STACK]: groupItem,
+    [C.LOCALIZED]: groupItem,
+    [C.FORM_GROUP]: groupItem,
+    [C.FORM_CONTROL]: groupItem,
+    [C.FORM_CONTROL_LABEL]: groupItem,
+    [C.INDETERMINATE]: groupItem,
+    [C.FORM_LABEL]: (item: StateFormItem, key: string|number) => (
       <FormLabel
         {...item.props}
         key={`form-label${depth}-${key}`}
@@ -374,24 +342,24 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         { item.text }
       </FormLabel>
     ),
-    [FORM_HELPER_TEXT]: (item: StateFormItem, key: string|number) => (
+    [C.FORM_HELPER_TEXT]: (item: StateFormItem, key: string|number) => (
       <FormHelperText
         key={`form-helper-text${depth}-${key}`}
       >
         { item.text }
       </FormHelperText>
     ),
-    [INPUT_LABEL]: (item: StateFormItem, key: string|number) => (
+    [C.INPUT_LABEL]: (item: StateFormItem, key: string|number) => (
       <InputLabel
         key={`input-label${depth}-${key}`}
       >
         { item.text }
       </InputLabel>
     ),
-    [ICON]: (item: StateFormItem, key: string|number) => (
+    [C.ICON]: (item: StateFormItem, key: string|number) => (
       <JsonIcon key={`icon${depth}-${key}`} def={item.has} />
     ),
-    [DIV]: (item: StateFormItem, key: string|number) => {
+    [C.DIV]: (item: StateFormItem, key: string|number) => {
       const StyledDiv = get_styled_div()
       return (
         <StyledDiv key={`div${depth}-${key}`} {...item.props}>
@@ -403,7 +371,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
           />
         </StyledDiv>
       )},
-    [BAD_FORM_ITEM]: (item: StateFormItem, key: string|number) => (
+    [C.BAD_FORM_ITEM]: (item: StateFormItem, key: string|number) => (
       <div key={key}>BAD FORM ITEM {item.name}</div>
     )
   }

@@ -8,8 +8,9 @@ import tuber_register_callbacks from '../../callbacks/tuber.callbacks'
 import { styled, useTheme } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
 import Toolbar from '@mui/material/Toolbar'
-import ResearchToolbar from '../tuber.toolbar.video'
-import TuberBookmarkSearchEngine from './tuber.bookmark.search.engine'
+import ResearchToolbarFixed from '../tuber.toolbar.video.search'
+// import TuberBookmarkSearchEngine from './tuber.bookmark.search.engine'
+import TuberBookmarkSearchWithThumbnails from './tuber.bookmark.search.with.thumbnails'
 import { dialog_new_youtube_bookmark_from_video } from '../../callbacks/prod.bookmarks.youtube'
 import { useMediaQuery } from '@mui/material'
 
@@ -76,14 +77,14 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
             </TuberPlayerWrapper>
           </Grid>
         ) : (
-          <Grid container direction='row'>
-            <TuberBookmarkSearchEngine
+          <Fragment>
+            <TuberBookmarkSearchWithThumbnails
               playerOpen={playerOpen}
               setPlayerOpen={setPlayerOpen}
               setBookmarkToPlay={setBookmarkToPlay}
             />
-            <ResearchToolbar {...toolbarProps} />
-          </Grid>
+            <ResearchToolbarFixed {...toolbarProps} />
+          </Fragment>
         )}
     </Fragment>
   )
