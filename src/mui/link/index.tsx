@@ -27,7 +27,7 @@ interface IJsonLinkProps { def: StateLink }
 export default function JsonLink ({ def }: IJsonLinkProps) {
   const { type, color, has } = def
   const redux: IRedux = { store, actions, route: has.route }
-  const route = get_formatted_route(def)
+  const route = get_formatted_route(has)
   const menuItemsProps = def.parent.menuItemsProps
   const props = { ...menuItemsProps, ...def.props }
   const menuItemsSx = def.parent.menuItemsSx

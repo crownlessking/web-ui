@@ -3,8 +3,8 @@ import { Icon, Button } from '@mui/material'
 import { get_font_awesome_icon_prop } from 'src/controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import store, { actions } from 'src/state'
-import StateFormItem from 'src/controllers/StateFormItem'
+import store, { actions } from '../../../../state'
+import StateFormItem from '../../../../controllers/StateFormItem'
 
 interface IJsonButtonProps { def: StateFormItem }
 

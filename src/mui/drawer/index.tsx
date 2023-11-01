@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import Config from '../../config'
-import { LAST_DRAWER_JSON } from '../../constants'
+import { LAST_DRAWER_STATE } from '../../constants'
 import IStateDrawer from '../../controllers/interfaces/IStateDrawer'
 import StatePage from '../../controllers/StatePage'
 import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive'
@@ -20,7 +20,7 @@ export default function JsonDrawer({ def: page }: IJsonDrawerProps) {
     return ( null )
   }
 
-  const lastDrawerJson = Config.read<IStateDrawer|undefined>(LAST_DRAWER_JSON)
+  const lastDrawerJson = Config.read<IStateDrawer|undefined>(LAST_DRAWER_STATE)
   if (lastDrawerJson) {
     page.setDrawer(lastDrawerJson)
   }
@@ -30,7 +30,7 @@ export default function JsonDrawer({ def: page }: IJsonDrawerProps) {
 
   if (page.hasDrawer) {
     // lastStateDrawer = page.drawer.json
-    Config.write(LAST_DRAWER_JSON, page.drawer.state)
+    Config.write(LAST_DRAWER_STATE, page.drawer.state)
     const drawerTable: {[props: string]: JSX.Element } = {
       'mini': <MiniDrawer def={page.drawer} />,
       'persistent': <PersistentDrawer def={page.drawer} />,

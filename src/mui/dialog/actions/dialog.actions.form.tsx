@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { JSON_BUTTON } from '../../../constants'
+import { STATE_BUTTON } from '../../../constants'
 import StateForm from 'src/controllers/StateForm'
 import IStateFormItem from '../../../controllers/interfaces/IStateFormItem'
 import StateFormItem from '../../../controllers/StateFormItem'
@@ -17,7 +17,7 @@ export default function DialogAction({
   return (
     <Fragment>
       {formItems.map((json, i) => {
-        if (json.type.toLowerCase() !== JSON_BUTTON) { return ( null ) }
+        if (json.type.toLowerCase() !== STATE_BUTTON) { return ( null ) }
         const item = new StateFormItem(json, parent)
         return <JsonDialogAction def={item} key={`dialgo-action-${i}`} />
       })}

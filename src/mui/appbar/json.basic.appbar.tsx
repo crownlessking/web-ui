@@ -28,7 +28,7 @@ export default function JsonBasicAppBar({ def: page }: IJsonBasicAB) {
         {...appBar.props}
         position="fixed"
       >
-        <Toolbar>
+        <Toolbar {...appBar.toolbarProps}>
           {appBar.parent.hasDrawer ? (
             <IconButton
               {...appBar.menuIconProps}

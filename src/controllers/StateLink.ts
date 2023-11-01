@@ -77,8 +77,8 @@ export default class StateLink<P = any>
  *
  * @param route
  */
-export function get_formatted_route(def: StateLink, href?: string): string {
-  const route = def.has.route
+export function get_formatted_route(has: StateFormItemCustom<any>, href?: string): string {
+  const route = has.route
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route
   }

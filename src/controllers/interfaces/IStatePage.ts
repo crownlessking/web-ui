@@ -5,6 +5,7 @@ import IStateComponent from './IStateComponent'
 import IStateTypography from './IStateTypography'
 import { TStatePageLayout } from '../../constants'
 import IAbstractState from './IAbstractState'
+import { IGenericObject } from './IState'
 
 /**
  * Page with content, an appbar, background, drawer... etc.
@@ -79,7 +80,7 @@ export default interface IStatePage extends IAbstractState {
   /** The page can retrieve or possibly store data in this field. */
   data?: any
   /** The page can retrieve or possibly save metadata in this field. */
-  meta?: any
+  meta?: IGenericObject
   /** The page can retrieve or possibly save (Jsonapi) links in this field. */
   links?: any
 }

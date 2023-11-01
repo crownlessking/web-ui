@@ -23,7 +23,7 @@ import StateJsxFormItemGroup from '../state.jsx.form.item.group'
 import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
 import JsonIcon from '../../json.icons'
-import { AppDispatch } from '../../../state'
+import { AppDispatch, default_callback } from '../../../state'
 import { formsDataClear } from '../../../slices/formsData.slice'
 import { log } from '../../../controllers'
 import StateFormItemGroup from '../../../controllers/StateFormGroup'
@@ -37,7 +37,12 @@ import StateFormItemInput from '../../../controllers/templates/StateFormItemInpu
 import StateJsxPhoneInput from './state.jsx.phone.input'
 import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
 import { remember_exception } from '../../../state/_errors.business.logic'
-import { get_styled_div, StateJsxHtml, StateJsxHtmlTag } from './state.jsx.html'
+import {
+  get_styled_div,
+  StateJsxHtmlA,
+  StateJsxHtml,
+  StateJsxHtmlTag
+} from './state.jsx.html'
 import { get_bool_type } from '../_form.business.logic'
 
 interface IRecursiveFormBuilder {
@@ -238,13 +243,19 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     [C.HTML_TAG]: (item: StateFormItem, key: string|number) => (
       <StateJsxHtmlTag key={`html-tag${depth}-${key}`} def={item} />
     ),
+    [C.A]: (item: StateFormItem, key: string|number) => {
+      item.onClick = item.hasNoOnClickCallback
+        ? default_callback
+        : item.onClick
+      return <StateJsxHtmlA def={item} key={`a${depth}-${key}`} />
+    },
     [C.SUBMIT]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? onFormSubmitDefault(form)
         : item.onClick
         return <StateJsxButton key={`submit${depth}-${key}`} def={item} />
     },
-    [C.JSON_BUTTON]: (item: StateFormItem, key: string|number) => (
+    [C.STATE_BUTTON]: (item: StateFormItem, key: string|number) => (
       <StateJsxButton key={`json-button${depth}-${key}`} def={item} />
     ),
     [C.BREAK_LINE]: (_item: StateFormItem, key: string|number) => (
@@ -253,7 +264,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     [C.HORIZONTAL_LINE]: (_item: StateFormItem, key: string|number) => (
       <hr key={`horizontal-line${depth}-${key}`} />
     ),
-    [C.JSON_SELECT]: (item: StateFormItem, key: string|number) => {
+    [C.STATE_SELECT]: (item: StateFormItem, key: string|number) => {
       const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
       jsonSelectDef.onChange = onUpdateFormData(form)
       return (
@@ -263,7 +274,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         />
       )
     },
-    [C.JSON_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
+    [C.STATE_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
       const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
       jsonSelectDef.onChange = onUpdateFormData(form)
       return (

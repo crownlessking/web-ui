@@ -57,5 +57,12 @@ export const DIALOG_UNKNOWN_EDIT_ID = '31'
 
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'
+export const FORM_LOGIN_ID = '41'
+export const FORM_TEST_THUMBNAIL_ID = '45'
+
+// Pages
+
+export const PAGE_RESEARCH_APP_ID = '40'
+export const PAGE_TEST_THUMBNAIL_ID = '46'
 
 export const APP_IS_FETCHING_BOOKMARKS = 'APP_IS_FETCHING_BOOKMARKS'

@@ -52,7 +52,7 @@ const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
           'fontSize': 34
         }
       },
-      'onclickHandle': `tuberCallbacks._3_C_1`,
+      'onclickHandle': `tuberCallbacks.$3_C_1`,
     },
     // 'onClick': callback
   }, appBar)

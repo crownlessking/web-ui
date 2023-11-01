@@ -5,7 +5,7 @@ import {
   RADIO_BUTTONS,
   SWITCH,
   NUMBER,
-  JSON_SELECT,
+  STATE_SELECT,
   TEXT,
   DATE_TIME_PICKER,
   STATIC_DATE_PICKER,
@@ -13,7 +13,7 @@ import {
   TIME_PICKER,
   SINGLE_SWITCH,
   PHONE_INPUT,
-  JSON_SELECT_NATIVE,
+  STATE_SELECT_NATIVE,
   CHECKBOXES,
   DESKTOP_DATE_TIME_PICKER
 } from '../../../constants'
@@ -72,8 +72,8 @@ export function set_default_value(field: StateFormItem, formName: string): void 
     // TODO Add more cases here to enable default values on additional types
     //      of fields
     case PHONE_INPUT:
-    case JSON_SELECT:
-    case JSON_SELECT_NATIVE:
+    case STATE_SELECT:
+    case STATE_SELECT_NATIVE:
     case NUMBER:
     case TEXTFIELD:
     case TEXTAREA:

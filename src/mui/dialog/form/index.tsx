@@ -23,7 +23,7 @@ import {
   FORM_LABEL,
   HTML,
   INDETERMINATE,
-  JSON_SELECT,
+  STATE_SELECT,
   LOCALIZED,
   MOBILE_DATE_TIME_PICKER,
   NUMBER,
@@ -158,7 +158,7 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
       />
     ),
     [INDETERMINATE]: groupItem,
-    [JSON_SELECT]: (def: StateFormItem, key: string|number) => (
+    [STATE_SELECT]: (def: StateFormItem, key: string|number) => (
       <DialogSelect
         def={def}
         hive={hive}

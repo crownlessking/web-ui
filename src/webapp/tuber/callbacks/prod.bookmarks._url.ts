@@ -13,7 +13,7 @@ const BOOTSTRAP_KEY = get_bootstrap_key()
  * Shows the dialog to insert a new video url from which the video bookmark
  * will be created.
  *
- * @id _3_C_1
+ * @id $3_C_1
  */
 export function dialog_new_video_url(redux: IRedux) {
   return () => {
@@ -57,7 +57,7 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
 
     try {
       const errorMessage = new FormValidationPolicy(redux, urlFormName)
-      const video = await parse_platform_video_url(url)
+      const video = parse_platform_video_url(url)
       if (!video.urlCheck.valid) {
         ler(`dialog_new_bookmark_from_url: ${video.urlCheck.message}`)
         remember_error({

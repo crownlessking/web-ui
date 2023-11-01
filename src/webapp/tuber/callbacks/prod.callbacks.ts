@@ -11,7 +11,7 @@ import {
   dialog_new_bookmark_from_url_on_enter_key,
   dialog_new_video_url,
 } from './prod.bookmarks._url'
-import { appbar_search_for_bookmarks } from './prod.bookmarks.200'
+import { appbar_search_bookmarks } from './prod.bookmarks.200'
 import { dialog_new_youtube_bookmark_from_video } from './prod.bookmarks.youtube'
 import { form_submit_new_rumble_bookmark } from './prod.bookmarks.201.rumble'
 import { form_submit_edit_youtube_bookmark } from './prod.bookmarks.204.youtube'
@@ -37,28 +37,28 @@ function close_default (redux: IRedux) {
 const prodCallbacks = {
   defaultClose: close_default,
   bookmarkAdd: dialog_new_youtube_bookmark_from_video,
-  '_1_C_1': dialog_new_bookmark_from_url,
-  '_3_C_1': dialog_new_video_url,
+  '$1_C_1': dialog_new_bookmark_from_url,
+  '$3_C_1': dialog_new_video_url,
   loginDialog: dialog_login,
-  appBarSearchForBookmarks: appbar_search_for_bookmarks,
-  '_1_C_2': dialog_new_bookmark_from_url_on_enter_key,
-  '_6_C_1': form_submit_new_youtube_bookmark,
-  '_7_C_1': form_submit_edit_youtube_bookmark,
+  appBarSearchBookmarks: appbar_search_bookmarks,
+  '$1_C_2': dialog_new_bookmark_from_url_on_enter_key,
+  '$6_C_1': form_submit_new_youtube_bookmark,
+  '$7_C_1': form_submit_edit_youtube_bookmark,
   bookmarkDeleteCallback: form_submit_delete_bookmark,
-  '_8_C_1': form_submit_new_rumble_bookmark,
-  '_11_C_1': form_submit_edit_rumble_bookmark,
-  '_14_C_1': form_submit_new_vimeo_bookmark,
-  '_15_C_1': form_submit_edit_vimeo_bookmark,
-  '_16_C_1': form_submit_new_odysee_bookmark,
-  '_23_C_1': form_submit_edit_odysee_bookmark,
-  '_21_C_1': form_submit_new_daily_bookmark,
-  '_22_C_1': form_submit_edit_daily_bookmark,
-  '_26_C_1': form_submit_new_facebook_bookmark,
-  '_27_C_1': form_submit_edit_facebook_bookmark,
-  '_36_C_1': form_submit_new_twitch_bookmark,
-  '_37_C_1': form_submit_edit_twitch_bookmark,
-  '_30_C_1': form_submit_new_unknown_bookmark,
-  '_31_C_1': form_submit_edit_unknown_bookmark,
+  '$8_C_1': form_submit_new_rumble_bookmark,
+  '$11_C_1': form_submit_edit_rumble_bookmark,
+  '$14_C_1': form_submit_new_vimeo_bookmark,
+  '$15_C_1': form_submit_edit_vimeo_bookmark,
+  '$16_C_1': form_submit_new_odysee_bookmark,
+  '$23_C_1': form_submit_edit_odysee_bookmark,
+  '$21_C_1': form_submit_new_daily_bookmark,
+  '$22_C_1': form_submit_edit_daily_bookmark,
+  '$26_C_1': form_submit_new_facebook_bookmark,
+  '$27_C_1': form_submit_edit_facebook_bookmark,
+  '$36_C_1': form_submit_new_twitch_bookmark,
+  '$37_C_1': form_submit_edit_twitch_bookmark,
+  '$30_C_1': form_submit_new_unknown_bookmark,
+  '$31_C_1': form_submit_edit_unknown_bookmark,
 
   // TODO Add more callbacks here
 }

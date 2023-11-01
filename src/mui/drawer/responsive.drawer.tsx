@@ -32,7 +32,7 @@ export default function ResponsiveDrawer({ def: drawer }: IResDrawerProps) {
             button
             onClick={item.onClick({store, actions, route: item.has.route})}
             component={RouterLink as any}
-            to={get_formatted_route(item)}
+            to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
               <JsonIcon def={item.has} />

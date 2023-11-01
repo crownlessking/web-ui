@@ -82,6 +82,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
       || textfield.has.invalidationRegex
       || textfield.has.validationRegex
       || textfield.is.required
+      || error
     ) {
       dispatch({ // Temporarily clears out error state from textfield if focused.
         type: 'formsDataErrors/formsDataErrorsUpdate',

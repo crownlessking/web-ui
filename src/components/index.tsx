@@ -14,18 +14,18 @@ import {
   BOOL_ONOFF,
   BOOL_TRUEFALSE,
   BOOL_YESNO,
-  JSON_BUTTON,
+  STATE_BUTTON,
   CHECKBOXES,
   DESKTOP_DATE_PICKER,
   FORM,
-  JSON_INPUT,
+  STATE_INPUT,
   INPUT_LABEL,
   LINK,
   MOBILE_DATE_PICKER,
   NUMBER,
   PASSWORD,
   RADIO_BUTTONS,
-  JSON_SELECT,
+  STATE_SELECT,
   STATIC_DATE_PICKER,
   SUBMIT,
   SWITCH,
@@ -207,7 +207,7 @@ function RecursiveComponents({
   }
 
   const componentsTable: IComponentsTable = {
-    [JSON_BUTTON]:({ type, key, getState: getJson }:IDefProps): number => components.push(
+    [STATE_BUTTON]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <StateJsxButton
         key={`${type}-${key}`}
         def={new StateFormItem(getJson(), parent)}
@@ -234,7 +234,7 @@ function RecursiveComponents({
         </JsonForm>
       )
     },
-    [JSON_INPUT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
+    [STATE_INPUT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <StateJsxInput
         key={`${type}-${key}`}
         def={new StateFormItem(getJson(), parent)}
@@ -258,7 +258,7 @@ function RecursiveComponents({
         def={new StateFormItemRadio(getJson(), parent)}
       />
     ),
-    [JSON_SELECT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
+    [STATE_SELECT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <JsonSelect
         key={`${type}-${key}`}
         def={new StateFormItemSelect(getJson(), parent)}

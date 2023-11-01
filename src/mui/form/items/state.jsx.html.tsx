@@ -6,6 +6,10 @@ import StateFormItem from '../../../controllers/StateFormItem'
 import { RootState } from '../../../state'
 import parse from 'html-react-parser'
 import { Fragment } from 'react'
+import store, { actions } from '../../../state'
+import { get_formatted_route } from 'src/controllers/StateLink'
+import Link from '@mui/material/Link'
+import { Link as RouterLink } from 'react-router-dom'
 
 interface IHtmlProps {
   def: StateFormItem<StateForm, string>
@@ -13,6 +17,15 @@ interface IHtmlProps {
 
 /* Contains HTML components which are styled so they can use the `sx` prop. */
 export const get_styled_div = () => styled('div')(() => ({}))
+
+/** Styled anchor element */
+export const LinkStyled = styled(Link)(({ theme }) => ({
+  textDecoration: 'none',
+  color: theme.palette.primary.main,
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+}))
 
 /** Parse handlebar notations */
 export function parseHandlebars(html: string, obj?: {[key: string]: any}) {
@@ -58,6 +71,7 @@ export function StateJsxHtml({ def: html }: { def: StateFormItem<StateForm, stri
   return <Box {...html.props} dangerouslySetInnerHTML={{ __html: htmlText }} />
 }
 
+/** State html tag */
 export const StateJsxHtmlTag: React.FC<IHtmlProps> = ({ def: htmlTag }) => {
   if (htmlTag.has.state.content) {
     const tag = parse(htmlTag.has.content) || null
@@ -66,4 +80,26 @@ export const StateJsxHtmlTag: React.FC<IHtmlProps> = ({ def: htmlTag }) => {
     }
   }
   return ( null )
+}
+
+/** State version of the HTML anchor tag */
+export const StateJsxHtmlA: React.FC<IHtmlProps> = ({ def: link }) => {
+  const route = get_formatted_route(link.is)
+  const redux = {
+    store,
+    actions,
+    route: link.has.route
+  }
+  return (
+    <Fragment>
+      <LinkStyled
+        component={RouterLink}
+        {...link.props}
+        to={route}
+        onClick={link.onClick(redux)}
+      >
+        { link.text }
+      </LinkStyled>
+    </Fragment>
+  )
 }

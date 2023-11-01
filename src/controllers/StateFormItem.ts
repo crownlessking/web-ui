@@ -4,7 +4,7 @@ import StateForm from './StateForm'
 import {
   HTML,
   SUBMIT,
-  JSON_BUTTON,
+  STATE_BUTTON,
   BREAK_LINE,
   FORM_LABEL,
   FORM_HELPER_TEXT,
@@ -114,7 +114,7 @@ export default class StateFormItem<P = StateForm, T = any>
       )
   }
   get hasNoOnClickCallback() {
-    return !this.itemState.onClick
+    return !(this.itemState.onClick || this.itemHasState.onclickHandle)
   }
   get hasNoOnChangeCallback() {
     return !!this.itemState.onChange
@@ -180,7 +180,7 @@ export default class StateFormItem<P = StateForm, T = any>
     switch (this.itemState.type.toLowerCase()) {
       case HTML:
       case SUBMIT:
-      case JSON_BUTTON:
+      case STATE_BUTTON:
       case BREAK_LINE:
       case FORM_LABEL:
       case FORM_HELPER_TEXT:
@@ -268,7 +268,7 @@ export default class StateFormItem<P = StateForm, T = any>
       switch (type) {
         case HTML:
         case SUBMIT:
-        case JSON_BUTTON:
+        case STATE_BUTTON:
         case BREAK_LINE:
         case FORM_LABEL:
         case FORM_HELPER_TEXT:

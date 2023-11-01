@@ -169,6 +169,7 @@ export function stretch_to_bottom(bottom: number): number {
  *
  * @param obj 
  * @param path dot-separated object (nested) keys
+ * @deprecated
  */
 export function get_val<T=any>(obj: any, path: string): T|null {
   if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
@@ -280,8 +281,22 @@ export function get_query_values(url: string): { [key: string]: string } {
  * Set the value of a query string parameter.  
  * __Note:__ Omitting the value will remove the parameter.
  */
-export function set_query_val(uri: string, key: string, val?: string|number) {
-  const fragments = uri.split('?')
+export function set_query_val(url: string, param: string, val?: string|number) {
+  const urlObj = new URL(url)
+  const query = new URLSearchParams(urlObj.searchParams)
+  const { origin, pathname } = urlObj
+  if (typeof val === 'undefined') {
+    query.delete(param)
+    const newUrl = `${origin}${pathname}?${query.toString()}`
+    return newUrl
+  }
+  query.set(param, val.toString())
+  const newUrl = `${origin}${pathname}?${query.toString()}`
+  return newUrl
+}
+
+/*
+const fragments = uri.split('?')
   const query = fragments.pop()
   if (!query) { return uri }
   if (fragments.length > 0) {
@@ -303,7 +318,7 @@ export function set_query_val(uri: string, key: string, val?: string|number) {
   fragments.pop()
   const newUri = fragments.join('')
   return newUri
-}
+*/
 
 // Delete array elements by index range.
 export function delete_range<T>(arr: T[], start: number, end: number): T[] {
@@ -353,6 +368,7 @@ export function falsy_to_empty_string(value: any): string {
  * @param path     an existing property of `obj` or a dot-separated list of
  *                 properties.
  * @param _default value to return if `obj[path]` is undefined
+ * @deprecated
  */
 export function safely_get(obj: any, path = '', _default?: any): any {
   const value = get_val(obj, path)
@@ -381,6 +397,7 @@ export function safely_get(obj: any, path = '', _default?: any): any {
 /**
  * Get a value from an object as the same type as the default value without
  * causing an exception.
+ * @deprecated
  */
 export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
   const value = get_val<T>(obj, path)

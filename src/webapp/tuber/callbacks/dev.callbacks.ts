@@ -11,6 +11,7 @@ import {
 } from './dev.bookmarks.200'
 import { safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
+import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 
 function dev_create_user(redux: IRedux) {
   return () => {
@@ -138,7 +139,8 @@ const devCallbacks = {
   devNoResponse: dev_no_response,
   devDropCollection: dev_drop_collection,
   devPopulateCollection: dev_populate_collection,
-  devCreateBookmarkSearchIndex: dev_create_bookmark_search_index
+  devCreateBookmarkSearchIndex: dev_create_bookmark_search_index,
+  '$45_C_1': dev_get_video_thumbnail
 }
 
 export default devCallbacks

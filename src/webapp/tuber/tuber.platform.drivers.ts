@@ -37,6 +37,7 @@ interface IVideoData {
   slug: string
   urlCheck: IUrlStatus
   dialogId: string
+  thumbnailUrl?: string
 }
 
 const DATA_SKELETON: IVideoData = {
@@ -51,7 +52,7 @@ const DATA_SKELETON: IVideoData = {
   dialogId: '0'
 }
 
-export default async function parse_platform_video_url(url: string): Promise<IVideoData> {
+export default function parse_platform_video_url(url: string): IVideoData {
   const { valid, message } = _check_url(url)
   if (!valid) {
     remember_error({
@@ -73,7 +74,7 @@ export default async function parse_platform_video_url(url: string): Promise<IVi
     case 'vimeo.com':
       return _extract_data_from_vimeo_url(url)
     case 'rumble.com':
-      return await _extract_data_from_rumble_url(url)
+      return _extract_data_from_rumble_url(url)
     case 'odysee.com':
       return _extract_data_from_odysee_url(url)
     case 'www.facebook.com':
@@ -152,7 +153,7 @@ function _extract_data_from_youTube_url(url: string) {
 /**
  * Example URL: // https://rumble.com/v38vipp-what-is-ai-artificial-intelligence-what-is-artificial-intelligence-ai-in-5-.html
  */
-async function _extract_data_from_rumble_url(url: string): Promise<IVideoData> {
+function _extract_data_from_rumble_url(url: string): IVideoData {
   const slug  = get_slug(url)
   if (!slug) {
     remember_error({

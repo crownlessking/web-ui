@@ -21,12 +21,13 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.BOOL_TRUEFALSE
   | typeof C.BOOL_YESNO
   | typeof C.BOX
-  | typeof C.JSON_BUTTON
+  | typeof C.STATE_BUTTON
   | typeof C.CHECKBOXES
   | typeof C.DATE_TIME_PICKER
   | typeof C.DESKTOP_DATE_PICKER
   | typeof C.DESKTOP_DATE_TIME_PICKER
   | typeof C.DIV
+  | typeof C.A
   | typeof C.FORM
   | typeof C.FORM_CONTROL
   | typeof C.FORM_CONTROL_LABEL
@@ -37,7 +38,7 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.HORIZONTAL_LINE
   | typeof C.HTML
   | typeof C.INDETERMINATE
-  | typeof C.JSON_INPUT
+  | typeof C.STATE_INPUT
   | typeof C.INPUT_LABEL
   | typeof C.ICON
   | typeof C.LINK
@@ -50,8 +51,8 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.PASSWORD
   | typeof C.PHONE_INPUT
   | typeof C.RADIO_BUTTONS
-  | typeof C.JSON_SELECT
-  | typeof C.JSON_SELECT_NATIVE
+  | typeof C.STATE_SELECT
+  | typeof C.STATE_SELECT_NATIVE
   | typeof C.STACK
   | typeof C.STATIC_DATE_PICKER
   | typeof C.SUBMIT

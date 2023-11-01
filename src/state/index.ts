@@ -175,7 +175,7 @@ export type TAllActions = typeof actions
 /**
  * Ensures that callbacks for buttons, links (, and more) can access the redux
  * store and fire all available redux actions...
- * Even if the callback is implemented in a pure javascript file.
+ * Even if the callback is implemented in pure javascript.
  */
 export interface IRedux {
   store: typeof store
