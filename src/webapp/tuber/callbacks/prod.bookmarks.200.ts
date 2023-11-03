@@ -2,7 +2,7 @@ import { IRedux } from 'src/state'
 import { get_search_query } from 'src/state/_errors.business.logic'
 import { get_req_state } from 'src/state/net.actions'
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config'
-import { safely_get_as, set_query_val, log, pre } from 'src/controllers'
+import { safely_get_as, log, pre, set_url_query_val } from 'src/controllers'
 import { get_bootstrap_key } from 'src/state/_business.logic'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
@@ -55,7 +55,7 @@ export function appbar_search_bookmarks (redux: IRedux) {
     const args = `query=${encodedSearchQuery}`
     redux.store.dispatch(get_req_state(endpoint, args))
     const href = window.location.href
-    const url = set_query_val(href, 'query', encodedSearchQuery)
+    const url = set_url_query_val(href, 'query', encodedSearchQuery)
     window.history.pushState({ path: url }, '', url)
   }
 }

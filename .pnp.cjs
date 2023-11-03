@@ -45,7 +45,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/jest-dom", "npm:5.17.0"],\
             ["@testing-library/react", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:13.5.0"],\
-            ["@types/axios", "npm:0.14.0"],\
             ["@types/jest", "npm:29.5.5"],\
             ["@types/node", "npm:16.18.52"],\
             ["@types/react", "npm:18.2.21"],\
@@ -53,7 +52,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-html-parser", "npm:2.0.4"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
             ["@types/youtube-player", "npm:5.5.7"],\
-            ["axios", "npm:1.6.0"],\
             ["cross-fetch", "npm:3.1.8"],\
             ["dayjs", "npm:1.11.9"],\
             ["eslint", "npm:8.49.0"],\
@@ -5748,16 +5746,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/axios", [\
-        ["npm:0.14.0", {\
-          "packageLocation": "./.yarn/cache/@types-axios-npm-0.14.0-42f41917ea-12a230b940.zip/node_modules/@types/axios/",\
-          "packageDependencies": [\
-            ["@types/axios", "npm:0.14.0"],\
-            ["axios", "npm:1.6.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/babel__core", [\
         ["npm:7.20.2", {\
           "packageLocation": "./.yarn/cache/@types-babel__core-npm-7.20.2-9c78b4e44c-564fbaa8ff.zip/node_modules/@types/babel__core/",\
@@ -7400,18 +7388,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/axe-core-npm-4.8.1-f09545d07e-78cc7c19bd.zip/node_modules/axe-core/",\
           "packageDependencies": [\
             ["axe-core", "npm:4.8.1"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["axios", [\
-        ["npm:1.6.0", {\
-          "packageLocation": "./.yarn/cache/axios-npm-1.6.0-b0f6015a96-c7c9f2ae9e.zip/node_modules/axios/",\
-          "packageDependencies": [\
-            ["axios", "npm:1.6.0"],\
-            ["follow-redirects", "virtual:b0f6015a963175f08000990853b55c1a6d1a3722c7c1d5e0885425211ae7ee63bf6b96b7e997f23d1bc9573bb78556c981010ca3a2873c90fc1ce293c6dd5667#npm:1.15.3"],\
-            ["form-data", "npm:4.0.0"],\
-            ["proxy-from-env", "npm:1.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10858,30 +10834,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["npm:1.15.3", {\
-          "packageLocation": "./.yarn/cache/follow-redirects-npm-1.15.3-ca69c47b72-584da22ec5.zip/node_modules/follow-redirects/",\
-          "packageDependencies": [\
-            ["follow-redirects", "npm:1.15.3"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
         ["virtual:a313c479c5c7e54d9ec8fbeeea69ff640f56b8989ea2dff42351a3fa5c4061fb80a52d8ede0f0826a181a216820c2d2c3f15da881e7fdf31cef1c446e42f0c45#npm:1.15.2", {\
           "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-2696a91c1b/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-faa66059b6.zip/node_modules/follow-redirects/",\
           "packageDependencies": [\
             ["follow-redirects", "virtual:a313c479c5c7e54d9ec8fbeeea69ff640f56b8989ea2dff42351a3fa5c4061fb80a52d8ede0f0826a181a216820c2d2c3f15da881e7fdf31cef1c446e42f0c45#npm:1.15.2"],\
-            ["@types/debug", null],\
-            ["debug", null]\
-          ],\
-          "packagePeers": [\
-            "@types/debug",\
-            "debug"\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["virtual:b0f6015a963175f08000990853b55c1a6d1a3722c7c1d5e0885425211ae7ee63bf6b96b7e997f23d1bc9573bb78556c981010ca3a2873c90fc1ce293c6dd5667#npm:1.15.3", {\
-          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-48f349e0aa/0/cache/follow-redirects-npm-1.15.3-ca69c47b72-584da22ec5.zip/node_modules/follow-redirects/",\
-          "packageDependencies": [\
-            ["follow-redirects", "virtual:b0f6015a963175f08000990853b55c1a6d1a3722c7c1d5e0885425211ae7ee63bf6b96b7e997f23d1bc9573bb78556c981010ca3a2873c90fc1ce293c6dd5667#npm:1.15.3"],\
             ["@types/debug", null],\
             ["debug", null]\
           ],\
@@ -10965,16 +10921,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/form-data-npm-3.0.1-d080d436e0-b019e8d35c.zip/node_modules/form-data/",\
           "packageDependencies": [\
             ["form-data", "npm:3.0.1"],\
-            ["asynckit", "npm:0.4.0"],\
-            ["combined-stream", "npm:1.0.8"],\
-            ["mime-types", "npm:2.1.35"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:4.0.0", {\
-          "packageLocation": "./.yarn/cache/form-data-npm-4.0.0-916facec2d-01135bf867.zip/node_modules/form-data/",\
-          "packageDependencies": [\
-            ["form-data", "npm:4.0.0"],\
             ["asynckit", "npm:0.4.0"],\
             ["combined-stream", "npm:1.0.8"],\
             ["mime-types", "npm:2.1.35"]\
@@ -17088,15 +17034,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["proxy-from-env", [\
-        ["npm:1.1.0", {\
-          "packageLocation": "./.yarn/cache/proxy-from-env-npm-1.1.0-c13d07f26b-ed7fcc2ba0.zip/node_modules/proxy-from-env/",\
-          "packageDependencies": [\
-            ["proxy-from-env", "npm:1.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["psl", [\
         ["npm:1.9.0", {\
           "packageLocation": "./.yarn/cache/psl-npm-1.9.0-a546edad1a-20c4277f64.zip/node_modules/psl/",\
@@ -19507,7 +19444,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/jest-dom", "npm:5.17.0"],\
             ["@testing-library/react", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:13.5.0"],\
-            ["@types/axios", "npm:0.14.0"],\
             ["@types/jest", "npm:29.5.5"],\
             ["@types/node", "npm:16.18.52"],\
             ["@types/react", "npm:18.2.21"],\
@@ -19515,7 +19451,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-html-parser", "npm:2.0.4"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
             ["@types/youtube-player", "npm:5.5.7"],\
-            ["axios", "npm:1.6.0"],\
             ["cross-fetch", "npm:3.1.8"],\
             ["dayjs", "npm:1.11.9"],\
             ["eslint", "npm:8.49.0"],\

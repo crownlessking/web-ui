@@ -1,5 +1,13 @@
 // Import necessary libraries
-import axios from 'axios'
+import { IRedux } from 'src/state'
+import { get_req_state } from 'src/state/net.actions'
+
+/** Axios is not installed. This is a mock version to prevent error messages. */
+const axios = {
+  get: async (uri: string, opts?: any) => {
+    return {} as any
+  }
+}
 
 // Define the functions to retrieve the thumbnail for each platform
 
@@ -14,9 +22,9 @@ import axios from 'axios'
  * @see https://developers.google.com/youtube/v3/docs/videos#snippet.thumbnails.maxres.url
  * @see https://stackoverflow.com/a/2068371/1875859
  */
-export async function get_youtube_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_API_KEY&part=snippet`)
-  return response.data.items[0].snippet.thumbnails.high.url
+export function dev_get_youtube_thumbnail(videoId: string): string {
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+  return thumbnailUrl
 }
 
 /**
@@ -38,20 +46,16 @@ export async function get_dailymotion_thumbnail(videoId: string): Promise<string
   return response.data.thumbnail_url
 }
 
-/**
- * Get the thumbnail for a Rumble video
- * 
- */
-export async function get_rumble_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://rumble.com/embed/${videoId}/`)
-  const regex = /<meta property="og:image" content="(.+?)">/
-  const match = response.data.match(regex)
-  return match ? match[1] : ''
+/** Get the thumbnail URL for a Rumble video */
+export async function dev_get_rumble_thumbnail(redux: IRedux, slug: string): Promise<void> {
+  const encodedSlug = encodeURIComponent(slug)
+  redux.store.dispatch(get_req_state(`dev/rumble/thumbnails?slug=${encodedSlug}`))
 }
 
-export async function get_odysee_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://odysee.com/$/api/v1/video/${videoId}/info`)
-  return response.data.thumbnailUrl
+/** Get the thumbnail URL for an Odysee video */
+export async function dev_get_odysee_thumbnail(redux: IRedux, slug: string): Promise<void> {
+  const encodedSlug = encodeURIComponent(slug)
+  redux.store.dispatch(get_req_state(`dev/odysee/thumbnails?slug=${encodedSlug}`))
 }
 
 export async function get_twitch_thumbnail(videoId: string): Promise<string> {

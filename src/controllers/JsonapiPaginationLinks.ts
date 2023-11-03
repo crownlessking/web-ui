@@ -1,5 +1,5 @@
 import { remember_exception } from 'src/state/_errors.business.logic'
-import { get_query_val, set_query_val } from '.'
+import { get_query_val } from '.'
 import AbstractState from './AbstractState'
 import { IJsonapiPaginationLinks } from './interfaces/IJsonapi'
 
@@ -117,13 +117,15 @@ export default class JsonapiPaginationLinks extends AbstractState {
     // TODO Add more query params to update
   }: {pageNumber?: number, pageSize?: number}) {
     let qs = get_jsonapi_link_url(this._links.self)
+    const params = new URLSearchParams(qs)
     if (pageNumber) {
-      qs = set_query_val(qs, 'page[number]', pageNumber)
+      params.set('page[number]', pageNumber.toString())
     }
     if (pageSize) {
-      qs = set_query_val(qs, 'page[size]', pageSize)
+      params.set('page[size]', pageSize.toString())
     }
-    return qs
+    const updatedQs = params.toString()
+    return updatedQs
   }
 }
 

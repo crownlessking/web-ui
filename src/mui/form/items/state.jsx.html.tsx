@@ -7,9 +7,10 @@ import { RootState } from '../../../state'
 import parse from 'html-react-parser'
 import { Fragment } from 'react'
 import store, { actions } from '../../../state'
-import { get_formatted_route } from 'src/controllers/StateLink'
+import { get_formatted_route } from '../../../controllers/StateLink'
 import Link from '@mui/material/Link'
 import { Link as RouterLink } from 'react-router-dom'
+import { IGenericObject } from '../../../controllers/interfaces/IState'
 
 interface IHtmlProps {
   def: StateFormItem<StateForm, string>
@@ -28,13 +29,18 @@ export const LinkStyled = styled(Link)(({ theme }) => ({
 }))
 
 /** Parse handlebar notations */
-export function parseHandlebars(html: string, obj?: {[key: string]: any}) {
-  if (!obj) return html
-  Object.keys(obj).forEach(key => {
-    const value = obj[key] || '&#128681;'
+export function parseHandlebars(htmlText: string, values?: IGenericObject) {
+  let html = htmlText
+  if (!values) {
+    html = html.replace(/{{\s*[_$a-zA-Z0-9]+\s*}}/g, '')
+    return html
+  }
+  Object.keys(values).forEach(key => {
+    const val = values[key] ?? '&#128681;'
     const re = new RegExp(`{{\\s*${key}\\s*}}`, 'g')
-    html = html.replace(re, value)
+    html = html.replace(re, val)
   })
+  html = html.replace(/{{\s*[_$a-zA-Z0-9]+\s*}}/g, '')
   return html
 }
 

@@ -14,7 +14,7 @@ export function dev_get_bookmarks_callback (redux: IRedux, args = '') {
 export function dev_create_bookmark_search_index (redux: IRedux) {
   return async () => {
     redux.store.dispatch(post_req_state(
-      'install-dev/setup-collection-index-search/bookmarks',
+      'dev/setup-collection-index-search/bookmarks',
       {}
     ))
   }

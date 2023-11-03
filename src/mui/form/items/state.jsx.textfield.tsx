@@ -5,7 +5,6 @@ import StateFormItem from '../../../controllers/StateFormItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { NAME_NOT_SET } from '../../../constants'
 import StateJsxTextfieldInputProps from './state.jsx.textfield.input.props'
-import StateFormsData from 'src/controllers/StateFormsData'
 import { useEffect } from 'react'
 import { ISliceFormsDataErrorsArgs } from 'src/slices/formsDataErrors.slice'
 
@@ -42,14 +41,12 @@ export const typeMap: { [constant: string]: string } = {
  */
 export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProps) {
   const { name, parent: { name: formName } } = textfield
-  const formsData = new StateFormsData(
-    useSelector((state: RootState) => state.formsData)
-  )
+  const formsData = useSelector((state: RootState) => state.formsData)
   const formsDataErrors = useSelector(
     (state: RootState) => state.formsDataErrors
   )
   const dispatch = useDispatch<AppDispatch>()
-  const value = formsData.getValue(formName, name)
+  const value = formsData[formName]?.[name] ?? ''
   const error = formsDataErrors[formName]?.[name]?.error
 
   useEffect(() => {
@@ -78,12 +75,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
   }, [ dispatch, textfield, formName, name ])
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    if ((textfield.has.maxLength && textfield.has.maxLength > 0)
-      || textfield.has.invalidationRegex
-      || textfield.has.validationRegex
-      || textfield.is.required
-      || error
-    ) {
+    if (error) {
       dispatch({ // Temporarily clears out error state from textfield if focused.
         type: 'formsDataErrors/formsDataErrorsUpdate',
         payload: {

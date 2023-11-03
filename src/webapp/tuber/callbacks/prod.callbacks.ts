@@ -1,4 +1,4 @@
-import { IRedux } from '../../../state'
+import { IRedux, TReduxCallback } from '../../../state'
 import { dialog_login } from './prod.login'
 import {
   form_submit_new_youtube_bookmark,
@@ -34,7 +34,7 @@ function close_default (redux: IRedux) {
   return () => redux.store.dispatch({ type: 'dialog/dialogClose' })
 }
 
-const prodCallbacks = {
+const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   defaultClose: close_default,
   bookmarkAdd: dialog_new_youtube_bookmark_from_video,
   '$1_C_1': dialog_new_bookmark_from_url,

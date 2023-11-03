@@ -66,10 +66,7 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
           detail: video.urlCheck.message,
           source: { pointer: url }
         })
-        errorMessage.emit('url', 'Invalid URL: Make sure the URL is correct, '
-          + 'that it is a supported platform URL, and the video start time is '
-          + 'included.'
-        )
+        errorMessage.emit('url', video.urlCheck.message)
         return
       }
       const newBookmarkDialogKey = safely_get_as<string>(

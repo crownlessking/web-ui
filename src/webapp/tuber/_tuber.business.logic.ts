@@ -13,7 +13,7 @@ import {
   DIALOG_YOUTUBE_EDIT_ID,
   DIALOG_TWITCH_EDIT_ID
 } from './tuber.config'
-import { IBookmark, TPlatform } from './tuber.interfaces'
+import { IBookmark, TPlatform, TVideoData } from './tuber.interfaces'
 
 const HOST_TO_PLATFORM_MAP: { [host: string]: TPlatform } = {
   'youtu.be': 'youtube',
@@ -179,7 +179,7 @@ export function get_platform_icon_src(platform: TPlatform): string {
     dailymotion: '../img/icon-dailymotion.png',
     odysee: '../img/icon-odysee.png',
     facebook: '../img/icon-facebook.png',
-    twitch: '../img/icon-twitch.png' // [TODO] Get proper twitch icon.
+    twitch: '../img/icon-twitch.png'
   }
   return icons[platform] ?? icons._blank
 }
@@ -200,7 +200,6 @@ export function rumble_get_video_id(url: string): string|undefined {
 }
 
 export function rumble_get_start_time(url: string): number {
-  // [TODO] Implement this
   const queryValues = get_query_values(url)
   if (queryValues.start) {
     return parseInt(queryValues.start)
@@ -214,7 +213,6 @@ export function rumble_get_start_time(url: string): number {
  * * https://www.dailymotion.com/video/x2ueemt
  */
 export function daily_get_video_id(url: string): string {
-  // [TODO] Implement this
   const domain = new URL(url)
   const id = domain.pathname.substring(1).replace(/video\/|\//, '')
   if (!id) {
@@ -225,7 +223,6 @@ export function daily_get_video_id(url: string): string {
 }
 
 export function daily_get_start_time(url: string): number {
-  // [TODO] Implement this
   const queryValues = get_query_values(url)
   if (queryValues.start) {
     return _get_start_time_in_seconds(queryValues.start)
@@ -233,30 +230,30 @@ export function daily_get_start_time(url: string): number {
   return 0
 }
 
+/** @deprecated */
 export function odysee_get_slug(url: string): string {
   const slug = new URL(url).pathname
   return slug.substring(1)
 }
 
-/**
- * Obsolete. Use `slug` instead.
- *
- * @deprecated
- */
-export function odysee_get_video_id(url: string): string {
-  // [TODO] Implement this
-  const domain = new URL(url)
-  const path = domain.pathname
-  const match = path.match(/\/watch\/(\w+)/)
-  if (!match) {
-    ler(`odysee_get_video_id: Bad video URL: '${url}'`)
-    return ''
+export function odysee_get_url_data(url: string): TVideoData {
+  const match = url.match(/https:\/\/odysee\.com\/([_@:a-zA-Z0-9]+)\/([-%:.!=&a-zA-Z0-9]+)(\?[-%:.!a-zA-Z0-9=&]+)?/)
+  if (!match || match.length < 3) {
+    ler(`odysee_get_url_data: Bad video URL: '${url}'`)
+    return {}
   }
-  return match[1]
+  const [ author, id, query ] = match.slice(1)
+  let start: number | undefined
+  if (query) {
+    const params = new URLSearchParams(query)
+    const startStr = params.get('t') ?? ''
+    start = parseInt(startStr) ?? undefined
+  }
+  return { author, id, start }
 }
 
+/** @deprecated */
 export function odysee_get_start_time(url: string): number {
-  // [TODO] Implement this
   const queryValues = get_query_values(url)
   if (queryValues.t) {
     return parseInt(queryValues.t)
@@ -319,9 +316,9 @@ export function gen_video_url(bookmark: IBookmark): string {
     }
     case 'rumble': {
       if (start) {
-        url = `https://rumble.com/${slug}.html?start=${start}`
+        url = `${PLATFORM_URLS['rumble']}${slug}.html?start=${start}`
       } else {
-        url = `https://rumble.com/${slug}.html`
+        url = `${PLATFORM_URLS['rumble']}${slug}.html`
       }
       return url
     }
@@ -395,7 +392,7 @@ export function gen_video_url(bookmark: IBookmark): string {
 }
 
 /** Get slug from URL. */
-export function get_slug(url: string) {
+export function get_rumble_slug(url: string) {
   const filteredUrl = url.trim().toLowerCase()
   const match = filteredUrl.match(/https?:\/\/(w{3}\.)?rumble\.com\/([\d\w.-]+)\.html/)
   if (!match) {

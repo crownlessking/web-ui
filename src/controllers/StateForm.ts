@@ -25,6 +25,7 @@ export default class StateForm extends AbstractState implements IStateForm {
     return {
       autoComplete: 'off',
       component: 'form',
+      onSubmit: (e: any) => e.preventDefault(),
       ...this.formState.props
     }
   }

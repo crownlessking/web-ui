@@ -88,3 +88,21 @@ export interface IResearchToolbarProps {
   /** Parent definition for state links. It is required. */
   def: StatePageAppBar
 }
+
+export interface IUrlStatus {
+  message: string
+  valid: boolean
+}
+
+export interface IVideoData {
+  id: string
+  start: number
+  platform: TPlatform
+  author: string
+  slug: string
+  urlCheck: IUrlStatus
+  dialogId: string
+  thumbnailUrl: string
+}
+
+export type TVideoData = Partial<IVideoData>

@@ -209,7 +209,6 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
   }
 
   const textItem = (item: StateFormItem, key: string|number) => {
-    // setupErrorProfile(item)
     item.onChange = onUpdateInputData(form)
     return <StateJsxTextfield key={`json-text-field${depth}-${key}`} def={item} />
   }

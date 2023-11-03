@@ -7,12 +7,12 @@ import { FORM_TEST_THUMBNAIL_ID, PAGE_TEST_THUMBNAIL_ID } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import {
   get_dailymotion_thumbnail,
-  get_odysee_thumbnail,
-  get_rumble_thumbnail,
+  dev_get_odysee_thumbnail,
+  dev_get_rumble_thumbnail,
   get_twitch_thumbnail,
   get_vimeo_thumbnail,
-  get_youtube_thumbnail
-} from '../tuber.video.thumbnail'
+  dev_get_youtube_thumbnail
+} from '../dev.video.thumbnail'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
@@ -47,11 +47,11 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
     }
     const videoUrl = safely_get_as<string>(
       rootState.formsData,
-      formName,
+      `${formName}.video_url`,
       ''
     )
     if (!videoUrl) {
-      errorPolicy.emit('video_url', 'formsData: Video URL not found')
+      errorPolicy.emit('video_url', `It's empty.`)
       return
     }
     const video = parse_platform_video_url(videoUrl)
@@ -64,11 +64,11 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       video.thumbnailUrl = await get_dailymotion_thumbnail(video.id)
       break
     case 'odysee':
-      video.thumbnailUrl = await get_odysee_thumbnail(video.id)
-      break
+      await dev_get_odysee_thumbnail(redux, video.slug)
+      return
     case 'rumble':
-      video.thumbnailUrl = await get_rumble_thumbnail(video.id)
-      break
+      await dev_get_rumble_thumbnail(redux, video.slug)      
+      return
     case 'twitch':
       video.thumbnailUrl = await get_twitch_thumbnail(video.id)
       break
@@ -76,7 +76,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       video.thumbnailUrl = await get_vimeo_thumbnail(video.id)
       break
     case 'youtube':
-      video.thumbnailUrl = await get_youtube_thumbnail(video.id)
+      video.thumbnailUrl = dev_get_youtube_thumbnail(video.id)
       break
     case 'facebook': // TODO implement getting facebook thumbnail image.
     case 'unknown':
@@ -88,7 +88,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       type: 'pagesData/pagesDataAdd',
       payload: {
         route,
-        key: 'video_url',
+        key: 'thumbnailUrl',
         data: video.thumbnailUrl
       }
     })

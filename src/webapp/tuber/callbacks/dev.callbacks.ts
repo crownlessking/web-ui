@@ -16,7 +16,7 @@ import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 function dev_create_user(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux
-    dispatch(post_req_state('install-dev/user', {
+    dispatch(post_req_state('dev/user', {
       'message': 'Hello from the other side'
     }))
   }
@@ -25,7 +25,7 @@ function dev_create_user(redux: IRedux) {
 function dev_reset_database(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux
-    dispatch(post_req_state('install-dev/database-reset', {
+    dispatch(post_req_state('dev/database-reset', {
       'message': 'Hello from client. I hope everything is okay.'
     }))
   }
@@ -34,7 +34,7 @@ function dev_reset_database(redux: IRedux) {
 function dev_load_drawer(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux
-    dispatch(post_req_state('install-dev/load-test-drawer', {
+    dispatch(post_req_state('dev/load-test-drawer', {
       'message': 'Testing partial page load'
     }))
   }
@@ -43,7 +43,7 @@ function dev_load_drawer(redux: IRedux) {
 function dev_unload_drawer(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux
-    dispatch(post_req_state('install-dev/unload-test-drawer', {}))
+    dispatch(post_req_state('dev/unload-test-drawer', {}))
   }
 }
 
@@ -84,7 +84,7 @@ function dev_user_populate(redux: IRedux) {
 function dev_no_response(redux: IRedux) {
   return async () => {
     const { store: { dispatch } } = redux
-    dispatch(get_req_state('install-dev/no-response/30000'))
+    dispatch(get_req_state('dev/no-response/30000'))
   }
 }
 
@@ -97,7 +97,7 @@ function dev_drop_collection(redux: IRedux) {
       ''
     )
     if (!collection) { return }
-    dispatch(delete_req_state(`install-dev/drop-collection/${collection}`))
+    dispatch(delete_req_state(`dev/drop-collection/${collection}`))
   }
 }
 
@@ -118,7 +118,7 @@ function dev_populate_collection(redux: IRedux) {
       return
     }
     dispatch(post_req_state(
-      `install-dev/populate-collection`,
+      `dev/populate-collection`,
       {
         collection,
         quantity
