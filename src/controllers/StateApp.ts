@@ -24,6 +24,9 @@ export default class StateApp extends AbstractState implements IStateApp {
   get parent(): State { return this.parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
+  get fetchingStateAllowed(): boolean {
+    return this.appState.fetchingStateAllowed ?? false
+  }
   get inDebugMode(): boolean { return this.appState.inDebugMode ?? false }
   get inDevelMode(): boolean { return this.appState.inDevelMode ?? false }
   get origin(): string {

@@ -20,6 +20,7 @@ import StateAppBarDefault from './templates/StateAppBarDefault'
 import StateAppBarQueries from './StateAppBarQueries'
 import StateTopLevelLinks from './StateTopLevelLinks'
 import StateFormsDataErrors from './StateFormsDataErrors'
+import StatePathnames from './StatePathnames'
 
 export default class State extends AbstractState {
 
@@ -43,6 +44,7 @@ export default class State extends AbstractState {
   private tmpDef?: StateTmp
   private topLevelLinksDef?: StateTopLevelLinks
   private netDef?: StateNet
+  private pathnamesDef?: StatePathnames
 
   /**
    * Get a copy of the (store) state.
@@ -261,4 +263,10 @@ export default class State extends AbstractState {
       ))
   }
 
+  get pathnames(): StatePathnames {
+    return this.pathnamesDef
+      || (this.pathnamesDef = new StatePathnames(
+        store.getState().pathnames
+      ))
+  }
 } // END class ----------------------------------------------------------------

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import { IJsonapiAbstractResponse, IJsonapiErrorResponse } from 'src/controllers/interfaces/IJsonapi'
 import { appRequestFailed } from 'src/slices/app.slice'
-import { netPatchState, RootState } from '.'
+import { net_patch_state, RootState } from '.'
 import { is_object, ler } from '../controllers'
 import {
   mongo_object_id,
@@ -15,9 +15,11 @@ export default function net_default_409_driver (
   endpoint: string,
   response: IJsonapiAbstractResponse
 ): void {
+  dispatch(appRequestFailed())
   const doc = response as IJsonapiErrorResponse
+
   if (is_object(doc.state)) {
-    dispatch(netPatchState(response.state))
+    dispatch(net_patch_state(response.state))
   }
 
   if (!doc.errors) {
@@ -36,5 +38,4 @@ export default function net_default_409_driver (
   remember_jsonapi_errors(doc.errors)
   ler(`net_default_409_driver: endpoint: ${endpoint}`)
   ler('net_default_409_driver: response:', response)
-  dispatch(appRequestFailed())
 }

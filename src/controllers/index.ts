@@ -437,10 +437,10 @@ export function get_query_starting_fixed(query?: string): string {
  * @returns `IStatePageContent` object.
  */
 export function get_parsed_page_content(str?: string): IStatePageContent {
-  const content = str || ''
+  const content = str ?? ''
   const options = content.replace(/\s+/g, '').split(':')
   if (options.length <= 1) {
-    err('Invalid or missing `page` content definition')
+    ler('get_parsed_page_content: Invalid or missing `page` content definition')
     return {
       type: APP_CONTENT_VIEW,
       name: DEFAULT_LANDING_PAGE_VIEW

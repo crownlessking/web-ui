@@ -3,7 +3,7 @@ import { CssBaseline } from '@mui/material'
 import AppBar from '../mui/appbar'
 import Drawer from '../mui/drawer'
 import Layout from './layout.component'
-import Content from './content.component'
+import Content from './content'
 import { Background } from '../mui/background'
 import Dialog from '../mui/dialog'
 import Spinner from './spinner.component'
@@ -30,5 +30,4 @@ export default function GenericApp ({ def: page }: IGenericAppProps) {
       <Spinner />
     </Fragment>
   )
-
 }

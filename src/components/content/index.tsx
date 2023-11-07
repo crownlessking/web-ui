@@ -1,18 +1,17 @@
-import Form from '../mui/form'
-import FormItems from '../mui/form/items'
-import View from './view.component'
-import StatePage from '../controllers/StatePage'
+import View from '../view.component'
+import StatePage from '../../controllers/StatePage'
 import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../state'
-import { post_req_state } from '../state/net.actions'
-import IStateApp from '../controllers/interfaces/IStateApp'
-import IStateAllForms from '../controllers/interfaces/IStateAllForms'
-import IStatePage from '../controllers/interfaces/IStatePage'
-import HtmlContent from './content/html.component'
-import WebApps from './content/webapp.content.component'
-import { APP_CONTENT_VIEW } from '../constants'
-import { ler } from '../controllers'
+import { AppDispatch } from '../../state'
+import { post_req_state } from '../../state/net.actions'
+import IStateApp from '../../controllers/interfaces/IStateApp'
+import IStateAllForms from '../../controllers/interfaces/IStateAllForms'
+import IStatePage from '../../controllers/interfaces/IStatePage'
+import HtmlContent from './html.component'
+import WebApps from './webapp.content.component'
+import { APP_CONTENT_VIEW } from '../../constants'
+import { ler } from '../../controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
+import FormContent from './form.component'
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -52,11 +51,13 @@ export default function Content (props: IContentProps) {
   const contentTable: IContentTable = {
     [APP_CONTENT_FORM]: () => {
       const form = page.parent.parent.allForms.getForm(page.contentName)
-      form.endpoint = page.contentEndpoint
+      if (form) { form.endpoint = page.contentEndpoint }
       currentContentJsx = contentJsx = (
-        <Form def={form}>
-          <FormItems def={form} />
-        </Form>
+        <FormContent
+          formName={page.contentName}
+          def={form}
+          type={'page'}
+        />
       )
     },
     [APP_CONTENT_VIEW]: () => {

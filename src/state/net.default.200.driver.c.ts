@@ -6,7 +6,7 @@ import {
 import { metaAdd } from '../slices/meta.slice'
 import { topLevelLinksStore } from '../slices/topLevelLinks.slice'
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
-import { bootstrap, netPatchState, RootState } from '.'
+import { bootstrap, net_patch_state, RootState } from '.'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
@@ -98,7 +98,7 @@ export default function net_default_200_driver (
 
   // This if-condition handles redux state loaded from the server (remote).
   if (is_object(doc.state)) {
-    dispatch(netPatchState(doc.state))
+    dispatch(net_patch_state(doc.state))
     if (doc.state?.app?.isBootstrapped) {
       bootstrap()
     }

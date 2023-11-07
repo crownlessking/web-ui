@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux'
-import { ler } from 'src/controllers'
+import { is_object, ler } from 'src/controllers'
 import { IJsonapiResponse } from 'src/controllers/interfaces/IJsonapi'
 import { appRequestFailed } from 'src/slices/app.slice'
-import { RootState } from '.'
+import { net_patch_state, RootState } from '.'
 import {
   mongo_object_id,
   remember_error,
@@ -15,6 +15,12 @@ export default function net_default_400_driver (
   endpoint: string,
   response: IJsonapiResponse
 ): void {
+  dispatch(appRequestFailed())
+
+  if (is_object(response.state)) {
+    dispatch(net_patch_state(response.state))
+  }
+
   if (!response.errors) {
     const title = 'net_default_400_driver: No errors were received.'
     ler(title)
@@ -27,8 +33,8 @@ export default function net_default_400_driver (
     })
     return
   }
+
   remember_jsonapi_errors(response.errors)
   ler(`net_default_400_driver: endpoint: ${endpoint}`)
   ler('net_default_400_driver: response:', response)
-  dispatch(appRequestFailed())
 }

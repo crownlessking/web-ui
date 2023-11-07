@@ -24,13 +24,14 @@ import tmpReducer, { tmpActions } from '../slices/tmp.slice'
 import topLevelLinksReducer, { topLevelLinksActions } from '../slices/topLevelLinks.slice'
 import themeReducer, { themeActions } from '../slices/theme.slice'
 import netReducer, { netActions } from '../slices/net.slice'
+import pathnamesReducer, { pathnamesActions } from 'src/slices/pathnames.slice'
 import { err, ler } from '../controllers'
 import { set_configuration } from './_business.logic'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import { remember_exception } from './_errors.business.logic'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
-export const netPatchState = (stateFragment: any) => ({
+export const net_patch_state = (stateFragment: any) => ({
   type: NET_STATE_PATCH,
   payload: stateFragment
 })
@@ -45,7 +46,7 @@ export const netPatchState = (stateFragment: any) => ({
  *
  * [TODO] Write a unit test for this function
  */
-function netPatchStateReducer(oldState: any, fragment: any) {
+const net_patch_state_reducer = (oldState: any, fragment: any) => {
   const state = { ...oldState }
   try {
     for (const prop in fragment) {
@@ -53,11 +54,10 @@ function netPatchStateReducer(oldState: any, fragment: any) {
       switch (typeof newStateVal) {
       case 'object':
         if (newStateVal === null) continue
-        if (!Array.isArray(newStateVal)) { // if newStateVal is NOT an array
-          state[prop] = netPatchStateReducer(state[prop], newStateVal)
+        if (!Array.isArray(newStateVal)) {
+          state[prop] = net_patch_state_reducer(state[prop], newStateVal)
         } else {
-          // arrays are never deeply copied
-          state[prop] = [ ...newStateVal ]
+          state[prop] = [ ...newStateVal ] // arrays are never copied deeply
         }
         break
       case 'symbol':
@@ -114,13 +114,14 @@ const appReducer = combineReducers({
   tmp: tmpReducer,
   topLevelLinks: topLevelLinksReducer,
   typography: typographyReducer,
+  pathnames: pathnamesReducer,
 })
 
 // https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
 const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_STATE_PATCH) {
-    const newState = netPatchStateReducer(state, action.payload)
+    const newState = net_patch_state_reducer(state, action.payload)
     set_configuration(newState)
     return appReducer(newState, action)
   }
@@ -168,6 +169,7 @@ export const actions = {
   ...tmpActions,
   ...topLevelLinksActions,
   ...typographyActions,
+  ...pathnamesActions,
 }
 
 export type TAllActions = typeof actions

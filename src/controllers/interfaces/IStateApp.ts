@@ -3,6 +3,11 @@
  * App information state.
  */
 export default interface IStateApp {
+  /**
+   * Whether the app can retrieve state from server when not available.
+   * Don't forget to set your enpoints in `pathnames`.
+   */
+  fetchingStateAllowed?: boolean
   /** If app is in debug mode or not. */
   inDebugMode?: boolean
   /** If `true`, can show helpful tips. */

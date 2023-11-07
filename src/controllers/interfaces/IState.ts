@@ -24,17 +24,12 @@ export interface ILoadedPagesRange {
   last: string
 }
 
-export interface IDeleteRange {
-  startIndex: number
-  endIndex: number
-}
-
 export interface IStateDataPagesRange {
   [endpoint: string]: ILoadedPagesRange | undefined
 }
 
-export interface IStateData {
-  [endpoint: string]: IJsonapiResource<any>[] // any[]
+export interface IStateData<T=any> {
+  [endpoint: string]: IJsonapiResource<T>[]
 }
 
 export interface IFormItemDataError {
@@ -55,6 +50,12 @@ export interface IStateFormsDataErrors {
   [formName: string]: {
     [name: string]: IFormItemDataError
   }
+}
+
+export interface IStatePathnames {
+  DIALOGS: string
+  FORMS: string
+  PAGES: string
 }
 
 /**
@@ -111,6 +112,7 @@ export default interface IState {
   /** Material-ui `ThemeOptions` */
   theme: ThemeOptions
   net: IStateNet
+  pathnames: IStatePathnames
 }
 
 /**

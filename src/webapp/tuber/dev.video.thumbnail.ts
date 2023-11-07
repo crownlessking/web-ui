@@ -2,13 +2,6 @@
 import { IRedux } from 'src/state'
 import { get_req_state } from 'src/state/net.actions'
 
-/** Axios is not installed. This is a mock version to prevent error messages. */
-const axios = {
-  get: async (uri: string, opts?: any) => {
-    return {} as any
-  }
-}
-
 // Define the functions to retrieve the thumbnail for each platform
 
 /**
@@ -32,9 +25,9 @@ export function dev_get_youtube_thumbnail(videoId: string): string {
  * @see https://developer.vimeo.com/api/reference/videos#get_video
  * @see https://stackoverflow.com/a/4285098/1875859
  */
-export async function get_vimeo_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://vimeo.com/api/v2/video/${videoId}.json`)
-  return response.data[0].thumbnail_large
+export async function get_vimeo_thumbnail(redux: IRedux, videoId: string): Promise<void> {
+  const encodedVideoId = encodeURIComponent(videoId)
+  redux.store.dispatch(get_req_state(`dev/vimeo/thumbnails?videoid=${encodedVideoId}`))
 }
 
 /**
@@ -42,8 +35,8 @@ export async function get_vimeo_thumbnail(videoId: string): Promise<string> {
  * @see https://stackoverflow.com/a/13173725/1875859
  */
 export async function get_dailymotion_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://api.dailymotion.com/video/${videoId}?fields=thumbnail_url`)
-  return response.data.thumbnail_url
+  const thumbnailUrl = `https://www.dailymotion.com/thumbnail/video/${videoId}`
+  return thumbnailUrl
 }
 
 /** Get the thumbnail URL for a Rumble video */
@@ -58,12 +51,7 @@ export async function dev_get_odysee_thumbnail(redux: IRedux, slug: string): Pro
   redux.store.dispatch(get_req_state(`dev/odysee/thumbnails?slug=${encodedSlug}`))
 }
 
-export async function get_twitch_thumbnail(videoId: string): Promise<string> {
-  const response = await axios.get(`https://api.twitch.tv/helix/videos?id=${videoId}`, {
-    headers: {
-      'Client-ID': 'YOUR_CLIENT_ID',
-      'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
-    }
-  })
-  return response.data.data[0].thumbnail_url.replace('{width}', '640').replace('{height}', '360')
+export async function get_twitch_thumbnail(redux: IRedux, videoId: string): Promise<void> {
+  const thumbnailUrl = encodeURIComponent(videoId)
+  redux.store.dispatch(get_req_state(`dev/twitch/thumbnails?videoid=${thumbnailUrl}`))
 }

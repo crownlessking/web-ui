@@ -49,6 +49,8 @@ export default {
    * @see info.state.ts
    */
   'app': {
+    /** Whether the app can retrieve state from server when not available */
+    'fetchingStateAllowed': false,
 
     /** Whether the app is in debugging mode or not */
     'inDebugMode': false,
@@ -113,9 +115,7 @@ export default {
     ...get_global_var(`${GLOBAL_PREFIX}Background`)
   },
 
-  /**
-   * Application `font-family` and `color`
-   */
+  /** Application `font-family` and `color` */
   'typography': {
     // Todo: Insert default values here.
 
@@ -176,6 +176,16 @@ export default {
 
     // List of hard coded pages
 
+    // Default blank page
+    'default-blank': {
+      'content': '$view : default_blank_page_view',
+      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
+      'typography': { 'color': '#74d2b3' },
+      'data': {
+        'message': 'Blank page!'
+      }
+    },
+
     // Default success feedback page
     'default-success': {
       'content': '$view : default_success_page_view',
@@ -189,7 +199,7 @@ export default {
     // Default 404 not found page
     'default-notfound': {
       'content': '$view : default_notfound_page_view',
-      'layout': 'LAYOUT_CENTERED',
+      'layout': 'layout_centered',
       'appBar': { 'items': [{ 'has': { 'text': 'Home', 'route': '/' }}]},
       'data': { 'message': 'Not found!' },
       'background': {
@@ -289,6 +299,12 @@ export default {
     // TODO Insert default values here.
 
     ...get_global_var(`${GLOBAL_PREFIX}Net`)
-  }
+  },
 
+  'pathnames': {
+    'DIALOGS': 'state/dialogs',
+    'FORMS': 'state/forms',
+    'PAGES': 'state/pages',
+    ...get_global_var(`${GLOBAL_PREFIX}Pathnames`)
+  }
 } as IState

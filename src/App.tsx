@@ -15,6 +15,7 @@ import StateAllPages from './controllers/StateAllPages'
 import StateApp from './controllers/StateApp'
 import StateNet from './controllers/StateNet'
 import AppPage from './components/app.component'
+import { ALLOWED_ATTEMPTS } from './constants'
 /**
  * Making all FontAwesome 'Regular', 'Solid', and 'Brand' icons available
  * throughout the entire application
@@ -39,33 +40,25 @@ export default function App() {
   const allPages = new StateAllPages(
     useSelector((state: RootState) => state.pages)
   )
-  allPages.app = app
   const net = new StateNet(
     useSelector((state: RootState) => state.net)
   )
   const themeState = useSelector((state: RootState) => state.theme)
 
-  /** Get a page from server. */
-  const onPostReqHomePageState = () => {
-    const key = get_bootstrap_key()
-    const pageLoadAttempts = Config.read<number|undefined>('page_load_attempts')
-      ?? 0
-
-    if (pageLoadAttempts < Config.ALLOWED_ATTEMPTS && key) {
-      // [TODO] There is no need to send headers here.
-      dispatch(post_req_state(key, {}, net.headers))
-      Config.write('page_load_attempts', pageLoadAttempts + 1)
-    }
-  }
-
   useEffect(() => {
-
-    // Get a page from server if none was provided.
-    // Setting `isBootstrapped` to `true` will prevent it.
-    if (!app.isBootstrapped) {
-      onPostReqHomePageState()
+    /** Get state from server. */
+    const onPostReqHomePageState = () => {
+      const key = get_bootstrap_key()
+      const bootstrapAttempts = Config.read<number>('bootstrap_attempts', 0)
+      if (bootstrapAttempts < ALLOWED_ATTEMPTS && key) {
+        dispatch(post_req_state(key, {}, net.headers))
+        Config.write('bootstrap_attempts', bootstrapAttempts + 1)
+      }
     }
-  })
+    // Get bootstrap state from server if none was provided.
+    // Setting `isBootstrapped` to `true` will prevent it.
+    if (!app.isBootstrapped) { onPostReqHomePageState() }
+  }, [dispatch, net.headers, app.isBootstrapped])
 
   return (
     <ThemeProvider theme={createTheme(themeState)}>

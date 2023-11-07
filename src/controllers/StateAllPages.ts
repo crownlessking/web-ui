@@ -1,5 +1,5 @@
-import { ler } from '.'
-import { DEFAULT_LANDING_PAGE, DEFAULT_PAGE_NOT_FOUND } from '../constants'
+import { log } from '.'
+import { DEFAULT_BLANK_PAGE, DEFAULT_LANDING_PAGE } from '../constants'
 import AbstractState from './AbstractState'
 import IStateAllPages from './interfaces/IStateAllPages'
 import IStatePage from './interfaces/IStatePage'
@@ -26,7 +26,10 @@ export default class StateAllPages extends AbstractState {
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
   /** Shortcutted chain-access to app definition. */
-  get app(): StateApp { return this.appDef = this.appDef || new State().app }
+  get app(): StateApp {
+    return this.appDef || ( this.appDef = new State().app )
+  }
+
   /**
    * Prevents app from crashing when given a bad route.
    *
@@ -37,7 +40,7 @@ export default class StateAllPages extends AbstractState {
    *
    * @param route the specified route
    */
-  getPageJson = (route: string): IStatePage => {
+  getPageState = (route: string): IStatePage | null => {
     return this.allPagesState[route]
       || this.allPagesState[`/${route}`]
       || this.allPagesState[route.substring(1)]
@@ -49,10 +52,10 @@ export default class StateAllPages extends AbstractState {
    * @param route key of page. These can be valid URI parameters. Therefore,
    *             they should not be accessed using the (dot) `.` operator.
    */
-  pageAt = (route: string): StatePage => {
-    const pageJson = this.getPageJson(route)
+  pageAt = (route: string): StatePage | null => {
+    const pageState = this.getPageState(route)
 
-    return new StatePage(pageJson, this)
+    return pageState ? new StatePage(pageState, this) : null
   }
 
   /**
@@ -61,7 +64,7 @@ export default class StateAllPages extends AbstractState {
    * @returns 
    */
   getPage = (): StatePage => {
-    let pageState: IStatePage
+    let pageState: IStatePage | null
     const route = this.app.route
     if (route === '/') {
       pageState = this.allPagesState[this.app.homePage]
@@ -69,23 +72,23 @@ export default class StateAllPages extends AbstractState {
         return new StatePage(pageState, this)
       }
     }
-    pageState = this.getPageJson(route)
+    pageState = this.getPageState(route)
     if (pageState) {
       return new StatePage(pageState, this)
     }
     if (window.location.pathname.length > 1) {
-      pageState = this.getPageJson(window.location.pathname)
+      pageState = this.getPageState(window.location.pathname)
       if (pageState) {
         return new StatePage(pageState, this)
       }
     }
     // Oops! route is bad!
     if (route) {
-      ler(`'${route}' page does exist`)
-      return new StatePage(this.allPagesState[DEFAULT_PAGE_NOT_FOUND], this)
+      log(`'${route}' page not loaded. Fetching now..`)
+      return new StatePage(this.allPagesState[DEFAULT_BLANK_PAGE], this)
     }
     if (this.app.homePage) {
-      pageState = this.getPageJson(this.app.homePage)
+      pageState = this.getPageState(this.app.homePage)
       if (pageState) {
         return new StatePage(pageState, this)
       }
@@ -93,5 +96,5 @@ export default class StateAllPages extends AbstractState {
     return new StatePage(this.allPagesState[DEFAULT_LANDING_PAGE], this)
   }
 
-  set app(app: StateApp) { this.appDef = app }
+  // set app(app: StateApp) { this.appDef = app }
 } // END class AllPages -------------------------------------------------------

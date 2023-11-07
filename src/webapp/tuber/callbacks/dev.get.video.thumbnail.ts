@@ -70,11 +70,11 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       await dev_get_rumble_thumbnail(redux, video.slug)      
       return
     case 'twitch':
-      video.thumbnailUrl = await get_twitch_thumbnail(video.id)
-      break
+      await get_twitch_thumbnail(redux, video.id)
+      return
     case 'vimeo':
-      video.thumbnailUrl = await get_vimeo_thumbnail(video.id)
-      break
+      await get_vimeo_thumbnail(redux, video.id)
+      return
     case 'youtube':
       video.thumbnailUrl = dev_get_youtube_thumbnail(video.id)
       break

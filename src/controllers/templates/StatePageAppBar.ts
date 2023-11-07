@@ -220,8 +220,12 @@ export default class StatePageAppBar
         return this.parent.parent.parent.appBar.background
       }
       if (this.appBarState.backgroundInherited) {
-        const route = this.appBarState.backgroundInherited
-        return this.parent.parent.pageAt(route).appBar.background
+        const inheritedRoute = this.appBarState.backgroundInherited
+        const backgroundInheritedState = this.parent.parent
+          .getPageState(inheritedRoute)
+          ?.appBar
+          ?.background
+        if (backgroundInheritedState) { return backgroundInheritedState }
       }
     }
     return {}

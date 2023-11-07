@@ -1,7 +1,7 @@
 import Controller from './AbstractState'
 import State from './State'
 import StateForm from './StateForm'
-import { err } from '.'
+import { log } from '.'
 import IStateAllForms from './interfaces/IStateAllForms'
 
 export default class StateAllForms extends Controller {
@@ -36,19 +36,20 @@ export default class StateAllForms extends Controller {
    *
    * @param name 
    */
-  getForm = (name: string): StateForm => {
+  getForm = (name: string): StateForm | null => {
     const formName = this.getStateFormName(name)
-    const formJson = this.allFormsState[formName]
+    const formState = this.allFormsState[formName]
 
-    if (formJson) {
+    if (formState) {
       this.lastFormName = formName
-      const formDef = new StateForm(formJson, this)
+      const formDef = new StateForm(formState, this)
 
       return formDef
     }
 
-    err(`${formName} does not exist.`)
-    return new StateForm({ items: [] }, this)
+    log(`${formName} not found or misspelled.`)
+    // return new StateForm({ items: [] }, this)
+    return null
   }
 
   /**

@@ -7,7 +7,7 @@ import StatePage from '../controllers/StatePage'
 import { Background } from '../mui/background'
 import Dialog from '../mui/dialog'
 import Layout from './layout.component'
-import Content from './content.component'
+import Content from './content'
 import Spinner from './spinner.component'
 import Snackbar from '../mui/snackbar'
 

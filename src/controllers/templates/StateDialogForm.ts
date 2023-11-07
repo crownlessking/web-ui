@@ -23,7 +23,7 @@ export default class StateDialogForm extends StateDialog {
       ...this.dialogState.titleProps
     }
   }
-  private formState?: StateForm
+  private formState?: StateForm | null
   private contentObj?: IStatePageContent
 
   /**
@@ -45,12 +45,23 @@ export default class StateDialogForm extends StateDialog {
       this.contentObj = get_parsed_page_content(this.content)
     )
   }
-  private getForm(): StateForm {
+  private getForm(): StateForm | null {
     const form = this.parent.allForms.getForm(this.getContentObj().name)
-    form.endpoint = this.getContentObj().endpoint ?? ''
+    if (form) {
+      form.endpoint = this.getContentObj().endpoint ?? ''
+    }
     return form
   }
-  get form(): StateForm {
+  get form(): StateForm | null {
     return this.formState || (this.formState = this.getForm())
+  }
+  get contentName(): string {
+    return (this.contentObj || this.getContentObj()).name
+  }
+  get contentEndpoint(): string {
+    return (this.contentObj || this.getContentObj()).endpoint ?? ''
+  }
+  get contentArgs(): string {
+    return (this.contentObj || this.getContentObj()).args ?? ''
   }
 }

@@ -8,7 +8,7 @@ import {
   appRequestFailed,
   appRequestSuccess
 } from 'src/slices/app.slice'
-import { netPatchState, RootState } from '.'
+import { net_patch_state, RootState } from '.'
 
 export default function net_default_201_driver (
   dispatch: Dispatch,
@@ -48,11 +48,8 @@ export default function net_default_201_driver (
     })
   }
 
-  // [TODO] implement this
-
-  // This if-condition handles redux state loaded from the server (remote).
   if (is_object(doc.state)) {
-    dispatch(netPatchState(doc.state))
+    dispatch(net_patch_state(doc.state))
   }
 
   if (!!(doc.meta || doc.data || doc.links || doc.state)) {

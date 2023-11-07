@@ -7,11 +7,13 @@ import { remember_exception } from '../state/_errors.business.logic'
 import { err, log } from '../controllers'
 import { Fragment } from 'react'
 import {
+  DEFAULT_BLANK_PAGE_VIEW,
   DEFAULT_ERRORS_PAGE_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
   DEFAULT_NOTFOUND_PAGE_VIEW,
   DEFAULT_SUCCESS_PAGE_VIEW
 } from '../constants'
+import PageBlank from './pages/blank.component'
 
 interface IViewTable {
   [constant: string]: ()=>JSX.Element
@@ -29,6 +31,7 @@ export default function View({ def: page }: { def: StatePage }): JSX.Element|nul
     [DEFAULT_SUCCESS_PAGE_VIEW]: () => <PageSuccess def={page} />,
     [DEFAULT_NOTFOUND_PAGE_VIEW]: () => <PageNotFound def={page} />,
     [DEFAULT_ERRORS_PAGE_VIEW]: () => <PageErrors def={page} />,
+    [DEFAULT_BLANK_PAGE_VIEW]: () => <PageBlank def={page} />,
   }
 
   try {

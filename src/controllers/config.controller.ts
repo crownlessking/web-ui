@@ -3,7 +3,7 @@
 export interface IConfigMethods {
   readonly init: (data?: any) => void
   readonly set: (path: string, val: any) => void
-  readonly read: <T=any>(path: string) => T
+  readonly read: <T=any>(path: string, $default?: T) => T
   readonly write: <T=any>(path: string, val: T) => void
   readonly delete: (path: string) => void
   readonly clear: () => void
@@ -123,8 +123,8 @@ const config: IConfiguration = {
    *
    * @param prop period-seperated list of properties
    */
-  read: <T=any>(path: string): T => {
-    return resolve(config, path)
+  read: <T=any>(path: string, $default?: T): T => {
+    return resolve(config, path) ?? $default
   },
 
   /**

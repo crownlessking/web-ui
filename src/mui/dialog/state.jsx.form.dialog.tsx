@@ -8,8 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { useDispatch, useSelector } from 'react-redux'
 import StateDialogForm from '../../controllers/templates/StateDialogForm'
 import { AppDispatch, RootState } from '../../state'
-import FormItems from '../form/items'
 import DialogAction from './actions/dialog.actions.form'
+import FormContent from '../../components/content/form.component'
 
 interface IDialogForm { def: StateDialogForm }
 
@@ -48,9 +48,13 @@ export default function StateJsxDialogForm({ def: dialog }: IDialogForm) {
             { dialog.contentText }
           </DialogContentText>
         ): ( null )}
-        <FormItems def={dialog.form} />
+        <FormContent
+          type='dialog'
+          def={dialog.form}
+          formName={dialog.contentName}
+        />
       </DialogContent>
-      {dialog.actions.length > 0 ? (
+      {dialog.form && dialog.actions.length > 0 ? (
         <DialogActions>
           <DialogAction def={dialog.actions} parent={dialog.form} />
         </DialogActions>

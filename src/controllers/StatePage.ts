@@ -37,7 +37,6 @@ export default class StatePage extends AbstractState implements IStatePage {
   private pageContentState?: IStatePageContent
   private pageBackgroundState?: IStateBackground
   private pageBackground?: StatePageBackground
-  // private noPageBackground: boolean
   private pageTypographyState: IStateTypography
   private pageTypography?: StatePageTypography
   private pageDrawer?: StatePageDrawer
@@ -123,7 +122,7 @@ export default class StatePage extends AbstractState implements IStatePage {
         this
       ))
   }
-  /** Chain-access to the page content definition. */
+  /** The page content definition. */
   get content(): string { return this.pageState.content ?? '' }
   /** The type of the page content represented by a special symbol. */
   get contentType(): string {
@@ -195,16 +194,6 @@ export default class StatePage extends AbstractState implements IStatePage {
   get meta(): any { return this.pageState.meta || {} }
   get links(): any { return this.pageState.links || {} }
 
-  /**
-   * Define an appbar for the current page.
-   *
-   * @deprecated
-   */
-  setAppBar = (appBar: IStateAppBar): void => {
-    this.pageAppBarState = appBar
-    this.noPageAppBar = !appBar
-  }
-
   /** Define a drawer for the current page. */
   setDrawer = (drawer: IStatePageDrawer): void => {
     this.pageDrawerState = { ...StatePage.EMPTY_DRAWER, ...drawer }
@@ -232,29 +221,49 @@ export default class StatePage extends AbstractState implements IStatePage {
     document.title = this.getTabTitle()
   }
 
-  private getContentObj() {
-    return this.pageContentState = get_parsed_page_content(this.content)
+  private getContentObj(): IStatePageContent {
+    if (this.pageState.content) {
+      return this.pageContentState = get_parsed_page_content(
+        this.pageState.content
+      )
+    }
+    if (this.pageState.inherited) {
+      const inheritedContent = this.parent
+        .getPageState(this.pageState.inherited)
+        ?.content
+      return this.pageContentState = get_parsed_page_content(inheritedContent)
+    }
+    if (this.pageState.contentInherited) {
+      const inheritedContent = this.parent
+        .getPageState(this.pageState.contentInherited)
+        ?.content
+      return this.pageContentState = get_parsed_page_content(inheritedContent)
+    }
+    return this.pageContentState = get_parsed_page_content()
   }
 
-  /**
-   * Ensures the page has the correct appbar.
-   */
+  /** Ensures the page has the correct appbar. */
   private initPageAppBar = (): IStateAppBar => {
     if (this.pageState.appBar) {
       return { ...StatePage.EMPTY_APPBAR, ...this.pageState.appBar }
     }
+    if (this.pageState.inherited) {
+      const inheritedRoute = this.pageState.inherited
+      const inheritedState = this.parent.getPageState(inheritedRoute)?.appBar
+      if (inheritedState) { return inheritedState }
+      ler(`StatePage.initPageAppBar: Failed to inherit app bar.`)
+    }
+    if (this.pageState.appBarInherited) {
+      const appBarInheritedRoute = this.pageState.appBarInherited
+      const appBarInheritedState = this.parent
+        .getPageState(appBarInheritedRoute)
+        ?.appBar
+      if (appBarInheritedState) { return appBarInheritedState }
+      ler(`StatePage.initPageAppBar: Failed to inherit app bar.`)
+    }
     if (this.pageState.useDefaultAppbar) {
       return this.parent.parent.appBar.state
     }
-
-    // [TODO] Potential issue: route variable could be undefined.
-    //        Compensate with a try-catch statement where error messages
-    //        are printed if Config.DEBUG is true.
-    if (this.pageState.appBarInherited) {
-      const route = this.pageState.appBarInherited
-      return this.parent.pageAt(route).appBar.state
-    }
-
     return StatePage.EMPTY_APPBAR
   }
 
@@ -265,46 +274,52 @@ export default class StatePage extends AbstractState implements IStatePage {
     }
     if (this.pageState.appBarCustomInherited) {
       const route = this.pageState.appBarCustomInherited
-      return this.parent.pageAt(route).state.appBarCustom || {}
+      return this.parent.getPageState(route)?.appBarCustom || {}
     }
     return this.pageAppBarCustomState || {}
   }
 
-  /**
-   * Initializes and ensures that the page has the correct drawer.
-   */
+  /** Initializes and ensures that the page has the correct drawer. */
   private initPageDrawer = (): IStateDrawer => {
     if (this.pageState.drawer) {
       return { ...StatePage.EMPTY_DRAWER, ...this.pageState.drawer }
     }
-
-    // [TODO] Potential issue: route variable could be undefined.
-    //        Compensate with a try-catch statement where error messages
-    //        are printed if Config.DEBUG is true.
-    if (this.noPageDrawer && this.pageState.drawerInherited) {
-      const route = this.pageState.drawerInherited
-      return this.parent.pageAt(route).drawer.state
+    if (this.pageState.inherited) {
+      const route = this.pageState.inherited
+      const inheritedDrawerState = this.parent.getPageState(route)?.drawer
+      if (inheritedDrawerState) { return inheritedDrawerState }
+      ler(`StatePage.initPageDrawer: Failed to inherit drawer.`)
     }
-
-    if (this.noPageDrawer && this.pageState.useDefaultDrawer) {
+    if (this.pageState.drawerInherited) {
+      const drawerInheritedRoute = this.pageState.drawerInherited
+      const drawerInheritedState = this.parent
+        .getPageState(drawerInheritedRoute)
+        ?.drawer
+      if (drawerInheritedState) {
+        return drawerInheritedState
+      }
+      ler(`StatePage.initPageDrawer: Failed to inherit drawer.`)
+    }
+    if (this.pageState.useDefaultDrawer) {
       return this.parent.parent.drawer.state
     }
-
     return StatePage.EMPTY_DRAWER
   }
 
-  /**
-   * Initializes and ensures that the page has the correct background.
-   */
+  /** Initializes and ensures that the page has the correct background. */
   private initPageBackground = (): IStateBackground => {
     if (this.pageState.background) { return this.pageState.background }
-
     // if background should be inherited from another page
+    if (this.pageState.inherited) {
+      const inheritedRoute = this.pageState.inherited
+      const inheritedBackground = this.parent.getPageState(inheritedRoute)
+        ?.background
+      if (inheritedBackground) { return inheritedBackground }
+    }
     if (this.pageState.backgroundInherited) {
       const route = this.pageState.backgroundInherited
       try {
-        const background = this.parent.parent.allPages.getPageJson(route)
-          .background
+        const background = this.parent.getPageState(route)?.background
         if (background) { return background }
       } catch (e: any) {
         const message = `Error while inheriting background from "${route}" page.`
@@ -313,10 +328,8 @@ export default class StatePage extends AbstractState implements IStatePage {
         remember_exception(e, message)
       }
     }
-
     // If explicitly set to not use the default background.
     if (this.pageState.useDefaultBackground === false) { return {} }
-
     // if no background was defined, pages will automatically use the default.
     return this.parent.parent.background.state
   }

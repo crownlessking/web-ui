@@ -15,15 +15,6 @@ const initConfObj = {
   /** If `true`, will show tips in console. */
   DEV: store.getState().app.inDevelMode ?? false,
 
-  /**
-   * Limits the number of time the app attempts to load a page state from the
-   * server if none was defined.
-   *
-   * **Warning:** This fixes a bug where the app infinitely attempts to load
-   * state from server.
-   */
-  ALLOWED_ATTEMPTS: 1,
-
   /** Log to console if in debug mode. */
   log: (args: any): void => {
     if (initConfObj.DEBUG) {

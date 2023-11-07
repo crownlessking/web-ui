@@ -15,6 +15,7 @@ import {
 } from './tuber.config'
 import { IBookmark, TPlatform, TVideoData } from './tuber.interfaces'
 
+/** @deprecated */
 const HOST_TO_PLATFORM_MAP: { [host: string]: TPlatform } = {
   'youtu.be': 'youtube',
   'www.youtube.com': 'youtube',
@@ -22,9 +23,17 @@ const HOST_TO_PLATFORM_MAP: { [host: string]: TPlatform } = {
   'rumble.com': 'rumble',
   'www.rumble.com': 'rumble',
   'vimeo.com': 'vimeo',
+  'www.dailymotion.com': 'dailymotion',
+  'dai.ly': 'dailymotion',
+  'odysee.com': 'odysee',
+  'www.facebook.com': 'facebook',
+  'fb.watch': 'facebook',
 }
 
-/** Get the video platform from video url. */
+/**
+ * Get the video platform from video url.
+ * @deprecated
+ */
 export function get_platform(url: string): TPlatform {
   try {
     const domain = new URL(url)
@@ -48,7 +57,7 @@ export function youtube_get_video_id(url: string): string | undefined {
   var regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed|live\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]+).*/
   const match = url.match(regExp)
   if (!match) {
-    ler(`get_video_id: Bad video URL: '${url}'`)
+    ler(`youtube_get_video_id: Bad video URL: '${url}'`)
     return undefined
   }
   return match[1]
@@ -122,9 +131,10 @@ export function format_seconds_to_readable_time (timeInSeconds: number): string 
 
 /** Get the video start time in seconds. */
 export function _get_start_time_in_seconds(startTime: string): number {
-  let timeInSeconds = 0
   const temp = startTime.toLowerCase().match(/\d+h|\d+m|\d+s/g)
-  temp?.forEach(fragment => {
+  if (!temp) { return parseInt(startTime) }
+  let timeInSeconds = 0
+  temp.forEach(fragment => {
     if (fragment.slice(-1) === 'h') {
       timeInSeconds += parseInt(fragment.replace(/\D+/, '')) * 60 * 60
     } else if (fragment.slice(-1) === 'm') {

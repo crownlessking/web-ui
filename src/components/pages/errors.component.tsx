@@ -28,7 +28,8 @@ interface IHive {
 
 interface IErrorListItemProp {
   errorState: IJsonapiError
-  hive: IHive // data shared between detail & error components
+  /** data shared between detail & error components */
+  hive: IHive 
 }
 
 const styles = {
@@ -51,7 +52,7 @@ type TClasses = keyof typeof styles
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 20, // theme.shape.borderRadius,
+  borderRadius: 20,
   border: `2px solid ${theme.palette.grey[300]}`,
   backgroundColor: theme.palette.grey[300],
   '&:hover': {
@@ -61,7 +62,6 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    // marginLeft: theme.spacing(3),
     width: 'auto',
   },
   flexGrow: 1,
@@ -81,7 +81,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -141,7 +140,6 @@ const CodeWithMatches = ({
   return <Highlight value={code} regex={matches.join('|')} />
 }
 
-/** */
 const IdWithMatches = ({
   id,
   matches
@@ -220,13 +218,6 @@ function ErrorListItem({ errorState: errorJson, hive }: IErrorListItemProp): JSX
   )
 }
 
-/**
- * [TODO] The 64px value is the height of the app bar. Find a way to get the
- *        value dynamically. For example, you could acquire the dom element of 
- *        the app bar using an id then use `element.offsetHeight`.
- * @param param0 
- * @returns 
- */
 function ErrorBody({ hive }: { hive: IHive }): JSX.Element | null {
   const [ json, setJson ] = useState<string>('')
   hive.setState = setJson

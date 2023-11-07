@@ -15,6 +15,8 @@ export default function net_default_500_driver (
   endpoint: string,
   response: IJsonapiResponse
 ): void {
+  dispatch(appRequestFailed())
+
   if (!response.errors) {
     const title = 'net_default_500_driver: No errors were received.'
     ler(title)
@@ -27,9 +29,9 @@ export default function net_default_500_driver (
     })
     return
   }
+
   remember_jsonapi_errors(response.errors)
   ler(`net_default_500_driver: endpoint: ${endpoint}`)
   ler('net_default_500_driver: response:', response)
-  dispatch(appRequestFailed())
 }
 

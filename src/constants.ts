@@ -17,9 +17,9 @@ export const LAYOUT_XS = 'layout_xs'
 // contents
 
 export const APP_CONTENT_VIEW = '$view'
+export const DEFAULT_BLANK_PAGE = 'default-blank'
 export const DEFAULT_LANDING_PAGE = 'default-landing'
-export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
-export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
+export const DEFAULT_NOT_FOUND_PAGE = 'default-notfound'
 
 // views
 
@@ -27,6 +27,7 @@ export const DEFAULT_LANDING_PAGE_VIEW = 'default_landing_page_view'
 export const DEFAULT_SUCCESS_PAGE_VIEW = 'default_success_page_view'
 export const DEFAULT_NOTFOUND_PAGE_VIEW = 'default_notfound_page_view'
 export const DEFAULT_ERRORS_PAGE_VIEW = 'default_errors_page_view'
+export const DEFAULT_BLANK_PAGE_VIEW = 'default_blank_page_view'
 
 // form items
 
@@ -97,6 +98,15 @@ export type TStatePageLayout =
   | typeof LAYOUT_TABLE_VIRTUALIZED
   | typeof LAYOUT_XL
   | typeof LAYOUT_XS
+
+/**
+   * Limits the number of time the app attempts to load a page state from the
+   * server if none was defined.
+   *
+   * **Warning:** This fixes a bug where the app infinitely attempts to load
+   * state from server.
+   */
+export const ALLOWED_ATTEMPTS = 1
 
 // messages
 
