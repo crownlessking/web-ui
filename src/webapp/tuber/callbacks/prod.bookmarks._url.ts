@@ -40,7 +40,7 @@ export function dialog_new_video_url(redux: IRedux) {
 /**
  * Show the dialog to create a new bookmark from a video url.
  *
- * @id _1_C_1
+ * @id $1_C_1
  */
 export function dialog_new_bookmark_from_url(redux: IRedux) {
   return async () => {
@@ -170,7 +170,7 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
  * Triggers the callback to create a new video bookmark from url when the
  * [enter] key is pressed.
  *
- * @id _1_C_2
+ * @id $1_C_2
  */
 export function dialog_new_bookmark_from_url_on_enter_key (
   redux: IRedux

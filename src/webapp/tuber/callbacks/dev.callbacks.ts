@@ -9,9 +9,12 @@ import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200'
-import { safely_get_as } from 'src/controllers'
+import { ler, safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
+import { get_bootstrap_key } from 'src/state/_business.logic'
+
+const BOOTSTRAP_KEY = get_bootstrap_key()
 
 function dev_create_user(redux: IRedux) {
   return () => {
@@ -127,6 +130,30 @@ function dev_populate_collection(redux: IRedux) {
   }
 }
 
+function dev_form_submit_authorization(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = safely_get_as<string>(
+      rootState.meta,
+      `${BOOTSTRAP_KEY}.state_registry.49`,
+      ''
+    )
+    if (!formName) {
+      ler('dev_form_submit_authorization: Form name not found.')
+      return
+    }
+    const formData = safely_get_as<Record<string, string>>(
+      rootState.formsData,
+      formName,
+      {}
+    )
+    dispatch(post_req_state('dev/save-authorization-key', formData, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
 const devCallbacks = {
   devCreateUser: dev_create_user,
   devResetDatabase: dev_reset_database,
@@ -140,7 +167,8 @@ const devCallbacks = {
   devDropCollection: dev_drop_collection,
   devPopulateCollection: dev_populate_collection,
   devCreateBookmarkSearchIndex: dev_create_bookmark_search_index,
-  '$45_C_1': dev_get_video_thumbnail
+  '$45_C_1': dev_get_video_thumbnail,
+  '$49_C_1': dev_form_submit_authorization,
 }
 
 export default devCallbacks

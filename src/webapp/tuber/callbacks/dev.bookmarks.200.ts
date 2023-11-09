@@ -11,6 +11,7 @@ export function dev_get_bookmarks_callback (redux: IRedux, args = '') {
 
 // [TODO] Get a single bookmark from server using post request
 
+/** @id 52 */
 export function dev_create_bookmark_search_index (redux: IRedux) {
   return async () => {
     redux.store.dispatch(post_req_state(

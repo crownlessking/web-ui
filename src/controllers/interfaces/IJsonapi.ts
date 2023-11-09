@@ -7,9 +7,6 @@ RESPONSE SPECIFICATION
 export interface IResponseRequirement {
   driver?: string
   state?: INetState
-  status?: number
-  statusText?: string
-  ok?: boolean
 }
 
 /* ----------------------------------------------------------------------------

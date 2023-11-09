@@ -13,7 +13,7 @@ import {
 } from '../slices/app.slice'
 import { get_query_starting_fixed, get_origin_ending_fixed } from '../controllers'
 import { RootState } from '.'
-import { IJsonapiAbstractResponse } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiBaseResponse } from '../controllers/interfaces/IJsonapi'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Content-Type': 'application/json',
@@ -63,29 +63,78 @@ const delegate_data_handling = (
   dispatch: Dispatch,
   getState: () => RootState,
   endpoint: string,
-  state: IJsonapiAbstractResponse
+  json: IJsonapiBaseResponse
 ) => {
   dispatch(appHideSpinner())
-  const status = state.status || 500
+  const status = json.meta?.status || 500
 
   const defaultDriver: { [key: number]: () => void } = {
-    200: () => net_default_200_driver(dispatch, getState, endpoint, state),
-    201: () => net_default_201_driver(dispatch, getState, endpoint, state),
-    400: () => net_default_400_driver(dispatch, getState, endpoint, state),
-    404: () => net_default_404_driver(dispatch, getState, endpoint, state),
-    409: () => net_default_409_driver(dispatch, getState, endpoint, state),
-    500: () => net_default_500_driver(dispatch, getState, endpoint, state),
+    200: () => net_default_200_driver(dispatch, getState, endpoint, json),
+    201: () => net_default_201_driver(dispatch, getState, endpoint, json),
+    400: () => net_default_400_driver(dispatch, getState, endpoint, json),
+    404: () => net_default_404_driver(dispatch, getState, endpoint, json),
+    409: () => net_default_409_driver(dispatch, getState, endpoint, json),
+    500: () => net_default_500_driver(dispatch, getState, endpoint, json),
   }
 
   // We need to apply the right drivers to the JSON response
   try {
-    switch (state.driver) {
+    switch (json.driver) {
       default:
         defaultDriver[status]()
     }
   } catch (e) {
     remember_exception(e)
   }
+}
+
+/**
+ * TODO Implement this function.
+ * This function is for handling unexpected nesting.
+ * It's a common problem when the server returns a response that is
+ * not in the expected format.  
+ * For example, the server returns a response like this:  
+ * ```json
+ * {
+ *   "data": {
+ *     "id": "123",
+ *     "type": "users",
+ *     "attributes": {
+ *       "name": "John Doe"
+ *     }
+ *   }
+ * }
+ * ```
+ * But the client expects a response like this:
+ * ```json
+ * {
+ *   "id": "123",
+ *   "type": "users",
+ *   "attributes": {
+ *     "name": "John Doe"
+ *   }
+ * }
+ * ```
+ * This function should be able to handle this problem.
+ * It should be able to detect the unexpected nesting and fix it.
+ * It should also be able to detect the expected nesting and leave it
+ * alone.
+ * This function should be able to handle the following cases:
+ * 1. The server returns a response with the expected nesting.  
+ * 2. The server returns a response with the unexpected nesting.  
+ * 3. The server returns a response with the expected nesting and
+ *   unexpected nesting.
+ *
+ * As more cases are discovered, they should be added to this list.
+ */
+function _resolve_unexpected_nesting (response: any) {
+  if (response.response) {// Case of nested response
+    return response.response
+  }
+
+  // ... other cases
+
+  return response
 }
 
 /**
@@ -180,10 +229,11 @@ export const post_req_state = (
         ...headers,
         body: JSON.stringify(body)
       })
-      const json = await response.json()
-      json.status = response.status
-      json.statusText = response.statusText
-      json.ok = response.ok
+      const json = _resolve_unexpected_nesting(await response.json())
+      json.meta = json.meta || {}
+      json.meta.status = response.status
+      json.meta.statusText = response.statusText
+      json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json)
     } catch (error: any) {
       remember_exception(error)
@@ -210,9 +260,10 @@ export const put_req_state = (
         body: JSON.stringify(body)
       })
       const json = await response.json()
-      json.status = response.status
-      json.statusText = response.statusText
-      json.ok = response.ok
+      json.meta = json.meta || {}
+      json.meta.status = response.status
+      json.meta.statusText = response.statusText
+      json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json)
     } catch (error: any) {
       remember_exception(error)
@@ -256,9 +307,10 @@ export const get_req_state = (
       const headers = customHeaders || getState().net.headers || {}
       const response = await fetch(uri, { ...DEFAULT_GET_PAYLOAD, ...headers})
       const json = await response.json()
-      json.status = response.status
-      json.statusText = response.statusText
-      json.ok = response.ok
+      json.meta = json.meta || {}
+      json.meta.status = response.status
+      json.meta.statusText = response.statusText
+      json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json)
     } catch (error) {
       remember_exception(error)
@@ -282,9 +334,10 @@ export const delete_req_state = (
       const headers = customHeaders || getState().net.headers || {}
       const response = await fetch(uri, { ...DEFAULT_DELETE_PAYLOAD, ...headers})
       const json = await response.json()
-      json.status = response.status
-      json.statusText = response.statusText
-      json.ok = response.ok
+      json.meta = json.meta || {}
+      json.meta.status = response.status
+      json.meta.statusText = response.statusText
+      json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json)
     } catch (error) {
       remember_exception(error)

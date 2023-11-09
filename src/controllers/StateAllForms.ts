@@ -48,7 +48,6 @@ export default class StateAllForms extends Controller {
     }
 
     log(`${formName} not found or misspelled.`)
-    // return new StateForm({ items: [] }, this)
     return null
   }
 
