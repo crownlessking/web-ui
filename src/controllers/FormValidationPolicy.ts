@@ -76,9 +76,9 @@ export default class FormValidationPolicy<T=any> {
     return this._formData
   }
 
-  enforceValidationSchemes(): IValidation<T>[] | false {
+  getValidationSchemes(): IValidation<T>[] | null {
     const formsData = this._getFormData()
-    if (!formsData) { return false }
+    if (!formsData) { return null }
     const formErrorProfiles = this._e.state[this._formName]
     const vError: IValidation<T>[] = []
     Object.entries(formErrorProfiles).forEach(key => {
@@ -87,7 +87,7 @@ export default class FormValidationPolicy<T=any> {
       if (typeof value === 'undefined'
         && !profile.required
       ) {
-        return false
+        return null
       } else if (profile.required === true && !value) {
         vError.push({
           name: name as keyof T,
@@ -120,7 +120,7 @@ export default class FormValidationPolicy<T=any> {
         })
       }
     })
-    return vError.length > 0 ? vError : false
+    return vError.length > 0 ? vError : null
   }
 
 }

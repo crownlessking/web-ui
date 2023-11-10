@@ -20,7 +20,7 @@ export default interface IStateAvatar {
      * Override or extend the styles applied to the component. See CSS API below
      * for more details.
      */
-    classes?: any
+    classes?: Record<string, string>
     /**
      * The component used for the root node. Either a string to use a HTML
      * element or a component.

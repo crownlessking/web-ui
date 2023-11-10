@@ -9,7 +9,7 @@ import store, { AppDispatch, RootState, actions } from 'src/state'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Link as RouterLink } from 'react-router-dom'
-import JsonIcon from '../json.icons'
+import StateJsxIcon from '../state.jsx.icons'
 import { get_drawer_width } from 'src/state/_business.logic'
 import { Fragment } from 'react'
 import { get_formatted_route } from 'src/controllers/StateLink'
@@ -101,7 +101,7 @@ export default function MiniDrawer({ def: drawer }: IMiniDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <JsonIcon def={item.has} />
+              <StateJsxIcon def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>

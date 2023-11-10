@@ -7,7 +7,7 @@ import StateDrawerResponsive from 'src/controllers/templates/StateDrawerResponsi
 import store, { RootState, actions } from 'src/state'
 import { Link as RouterLink } from 'react-router-dom'
 import { get_formatted_route } from 'src/controllers/StateLink'
-import JsonIcon from '../json.icons'
+import StateJsxIcon from '../state.jsx.icons'
 
 interface IResDrawerProps {
   def: StateDrawerResponsive
@@ -35,7 +35,7 @@ export default function ResponsiveDrawer({ def: drawer }: IResDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <JsonIcon def={item.has} />
+              <StateJsxIcon def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>

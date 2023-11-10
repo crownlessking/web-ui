@@ -1,26 +1,22 @@
 import { Fragment } from 'react'
 import { Icon, Button } from '@mui/material'
+import { get_font_awesome_icon_prop } from 'src/controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import StateFormItem from 'src/controllers/StateFormItem'
-import store, { actions } from 'src/state'
-import { get_font_awesome_icon_prop } from 'src/controllers'
-import StateForm from 'src/controllers/StateForm'
+import store, { actions } from '../../../../state'
+import StateFormItem from '../../../../controllers/StateFormItem'
 
-interface IJsonButtonProps { def: StateFormItem<StateForm> }
-interface IJsonButtonContentProps {
-    def: StateFormItem<StateForm>
-}
+interface IJsonButtonProps { def: StateFormItem }
 
-export default function JsonDialogAction ({ def: button }: IJsonButtonProps) {
+export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
   const redux = {
     store,
     actions,
     route: button.props.href
   }
-  const onClick = button.onClick
+  const onClick = button.onClick || button.has.callback
 
-  const ButtonContent = ({ def: button }: IJsonButtonContentProps) => {
+  const ButtonContent = ({ def: button }: { def: StateFormItem}) => {
     if (button.text) {
       switch (button.has.iconPosition) {
 
@@ -90,7 +86,6 @@ export default function JsonDialogAction ({ def: button }: IJsonButtonProps) {
     <Button
       {...button.props}
       onClick={onClick(redux)}
-      disabled={button.disableOnAll}
     >
       <ButtonContent def={button} />
     </Button>

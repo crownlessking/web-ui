@@ -16,7 +16,7 @@ interface IJsonMIProps {
  * To make use of the default drawer, the flag, `generateDefaultDrawer` needs
  * to be set to `true`.
  */
-export default function JsonMenuIcon ({ def: appbar, toggle }: IJsonMIProps) {
+export default function StateJsxMenuIcon ({ def: appbar, toggle }: IJsonMIProps) {
   if (appbar.parent.hasDrawer) {
     return (
       <IconButton {...appbar.menuIconProps}>

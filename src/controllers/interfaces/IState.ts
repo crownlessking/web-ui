@@ -98,7 +98,7 @@ export default interface IState {
   pagesData: IGenericObject
   snackbar: IStateSnackbar
   /**
-   * [TODO] Holds temporary data.
+   * Holds temporary data.
    *
    * The data must be volatile. As in, if it is retrieved, it must be removed.
    * The key names are similar to those found in other state objects. e.g.

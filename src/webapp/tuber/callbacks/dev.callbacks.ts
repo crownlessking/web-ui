@@ -13,6 +13,10 @@ import { ler, safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 import { get_bootstrap_key } from 'src/state/_business.logic'
+import {
+  FORM_AUTHORIZATION_KEY_ID,
+  FORM_AUTHORIZATION_URL_ID
+} from '../tuber.config'
 
 const BOOTSTRAP_KEY = get_bootstrap_key()
 
@@ -130,14 +134,38 @@ function dev_populate_collection(redux: IRedux) {
   }
 }
 
-function dev_form_submit_authorization(redux: IRedux) {
+function dev_form_submit_authorization_key(redux: IRedux) {
   return async () => {
     const { store: { dispatch, getState } } = redux
     const rootState = getState()
     const { headers } = rootState.net
     const formName = safely_get_as<string>(
       rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.49`,
+      `${BOOTSTRAP_KEY}.state_registry.${FORM_AUTHORIZATION_KEY_ID}`,
+      ''
+    )
+    if (!formName) {
+      ler('dev_form_submit_authorization: Form name not found.')
+      return
+    }
+    const formData = safely_get_as<Record<string, string>>(
+      rootState.formsData,
+      formName,
+      {}
+    )
+    dispatch(post_req_state('dev/save-authorization-key', formData, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
+function dev_form_submit_authorization_url(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = safely_get_as<string>(
+      rootState.meta,
+      `${BOOTSTRAP_KEY}.state_registry.${FORM_AUTHORIZATION_URL_ID}`,
       ''
     )
     if (!formName) {
@@ -168,7 +196,8 @@ const devCallbacks = {
   devPopulateCollection: dev_populate_collection,
   devCreateBookmarkSearchIndex: dev_create_bookmark_search_index,
   '$45_C_1': dev_get_video_thumbnail,
-  '$49_C_1': dev_form_submit_authorization,
+  '$49_C_1': dev_form_submit_authorization_key,
+  '$50_C_1': dev_form_submit_authorization_url,
 }
 
 export default devCallbacks

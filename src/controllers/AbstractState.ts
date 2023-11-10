@@ -28,7 +28,7 @@ export default abstract class AbstractState {
    * @param msg error message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected die<T=any>(msg: string, $return: T) {
+  protected die<T=any>(msg: string, $return: T): T {
     err(msg)
     return $return
   }
@@ -38,7 +38,7 @@ export default abstract class AbstractState {
    * @param msg error message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected err<T=any>(msg: string, $return: T) {
+  protected err<T=any>(msg: string, $return: T): T {
     ler(msg)
     return $return
   }
@@ -48,7 +48,7 @@ export default abstract class AbstractState {
    * @param msg warning message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected warn<T=any>(msg: string, $return: T) {
+  protected warn<T=any>(msg: string, $return: T): T {
     warn(msg)
     return $return
   }
@@ -58,7 +58,7 @@ export default abstract class AbstractState {
    * @param msg log message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected notice<T=any>(msg: string, $return: T) {
+  protected notice<T=any>(msg: string, $return: T): T {
     log(msg)
     return $return
   }

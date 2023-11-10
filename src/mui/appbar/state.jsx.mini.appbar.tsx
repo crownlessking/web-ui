@@ -6,7 +6,7 @@ import HamburgerIcon from '@mui/icons-material/Menu'
 import Typography from '@mui/material/Typography'
 import StatePage from '../../controllers/StatePage'
 import AppBarButton from '../link'
-import Logo from './logo'
+import StateJsxLogo from './state.jsx.logo'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
 import { styled } from '@mui/material/styles'
@@ -38,7 +38,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function JsonBasicAppBar({ def: page }: IJsonBasicAB) {
+export default function StateJsxMiniAppBar({ def: page }: IJsonBasicAB) {
   const { appBar } = page
   const open = useSelector((state: RootState) => state.drawer.open)
   const dispatch = useDispatch<AppDispatch>()
@@ -68,7 +68,7 @@ export default function JsonBasicAppBar({ def: page }: IJsonBasicAB) {
             </IconButton>
           ) : ( null )}
           {appBar.hasLogo ? (
-            <Logo def={appBar} />
+            <StateJsxLogo def={appBar} />
           ) : (
             <Typography
               sx={{

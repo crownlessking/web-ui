@@ -1,8 +1,5 @@
-// Import necessary libraries
 import { IRedux } from 'src/state'
 import { get_req_state } from 'src/state/net.actions'
-
-// Define the functions to retrieve the thumbnail for each platform
 
 /**
  * Get the thumbnail for a YouTube video
@@ -26,8 +23,9 @@ export function dev_get_youtube_thumbnail(videoId: string): string {
  * @see https://stackoverflow.com/a/4285098/1875859
  */
 export async function get_vimeo_thumbnail(redux: IRedux, videoId: string): Promise<void> {
+  const { dispatch } = redux.store
   const encodedVideoId = encodeURIComponent(videoId)
-  redux.store.dispatch(get_req_state(`dev/vimeo/thumbnails?videoid=${encodedVideoId}`))
+  dispatch(get_req_state(`dev/vimeo/thumbnails?videoid=${encodedVideoId}`))
 }
 
 /**
@@ -41,17 +39,20 @@ export async function get_dailymotion_thumbnail(videoId: string): Promise<string
 
 /** Get the thumbnail URL for a Rumble video */
 export async function dev_get_rumble_thumbnail(redux: IRedux, slug: string): Promise<void> {
+  const { dispatch } = redux.store
   const encodedSlug = encodeURIComponent(slug)
-  redux.store.dispatch(get_req_state(`dev/rumble/thumbnails?slug=${encodedSlug}`))
+  dispatch(get_req_state(`dev/rumble/thumbnails?slug=${encodedSlug}`))
 }
 
 /** Get the thumbnail URL for an Odysee video */
 export async function dev_get_odysee_thumbnail(redux: IRedux, slug: string): Promise<void> {
+  const { dispatch } = redux.store
   const encodedSlug = encodeURIComponent(slug)
-  redux.store.dispatch(get_req_state(`dev/odysee/thumbnails?slug=${encodedSlug}`))
+  dispatch(get_req_state(`dev/odysee/thumbnails?slug=${encodedSlug}`))
 }
 
 export async function get_twitch_thumbnail(redux: IRedux, videoId: string): Promise<void> {
-  const thumbnailUrl = encodeURIComponent(videoId)
-  redux.store.dispatch(get_req_state(`dev/twitch/thumbnails?videoid=${thumbnailUrl}`))
+  const { dispatch } = redux.store
+  const encodedVideoId = encodeURIComponent(videoId)
+  dispatch(get_req_state(`dev/twitch/thumbnails?videoid=${encodedVideoId}`))
 }

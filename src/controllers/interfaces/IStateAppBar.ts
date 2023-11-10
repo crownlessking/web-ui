@@ -1,6 +1,7 @@
 import { 
-  AppBarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps
+  AppBarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
 } from '@mui/material'
+import IHtmlAttributes from '.'
 import IAbstractState from './IAbstractState'
 import IStateBackground from './IStateBackground'
 import IStateComponent from './IStateComponent'
@@ -21,10 +22,10 @@ export default interface IStateAppBar extends IAbstractState {
   toolbarProps?: ToolbarProps
   /** hamburger icon props */
   menuIconProps?: IconButtonProps
-  logoProps?: any
+  logoProps?: IHtmlAttributes
   /** mui5 text-logo props */
   textLogoProps?: any
-  logoContainerProps?: any
+  logoContainerProps?: IHtmlAttributes
   /** AppBar textfield props */
   inputBaseProps?: InputBaseProps
   searchFieldProps?: any

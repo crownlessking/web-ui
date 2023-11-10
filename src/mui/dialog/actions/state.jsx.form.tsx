@@ -1,16 +1,16 @@
 import { Fragment } from 'react'
-import IStateFormItem from '../../../controllers/interfaces/IStateFormItem'
-import StateDialog from '../../../controllers/StateDialog'
-import StateFormItem from '../../../controllers/StateFormItem'
 import { STATE_BUTTON } from '../../../constants'
-import JsonDialogAction from './actions.button'
+import StateForm from 'src/controllers/StateForm'
+import IStateFormItem from '../../../controllers/interfaces/IStateFormItem'
+import StateFormItem from '../../../controllers/StateFormItem'
+import StateJsxDialogActionButton from './state.jsx.form.button'
 
 interface IFieldItemProps {
   def: IStateFormItem[]
-  parent: StateDialog
+  parent: StateForm
 }
 
-export default function DialogAction({
+export default function StateJsxDialogAction({
   def: formItems,
   parent
 }: IFieldItemProps) {
@@ -19,7 +19,7 @@ export default function DialogAction({
       {formItems.map((json, i) => {
         if (json.type.toLowerCase() !== STATE_BUTTON) { return ( null ) }
         const item = new StateFormItem(json, parent)
-        return <JsonDialogAction def={item} key={`dialgo-action-${i}`} />
+        return <StateJsxDialogActionButton def={item} key={`dialgo-action-${i}`} />
       })}
     </Fragment>
   )

@@ -8,13 +8,13 @@ import { useDispatch } from 'react-redux'
 import StatePage from '../../controllers/StatePage'
 import { AppDispatch } from '../../state'
 import AppBarButton from '../link'
-import Logo from './logo'
+import StateJsxLogo from './state.jsx.logo'
 
 interface IJsonBasicAB {
   def: StatePage
 }
 
-export default function JsonBasicAppBar({ def: page }: IJsonBasicAB) {
+export default function StateJsxBasicAppBar({ def: page }: IJsonBasicAB) {
   const { appBar } = page
   const dispatch = useDispatch<AppDispatch>()
 
@@ -38,16 +38,16 @@ export default function JsonBasicAppBar({ def: page }: IJsonBasicAB) {
             </IconButton>
           ) : ( null )}
           {appBar.hasLogo ? (
-            <Logo def={appBar} />
+            <StateJsxLogo def={appBar} />
           ) : (
             <Typography
-            sx={{
-              fontFamily: appBar.typography.fontFamily,
-              color: appBar.typography.color
-            }}
-            {...appBar.textLogoProps}
+              sx={{
+                fontFamily: appBar.typography.fontFamily,
+                color: appBar.typography.color
+              }}
+              {...appBar.textLogoProps}
             >
-            { page.parent.parent.app.title }
+              { page.parent.parent.app.title }
             </Typography>
           )}
           {appBar.items.map((item, i) => (

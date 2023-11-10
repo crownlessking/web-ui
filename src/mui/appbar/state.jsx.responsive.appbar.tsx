@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import JsonMenuIcon from './menuicon.appbar'
+import StateJsxMenuIcon from './state.jsx.menuicon.appbar'
 import StatePage from '../../controllers/StatePage'
 
 interface IJRAppBarProps {
@@ -14,7 +14,7 @@ interface IJRAppBarProps {
 // const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 
-export default function JsonResponsiveAppBar({ def: page }: IJRAppBarProps) {
+export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) {
   const { appBar } = page;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -44,7 +44,7 @@ export default function JsonResponsiveAppBar({ def: page }: IJRAppBarProps) {
     <Box sx={{ display: 'flex' }}>
       <AppBar component="nav">
         <Toolbar>
-          <JsonMenuIcon def={appBar} toggle={handleDrawerToggle} />
+          <StateJsxMenuIcon def={appBar} toggle={handleDrawerToggle} />
           <Typography
             variant="h6"
             component="div"

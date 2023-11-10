@@ -5,14 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import StateFormItem from 'src/controllers/StateFormItem'
 import store, { actions } from 'src/state'
 import { get_font_awesome_icon_prop } from 'src/controllers'
-import StateDialog from 'src/controllers/StateDialog'
+import StateDialog from '../../../controllers/StateDialog'
 
 interface IJsonButtonProps { def: StateFormItem<StateDialog> }
 interface IJsonButtonContentProps {
-    def: StateFormItem<StateDialog>
+  def: StateFormItem<StateDialog>
 }
 
-export default function JsonDialogAction ({ def: button }: IJsonButtonProps) {
+export default function StateJsxDialogActionButton (
+  { def: button }: IJsonButtonProps
+) {
   const redux = {
     store,
     actions,

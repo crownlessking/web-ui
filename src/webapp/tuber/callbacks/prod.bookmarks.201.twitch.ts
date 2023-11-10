@@ -50,8 +50,8 @@ export function form_submit_new_twitch_bookmark(redux: IRedux) {
     }
   
     const policy = new FormValidationPolicy<IBookmark>(redux, formName)
-    const validation = policy.enforceValidationSchemes()
-    if (validation !== false && validation.length > 0) {
+    const validation = policy.getValidationSchemes()
+    if (validation && validation.length > 0) {
       validation.forEach(vError => {
         const message = vError.message ?? ''
         policy.emit(vError.name, message)

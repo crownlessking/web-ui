@@ -19,7 +19,7 @@ import { dev, err } from '../../controllers'
  * set whatever attributes need to be set for the path tag in the
  * `appbar.logoProps` property.
  */
-export default function Logo ({ def: appBar }: { def: StatePageAppBar }) {
+export default function StateJsxLogo ({ def: appBar }: { def: StatePageAppBar }) {
 
   /**
    * @see https://codesandbox.io/s/7q80d?file=/src/MyAppBar.tsx

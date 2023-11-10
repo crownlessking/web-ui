@@ -8,7 +8,7 @@ import store, { AppDispatch, RootState, actions } from 'src/state'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Link as RouterLink } from 'react-router-dom'
-import JsonIcon from '../json.icons'
+import StateJsxIcon from '../state.jsx.icons'
 import { Fragment } from 'react'
 import { get_formatted_route } from 'src/controllers/StateLink'
 
@@ -65,7 +65,7 @@ export default function PersistentDrawer({def: drawer }: PerDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <JsonIcon def={item.has} />
+              <StateJsxIcon def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>

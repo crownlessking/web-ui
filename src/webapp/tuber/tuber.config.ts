@@ -54,6 +54,8 @@ export const FORM_UNKNOWN_NEW_ID = '28'
 export const FORM_UNKNOWN_EDIT_ID = '29'
 export const DIALOG_UNKNOWN_NEW_ID = '30'
 export const DIALOG_UNKNOWN_EDIT_ID = '31'
+export const FORM_AUTHORIZATION_KEY_ID = '49'
+export const FORM_AUTHORIZATION_URL_ID = '50'
 
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'

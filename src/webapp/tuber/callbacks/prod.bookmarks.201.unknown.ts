@@ -49,7 +49,7 @@ export function form_submit_new_unknown_bookmark(redux: IRedux) {
     }
 
     const policy = new FormValidationPolicy<IBookmark>(redux, formName)
-    const validation = policy.enforceValidationSchemes()
+    const validation = policy.getValidationSchemes()
     if (validation && validation.length > 0) {
       validation.forEach(vError => {
         const message = vError.message ?? ''

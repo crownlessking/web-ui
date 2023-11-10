@@ -22,7 +22,7 @@ import StateFormItem from '../../../controllers/StateFormItem'
 import StateJsxFormItemGroup from '../state.jsx.form.item.group'
 import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect'
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
-import JsonIcon from '../../json.icons'
+import StateJsxIcon from '../../state.jsx.icons'
 import { AppDispatch, default_callback } from '../../../state'
 import { formsDataClear } from '../../../slices/formsData.slice'
 import { log } from '../../../controllers'
@@ -367,7 +367,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       </InputLabel>
     ),
     [C.ICON]: (item: StateFormItem, key: string|number) => (
-      <JsonIcon key={`icon${depth}-${key}`} def={item.has} />
+      <StateJsxIcon key={`icon${depth}-${key}`} def={item.has} />
     ),
     [C.DIV]: (item: StateFormItem, key: string|number) => {
       const StyledDiv = get_styled_div()

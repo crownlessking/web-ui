@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
 import StateDialogSelection from '../../controllers/templates/StateDialogSelection'
 import StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem'
-import JsonIcon from '../json.icons'
+import StateJsxIcon from '../state.jsx.icons'
 
 /*
   Selection Dialog
@@ -70,7 +70,7 @@ export default function StateJsxSelectionDialog(
             <ListItemAvatar>
               <Avatar {...info.avatar.props}>
                 {info.icon
-                  ? (<JsonIcon def={info.avatar.jsonIcon} />)
+                  ? (<StateJsxIcon def={info.avatar.jsonIcon} />)
                   : info.avatar.text
                 }
               </Avatar>

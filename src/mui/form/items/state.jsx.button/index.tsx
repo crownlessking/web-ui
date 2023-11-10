@@ -1,12 +1,16 @@
 import { Fragment } from 'react'
 import { Icon, Button } from '@mui/material'
 import { get_font_awesome_icon_prop } from 'src/controllers'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import store, { actions } from '../../../../state'
 import StateFormItem from '../../../../controllers/StateFormItem'
+import { get_button_content_code, TCombinations } from './_1.logic'
 
 interface IJsonButtonProps { def: StateFormItem }
+
+type TMapIcon = {
+  [K in TCombinations]: () => JSX.Element | null
+}
 
 export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
   const redux = {
@@ -16,78 +20,55 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
   }
   const onClick = button.onClick || button.has.callback
 
-  const ButtonContent = ({ def: button }: { def: StateFormItem}) => {
-    if (button.text) {
-      switch (button.has.iconPosition) {
-
-      // icon is located on the right of the button title
-      case 'right':
-        if (button.has.icon) {
-          return (
-            <Fragment>
-              { button.text }
-              &nbsp;
-              <Icon>{ button.has.icon }</Icon>
-            </Fragment>
-          )
-        } else if (button.has.faIcon) {
-          const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
-          return (
-            <Fragment>
-              { button.value }
-              &nbps;
-              <FontAwesomeIcon icon={icon} />
-            </Fragment>
-          )
-        }
-        break
-
-      // icon is located on the left of the button title
-      case 'left':
-      default:
-        if (button.has.icon) {
-          return (
-            <Fragment>
-              <Icon>{ button.has.icon }</Icon>
-              &nbsp;
-              { button.text }
-            </Fragment>
-          )
-        } else if (button.has.faIcon) {
-          const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
-          return (
-            <Fragment>
-              <FontAwesomeIcon icon={icon} />
-              &nbsp;
-              { button.text }
-            </Fragment>
-          )
-        }
-
-      } // END switch
-
-      return <Fragment>{ button.text }</Fragment>
-    } else {
-      if (button.has.icon) {
-        return <Icon>{ button.has.icon }</Icon>
-      } else if (button.has.faIcon) {
-        const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
-        return <FontAwesomeIcon icon={icon} />
-      }
-    }
-    return (
+  const map: TMapIcon = {
+    textrighticon: () => (
       <Fragment>
-        No Text!
+        { button.text }
+        &nbsp;
+        <Icon>{ button.has.icon }</Icon>
       </Fragment>
-    )
-  } // END ButtonContent
-
+    ),
+    textrightfaicon: () => (
+      <Fragment>
+        { button.text }
+        &nbps;
+        <FontAwesomeIcon
+          icon={get_font_awesome_icon_prop(button.has.faIcon)}
+        />
+      </Fragment>
+    ),
+    textlefticon: () => (
+      <Fragment>
+        <Icon>{ button.has.icon }</Icon>
+        &nbsp;
+        { button.text }
+      </Fragment>
+    ),
+    textleftfaicon: () => (
+      <Fragment>
+        <FontAwesomeIcon
+          icon={get_font_awesome_icon_prop(button.has.faIcon)}
+        />
+        &nbsp;
+        { button.text }
+      </Fragment>
+    ),
+    icon: () => <Icon>{ button.has.icon }</Icon>,
+    faicon: () => (
+      <FontAwesomeIcon
+        icon={get_font_awesome_icon_prop(button.has.faIcon)}
+      />
+    ),
+    text: () => <Fragment>{ button.text }</Fragment>,
+    none: () => <Fragment>❌ No Text!</Fragment>
+  }
+  const code = get_button_content_code(button)
   return (
     <Button
       {...button.props}
       onClick={onClick(redux)}
     >
-      <ButtonContent def={button} />
+      { map[code]() }
     </Button>
   )
 }

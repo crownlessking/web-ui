@@ -12,10 +12,10 @@ import StatePage from '../../controllers/StatePage'
 import { useDispatch, useSelector } from 'react-redux'
 import store, { actions, AppDispatch, RootState } from '../../state'
 import StatePageAppBarMidSearch from '../../controllers/templates/StatePageAppBarMidSearch'
-import Logo from './logo'
+import StateJsxLogo from './state.jsx.logo'
 import AppBarButton from '../link'
 import InputAdornment from '@mui/material/InputAdornment'
-import JsonIcon from '../json.icons'
+import StateJsxIcon from '../state.jsx.icons'
 import { get_search_query } from 'src/state/_errors.business.logic'
 import Menu from '@mui/material/Menu'
 
@@ -58,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 interface IJsonMidSearchAB { def: StatePage }
 
-export default function JsonMidSearchAppBar({ def: page }: IJsonMidSearchAB) {
+export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -131,22 +131,22 @@ export default function JsonMidSearchAppBar({ def: page }: IJsonMidSearchAB) {
             </IconButton>
           ) : ( null )}
           {appBar.hasLogo ? (
-            <Logo def={appBar} />
+            <StateJsxLogo def={appBar} />
           ) : (
             <Typography
-            sx={{
-              fontFamily: appBar.typography.fontFamily,
-              color: appBar.typography.color
-            }}
-            {...appBar.textLogoProps}
+              sx={{
+                fontFamily: appBar.typography.fontFamily,
+                color: appBar.typography.color
+              }}
+              {...appBar.textLogoProps}
             >
-            { page.parent.parent.app.title }
+              { page.parent.parent.app.title }
             </Typography>
           )}
           <Search>
             {appBar.state.searchFieldIcon ? (
               <UrlIconWrapper>
-                <JsonIcon def={appBar.searchFieldIcon} />
+                <StateJsxIcon def={appBar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase

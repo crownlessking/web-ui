@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import Config from '../config'
 import { APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE_VIEW, TCallback } from '../constants'
 import { IJsonapiResourceAbstract } from './interfaces/IJsonapi'
@@ -107,18 +108,18 @@ export function get_dud_event_callback (): TCallback {
  *
  * @param iconDef 
  */
-export function get_font_awesome_icon_prop(iconDef: string): string[]|string {
+export function get_font_awesome_icon_prop(iconDef: string): IconProp {
   const pieces = iconDef.replace(/\s+/,'').split(',')
 
   if (pieces.length === 2) {
-    return pieces
+    return pieces as IconProp
   } else if (pieces.length === 1) {
-    return ['fas', iconDef]
+    return ['fas', iconDef] as IconProp
   }
 
   err('bad icon definition. Check your JSON.')
 
-  return ''
+  return '' as IconProp
 }
 
 /**

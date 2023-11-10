@@ -1,4 +1,5 @@
-import IAbstractState, { TOptional } from './IAbstractState'
+import { TOptional } from '.'
+import IAbstractState from './IAbstractState'
 import IStateLink from './IStateLink'
 
 export default interface IStateDrawer extends IAbstractState {

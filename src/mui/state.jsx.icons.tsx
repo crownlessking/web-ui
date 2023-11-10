@@ -20,7 +20,7 @@ interface IJsonIconProps {
  * }
  * ```
  */
-export default function JsonIcon ({ def: has }: IJsonIconProps) {
+export default function StateJsxIcon ({ def: has }: IJsonIconProps) {
   if (has.icon) {
     return getSvgIcon(has.icon, has.iconProps)
       || <Icon {...has.iconProps}>{ has.icon }</Icon>

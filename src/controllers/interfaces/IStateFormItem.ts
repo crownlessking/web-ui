@@ -5,17 +5,44 @@ import IAbstractState from './IAbstractState'
 import IStateFormItemCustom from './IStateFormItemCustom'
 import IStateLink from './IStateLink'
 
+/**
+ * When adding input adornment to a text field, It's the type for `start` and
+ * `end` on a text field adornment.
+ * ```ts
+ * const textfieldState = {
+ *   // ...
+ *   'inputProps': {
+ *     'start': {}, // <-- type for this.
+ *     'end': {}    // <-- and this.
+ *   }
+ *   // ...
+ * }
+ * ```
+ * @see https://mui.com/material-ui/react-text-field/#input-adornments
+ */
 export interface IStateFormItemAdornment {
   icon?: IStateLink
   text?: string
   textProps: any
 }
 
+/**
+ * Used with textfield state to include input adornments.
+ * ```ts
+ * const textfieldState = {
+ *   // ...
+ *   'inputProps': { } // <-- type for this.
+ *   // ...
+ * };
+ * ```
+ * @see https://mui.com/material-ui/react-text-field/#input-adornments
+ */
 export interface IStateFormItemInputProps extends InputProps {
   start?: IStateFormItemAdornment
   end?: IStateFormItemAdornment
 }
 
+/** List of all possible type a form item can be. */
 export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.BOOL_ONOFF
   | typeof C.BOOL_TRUEFALSE

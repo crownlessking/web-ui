@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
-import DialogAction from './actions/dialog.actions'
+import StateJsxDialogAction from './actions/state.jsx'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -76,7 +76,7 @@ export default function StateJsxCustomizedDialog(props: ICustomizedDialogProps) 
         { dialog.content }
       </DialogContent>
       <DialogActions {...dialog.actionProps}>
-        <DialogAction def={dialog.actions} parent={dialog} />
+        <StateJsxDialogAction def={dialog.actions} parent={dialog} />
       </DialogActions>
     </BootstrapDialog>
   )
