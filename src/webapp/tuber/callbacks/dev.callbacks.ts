@@ -4,21 +4,18 @@ import {
   get_req_state,
   post_req_state
 } from 'src/state/net.actions'
-import { IRedux } from '../../../state'
+import { IRedux, ler } from '../../../state'
 import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200'
-import { ler, safely_get_as } from 'src/controllers'
+import { safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
-import { get_bootstrap_key } from 'src/state/_business.logic'
 import {
   FORM_AUTHORIZATION_KEY_ID,
   FORM_AUTHORIZATION_URL_ID
 } from '../tuber.config'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
 
 function dev_create_user(redux: IRedux) {
   return () => {
@@ -139,11 +136,7 @@ function dev_form_submit_authorization_key(redux: IRedux) {
     const { store: { dispatch, getState } } = redux
     const rootState = getState()
     const { headers } = rootState.net
-    const formName = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${FORM_AUTHORIZATION_KEY_ID}`,
-      ''
-    )
+    const formName = rootState.stateRegistry[FORM_AUTHORIZATION_KEY_ID]
     if (!formName) {
       ler('dev_form_submit_authorization: Form name not found.')
       return
@@ -163,11 +156,7 @@ function dev_form_submit_authorization_url(redux: IRedux) {
     const { store: { dispatch, getState } } = redux
     const rootState = getState()
     const { headers } = rootState.net
-    const formName = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${FORM_AUTHORIZATION_URL_ID}`,
-      ''
-    )
+    const formName = rootState.stateRegistry[FORM_AUTHORIZATION_URL_ID]
     if (!formName) {
       ler('dev_form_submit_authorization: Form name not found.')
       return

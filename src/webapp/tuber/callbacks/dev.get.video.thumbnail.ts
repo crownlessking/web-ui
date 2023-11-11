@@ -1,6 +1,6 @@
-import { ler, safely_get_as } from 'src/controllers'
+import { safely_get_as } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
-import { IRedux } from 'src/state'
+import { IRedux, ler } from 'src/state'
 import { get_bootstrap_key } from 'src/state/_business.logic'
 import { remember_error } from 'src/state/_errors.business.logic'
 import { FORM_TEST_THUMBNAIL_ID, PAGE_TEST_THUMBNAIL_ID } from '../tuber.config'
@@ -20,11 +20,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
-    const formName = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${FORM_TEST_THUMBNAIL_ID}`,
-      ''
-    )
+    const formName = rootState.stateRegistry[FORM_TEST_THUMBNAIL_ID]
     if (!formName) {
       const errorMsg = `dev_get_video_thumbnail: form name not found.`
       ler(errorMsg)
@@ -36,11 +32,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       return
     }
     const errorPolicy = new FormValidationPolicy(redux, formName)
-    const route = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${PAGE_TEST_THUMBNAIL_ID}`,
-      ''
-    )
+    const route = rootState.stateRegistry[PAGE_TEST_THUMBNAIL_ID]
     if (!route) {
       errorPolicy.emit('video_url', `Page route not found`)
       return

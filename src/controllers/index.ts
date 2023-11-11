@@ -1,5 +1,5 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import Config from '../config'
+import { err, ler } from '../state'
 import { APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE_VIEW, TCallback } from '../constants'
 import { IJsonapiResourceAbstract } from './interfaces/IJsonapi'
 import { IStatePageContent } from './interfaces/IStatePage'
@@ -20,46 +20,6 @@ export function pre(prefix?: string): void {
 /** Prepends message prefix. */
 export function msg(msg: string): string {
   return _msgPrefix + msg
-}
-
-/**
- * Sometimes, you don't want a hard crash. Sometimes, you want a simple
- * console print out.
- */
-export function log(...args: any): void {
-  if (Config.DEBUG) {
-    console.log(_msgPrefix, ...args)
-  }
-}
-
-/** Logs a warning to the console. */
-export function warn(...args: any): void {
-  if (Config.DEBUG) {
-    console.warn(_msgPrefix, ...args)
-  }
-}
-
-/** Logs an error to the console. */
-export function ler(...args: any): void {
-  if (Config.DEBUG) {
-    console.error(_msgPrefix, ...args)
-  }
-}
-
-/**
- * A simple shortcut for triggering exceptions and preventing unecessarily
- * inflated code blocks.
- */
-export function err(message: string): void {
-  if (Config.DEBUG) {
-    throw new Error (message)
-  }
-}
-
-export function dev(message: string): void {
-  if (Config.DEV) {
-    console.log(message)
-  }
 }
 
 /** Returns `true` if the argument is an object. */

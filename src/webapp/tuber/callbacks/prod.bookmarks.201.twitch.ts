@@ -2,16 +2,10 @@ import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
 import { remember_error } from 'src/state/_errors.business.logic'
-import { ler, log, safely_get_as } from '../../../controllers'
-import { IRedux } from '../../../state'
-import {
-  get_bootstrap_key,
-  get_state_form_name
-} from '../../../state/_business.logic'
+import { IRedux, ler, log } from '../../../state'
+import { get_state_form_name } from '../../../state/_business.logic'
 import { FORM_TWITCH_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
  * [Twitch] Save bookmark to server.
@@ -22,11 +16,7 @@ export function form_submit_new_twitch_bookmark(redux: IRedux) {
   return () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
-    const formKey = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${FORM_TWITCH_NEW_ID}`,
-      'form_key_not_found'
-    )
+    const formKey = rootState.stateRegistry[FORM_TWITCH_NEW_ID]
     if (!formKey) {
       const errorMsg = 'form_submit_new_twitch_bookmark: Form key not found.'
       ler(errorMsg)

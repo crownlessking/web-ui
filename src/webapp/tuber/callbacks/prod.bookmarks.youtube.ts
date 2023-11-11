@@ -1,12 +1,10 @@
 import { YouTubePlayer } from 'react-youtube'
 import Config from 'src/config'
-import { get_parsed_page_content, ler, safely_get_as } from 'src/controllers'
-import { IRedux } from 'src/state'
+import { get_parsed_page_content } from 'src/controllers'
+import { IRedux, ler } from 'src/state'
 import { remember_exception } from 'src/state/_errors.business.logic'
-import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
+import { get_state_form_name } from 'src/state/_business.logic'
 import { TPlatform } from '../tuber.interfaces'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
  * [YouTube] Shows a dialog containing a form to create a new bookmark.
@@ -18,11 +16,7 @@ export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const state = getState()
-    const dialogKey = safely_get_as<string>(
-      state.meta,
-      `${BOOTSTRAP_KEY}.state_registry.6`,
-      'dialog_key_not_found'
-    )
+    const dialogKey = state.stateRegistry['6']
     const dialogState = getState().dialogs[dialogKey]
     if (!dialogState) {
       ler(`'${dialogKey}' does not exist.`)

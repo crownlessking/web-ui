@@ -1,4 +1,4 @@
-import { err, ler, log, warn } from '.'
+import { err, ler, log, warn } from "../state"
 
 export default abstract class AbstractState {
 

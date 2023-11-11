@@ -58,6 +58,7 @@ export default function App() {
     // Get bootstrap state from server if none was provided.
     // Setting `isBootstrapped` to `true` will prevent it.
     if (!app.isBootstrapped) { onPostReqHomePageState() }
+
   }, [dispatch, net.headers, app.isBootstrapped])
 
   return (

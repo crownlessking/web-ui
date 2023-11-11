@@ -1,7 +1,6 @@
 import FormHelperText from '@mui/material/FormHelperText'
 import FormLabel from '@mui/material/FormLabel'
 import { Fragment } from 'react'
-import { log } from '../../../controllers'
 import IStateFormItemGroup from '../../../controllers/interfaces/IStateFormItemGroup'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItemGroup from '../../../controllers/StateFormGroup'
@@ -44,6 +43,7 @@ import DialogRadio from './dialog.radio'
 import DialogSwitch from './dialog.switch'
 import DialogTextField from './dialog.textfield'
 import DialogSelect from './select'
+import { log } from '../../../state'
 
 interface IRecursiveFormBuilder {
   form: StateForm

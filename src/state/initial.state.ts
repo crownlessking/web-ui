@@ -301,10 +301,17 @@ export default {
     ...get_global_var(`${GLOBAL_PREFIX}Net`)
   },
 
+  /** 
+   * Use for making request to a server if a dialog, form, or page state was
+   * not found. The app will attempt to load it from the server.
+   */
   'pathnames': {
     'DIALOGS': 'state/dialogs',
     'FORMS': 'state/forms',
     'PAGES': 'state/pages',
     ...get_global_var(`${GLOBAL_PREFIX}Pathnames`)
-  }
+  },
+
+  /** Use to let the app know where to find your states. */
+  'stateRegistry': {},
 } as IState

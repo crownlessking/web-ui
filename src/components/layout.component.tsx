@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { log } from '../controllers'
 import Container from '@mui/material/Container'
 import {
   LayoutCenteredNoScroll, LayoutCentered, VirtualizedTableLayout,
@@ -19,6 +18,7 @@ import {
   LAYOUT_NONE,
   LAYOUT_NONE_NO_APPBAR
 } from '../constants'
+import { log } from '../state'
 
 interface ILayoutProps {
   def: StatePage

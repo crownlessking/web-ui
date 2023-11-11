@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { err } from '../../state'
 import StatePageAppBar from '../../controllers/templates/StatePageAppBar'
-import { dev, err } from '../../controllers'
 
 /**
  * To define a logo, set the `appbar.logoTag` and `appbar.logoProps`.
@@ -54,7 +54,6 @@ export default function StateJsxLogo ({ def: appBar }: { def: StatePageAppBar })
   }
 
   err(`Invalid \`${logoTag}\` logo.`)
-  dev('`appBar.logoTag` can be either \'img\' or \'path\' or \'div\'')
 
   return ( null )
 }

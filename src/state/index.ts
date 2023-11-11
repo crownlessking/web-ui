@@ -25,7 +25,7 @@ import topLevelLinksReducer, { topLevelLinksActions } from '../slices/topLevelLi
 import themeReducer, { themeActions } from '../slices/theme.slice'
 import netReducer, { netActions } from '../slices/net.slice'
 import pathnamesReducer, { pathnamesActions } from 'src/slices/pathnames.slice'
-import { err, ler } from '../controllers'
+import stateRegistryReducer from 'src/slices/stateRegistry.slice'
 import { set_configuration } from './_business.logic'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import { remember_exception } from './_errors.business.logic'
@@ -115,6 +115,7 @@ const appReducer = combineReducers({
   topLevelLinks: topLevelLinksReducer,
   typography: typographyReducer,
   pathnames: pathnamesReducer,
+  stateRegistry: stateRegistryReducer,
 })
 
 // https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
@@ -201,6 +202,52 @@ export const redux: IRedux = {
 /** Type for callback that needs to access the redux store and actions. */
 export type TReduxCallback = (redux: IRedux) => TCallback
 
+/** Helps to shorten error message */
+let _msgPrefix = ''
+
+/**
+ * Set message prefix.
+ *
+ * Helps keep error message short. Works with `msg()`, `log()`, `warn()`,
+ * and `ler()`.
+ */
+export function pre(prefix?: string): void {
+  _msgPrefix = prefix ?? ''
+}
+
+/** Prepends message prefix. */
+export function msg(msg: string): string {
+  return _msgPrefix + msg
+}
+
+/** Logs to console if app is in debug mode. */
+export function log (...args: any[]): void {
+  if (redux.store.getState().app.inDebugMode) {
+    console.log(...args)
+  }
+}
+
+/** Logs to console if app is in debug mode. */
+export function ler (...args: any[]): void {
+  if (redux.store.getState().app.inDebugMode) {
+    console.error(...args)
+  }
+}
+
+/** Logs to console if app is in debug mode. */
+export function warn (...args: any[]): void {
+  if (redux.store.getState().app.inDebugMode) {
+    console.warn(...args)
+  }
+}
+
+/** Throws exception if app is in debug mode. */
+export function err (...args: any[]): void {
+  if (redux.store.getState().app.inDebugMode) {
+    throw new Error(...args)
+  }
+}
+
 /**
  * If a callback is required for a link or button but is not defined, then this
  * method will provide a dummy one.
@@ -235,6 +282,9 @@ export const on_bootstrap_run = (callback: (redux: IRedux) => void) => {
 /** Run all callbacks that were registered with onBoostrapRun(). */
 export const bootstrap = () => {
   BOOTSTRAP_CALLBACK_LIST.forEach(callback => callback(redux))
+  for (let i = 0; BOOTSTRAP_CALLBACK_LIST.length > i; i++) {
+    BOOTSTRAP_CALLBACK_LIST.pop()
+  }
 }
 
 /** Schedule callback run */

@@ -113,6 +113,7 @@ export default interface IState {
   theme: ThemeOptions
   net: IStateNet
   pathnames: IStatePathnames
+  stateRegistry: Record<string, string>
 }
 
 /**

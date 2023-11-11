@@ -1,4 +1,4 @@
-import { err } from '../../controllers'
+import { err } from 'src/state'
 
 /**
  * Helper function. It helps resolve the server response's data structure.

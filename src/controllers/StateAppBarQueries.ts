@@ -1,5 +1,5 @@
+import { ler } from '../state'
 import { remember_exception } from 'src/state/_errors.business.logic'
-import { ler } from '.'
 import AbstractState from './AbstractState'
 import IStateAppBarQueries from './interfaces/IStateAppBarQueries'
 import State from './State'

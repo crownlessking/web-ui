@@ -1,8 +1,7 @@
 import { Dispatch } from 'redux'
-import { ler } from 'src/controllers'
 import { IJsonapiResponse } from 'src/controllers/interfaces/IJsonapi'
 import { appRequestFailed } from 'src/slices/app.slice'
-import { RootState } from '.'
+import { ler, RootState } from '.'
 import {
   remember_error,
   remember_jsonapi_errors,

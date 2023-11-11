@@ -1,15 +1,12 @@
-import { ler, log } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
-import { IRedux } from 'src/state'
+import { IRedux, ler, log } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
-import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
+import { get_state_form_name } from 'src/state/_business.logic'
 import { remember_error } from 'src/state/_errors.business.logic'
 import { FORM_UNKNOWN_NEW_ID } from '../tuber.config'
 import { get_iframe_url_src } from '../_tuber.business.logic'
 import { IBookmark } from '../tuber.interfaces'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /**
  * [Unknown] Save bookmark to server.
@@ -20,10 +17,7 @@ export function form_submit_new_unknown_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
-    const formKey = rootState.meta[BOOTSTRAP_KEY]
-      ?.state_registry
-      ?.[FORM_UNKNOWN_NEW_ID] as string
-
+    const formKey = rootState.stateRegistry[FORM_UNKNOWN_NEW_ID]
     if (!formKey) {
       const errorMsg = 'form_submit_new_unknown_bookmark: Form key not found.'
       ler(errorMsg)

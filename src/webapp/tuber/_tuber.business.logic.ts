@@ -1,5 +1,6 @@
+import { ler, log } from 'src/state'
 import { remember_error, remember_exception } from 'src/state/_errors.business.logic'
-import { get_query_values, ler, log } from '../../controllers'
+import { get_query_values } from '../../controllers'
 import {
   DIALOG_DAILY_EDIT_ID,
   DIALOG_FACEBOOK_EDIT_ID,

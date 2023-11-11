@@ -1,11 +1,10 @@
 import StatePage from '../../controllers/StatePage'
 import StateAllPages from '../../controllers/StateAllPages'
-import store from '../../state'
+import store, { ler } from '../../state'
 import IStateFormItem from '../../controllers/interfaces/IStateFormItem'
 import IStateForm from '../../controllers/interfaces/IStateForm'
 import IStateDialog from '../../controllers/interfaces/IStateDialog'
 import StateFormItem from '../../controllers/StateFormItem'
-import { ler } from 'src/controllers'
 import { remember_exception } from 'src/state/_errors.business.logic'
 
 export type THive = {

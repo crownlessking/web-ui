@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { is_object, ler } from 'src/controllers'
+import { is_object } from 'src/controllers'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
@@ -8,7 +8,7 @@ import {
   appRequestFailed,
   appRequestSuccess
 } from 'src/slices/app.slice'
-import { net_patch_state, RootState } from '.'
+import { ler, net_patch_state, RootState } from '.'
 
 export default function net_default_201_driver (
   dispatch: Dispatch,

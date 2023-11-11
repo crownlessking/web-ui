@@ -2,7 +2,7 @@ import { Icon } from '@mui/material'
 import { get_font_awesome_icon_prop } from '../controllers'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import getSvgIcon from './imported.svg.icons'
+import getSvgIcon from './state.jsx.imported.svg.icons'
 import StateFormItemCustom from '../controllers/StateFormItemCustom'
 
 interface IJsonIconProps {

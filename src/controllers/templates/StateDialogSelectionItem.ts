@@ -1,5 +1,5 @@
 import { blue } from '@mui/material/colors'
-import { err } from '..'
+import { err } from '../../state'
 import AbstractState from '../AbstractState'
 import { IStateDialogSelectionItem } from '../interfaces/IStateDialog'
 import StateAvatar from '../StateAvatar'

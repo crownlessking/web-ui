@@ -1,4 +1,4 @@
-import { ler, get_parsed_page_content } from '.'
+import { get_parsed_page_content } from '.'
 import StatePageAppBar from './templates/StatePageAppBar'
 import StatePageBackground from './templates/StatePageBackground'
 import StateAllPages from './StateAllPages'
@@ -15,6 +15,7 @@ import IStateDrawer, { IStatePageDrawer } from './interfaces/IStateDrawer'
 import { TStatePageLayout } from '../constants'
 import State from './State'
 import { remember_exception, mongo_object_id } from 'src/state/_errors.business.logic'
+import { ler } from '../state'
 
 export default class StatePage extends AbstractState implements IStatePage {
 

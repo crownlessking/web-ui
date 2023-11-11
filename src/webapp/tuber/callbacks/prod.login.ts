@@ -1,5 +1,4 @@
-import { ler } from '../../../controllers'
-import { IRedux } from '../../../state'
+import { IRedux, ler } from '../../../state'
 
 const LOGIN_DIALOG = 'loginDialog'
 

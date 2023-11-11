@@ -1,20 +1,12 @@
-import {
-  get_parsed_page_content,
-  ler,
-  log,
-  pre,
-  safely_get_as
-} from 'src/controllers'
+import { get_parsed_page_content } from 'src/controllers'
 import { IJsonapiResponseResource } from 'src/controllers/interfaces/IJsonapi'
 import StateTmp from 'src/controllers/StateTmp'
-import { IRedux } from 'src/state'
+import { IRedux, ler, log, pre } from 'src/state'
 import { remember_exception } from 'src/state/_errors.business.logic'
 import { delete_req_state } from 'src/state/net.actions'
-import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
+import { get_state_form_name } from 'src/state/_business.logic'
 import { get_dialog_id_for_edit } from '../_tuber.business.logic'
 import { IBookmark } from '../tuber.interfaces'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
 
 /** Get bookmarks data from redux store. */
 function get_bookmark_resources (data: any) {
@@ -43,12 +35,7 @@ export function dialog_edit_bookmark (i: number) {
       // Init
       const platform = bookmark.attributes.platform
       const dialogid = get_dialog_id_for_edit(platform)
-      const dialogKey = safely_get_as<string>(
-        rootState.meta,
-        `${BOOTSTRAP_KEY}.state_registry.${dialogid}`,
-        'dialog_key_not_found'
-      )
-
+      const dialogKey = rootState.stateRegistry[dialogid]
       // Open the dialog
       const dialogState = rootState.dialogs[dialogKey]
       if (!dialogState) {

@@ -4,7 +4,6 @@ import StatePage from '../controllers/StatePage'
 import PageErrors from './pages/errors.component'
 import PageLanding from './pages/landing.component'
 import { remember_exception } from '../state/_errors.business.logic'
-import { err, log } from '../controllers'
 import { Fragment } from 'react'
 import {
   DEFAULT_BLANK_PAGE_VIEW,
@@ -14,6 +13,7 @@ import {
   DEFAULT_SUCCESS_PAGE_VIEW
 } from '../constants'
 import PageBlank from './pages/blank.component'
+import { err, log } from '../state'
 
 interface IViewTable {
   [constant: string]: ()=>JSX.Element

@@ -1,4 +1,4 @@
-import { log } from '.'
+import { log } from '../state'
 import { DEFAULT_BLANK_PAGE, DEFAULT_LANDING_PAGE } from '../constants'
 import AbstractState from './AbstractState'
 import IStateAllPages from './interfaces/IStateAllPages'

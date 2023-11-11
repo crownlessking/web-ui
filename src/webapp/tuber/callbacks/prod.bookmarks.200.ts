@@ -1,11 +1,8 @@
-import { IRedux } from 'src/state'
+import { IRedux, pre, log } from 'src/state'
 import { get_search_query } from 'src/state/_errors.business.logic'
 import { get_req_state } from 'src/state/net.actions'
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config'
-import { safely_get_as, log, pre, set_url_query_val } from 'src/controllers'
-import { get_bootstrap_key } from 'src/state/_business.logic'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
+import { set_url_query_val } from 'src/controllers'
 
 /**
  * Callback to handle the search field in the appbar when the user submits a
@@ -21,11 +18,7 @@ export function appbar_search_bookmarks (redux: IRedux) {
       log('no search query')
       return
     }
-    const pageKey = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${PAGE_RESEARCH_APP_ID}`,
-      'page_key_not_found'
-    )
+    const pageKey = rootState.stateRegistry[PAGE_RESEARCH_APP_ID]
     const endpoint = rootState.pages[pageKey]?.meta?.endpoint
     redux.store.dispatch({
       type: 'appBarQueries/appBarQueriesDelete',

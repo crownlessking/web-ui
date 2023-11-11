@@ -1,5 +1,5 @@
-import { get_parsed_page_content, ler, safely_get_as} from 'src/controllers'
-import { IRedux } from 'src/state'
+import { get_parsed_page_content, safely_get_as } from 'src/controllers'
+import { IRedux, ler } from 'src/state'
 import { remember_error, remember_exception } from 'src/state/_errors.business.logic'
 import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
 import { URL_DIALOG_ID_NEW } from '../tuber.config'
@@ -23,11 +23,7 @@ export function dialog_new_video_url(redux: IRedux) {
       dispatch({ type: 'dialog/dialogOpen' })
       return
     }
-    const dialogKey = safely_get_as<string>(
-      rootState.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${URL_DIALOG_ID_NEW}`,
-      'dialog_key_not_found'
-    )
+    const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW]
     const newVideoUrlDialogState = rootState.dialogs[dialogKey]
     if (newVideoUrlDialogState) {
       dispatch({ type: 'dialog/dialogMount', payload: newVideoUrlDialogState })
@@ -44,16 +40,12 @@ export function dialog_new_video_url(redux: IRedux) {
  */
 export function dialog_new_bookmark_from_url(redux: IRedux) {
   return async () => {
-    const state = redux.store.getState()
-    const dialogKey = safely_get_as<string>(
-      state.meta,
-      `${BOOTSTRAP_KEY}.state_registry.${URL_DIALOG_ID_NEW}`, // 2
-      'dialog_key_not_found'
-    )
-    const urlDialogState = state.dialogs[dialogKey]
+    const rootState = redux.store.getState()
+    const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW]
+    const urlDialogState = rootState.dialogs[dialogKey]
     const urlContent = get_parsed_page_content(urlDialogState.content)
     const urlFormName = get_state_form_name(urlContent.name)
-    const url = safely_get_as<string>(state.formsData[urlFormName], `url`, '')
+    const url = safely_get_as<string>(rootState.formsData[urlFormName], `url`, '')
 
     try {
       const errorMessage = new FormValidationPolicy(redux, urlFormName)
@@ -69,16 +61,12 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         errorMessage.emit('url', video.urlCheck.message)
         return
       }
-      const newBookmarkDialogKey = safely_get_as<string>(
-        state.meta,
-        `${BOOTSTRAP_KEY}.state_registry.${video.dialogId}`,
-        'dialog_key_not_found'
-      )
+      const newBookmarkDialogKey = rootState.stateRegistry[video.dialogId]
       if (newBookmarkDialogKey === 'dialog_key_not_found') {
         ler(`dialog_new_bookmark_from_url: ${video.platform} dialog key not found.`)
         return
       }
-      const newBookmarkDialogJson = state.dialogs[newBookmarkDialogKey]
+      const newBookmarkDialogJson = rootState.dialogs[newBookmarkDialogKey]
       const content = get_parsed_page_content(newBookmarkDialogJson.content)
       const formName = get_state_form_name(content.name)
       redux.store.dispatch({
@@ -151,7 +139,7 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         })
       }
 
-      const mountedDialogId = state.dialog._id
+      const mountedDialogId = rootState.dialog._id
 
       // if the dialog was NOT mounted
       if (mountedDialogId !== newBookmarkDialogJson._id) {

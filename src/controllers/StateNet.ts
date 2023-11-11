@@ -1,4 +1,5 @@
-import { err, get_head_meta_content, get_val, safely_get } from '.'
+import { err } from '../state'
+import { get_head_meta_content, get_val, safely_get } from '.'
 import AbstractState from './AbstractState'
 import IStateNet from './interfaces/IStateNet'
 import State from './State'

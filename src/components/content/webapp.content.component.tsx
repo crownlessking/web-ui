@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { FC } from 'react'
 import StatePage from '../../controllers/StatePage'
 import TubeResearcher from '../../webapp/tuber/view/default'
 
@@ -18,24 +18,15 @@ interface IWebAppsProps {
  * };
  * ```
  */
-export default class WebApps extends Component<IWebAppsProps> {
+const WebApps: FC<IWebAppsProps> = ({ def: page }) => {
+  // <web-app-name> is a property of this object.
+  const webAppsMap: IWebApps = {
+    tubeResearcher: <TubeResearcher def={page} />,
 
-  private webAppsMap: IWebApps
-  private page: StatePage
-
-  constructor (props: IWebAppsProps) {
-    super(props)
-    this.page = props.def
-
-    // <web-app-name> is a property of this object.
-    this.webAppsMap = {
-      tubeResearcher: <TubeResearcher def={this.page} />,
-
-      // TODO Add more web apps here
-    }
+    // TODO Add more web apps here
   }
 
-  render() {
-    return this.webAppsMap[this.page.contentName] || ( null )
-  }
+  return webAppsMap[page.contentName] || ( null )
 }
+
+export default WebApps
