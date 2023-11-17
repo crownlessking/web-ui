@@ -1,4 +1,4 @@
-import IStateFormItemSelectOption from '../interfaces/IStateFormItemSelectOption'
+import IStateFormItemSelectOption from '../../interfaces/IStateFormItemSelectOption'
 import StateForm from '../StateForm'
 import StateFormItem from '../StateFormItem'
 

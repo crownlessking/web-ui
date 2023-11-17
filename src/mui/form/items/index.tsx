@@ -25,7 +25,7 @@ import StateJsxIcon from '../../state.jsx.icons'
 import { AppDispatch, default_callback, log } from '../../../state'
 import { formsDataClear } from '../../../slices/formsData.slice'
 import StateFormItemGroup from '../../../controllers/StateFormGroup'
-import IStateFormItemGroup from '../../../controllers/interfaces/IStateFormItemGroup'
+import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup'
 import FormLabel from '@mui/material/FormLabel'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
@@ -34,7 +34,7 @@ import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwi
 import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
 import StateJsxPhoneInput from './state.jsx.phone.input'
 import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
-import { remember_exception } from '../../../state/_errors.business.logic'
+import { remember_exception } from '../../../business.logic/errors'
 import {
   get_styled_div,
   StateJsxHtmlA,

@@ -1,4 +1,4 @@
-import { IRedux } from '../../state'
+import { IRedux } from '../state'
 import IAbstractState from './IAbstractState'
 import IStateFormItemCustom from './IStateFormItemCustom'
 

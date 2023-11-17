@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateComponent from './interfaces/IStateComponent'
+import IStateComponent from '../interfaces/IStateComponent'
 
 export default class StateComponent<P = any>
   extends AbstractState

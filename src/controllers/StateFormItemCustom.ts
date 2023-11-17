@@ -1,7 +1,7 @@
 import { get_val } from '.'
 import { dummy_callback, IRedux, ler, TReduxCallback } from '../state'
 import AbstractState from './AbstractState'
-import IStateFormItemCustom, { THandleCallback } from './interfaces/IStateFormItemCustom'
+import IStateFormItemCustom, { THandleCallback } from '../interfaces/IStateFormItemCustom'
 
 export default class StateFormItemCustom<P, T = any>
     extends AbstractState implements IStateFormItemCustom<T> {

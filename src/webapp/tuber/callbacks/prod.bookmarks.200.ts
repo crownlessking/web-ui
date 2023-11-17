@@ -1,5 +1,5 @@
 import { IRedux, pre, log } from 'src/state'
-import { get_search_query } from 'src/state/_errors.business.logic'
+import { get_search_query } from 'src/business.logic/errors'
 import { get_req_state } from 'src/state/net.actions'
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config'
 import { set_url_query_val } from 'src/controllers'

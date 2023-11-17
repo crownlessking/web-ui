@@ -1,6 +1,6 @@
 
 import { IconButtonProps } from '@mui/material/IconButton'
-import IStateAppBar from '../interfaces/IStateAppBar'
+import IStateAppBar from '../../interfaces/IStateAppBar'
 import StateFormItemCustom from '../StateFormItemCustom'
 import StateLink from '../StateLink'
 import StatePageAppBar from './StatePageAppBar'

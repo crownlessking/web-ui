@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateTopLevelLinks from './interfaces/IStateTopLevelLinks'
+import IStateTopLevelLinks from '../interfaces/IStateTopLevelLinks'
 import State from './State'
 
 export default class StateTopLevelLinks extends AbstractState {

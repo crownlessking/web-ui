@@ -2,7 +2,7 @@ import AbstractState from './AbstractState'
 import {
   IStateFormItemAdornment,
   IStateFormItemInputProps
-} from './interfaces/IStateFormItem'
+} from '../interfaces/IStateFormItem'
 import StateFormItem from './StateFormItem'
 
 export default class StateFormItemInputProps<P=StateFormItem>

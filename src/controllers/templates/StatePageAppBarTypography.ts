@@ -1,5 +1,5 @@
 import { set_val } from '..'
-import IStatePage from '../interfaces/IStatePage'
+import IStatePage from '../../interfaces/IStatePage'
 import StatePageAppBar from './StatePageAppBar'
 import StateTypography from '../StateTypography'
 

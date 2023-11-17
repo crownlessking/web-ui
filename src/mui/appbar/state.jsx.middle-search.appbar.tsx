@@ -16,7 +16,7 @@ import StateJsxLogo from './state.jsx.logo'
 import AppBarButton from '../link'
 import InputAdornment from '@mui/material/InputAdornment'
 import StateJsxIcon from '../state.jsx.icons'
-import { get_search_query } from 'src/state/_errors.business.logic'
+import { get_search_query } from 'src/business.logic/errors'
 import Menu from '@mui/material/Menu'
 
 const Search = styled('div')(({ theme }) => ({

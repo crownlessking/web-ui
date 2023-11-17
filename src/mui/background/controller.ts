@@ -1,6 +1,6 @@
 import store from '../../state'
 import { get_val } from '../../controllers'
-import IStatePage from '../../controllers/interfaces/IStatePage'
+import IStatePage from '../../interfaces/IStatePage'
 
 /**
  * Get the background color of the appbar

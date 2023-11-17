@@ -1,7 +1,7 @@
 import { blue } from '@mui/material/colors'
 import { err } from '../../state'
 import AbstractState from '../AbstractState'
-import { IStateDialogSelectionItem } from '../interfaces/IStateDialog'
+import { IStateDialogSelectionItem } from '../../interfaces/IStateDialog'
 import StateAvatar from '../StateAvatar'
 import StateDialogSelection from './StateDialogSelection'
 

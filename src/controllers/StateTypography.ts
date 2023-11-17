@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateTypography from './interfaces/IStateTypography'
+import IStateTypography from '../interfaces/IStateTypography'
 import State from './State'
 
 export default class StateTypography<P = State>

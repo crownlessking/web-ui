@@ -1,7 +1,7 @@
 import StateAllForms from './StateAllForms'
 import AbstractState from './AbstractState'
 import StateFormItem from './StateFormItem'
-import IStateForm from './interfaces/IStateForm'
+import IStateForm from '../interfaces/IStateForm'
 import State from './State'
 
 export default class StateForm extends AbstractState implements IStateForm {

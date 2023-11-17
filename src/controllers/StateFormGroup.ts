@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateFormItemGroup, { TItemGroup } from './interfaces/IStateFormItemGroup'
+import IStateFormItemGroup, { TItemGroup } from '../interfaces/IStateFormItemGroup'
 import StateForm from './StateForm'
 import StateFormItem from './StateFormItem'
 

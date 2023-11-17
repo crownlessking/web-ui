@@ -3,7 +3,7 @@ import IStateAppBar from './IStateAppBar'
 import IStateBackground from './IStateBackground'
 import IStateComponent from './IStateComponent'
 import IStateTypography from './IStateTypography'
-import { TStatePageLayout } from '../../constants'
+import { TStatePageLayout } from '../constants'
 import IAbstractState from './IAbstractState'
 import { IGenericObject } from './IState'
 

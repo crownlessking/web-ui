@@ -1,4 +1,4 @@
-import { IStateFormItemRadioButton } from '../interfaces/IFormChoices'
+import { IStateFormItemRadioButton } from '../../interfaces/IFormChoices'
 import StateFormItemCustom from '../StateFormItemCustom'
 import StateFormItemRadio from './StateFormItemRadio'
 import StateFormItemRadioButton from '../StateFormItemRadioButton'

@@ -1,7 +1,7 @@
 import { get_head_meta_content } from '../controllers'
 import { orange } from '@mui/material/colors'
-import IState from '../controllers/interfaces/IState'
-import { get_global_var } from './_errors.business.logic'
+import IState from '../interfaces/IState'
+import { get_global_var } from '../business.logic/errors'
 
 /*
  * WARNING: Be careful what you import in here. It might cause WEBPACK errors.

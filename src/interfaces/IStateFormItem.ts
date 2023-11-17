@@ -1,6 +1,6 @@
 import { InputProps } from '@mui/material'
 import { CSSProperties } from 'react'
-import * as C from '../../constants'
+import * as C from '../constants'
 import IAbstractState from './IAbstractState'
 import IStateFormItemCustom from './IStateFormItemCustom'
 import IStateLink from './IStateLink'

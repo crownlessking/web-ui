@@ -18,10 +18,10 @@ import {
 } from '../constants'
 import StateFormItemCustom from './StateFormItemCustom'
 import { dummy_callback, err, IRedux, TReduxCallback } from '../state'
-import IStateFormItem from './interfaces/IStateFormItem'
-import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
+import IStateFormItem from '../interfaces/IStateFormItem'
+import IStateFormItemCustom from '../interfaces/IStateFormItemCustom'
 import StateFormItemInputProps from './StateFormItemInputProps'
-import { IFormItemDataError } from './interfaces/IState'
+import { IFormItemDataError } from '../interfaces/IState'
 
 export interface IFormItemHandle {
   dispatch: any

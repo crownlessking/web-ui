@@ -24,11 +24,17 @@ import tmpReducer, { tmpActions } from '../slices/tmp.slice'
 import topLevelLinksReducer, { topLevelLinksActions } from '../slices/topLevelLinks.slice'
 import themeReducer, { themeActions } from '../slices/theme.slice'
 import netReducer, { netActions } from '../slices/net.slice'
-import pathnamesReducer, { pathnamesActions } from 'src/slices/pathnames.slice'
-import stateRegistryReducer from 'src/slices/stateRegistry.slice'
-import { set_configuration } from './_business.logic'
-import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
-import { remember_exception } from './_errors.business.logic'
+import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice'
+import stateRegistryReducer from '../slices/stateRegistry.slice'
+import { DRAWER_DEFAULT_WIDTH, NET_STATE_PATCH_DELETE, TCallback } from '../constants'
+import {
+  remember_error,
+  remember_exception,
+  remember_jsonapi_errors
+} from '../business.logic/errors'
+import { post_fetch } from './net.actions'
+import { get_origin_ending_fixed } from '../business.logic'
+import Config from 'src/config'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const net_patch_state = (stateFragment: any) => ({
@@ -123,7 +129,10 @@ const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_STATE_PATCH) {
     const newState = net_patch_state_reducer(state, action.payload)
-    set_configuration(newState)
+    Config.set('DEBUG', state.app.inDebugMode ?? false)
+
+  // TODO Set more configuration here.
+
     return appReducer(newState, action)
   }
 
@@ -270,6 +279,61 @@ export function default_callback ({store, actions, route}:IRedux): TCallback {
       store.dispatch(actions.appUrlPageUpdate(route))
     }
   }
+}
+
+/** Get the default drawer width. */
+export function get_drawer_width(): number {
+  return store.getState().drawer.width
+    || DRAWER_DEFAULT_WIDTH
+}
+
+export async function get_dialog_state (
+  dialogId: string
+): Promise<any> {
+  const rootState = redux.store.getState()
+  const dialogState = rootState.dialogs[dialogId]
+  if (dialogState) {
+    return dialogState
+  }
+  const origin = get_origin_ending_fixed(rootState.app.origin)
+  const dialogPathname = rootState.pathnames.DIALOGS
+  const url = `${origin}${dialogPathname}`
+  const remoteState = await post_fetch(url, {
+    'key': dialogId
+  })
+  if (remoteState?.errors) {
+    ler(`get_dialog_state: ${remoteState.errors?.[0]?.title}`)
+    remember_jsonapi_errors(remoteState.errors)
+    return null
+  }
+  const dialogRemoteState = remoteState?.state?.dialogs?.[dialogId]
+  if (!dialogRemoteState) {
+    ler(`get_dialog_state: ${dialogId} not found.`)
+    remember_error({
+      code: 'not_found',
+      title: `${dialogId} Not Found`,
+      source: { pointer: dialogId }
+    })
+    return null
+  }
+  if (dialogRemoteState._key !== dialogId) {
+    ler(`get_dialog_state: ${dialogId} does not match ${dialogRemoteState._key}.`)
+    remember_error({
+      code: 'not_found',
+      title: `${dialogId} Not Found`,
+      detail: `${dialogId} does not match ${dialogRemoteState._key}.`,
+      source: { pointer: dialogId }
+    })
+    return null
+  }
+  redux.store.dispatch({
+    type: 'dialogs/dialogsAdd',
+    payload: {
+      name: dialogId,
+      dialog: dialogRemoteState
+    }
+  })
+  return dialogRemoteState
 }
 
 const BOOTSTRAP_CALLBACK_LIST: ((redux: IRedux) => void)[] = []

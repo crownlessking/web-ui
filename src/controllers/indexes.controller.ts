@@ -1,5 +1,5 @@
-import { remember_exception } from '../state/_errors.business.logic'
-import { IJsonapiResponseResource } from './interfaces/IJsonapi'
+import { remember_exception } from '../business.logic/errors'
+import { IJsonapiResponseResource } from '../interfaces/IJsonapi'
 
 export interface IIndexes {
   [endpoint: string]: {

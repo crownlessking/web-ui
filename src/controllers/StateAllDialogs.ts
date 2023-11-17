@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateAllDialogs from './interfaces/IStateAllDialogs'
+import IStateAllDialogs from '../interfaces/IStateAllDialogs'
 import State from './State'
 
 export default class StateAllDialogs extends AbstractState {

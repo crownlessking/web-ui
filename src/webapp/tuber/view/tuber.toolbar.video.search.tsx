@@ -1,6 +1,6 @@
 import grey from '@mui/material/colors/grey'
 import { styled } from '@mui/material/styles'
-import IStateLink from 'src/controllers/interfaces/IStateLink'
+import IStateLink from 'src/interfaces/IStateLink'
 import StateLink from 'src/controllers/StateLink'
 import StatePageAppBar from 'src/controllers/templates/StatePageAppBar'
 import Link from 'src/mui/link'

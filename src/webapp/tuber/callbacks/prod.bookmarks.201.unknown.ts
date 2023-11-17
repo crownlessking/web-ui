@@ -2,8 +2,8 @@ import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { IRedux, ler, log } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
-import { get_state_form_name } from 'src/state/_business.logic'
-import { remember_error } from 'src/state/_errors.business.logic'
+import { get_state_form_name } from '../../../business.logic'
+import { remember_error } from 'src/business.logic/errors'
 import { FORM_UNKNOWN_NEW_ID } from '../tuber.config'
 import { get_iframe_url_src } from '../_tuber.business.logic'
 import { IBookmark } from '../tuber.interfaces'
@@ -67,7 +67,7 @@ export function form_submit_new_unknown_bookmark(redux: IRedux) {
     log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
     dispatch(post_req_state('bookmarks', requestBody))
-    dispatch({ type: 'dialog/dialogClose' })
     dispatch({ type: 'formsData/formsDataClear' })
+    dispatch({ type: 'dialog/dialogClose' })
   }
 }

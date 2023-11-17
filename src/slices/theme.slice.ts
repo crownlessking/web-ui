@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { remember_exception } from 'src/state/_errors.business.logic'
+import { remember_exception } from 'src/business.logic/errors'
 import initialState from '../state/initial.state'
 
 type TThemeProps = {[x: string]: any}

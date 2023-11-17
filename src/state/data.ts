@@ -1,7 +1,7 @@
 import store, { err } from '.'
-import { IJsonapiResource } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiResource } from '../interfaces/IJsonapi'
 import { collectionQueue } from '../slices/data.slice'
-import { get_error_code, remember_exception } from './_errors.business.logic'
+import { get_error_code, remember_exception } from '../business.logic/errors'
 
 /**
  * After making a request to get data from the server, use this function to

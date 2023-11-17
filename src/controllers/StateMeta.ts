@@ -1,7 +1,7 @@
 import AbstractState from './AbstractState'
 import State from './State'
 import Config from '../config'
-import { IGenericObject } from './interfaces/IState'
+import { IGenericObject } from '../interfaces/IState'
 
 export default class StateMeta extends AbstractState {
 

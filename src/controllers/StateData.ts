@@ -1,8 +1,8 @@
 import { AppDispatch } from 'src/state'
 import { get_req_state } from 'src/state/net.actions'
 import AbstractState from './AbstractState'
-import { IJsonapiResource } from './interfaces/IJsonapi'
-import { IStateData } from './interfaces/IState'
+import { IJsonapiResource } from '../interfaces/IJsonapi'
+import { IStateData } from '../interfaces/IState'
 import State from './State'
 
 interface IConfigure {

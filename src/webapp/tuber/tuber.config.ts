@@ -3,6 +3,10 @@
 
 import { TPlatform } from "./tuber.interfaces"
 
+/** Setting for thumbnail load attempts total. */
+export const THUMB_LOAD_ATTEMPTS_CONF = 'thumbnail_Load_attempts_'
+
+export const THUMB_MAX_LOAD_ATTEMPTS = 1
 export const TUBER_SEARCH_COLUMN_WIDTH = 300
 export const TUBER_BOOKMARKS_COLUMN_WIDTH = 600
 
@@ -57,6 +61,7 @@ export const DIALOG_UNKNOWN_EDIT_ID = '31'
 export const FORM_AUTHORIZATION_KEY_ID = '49'
 export const FORM_AUTHORIZATION_URL_ID = '50'
 export const FORM_RUMBLE_URL_REGEX_ID = '54'
+export const FORM_UNKNOWN_URL_REGEX_ID = '57'
 
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'

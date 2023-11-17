@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import IStateBackground from '../controllers/interfaces/IStateBackground'
+import IStateBackground from '../interfaces/IStateBackground'
 import initialState from '../state/initial.state'
 
 interface ISBAction {

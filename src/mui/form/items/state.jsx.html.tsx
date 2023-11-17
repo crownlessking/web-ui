@@ -10,7 +10,7 @@ import store, { actions } from '../../../state'
 import { get_formatted_route } from '../../../controllers/StateLink'
 import Link from '@mui/material/Link'
 import { Link as RouterLink } from 'react-router-dom'
-import { IGenericObject } from '../../../controllers/interfaces/IState'
+import { IGenericObject } from '../../../interfaces/IState'
 
 interface IHtmlProps {
   def: StateFormItem<StateForm, string>

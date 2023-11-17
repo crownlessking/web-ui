@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { err } from '../state'
-import { IJsonapiError } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiError } from '../interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
 export const ERRORS_ADD = 'errors/errorsAdd'

@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState'
-import IAbstractState from './interfaces/IAbstractState'
-import IFormChoices from './interfaces/IFormChoices'
+import IAbstractState from '../interfaces/IAbstractState'
+import IFormChoices from '../interfaces/IFormChoices'
 import StateFormItemCheckboxCustom from './templates/StateFormItemCheckboxCustom'
 import StateFormItemCustom from './StateFormItemCustom'
 

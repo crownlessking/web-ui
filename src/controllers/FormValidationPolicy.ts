@@ -1,6 +1,6 @@
 // import store from '../state'
 import { IRedux } from 'src/state'
-import { IStateFormsDataErrors } from './interfaces/IState'
+import { IStateFormsDataErrors } from '../interfaces/IState'
 import StateFormsDataErrors from './StateFormsDataErrors'
 
 interface IValidation<T> {

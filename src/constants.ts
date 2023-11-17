@@ -99,6 +99,8 @@ export type TStatePageLayout =
   | typeof LAYOUT_XL
   | typeof LAYOUT_XS
 
+export const DRAWER_DEFAULT_WIDTH = 300
+
 /**
    * Limits the number of time the app attempts to load a page state from the
    * server if none was defined.

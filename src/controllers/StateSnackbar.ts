@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState'
-import IStateAnchorOrigin from './interfaces/IStateAnchorOrigin'
-import IStateSnackbar from './interfaces/IStateSnackbar'
+import IStateAnchorOrigin from '../interfaces/IStateAnchorOrigin'
+import IStateSnackbar from '../interfaces/IStateSnackbar'
 import State from './State'
 import StateAnchorOrigin from './StateAnchorOrigin'
 

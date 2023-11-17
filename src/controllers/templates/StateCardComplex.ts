@@ -1,4 +1,4 @@
-import IStateCard from '../interfaces/IStateCard'
+import IStateCard from '../../interfaces/IStateCard'
 import StateCard from '../StateCard'
 
 export default class StateCardComplex extends StateCard {

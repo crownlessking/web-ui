@@ -1,9 +1,9 @@
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
-import { remember_error } from 'src/state/_errors.business.logic'
+import { remember_error } from 'src/business.logic/errors'
 import { IRedux, ler, log } from '../../../state'
-import { get_state_form_name } from '../../../state/_business.logic'
+import { get_state_form_name } from '../../../business.logic'
 import { FORM_TWITCH_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
 

@@ -1,4 +1,4 @@
-import { IRedux, ler } from '../../../state'
+import { get_dialog_state, IRedux, ler } from '../../../state'
 import { DIALOG_LOGIN_ID } from '../tuber.config'
 
 export function dialog_login(redux: IRedux) {
@@ -6,7 +6,8 @@ export function dialog_login(redux: IRedux) {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
     const dialogKey = rootState.stateRegistry[DIALOG_LOGIN_ID]
-    const dialogJson = rootState.dialogs[dialogKey]
+    // const dialogJson = rootState.dialogs[dialogKey]
+    const dialogJson = await get_dialog_state(dialogKey)
     if (!dialogJson) {
       ler(`'${dialogKey}' does not exists.`)
       return

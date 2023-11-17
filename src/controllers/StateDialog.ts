@@ -1,9 +1,9 @@
 import AbstractState from './AbstractState'
 import State from './State'
 import { get_dud_event_callback } from '.'
-import IStateDialog from './interfaces/IStateDialog'
+import IStateDialog from '../interfaces/IStateDialog'
 import StateDialogSelectionItem from './templates/StateDialogSelectionItem'
-import IStateFormItem from './interfaces/IStateFormItem'
+import IStateFormItem from '../interfaces/IStateFormItem'
 
 export default class StateDialog<T = any> extends AbstractState implements IStateDialog<T> {
 

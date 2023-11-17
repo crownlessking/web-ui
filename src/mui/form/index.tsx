@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Box, Paper, Stack } from '@mui/material'
 import StateForm from '../../controllers/StateForm'
-import { remember_exception } from '../../state/_errors.business.logic'
+import { remember_exception } from '../../business.logic/errors'
 import { log } from '../../state'
 
 interface IJsonFormProps {

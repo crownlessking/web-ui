@@ -3,7 +3,7 @@ import { is_object } from 'src/controllers'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
-} from 'src/controllers/interfaces/IJsonapi'
+} from 'src/interfaces/IJsonapi'
 import {
   appRequestFailed,
   appRequestSuccess

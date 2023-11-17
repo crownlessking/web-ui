@@ -1,4 +1,3 @@
-
 import getConfig, { IConfiguration } from './controllers/config.controller'
 
 let msg_prefix = ''

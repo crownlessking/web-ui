@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import { ILoadedPagesRange, IStateDataPagesRange } from './interfaces/IState'
+import { ILoadedPagesRange, IStateDataPagesRange } from '../interfaces/IState'
 import State from './State'
 
 interface IConfigure {

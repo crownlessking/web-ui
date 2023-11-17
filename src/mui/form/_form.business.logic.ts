@@ -1,6 +1,6 @@
 import * as C from "src/constants"
-import IStateDialog from "../../controllers/interfaces/IStateDialog"
-import IStateFormItem from "../../controllers/interfaces/IStateFormItem"
+import IStateDialog from "../../interfaces/IStateDialog"
+import IStateFormItem from "../../interfaces/IStateFormItem"
 
 /** 
  * Regular expression identifying a `true` or `false` boolean value.

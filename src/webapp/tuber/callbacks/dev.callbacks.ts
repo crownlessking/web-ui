@@ -10,12 +10,13 @@ import {
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200'
 import { safely_get_as } from 'src/controllers'
-import { remember_exception } from 'src/state/_errors.business.logic'
+import { remember_exception } from 'src/business.logic/errors'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 import {
   FORM_AUTHORIZATION_KEY_ID,
   FORM_AUTHORIZATION_URL_ID,
-  FORM_RUMBLE_URL_REGEX_ID
+  FORM_RUMBLE_URL_REGEX_ID,
+  FORM_UNKNOWN_URL_REGEX_ID
 } from '../tuber.config'
 
 function dev_create_user(redux: IRedux) {
@@ -195,6 +196,29 @@ function dev_form_submit_rumble_regex(redux: IRedux) {
   }
 }
 
+function dev_form_submit_unknown_regex(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = rootState.stateRegistry[FORM_UNKNOWN_URL_REGEX_ID]
+    if (!formName) {
+      ler('dev_form_submit_unknown_regex: Form name not found.')
+      return
+    }
+    const formData = safely_get_as<Record<string, string>>(
+      rootState.formsData,
+      formName,
+      {}
+    )
+    dispatch(post_req_state('dev/unknown/regexp', {
+      regexp: formData.regexp,
+      url: formData.url
+    }, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
 const devCallbacks = {
   devCreateUser: dev_create_user,
   devResetDatabase: dev_reset_database,
@@ -212,6 +236,7 @@ const devCallbacks = {
   '$49_C_1': dev_form_submit_authorization_key,
   '$50_C_1': dev_form_submit_authorization_url,
   '$54_C_1': dev_form_submit_rumble_regex,
+  '$57_C_1': dev_form_submit_unknown_regex,
 }
 
 export default devCallbacks

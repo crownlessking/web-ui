@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import { IStateFormsDataErrors } from './interfaces/IState'
+import { IStateFormsDataErrors } from '../interfaces/IState'
 import State from './State'
 
 const EXCEPTION_MESSAGE = 'StateFormsDataErrors: configure instance with \'formName\''

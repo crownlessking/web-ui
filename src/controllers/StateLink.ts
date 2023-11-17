@@ -1,7 +1,7 @@
 import { default_callback, TReduxCallback } from 'src/state'
 import AbstractState from './AbstractState'
-import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
-import IStateLink from './interfaces/IStateLink'
+import IStateFormItemCustom from '../interfaces/IStateFormItemCustom'
+import IStateLink from '../interfaces/IStateLink'
 import StateFormItemCustom from './StateFormItemCustom'
 
 export default class StateLink<P = any>

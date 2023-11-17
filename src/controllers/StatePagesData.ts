@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import { IGenericObject } from './interfaces/IState'
+import { IGenericObject } from '../interfaces/IState'
 import State from './State'
 
 /**

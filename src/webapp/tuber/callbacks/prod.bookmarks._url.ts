@@ -1,13 +1,12 @@
 import { get_parsed_page_content, safely_get_as } from 'src/controllers'
 import { IRedux, ler } from 'src/state'
-import { remember_error, remember_exception } from 'src/state/_errors.business.logic'
-import { get_bootstrap_key, get_state_form_name } from 'src/state/_business.logic'
+import { remember_error, remember_exception } from 'src/business.logic/errors'
+import { get_bootstrap_key } from '../../../business.logic'
 import { URL_DIALOG_ID_NEW } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { post_req_state } from 'src/state/net.actions'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
+import { get_state_form_name } from '../../../business.logic'
 
 /**
  * Shows the dialog to insert a new video url from which the video bookmark
@@ -29,7 +28,8 @@ export function dialog_new_video_url(redux: IRedux) {
       dispatch({ type: 'dialog/dialogMount', payload: newVideoUrlDialogState })
       return
     }
-    dispatch(post_req_state(`${BOOTSTRAP_KEY}/${URL_DIALOG_ID_NEW}`, {}))
+    const bootstrapKey = get_bootstrap_key()
+    dispatch(post_req_state(`${bootstrapKey}/${URL_DIALOG_ID_NEW}`, {}))
   }
 }
 

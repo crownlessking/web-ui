@@ -1,10 +1,10 @@
 import { get_parsed_page_content } from 'src/controllers'
-import { IJsonapiResponseResource } from 'src/controllers/interfaces/IJsonapi'
+import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi'
 import StateTmp from 'src/controllers/StateTmp'
 import { IRedux, ler, log, pre } from 'src/state'
-import { remember_exception } from 'src/state/_errors.business.logic'
+import { remember_exception } from 'src/business.logic/errors'
 import { delete_req_state } from 'src/state/net.actions'
-import { get_state_form_name } from 'src/state/_business.logic'
+import { get_state_form_name } from '../../../business.logic'
 import { get_dialog_id_for_edit } from '../_tuber.business.logic'
 import { IBookmark } from '../tuber.interfaces'
 

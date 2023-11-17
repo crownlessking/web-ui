@@ -2,10 +2,10 @@ import FormValidationPolicy from '../../../controllers/FormValidationPolicy'
 import JsonapiRequest from '../../../controllers/jsonapi.request'
 import { post_req_state } from '../../../state/net.actions'
 import { IRedux, ler, log } from '../../../state'
-import { get_state_form_name } from '../../../state/_business.logic'
+import { get_state_form_name } from '../../../business.logic'
 import { FORM_YOUTUBE_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
-import { remember_error } from '../../../state/_errors.business.logic'
+import { remember_error } from '../../../business.logic/errors'
 
 /**
  * [YouTube] Save bookmark to server.

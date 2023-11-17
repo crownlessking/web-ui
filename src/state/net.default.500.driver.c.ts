@@ -1,12 +1,12 @@
 import { Dispatch } from 'redux'
-import { IJsonapiResponse } from 'src/controllers/interfaces/IJsonapi'
-import { appRequestFailed } from 'src/slices/app.slice'
+import { mongo_object_id } from '../business.logic'
+import { IJsonapiResponse } from '../interfaces/IJsonapi'
+import { appRequestFailed } from '../slices/app.slice'
 import { ler, RootState } from '.'
 import {
   remember_error,
   remember_jsonapi_errors,
-  mongo_object_id
-} from './_errors.business.logic'
+} from '../business.logic/errors'
 
 export default function net_default_500_driver (
   dispatch: Dispatch,

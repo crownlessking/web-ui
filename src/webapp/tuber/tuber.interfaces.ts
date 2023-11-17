@@ -1,5 +1,5 @@
 // Tuber app types and interfaces gathered in one spot
-import IStateLink from '../../controllers/interfaces/IStateLink'
+import IStateLink from '../../interfaces/IStateLink'
 import StatePageAppBar from '../../controllers/templates/StatePageAppBar'
 
 /**

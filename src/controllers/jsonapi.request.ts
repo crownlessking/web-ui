@@ -3,8 +3,8 @@ import {
   IJsonapiDataRelationships,
   IJsonapiRequest,
   IJsonapiResourceLinks
-} from './interfaces/IJsonapi'
-import { IGenericObject } from './interfaces/IState'
+} from '../interfaces/IJsonapi'
+import { IGenericObject } from '../interfaces/IState'
 
 /** Format the request using the jsonapi specification */
 export default class JsonapiRequest<T=IJsonapiDataAttributes> {

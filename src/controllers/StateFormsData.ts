@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState'
 import State from './State'
-import { IGenericObject } from './interfaces/IState'
+import { IGenericObject } from '../interfaces/IState'
 
 export default class StateFormsData extends AbstractState {
 

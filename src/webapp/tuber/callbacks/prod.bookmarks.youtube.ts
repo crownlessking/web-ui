@@ -2,8 +2,8 @@ import { YouTubePlayer } from 'react-youtube'
 import Config from 'src/config'
 import { get_parsed_page_content } from 'src/controllers'
 import { IRedux, ler } from 'src/state'
-import { remember_exception } from 'src/state/_errors.business.logic'
-import { get_state_form_name } from 'src/state/_business.logic'
+import { remember_exception } from 'src/business.logic/errors'
+import { get_state_form_name } from '../../../business.logic'
 import { TPlatform } from '../tuber.interfaces'
 
 /**
@@ -14,10 +14,10 @@ import { TPlatform } from '../tuber.interfaces'
  */
 export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
-    const { store: { getState, dispatch } } = redux
-    const state = getState()
-    const dialogKey = state.stateRegistry['6']
-    const dialogState = getState().dialogs[dialogKey]
+    const { store: { dispatch } } = redux
+    const rootState = redux.store.getState()
+    const dialogKey = rootState.stateRegistry['6']
+    const dialogState = rootState.dialogs[dialogKey]
     if (!dialogState) {
       ler(`'${dialogKey}' does not exist.`)
       return
@@ -51,7 +51,7 @@ export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
       })
     } catch (e: any) { remember_exception(e) }
 
-    const mountedDialogId = getState().dialog._id
+    const mountedDialogId = rootState.dialog._id
   
     // if the dialog was NOT mounted
     if (mountedDialogId !== dialogState._id) {

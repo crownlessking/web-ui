@@ -1,6 +1,6 @@
 import { get_parsed_page_content } from '..'
-import { IDialogContentProps } from '../interfaces/IStateDialog'
-import { IStatePageContent } from '../interfaces/IStatePage'
+import { IDialogContentProps } from '../../interfaces/IStateDialog'
+import { IStatePageContent } from '../../interfaces/IStatePage'
 import StateDialog from '../StateDialog'
 import StateForm from '../StateForm'
 

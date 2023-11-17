@@ -1,7 +1,7 @@
-import { get_origin_ending_fixed } from '.'
-import { remember_possible_error } from '../state/_errors.business.logic'
+import { get_origin_ending_fixed } from '../business.logic'
+import { remember_possible_error } from '../business.logic/errors'
 import AbstractState from './AbstractState'
-import IStateApp, { IStateAppSession } from './interfaces/IStateApp'
+import IStateApp, { IStateAppSession } from '../interfaces/IStateApp'
 import State from './State'
 
 const dudSession: IStateAppSession = { accessToken: '', name: '' }

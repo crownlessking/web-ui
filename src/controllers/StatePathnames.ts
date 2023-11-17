@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import { IStatePathnames } from './interfaces/IState'
+import { IStatePathnames } from '../interfaces/IState'
 
 export default class StatePathnames extends AbstractState {
   constructor(private _pathnamesState: IStatePathnames) {

@@ -1,4 +1,4 @@
-import { remember_error } from 'src/state/_errors.business.logic'
+import { remember_error } from 'src/business.logic/errors'
 import {
   DIALGO_DAILY_NEW_ID,
   DIALOG_FACEBOOK_NEW_ID,

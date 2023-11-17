@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import IStateForm from '../controllers/interfaces/IStateForm'
+import IStateForm from '../interfaces/IStateForm'
 import initialState from '../state/initial.state'
 
 export const FORMS_ADD = 'forms/formsAdd'

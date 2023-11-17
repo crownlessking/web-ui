@@ -22,7 +22,7 @@ import {
   IFormsDataArgs
 } from '../../../slices/formsData.slice'
 import StateFormItem from '../../../controllers/StateFormItem'
-import { remember_exception } from 'src/state/_errors.business.logic'
+import { remember_exception } from 'src/business.logic/errors'
 
 /**
  * Insert form data to the Redux store.

@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateAvatar from './interfaces/IStateAvatar'
+import IStateAvatar from '../interfaces/IStateAvatar'
 import StateFormItemCustom from './StateFormItemCustom'
 
 export default class StateAvatar extends AbstractState implements IStateAvatar {

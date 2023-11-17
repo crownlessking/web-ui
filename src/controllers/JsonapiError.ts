@@ -1,7 +1,7 @@
-import { mongo_object_id } from 'src/state/_errors.business.logic'
+import { mongo_object_id } from '../business.logic'
 import {
   IJsonapiError, IJsonapiErrorLinks, IJsonapiErrorSource, IJsonapiMeta
-} from './interfaces/IJsonapi'
+} from '../interfaces/IJsonapi'
 
 export default class JsonapiError implements IJsonapiError {
   private idJson?: string

@@ -1,14 +1,16 @@
-import { get_origin_ending_fixed, safely_get_as } from 'src/controllers'
+import { safely_get_as } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { IRedux, ler } from 'src/state'
 import {
   remember_error,
   remember_exception,
   remember_jsonapi_errors
-} from 'src/state/_errors.business.logic'
+} from 'src/business.logic/errors'
 import {
   FORM_TEST_THUMBNAIL_ID,
-  PAGE_TEST_THUMBNAIL_ID
+  PAGE_TEST_THUMBNAIL_ID,
+  THUMB_LOAD_ATTEMPTS_CONF,
+  THUMB_MAX_LOAD_ATTEMPTS
 } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import {
@@ -21,8 +23,10 @@ import {
 } from '../dev.video.thumbnail'
 import { get_fetch } from 'src/state/net.actions'
 import { IBookmark } from '../tuber.interfaces'
-import { IJsonapiResource } from 'src/controllers/interfaces/IJsonapi'
+import { IJsonapiResource } from 'src/interfaces/IJsonapi'
 import React from 'react'
+import Config from 'src/config'
+import { get_origin_ending_fixed } from '../../../business.logic'
 
 export default function dev_get_video_thumbnail(redux: IRedux) {
   return async () => {
@@ -99,7 +103,6 @@ export function dev_fix_missing_thumbnails(i: number) {
   return (redux: IRedux) => {
     return async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      e.currentTarget.setAttribute('disabled', 'true')
       const rootState = redux.store.getState()
       const resource: IJsonapiResource<IBookmark> = rootState
         .data
@@ -114,11 +117,17 @@ export function dev_fix_missing_thumbnails(i: number) {
         ler(`resourceList['${i}'].id is undefined.`)
         return
       }
+      const config = `${THUMB_LOAD_ATTEMPTS_CONF}${id}`
+      const attempts = Config.read(config, 0)
+      if (attempts >= THUMB_MAX_LOAD_ATTEMPTS) {
+        ler(`dev_fix_missing_thumbnails: ${config} exceeded.`)
+        return
+      }
+      Config.write(config, attempts + 1)
       try {
         const origin = get_origin_ending_fixed(rootState.app.origin)
         const endpoint = `${origin}bookmarks/${id}/thumbnail-url`
         const editedBookmarkResource = await get_fetch(endpoint)
-        console.log('editedBookmarkResource', editedBookmarkResource)
         if (editedBookmarkResource.errors) {
           ler(`dev_fix_missing_thumbnails: ${editedBookmarkResource.errors?.[0]?.title}`)
           remember_jsonapi_errors(editedBookmarkResource.errors)

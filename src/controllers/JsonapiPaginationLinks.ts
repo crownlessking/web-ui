@@ -1,7 +1,7 @@
-import { remember_exception } from 'src/state/_errors.business.logic'
+import { remember_exception } from 'src/business.logic/errors'
 import { get_query_val } from '.'
 import AbstractState from './AbstractState'
-import { IJsonapiPaginationLinks } from './interfaces/IJsonapi'
+import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi'
 
 type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks]
 

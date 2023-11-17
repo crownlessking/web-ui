@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { cancel_spinner } from '../state/_business.logic'
+import { cancel_spinner } from '../state/spinner'
 import initialState from '../state/initial.state'
 
 export const APP_IS_BOOTSTRAPPED   = 'APP_IS_BOOTSTRAPPED'

@@ -3,12 +3,12 @@ import Form from '../../mui/form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
 import { useEffect, useMemo } from 'react'
-import { get_state_form_name } from '../../state/_business.logic'
 import Config from '../../config'
 import { ALLOWED_ATTEMPTS } from '../../constants'
 import { post_req_state } from '../../state/net.actions'
 import StateForm from '../../controllers/StateForm'
 import StateAllForms from 'src/controllers/StateAllForms'
+import { get_state_form_name } from '../../business.logic'
 
 interface IFormContent {
   def: StateForm | null,

@@ -1,4 +1,4 @@
-import { IJsonapiPaginationLinks } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi'
 
 type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks]
 

@@ -1,5 +1,5 @@
 import { AppBarProps, IconButtonProps } from '@mui/material'
-import IStateAppBar from '../interfaces/IStateAppBar'
+import IStateAppBar from '../../interfaces/IStateAppBar'
 import State from '../State'
 import StateAppBar from '../StateAppBar'
 import StateAppBarBackground from './StateAppBarBackground'

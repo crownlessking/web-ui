@@ -1,4 +1,4 @@
-import IStateFormItem from '../interfaces/IStateFormItem'
+import IStateFormItem from '../../interfaces/IStateFormItem'
 import StateDialog from '../StateDialog'
 
 export default class StateDialogCustomized extends StateDialog {

@@ -1,7 +1,7 @@
 import Controller from './AbstractState'
 import State from './State'
 import StateForm from './StateForm'
-import IStateAllForms from './interfaces/IStateAllForms'
+import IStateAllForms from '../interfaces/IStateAllForms'
 import { log } from '../state'
 
 export default class StateAllForms extends Controller {

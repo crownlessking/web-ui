@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { STATE_BUTTON } from '../../../constants'
 import StateForm from 'src/controllers/StateForm'
-import IStateFormItem from '../../../controllers/interfaces/IStateFormItem'
+import IStateFormItem from '../../../interfaces/IStateFormItem'
 import StateFormItem from '../../../controllers/StateFormItem'
 import StateJsxDialogActionButton from './state.jsx.form.button'
 

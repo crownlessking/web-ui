@@ -1,8 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { err, ler } from '../state'
 import { APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE_VIEW, TCallback } from '../constants'
-import { IJsonapiResourceAbstract } from './interfaces/IJsonapi'
-import { IStatePageContent } from './interfaces/IStatePage'
+import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
+import { IStatePageContent } from '../interfaces/IStatePage'
 
 /** Helps to shorten error message */
 let _msgPrefix = ''

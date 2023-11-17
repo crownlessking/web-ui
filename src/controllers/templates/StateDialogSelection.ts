@@ -1,4 +1,4 @@
-import IStateDialog, { IStateDialogSelectionItem } from '../interfaces/IStateDialog'
+import IStateDialog, { IStateDialogSelectionItem } from '../../interfaces/IStateDialog'
 import State from '../State'
 import StateDialog from '../StateDialog'
 import StateDialogSelectionItem from './StateDialogSelectionItem'

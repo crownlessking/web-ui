@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import Config from '../../config'
 import { LAST_DRAWER_STATE } from '../../constants'
-import IStateDrawer from '../../controllers/interfaces/IStateDrawer'
+import IStateDrawer from '../../interfaces/IStateDrawer'
 import StatePage from '../../controllers/StatePage'
 import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive'
 import MiniDrawer from './mini-variant.drawer'

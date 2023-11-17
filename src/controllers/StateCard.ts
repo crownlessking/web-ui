@@ -1,5 +1,5 @@
 import AbstractState from './AbstractState'
-import IStateCard from './interfaces/IStateCard'
+import IStateCard from '../interfaces/IStateCard'
 import StateFormItem from './StateFormItem'
 
 export default class StateCard<P=any> extends AbstractState implements IStateCard {

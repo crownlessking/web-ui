@@ -23,7 +23,7 @@ export const formsDataSlice = createSlice({
     },
     /** pass the form name to clear all form data */
     formsDataClear: (state, action) => {
-      state[action.payload] = undefined
+      delete state[action.payload]
     },
   }
 })

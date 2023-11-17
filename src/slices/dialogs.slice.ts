@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { get_state_dialog_name } from '../state/_business.logic'
+import { get_state_dialog_name } from '../business.logic'
 import initialState from '../state/initial.state'
 
 export const DIALOGS_ADD = 'dialogs/dialogsAdd'
@@ -22,7 +22,11 @@ export const dialogsSlice = createSlice({
      */
     dialogsAdd: (state, action) => {
       const { name, dialog } = action.payload
-      state[get_state_dialog_name(name)] = dialog
+      const dialogName = dialog._key ?? get_state_dialog_name(name)
+      if (state[dialogName]) {
+        return
+      }
+      state[dialogName] = dialog
     },
     dialogsRemove: (state, action) => {
       delete state[get_state_dialog_name(action.payload)]

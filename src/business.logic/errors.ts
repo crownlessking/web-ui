@@ -1,7 +1,8 @@
-import { IGenericObject } from 'src/controllers/interfaces/IState'
-import IStateAppBarQueries from 'src/controllers/interfaces/IStateAppBarQueries'
+import { mongo_object_id } from '.'
+import { IGenericObject } from 'src/interfaces/IState'
+import IStateAppBarQueries from 'src/interfaces/IStateAppBarQueries'
 import C from '../config'
-import { IJsonapiError } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiError } from '../interfaces/IJsonapi'
 
 let tmpErrorsList: IJsonapiError[]
 
@@ -19,18 +20,6 @@ function _ler(...args: any): void {
   if (C.DEBUG) {
     console.error(...args)
   }
-}
-
-/**
- * Generates a mongodb ObjectId
- *
- * @see https://gist.github.com/solenoid/1372386
- */
-export function mongo_object_id(): string {
-  const timestamp = (new Date().getTime() / 1000 | 0).toString(16)
-  return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function() {
-      return (Math.random() * 16 | 0).toString(16)
-  }).toLowerCase()
 }
 
 /**

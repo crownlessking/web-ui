@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 import { SxProps } from '@mui/material'
 import AbstractState from './AbstractState'
-import IStateBackground from './interfaces/IStateBackground'
+import IStateBackground from '../interfaces/IStateBackground'
 import State from './State'
 
 export default class StateBackground<P = State>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IJsonapiResource } from 'src/controllers/interfaces/IJsonapi'
+import { IJsonapiResource } from 'src/interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
 export interface IDataAdd {

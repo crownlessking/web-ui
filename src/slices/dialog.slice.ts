@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import IStateDialog from '../controllers/interfaces/IStateDialog'
+import IStateDialog from '../interfaces/IStateDialog'
 import initialState from '../state/initial.state'
 
 export const dialogSlice = createSlice({

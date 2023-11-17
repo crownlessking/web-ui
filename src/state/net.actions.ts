@@ -1,7 +1,6 @@
 import fetch from 'cross-fetch'
 import { Dispatch } from 'redux'
-import { remember_exception } from './_errors.business.logic'
-import { get_endpoint, schedule_spinner } from './_business.logic'
+import { remember_exception } from '../business.logic/errors'
 import net_default_200_driver from './net.default.200.driver.c'
 import net_default_201_driver from './net.default.201.driver.c'
 import net_default_400_driver from './net.default.400.driver.c'
@@ -11,9 +10,11 @@ import net_default_500_driver from './net.default.500.driver.c'
 import {
   appHideSpinner, appRequestFailed, appRequestStart,
 } from '../slices/app.slice'
-import { get_query_starting_fixed, get_origin_ending_fixed } from '../controllers'
+import { get_query_starting_fixed } from '../controllers'
 import { RootState } from '.'
-import { IJsonapiBaseResponse } from '../controllers/interfaces/IJsonapi'
+import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
+import { get_endpoint, get_origin_ending_fixed } from '../business.logic'
+import { schedule_spinner } from './spinner'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Content-Type': 'application/json',

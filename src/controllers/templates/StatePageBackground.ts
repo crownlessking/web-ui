@@ -1,5 +1,5 @@
-import IStateBackground from '../interfaces/IStateBackground'
-import IStatePage from '../interfaces/IStatePage'
+import IStateBackground from '../../interfaces/IStateBackground'
+import IStatePage from '../../interfaces/IStatePage'
 import StateBackground from '../StateBackground'
 import StatePage from '../StatePage'
 

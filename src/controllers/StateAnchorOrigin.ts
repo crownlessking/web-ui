@@ -3,7 +3,7 @@ import StateSnackbar from './StateSnackbar'
 import AbstractState from './AbstractState'
 import IStateAnchorOrigin, {
   AnchorHorizontal, AnchorVertical
-} from './interfaces/IStateAnchorOrigin'
+} from '../interfaces/IStateAnchorOrigin'
 
 export default class StateAnchorOrigin
     extends AbstractState implements IStateAnchorOrigin {
