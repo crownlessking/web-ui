@@ -24,18 +24,6 @@ export default class StateAllForms extends Controller {
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 
-  /**
-   * Get (chain-access to) the form definition.
-   *
-   * __Problem__: We implemented a solution for applying default values to form
-   * fields. However, although it worked, the solution caused React to complain.
-   * To stop react from complaining we had to move the solution from `render()`
-   * to `componentDidMount()`.
-   * Since we do not want duplicate codes, we decided to move the part of the
-   * logic that involves acquiring the form state to this function.
-   *
-   * @param name 
-   */
   getForm = (name: string): StateForm | null => {
     const formName = this.getStateFormName(name)
     const formState = this.allFormsState[formName]

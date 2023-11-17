@@ -13,7 +13,7 @@ import { IBookmark } from '../tuber.interfaces'
  * @id 14_C_1
  */
 export function form_submit_new_vimeo_bookmark(redux: IRedux) {
-  return () => {
+  return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
     const formKey = rootState.stateRegistry[FORM_VIMEO_NEW_ID]

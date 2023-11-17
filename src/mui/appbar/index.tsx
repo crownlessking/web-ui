@@ -20,6 +20,8 @@ interface IAppBarProps {
  *   '_type': '' // <-- Or you can set it here
  * };
  * ```
+ * @see IStateAppBar.appBarStyle
+ * @see IStateAppBar._type
  */
 export default function StateJsxAppBar ({ def: page }: IAppBarProps) {
 

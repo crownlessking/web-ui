@@ -9,7 +9,7 @@ import { set_url_query_val } from 'src/controllers'
  * query to search for bookmarks.
  */
 export function appbar_search_bookmarks (redux: IRedux) {
-  return () => {
+  return async () => {
     const rootState = redux.store.getState()
     const route = rootState.app.route ?? ''
     const searchQuery = get_search_query(rootState.appBarQueries, route)

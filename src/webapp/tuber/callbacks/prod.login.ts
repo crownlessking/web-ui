@@ -1,19 +1,20 @@
 import { IRedux, ler } from '../../../state'
-
-const LOGIN_DIALOG = 'loginDialog'
+import { DIALOG_LOGIN_ID } from '../tuber.config'
 
 export function dialog_login(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
-    const dialogJson = getState().dialogs[LOGIN_DIALOG]
+    const rootState = getState()
+    const dialogKey = rootState.stateRegistry[DIALOG_LOGIN_ID]
+    const dialogJson = rootState.dialogs[dialogKey]
     if (!dialogJson) {
-      ler(`'${LOGIN_DIALOG}' does not exists.`)
+      ler(`'${dialogKey}' does not exists.`)
       return
     }
-    const mountedDialogName = getState().dialog._key
+    const mountedDialogKey = rootState.dialog._key
 
     // if the dialog was NOT mounted
-    if (mountedDialogName !== dialogJson._key) {
+    if (mountedDialogKey !== dialogJson._key) {
       dispatch({ type: 'dialog/dialogMount', payload: dialogJson })
     } else {
       dispatch({ type: 'dialog/dialogOpen' })

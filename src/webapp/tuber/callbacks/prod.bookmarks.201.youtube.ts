@@ -13,7 +13,7 @@ import { remember_error } from '../../../state/_errors.business.logic'
  * @id 4
  */
 export function form_submit_new_youtube_bookmark(redux: IRedux) {
-  return () => {
+  return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
     const formKey = rootState.stateRegistry[FORM_YOUTUBE_NEW_ID]
@@ -66,6 +66,9 @@ export function form_submit_new_youtube_bookmark(redux: IRedux) {
       title,
       note
     }).build()
+    if ('youtube' === platform || platform === 'dailymotion') {
+      requestBody.data.attributes.thumbnail_url = formData.thumbnail_url
+    }
     log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
     dispatch(post_req_state('bookmarks', requestBody))

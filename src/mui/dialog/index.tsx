@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { RootState } from 'src/state'
+import { RootState } from '../../state'
 import StateDialog from '../../controllers/StateDialog'
 import StateDialogAlert from '../../controllers/templates/StateDialogAlert'
 import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized'
@@ -14,12 +14,20 @@ export default function JsonDialog () {
   const dialog = new StateDialog(
     useSelector((state: RootState) => state.dialog)
   )
-  const json = dialog.state
+  const dialogState = dialog.state
   const dialogTable: { [x: string]: JSX.Element } = {
-    'selection': <StateJsxSelectionDialog def={new StateDialogSelection(json)} />,
-    'alert': <StateJsxAlertDialog def={new StateDialogAlert(json)} />,
-    'form': <StateJsxFormDialog def={new StateDialogForm(json)} />,
-    'any': <StateJsxCustomizedDialog def={new StateDialogCustomized(json)} />
+    'selection': (
+      <StateJsxSelectionDialog
+        def={new StateDialogSelection(dialogState)}
+      />
+    ),
+    'alert': <StateJsxAlertDialog def={new StateDialogAlert(dialogState)} />,
+    'form': <StateJsxFormDialog def={new StateDialogForm(dialogState)} />,
+    'any': (
+      <StateJsxCustomizedDialog
+        def={new StateDialogCustomized(dialogState)}
+      />
+    )
   }
   const type = dialog._type.toLowerCase()
   return dialogTable[type]

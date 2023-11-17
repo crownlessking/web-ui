@@ -1,8 +1,12 @@
 import { Fragment } from 'react'
 import * as Icons from '@mui/icons-material'
-import { err } from '../state'
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
+import { log } from '../state'
 
-export default function getImportedSvgIcon (iconName: string, props?: any) {
+export default function getImportedSvgIcon (
+  iconName: string,
+  props?: any
+): JSX.Element | null {
   const iconTable: { [icon: string]: JSX.Element } = {
     'phone_outline': <Icons.PhoneOutlined {...props} />,
     'call_outline': <Icons.PhoneOutlined {...props} />,
@@ -15,8 +19,8 @@ export default function getImportedSvgIcon (iconName: string, props?: any) {
     'done_outline': <Icons.DoneOutline {...props} />,
     'beenhereoutline': <Icons.BeenhereOutlined {...props} />,
     'been_here_outline': <Icons.BeenhereOutlined {...props} />,
-    'buildoutlined': <Icons.BuildOutlined {...props} />,
-    'build_outline': <Icons.BuildOutlined {...props} />,
+    'buildoutlined': <BuildOutlinedIcon {...props} />,
+    'build_outline': <BuildOutlinedIcon {...props} />,
     'donealloutlined': <Icons.DoneAllOutlined {...props} />,
     'done_all_outline': <Icons.DoneAllOutlined {...props} />,
     'doneoutlineoutlined': <Icons.DoneOutlineOutlined {...props} />,
@@ -84,6 +88,6 @@ export default function getImportedSvgIcon (iconName: string, props?: any) {
   if (iconName_lc in iconTable) {
     return iconTable[iconName_lc]
   }
-  err('Invalid `iconName`')
-  return iconTable['none']
+  log('Invalid `iconName`')
+  return null
 }

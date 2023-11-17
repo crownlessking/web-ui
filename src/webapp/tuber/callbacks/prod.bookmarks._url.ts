@@ -62,7 +62,7 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         return
       }
       const newBookmarkDialogKey = rootState.stateRegistry[video.dialogId]
-      if (newBookmarkDialogKey === 'dialog_key_not_found') {
+      if (!newBookmarkDialogKey) {
         ler(`dialog_new_bookmark_from_url: ${video.platform} dialog key not found.`)
         return
       }
@@ -135,6 +135,18 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
             formName,
             name: 'start_seconds',
             value: video.start
+          }
+        })
+      }
+      if (video.platform === 'youtube'
+        || video.platform === 'dailymotion'
+      ) {
+        redux.store.dispatch({
+          type: 'formsData/formsDataUpdate',
+          payload: {
+            formName,
+            name: 'thumbnail_url',
+            value: video.thumbnailUrl
           }
         })
       }

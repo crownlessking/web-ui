@@ -112,7 +112,9 @@ export default interface IState {
   /** Material-ui `ThemeOptions` */
   theme: ThemeOptions
   net: IStateNet
+  /** Get the pathnames needed to retrieve missing states. */
   pathnames: IStatePathnames
+  /** List of state keys */
   stateRegistry: Record<string, string>
 }
 

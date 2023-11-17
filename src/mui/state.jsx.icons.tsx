@@ -32,3 +32,11 @@ export default function StateJsxIcon ({ def: has }: IJsonIconProps) {
 
   return ( null )
 }
+
+export function StateJsxMuiIcon ({ def: has }: IJsonIconProps) {
+  if (has.icon) {
+    return getSvgIcon(has.icon, has.iconProps)
+      ?? <Icon {...has.iconProps}>{ has.icon }</Icon>
+  }
+  return ( null )
+}

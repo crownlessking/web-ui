@@ -5,7 +5,7 @@ import {
 } from '../../../controllers/interfaces/IStateFormItem'
 import StateFormItemInputProps from '../../../controllers/StateFormItemInputProps'
 import StateLink from '../../../controllers/StateLink'
-import JsonLink from '../../link'
+import StateJsxLink from '../../link'
 
 /**
  * Get adornment for textfield. Adornment is an icon or text that appears at
@@ -34,7 +34,7 @@ export default function StateJsxTextfieldInputProps({
     if (!state) return null
     const { icon, text, textProps } = state
     if (icon) {
-      return <JsonLink def={new StateLink(icon)} />
+      return <StateJsxLink def={new StateLink(icon)} />
     } else if (text) {
       return <span {...textProps}>{ text }</span>
     }

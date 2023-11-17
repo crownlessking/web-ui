@@ -8,6 +8,7 @@ import StateFormItem from '../../../../controllers/StateFormItem'
 
 interface IJsonButtonProps { def: StateFormItem }
 
+/** @deprecated */
 export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
   const redux = {
     store,

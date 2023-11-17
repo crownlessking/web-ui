@@ -13,8 +13,12 @@ import StateLink from '../../controllers/StateLink'
 import { Link as RouterLink } from 'react-router-dom'
 import { Badge, Chip, SvgIcon } from '@mui/material'
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip'
+import { StateJsxMuiIcon } from '../state.jsx.icons'
 
-interface IJsonLinkProps { def: StateLink }
+interface IJsonLinkProps {
+  def: StateLink
+  children?: any
+}
 
 /**
  * [TODO] To update badge notification, the data needs to be retrieve from
@@ -24,7 +28,7 @@ interface IJsonLinkProps { def: StateLink }
  *        `state.data`. Then retrieve the content of that property and set it
  *        as the value of badge content.
  */
-export default function JsonLink ({ def }: IJsonLinkProps) {
+export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
   const { type, color, has } = def
   const redux: IRedux = { store, actions, route: has.route }
   const route = get_formatted_route(has)
@@ -92,10 +96,71 @@ export default function JsonLink ({ def }: IJsonLinkProps) {
       </Button>
     ),
 
+    'svg': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { children }
+      </IconButton>
+    ),
+
+    'svg_right': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { has.text }
+        &nbsp;
+        { children }
+      </IconButton>
+    ),
+
+    'svg_left': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { children }
+        &nbsp;
+        { has.text }
+      </IconButton>
+    ),
+
     // icon only
     'icon': () => {
       if (has.faIcon) {
-        const icon = get_font_awesome_icon_prop(has.faIcon) as IconProp
+        const icon = get_font_awesome_icon_prop(has.faIcon)
         return (
           <IconButton
             component={RouterLink}
@@ -147,7 +212,7 @@ export default function JsonLink ({ def }: IJsonLinkProps) {
                 <SvgIcon {...has.iconProps}>{ has.icon }</SvgIcon>
               </Badge>
             ) : (
-              <Icon {...has.iconProps}>{ has.icon }</Icon>
+              <StateJsxMuiIcon def={has} />
             )}
           </IconButton>
         )

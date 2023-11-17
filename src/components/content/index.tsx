@@ -11,6 +11,7 @@ import { APP_CONTENT_VIEW } from '../../constants'
 import { remember_exception } from 'src/state/_errors.business.logic'
 import FormContent from './form.component'
 import WebApps from './webapp.content.component'
+import { get_state_form_name } from 'src/state/_business.logic'
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -89,7 +90,13 @@ export default function Content (props: IContentProps) {
       currentContentJsx = contentJsx = <HtmlContent def={page} />
     },
     [APP_CONTENT_FORM_LOAD]: () => {
-      dispatch(post_req_state(page.contentEndpoint))
+      const { fetchingStateAllowed } = page.parent.app
+      if (fetchingStateAllowed) {
+        const { FORMS } = page.parent.parent.pathnames
+        dispatch(post_req_state(FORMS, {
+          key: get_state_form_name(page.contentName),
+        }))
+      }
       currentContentJsx = contentJsx = ( null )
     },
     [APP_CONTENT_HTML_LOAD]: () => currentContentJsx = contentJsx = ( null ),

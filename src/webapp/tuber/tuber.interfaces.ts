@@ -38,7 +38,7 @@ export interface IBookmark {
   rating?: number
   upvotes?: string
   downvotes?: string
-  thumbnail?: string
+  thumbnail_url?: string
   tags?: string[]
   groupid?: string
   htmlTag?: string

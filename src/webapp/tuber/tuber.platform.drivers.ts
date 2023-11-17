@@ -22,7 +22,7 @@ import {
   daily_get_start_time,
   odysee_get_url_data,
 } from './_tuber.business.logic'
-import { IUrlStatus, IVideoData, TPlatform } from './tuber.interfaces'
+import { IUrlStatus, IVideoData } from './tuber.interfaces'
 
 const DATA_SKELETON: IVideoData = {
   platform: '_blank',
@@ -42,6 +42,12 @@ const DATA_SKELETON: IVideoData = {
 
 const NO_START_MSG = 'The video start time is missing.'
 
+/**
+ * Parse a video URL of supported platforms and return the video data.
+ *
+ * @param url The URL to parse
+ * @returns The video data
+ */
 export default function parse_platform_video_url(url: string): IVideoData {
   const { valid, message } = _check_url(url)
   if (!valid) {
@@ -101,7 +107,7 @@ function _check_url(url: string): IUrlStatus {
   return { message, valid }
 }
 
-function _extract_data_from_youTube_url(url: string) {
+function _extract_data_from_youTube_url(url: string): IVideoData {
   const id = youtube_get_video_id(url)
   if (!id) {
     remember_error({
@@ -124,17 +130,18 @@ function _extract_data_from_youTube_url(url: string) {
     })
     return DATA_SKELETON
   }
-  const platform: TPlatform = 'youtube'
   const start = parseInt(startStr)
-  const data = {
+  const data: IVideoData = {
     ...DATA_SKELETON,
-    platform,
+    platform: 'youtube',
     id,
     start,
     urlCheck: {
       message: 'OK',
       valid: true
     },
+    // See: https://stackoverflow.com/a/2068371/1875859
+    thumbnailUrl: `https://img.youtube.com/vi/${id}/0.jpg`,
     dialogId: DIALOG_YOUTUBE_NEW_ID
   }
   return data
@@ -186,7 +193,7 @@ function _extract_data_from_rumble_url(url: string): IVideoData {
   return data
 }
 
-function _extract_data_from_vimeo_url(url: string) {
+function _extract_data_from_vimeo_url(url: string): IVideoData {
   const id = vimeo_get_video_id(url)
   if (!id) {
     remember_error({
@@ -198,7 +205,6 @@ function _extract_data_from_vimeo_url(url: string) {
     })
     return DATA_SKELETON
   }
-  const platform: TPlatform = 'vimeo'
   const start = vimeo_get_start_time(url)
   if (!start) {
     remember_error({
@@ -216,9 +222,9 @@ function _extract_data_from_vimeo_url(url: string) {
       }
     }
   }
-  const data = {
+  const data: IVideoData = {
     ...DATA_SKELETON,
-    platform,
+    platform: 'vimeo',
     id,
     start,
     urlCheck: {
@@ -230,7 +236,7 @@ function _extract_data_from_vimeo_url(url: string) {
   return data
 }
 
-function _extract_data_from_dailymotion_url(url: string) {
+function _extract_data_from_dailymotion_url(url: string): IVideoData {
   const id = daily_get_video_id(url)
   if (!id) {
     remember_error({
@@ -268,13 +274,14 @@ function _extract_data_from_dailymotion_url(url: string) {
       message: 'OK',
       valid: true
     },
+    thumbnailUrl: `https://www.dailymotion.com/thumbnail/video/${id}`,
     dialogId: DIALGO_DAILY_NEW_ID
   }
   return data
 }
 
 /** Example URL: https://odysee.com/@GameolioDan:6/diablo-4-playthrough-part-30-entombed:1?t=368 */
-function _extract_data_from_odysee_url(url: string) {
+function _extract_data_from_odysee_url(url: string): IVideoData {
   const { author, id , start } = odysee_get_url_data(url)
   if (!start) {
     remember_error({
@@ -317,7 +324,7 @@ function _extract_data_from_odysee_url(url: string) {
   return data
 }
 
-function _extract_data_from_twitch_url(url: string) {
+function _extract_data_from_twitch_url(url: string): IVideoData {
   const id = twitch_get_video_id(url)
   if (!id) {
     remember_error({
@@ -358,7 +365,7 @@ function _extract_data_from_twitch_url(url: string) {
  * __Note:__ The embed URL is needed here.  
  * Example slug: `MetroUK%2Fvideos%2F7129126943765650`
  */
-function _extract_data_from_facebook_url() {
+function _extract_data_from_facebook_url(): IVideoData {
   const data: IVideoData = {
     ...DATA_SKELETON,
     platform: 'facebook',

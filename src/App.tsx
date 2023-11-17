@@ -49,6 +49,7 @@ export default function App() {
     /** Get state from server. */
     const onPostReqHomePageState = () => {
       const key = get_bootstrap_key()
+      if (!key) { return }
       const bootstrapAttempts = Config.read<number>('bootstrap_attempts', 0)
       if (bootstrapAttempts < ALLOWED_ATTEMPTS && key) {
         dispatch(post_req_state(key, {}, net.headers))

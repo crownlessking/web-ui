@@ -67,6 +67,7 @@ export function get_dud_event_callback (): TCallback {
  * Icon types are, "fas, far, fab"
  *
  * @param iconDef 
+ * @deprecated
  */
 export function get_font_awesome_icon_prop(iconDef: string): IconProp {
   const pieces = iconDef.replace(/\s+/,'').split(',')

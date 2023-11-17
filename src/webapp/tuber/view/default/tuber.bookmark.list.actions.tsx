@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import StateLink from 'src/controllers/StateLink'
-import JsonLink from 'src/mui/link'
+import StateJsxLink from 'src/mui/link'
 import { dialog_edit_bookmark } from '../../callbacks/prod.bookmarks.actions'
 import {
   dialog_delete_bookmark
@@ -44,7 +44,7 @@ const SpanStyled = styled('span')(() => ({}))
 const EditAction = (props:{index:number}) => {
   
   return (
-    <JsonLink def={new StateLink({
+    <StateJsxLink def={new StateLink({
       'type': 'icon',
       'onClick': dialog_edit_bookmark(props.index),
       'props': { 'size': 'small' },
@@ -57,7 +57,7 @@ const EditAction = (props:{index:number}) => {
 
 const SettingAction = () => {
   return (
-   <JsonLink def={new StateLink({
+   <StateJsxLink def={new StateLink({
      'type': 'icon',
      'props': { 'size': 'small' },
      'has': {
@@ -69,7 +69,7 @@ const SettingAction = () => {
 
 const DeleteAction = ({ index }:{ index:number }) => {
   return (
-    <JsonLink def={new StateLink({
+    <StateJsxLink def={new StateLink({
       'type': 'icon',
       'onClick': dialog_delete_bookmark(index),
       'props': { 'size': 'small' },
@@ -82,7 +82,7 @@ const DeleteAction = ({ index }:{ index:number }) => {
 
 const UpVoteAction = () => {
   return (
-    <JsonLink def={new StateLink({
+    <StateJsxLink def={new StateLink({
       'type': 'icon',
       'props': { 'size': 'small' },
       'has': {
@@ -94,7 +94,7 @@ const UpVoteAction = () => {
 
 const DownVoteAction = () => {
   return (
-    <JsonLink def={new StateLink({
+    <StateJsxLink def={new StateLink({
       'type': 'icon',
       'props': { 'size': 'small' },
       'has': {
@@ -106,7 +106,7 @@ const DownVoteAction = () => {
 
 const BookmarkAction = () => {
   return (
-    <JsonLink def={new StateLink({
+    <StateJsxLink def={new StateLink({
       'type': 'icon',
       'props': { 'size': 'small' },
       'has': {

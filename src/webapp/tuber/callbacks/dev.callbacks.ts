@@ -14,7 +14,8 @@ import { remember_exception } from 'src/state/_errors.business.logic'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 import {
   FORM_AUTHORIZATION_KEY_ID,
-  FORM_AUTHORIZATION_URL_ID
+  FORM_AUTHORIZATION_URL_ID,
+  FORM_RUMBLE_URL_REGEX_ID
 } from '../tuber.config'
 
 function dev_create_user(redux: IRedux) {
@@ -166,7 +167,30 @@ function dev_form_submit_authorization_url(redux: IRedux) {
       formName,
       {}
     )
-    dispatch(post_req_state('dev/save-authorization-key', formData, headers))
+    dispatch(post_req_state('dev/save-authorization-url', formData, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
+function dev_form_submit_rumble_regex(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = rootState.stateRegistry[FORM_RUMBLE_URL_REGEX_ID]
+    if (!formName) {
+      ler('dev_form_submit_rumble_regex: Form name not found.')
+      return
+    }
+    const formData = safely_get_as<Record<string, string>>(
+      rootState.formsData,
+      formName,
+      {}
+    )
+    dispatch(post_req_state('dev/rumble/regexp', {
+      regexp: formData.regexp,
+      url: formData.url
+    }, headers))
     dispatch({ type: 'formsData/formsDataClear' })
   }
 }
@@ -187,6 +211,7 @@ const devCallbacks = {
   '$45_C_1': dev_get_video_thumbnail,
   '$49_C_1': dev_form_submit_authorization_key,
   '$50_C_1': dev_form_submit_authorization_url,
+  '$54_C_1': dev_form_submit_rumble_regex,
 }
 
 export default devCallbacks

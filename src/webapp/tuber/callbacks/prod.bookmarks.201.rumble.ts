@@ -3,7 +3,6 @@ import { IRedux, ler, log } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { get_state_form_name } from 'src/state/_business.logic'
 import { FORM_RUMBLE_NEW_ID } from '../tuber.config'
-import { rumble_get_video_id } from '../_tuber.business.logic'
 import { IBookmark } from '../tuber.interfaces'
 import { remember_error } from 'src/state/_errors.business.logic'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
@@ -53,26 +52,25 @@ export function form_submit_new_rumble_bookmark(redux: IRedux) {
     const formData = policy.getFilteredData()
     const platform = formData.platform
     const slug = formData.slug
-    const embed_url = formData.embed_url ?? ''
-    const videoid = rumble_get_video_id(embed_url)
-    if (!videoid) {
-      const errorMsg = `form_submit_new_rumble_bookmark: `
-        + `Video ID not found.`
-      ler(errorMsg)
-      remember_error({
-        code: 'value_not_found',
-        title: errorMsg,
-        source: { parameter: 'videoid' }
-      })
-      return
-    }
+    // const embed_url = formData.embed_url ?? ''
+    // const videoid = rumble_get_video_id(embed_url)
+    // if (!videoid) {
+    //   const errorMsg = `form_submit_new_rumble_bookmark: `
+    //     + `Video ID not found.`
+    //   ler(errorMsg)
+    //   remember_error({
+    //     code: 'value_not_found',
+    //     title: errorMsg,
+    //     source: { parameter: 'videoid' }
+    //   })
+    //   return
+    // }
     const start_seconds = formData.start_seconds
     const title = formData.title
     const note = formData.note
     const requestBody = new JsonapiRequest('bookmarks', {
       slug,
       platform,
-      videoid,
       start_seconds,
       title,
       note

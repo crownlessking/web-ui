@@ -56,9 +56,11 @@ export const DIALOG_UNKNOWN_NEW_ID = '30'
 export const DIALOG_UNKNOWN_EDIT_ID = '31'
 export const FORM_AUTHORIZATION_KEY_ID = '49'
 export const FORM_AUTHORIZATION_URL_ID = '50'
+export const FORM_RUMBLE_URL_REGEX_ID = '54'
 
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'
+export const DIALOG_LOGIN_ID = '32'
 export const FORM_LOGIN_ID = '41'
 export const FORM_TEST_THUMBNAIL_ID = '45'
 

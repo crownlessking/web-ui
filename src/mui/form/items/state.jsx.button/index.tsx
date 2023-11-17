@@ -31,7 +31,7 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
     textrightfaicon: () => (
       <Fragment>
         { button.text }
-        &nbps;
+        &nbsp;
         <FontAwesomeIcon
           icon={get_font_awesome_icon_prop(button.has.faIcon)}
         />

@@ -1,4 +1,4 @@
-import store, { err, RootState } from '.'
+import store, { ler, RootState } from '.'
 import { appShowSpinner } from '../slices/app.slice'
 import Config from '../config'
 import StateDrawer from '../controllers/StateDrawer'
@@ -20,7 +20,7 @@ export function get_bootstrap_key(): string {
     return (key as HTMLMetaElement).content
   }
 
-  err('Missing bootstrap key.')
+  ler('Missing bootstrap key.')
 
   return ''
 }

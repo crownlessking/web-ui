@@ -1,9 +1,15 @@
-import { safely_get_as } from 'src/controllers'
+import { get_origin_ending_fixed, safely_get_as } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { IRedux, ler } from 'src/state'
-import { get_bootstrap_key } from 'src/state/_business.logic'
-import { remember_error } from 'src/state/_errors.business.logic'
-import { FORM_TEST_THUMBNAIL_ID, PAGE_TEST_THUMBNAIL_ID } from '../tuber.config'
+import {
+  remember_error,
+  remember_exception,
+  remember_jsonapi_errors
+} from 'src/state/_errors.business.logic'
+import {
+  FORM_TEST_THUMBNAIL_ID,
+  PAGE_TEST_THUMBNAIL_ID
+} from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import {
   get_dailymotion_thumbnail,
@@ -13,8 +19,10 @@ import {
   get_vimeo_thumbnail,
   dev_get_youtube_thumbnail
 } from '../dev.video.thumbnail'
-
-const BOOTSTRAP_KEY = get_bootstrap_key()
+import { get_fetch } from 'src/state/net.actions'
+import { IBookmark } from '../tuber.interfaces'
+import { IJsonapiResource } from 'src/controllers/interfaces/IJsonapi'
+import React from 'react'
 
 export default function dev_get_video_thumbnail(redux: IRedux) {
   return async () => {
@@ -27,7 +35,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       remember_error({
         code: 'value_not_found',
         title: errorMsg,
-        meta: { BOOTSTRAP_KEY, FORM_TEST_THUMBNAIL_ID }
+        meta: { FORM_TEST_THUMBNAIL_ID }
       })
       return
     }
@@ -84,5 +92,50 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
         data: video.thumbnailUrl
       }
     })
+  }
+}
+
+export function dev_fix_missing_thumbnails(i: number) {
+  return (redux: IRedux) => {
+    return async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+      e.currentTarget.setAttribute('disabled', 'true')
+      const rootState = redux.store.getState()
+      const resource: IJsonapiResource<IBookmark> = rootState
+        .data
+        .bookmarks
+        ?.[i]
+      if (!resource) {
+        ler(`resourceList['${i}'] does not exist.`)
+        return
+      }
+      const id = resource.id
+      if (!id) {
+        ler(`resourceList['${i}'].id is undefined.`)
+        return
+      }
+      try {
+        const origin = get_origin_ending_fixed(rootState.app.origin)
+        const endpoint = `${origin}bookmarks/${id}/thumbnail-url`
+        const editedBookmarkResource = await get_fetch(endpoint)
+        console.log('editedBookmarkResource', editedBookmarkResource)
+        if (editedBookmarkResource.errors) {
+          ler(`dev_fix_missing_thumbnails: ${editedBookmarkResource.errors?.[0]?.title}`)
+          remember_jsonapi_errors(editedBookmarkResource.errors)
+          return
+        }
+        redux.store.dispatch({
+          type: 'data/resourceUpdate',
+          payload: {
+            endpoint: 'bookmarks',
+            index: i,
+            resource: editedBookmarkResource.data
+          }
+        })
+      } catch (e: any) {
+        ler(`dev_fix_missing_thumbnails: ${e.message}`)
+        remember_exception(e)
+      }
+    }
   }
 }

@@ -15,6 +15,7 @@ import LoadMoreBookmarksFromServer, {
 } from './tuber.bookmark.list.load.more'
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
+import Thumbnail from './tuber.bookmark.thumbnail'
 
 const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
@@ -37,24 +38,6 @@ const NoteWrapper = styled('div')(() => ({
 const Note = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(3),
   // maxWidth: theme.spacing(50),
-}))
-
-const ThumbnailGrid = styled(Grid)(({ theme: { spacing }}) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: '#f5f5f5',
-  borderRadius: '0.5rem',
-  overflow: 'hidden',
-  border: '1px solid #e0e0e0',
-  marginRight: spacing(2),
-}))
-
-const Thumbnail = styled('img')(() => ({
-  width: 148,
-  height: 83,
-  objectFit: 'cover',
-  borderRadius: '0.5rem',
 }))
 
 const StackGrid = styled(Grid)(() => ({
@@ -165,9 +148,7 @@ export default function TuberBookmarkSearchWithThumbnails (props: ITuberBookmark
       <StyledList>
         {bookmarks.map((bookmark, i) => (
           <StyledListItem key={`bookmark[${i}]`} disablePadding>
-            <ThumbnailGrid>
-              <Thumbnail src={bookmark.thumbnail} />
-            </ThumbnailGrid>
+            <Thumbnail i={i} bookmark={bookmark} />
             <StackGrid container direction='column'>
               <Grid container direction='row'>
                 <TitleWrapper>

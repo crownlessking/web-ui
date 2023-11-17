@@ -13,7 +13,7 @@ import { IBookmark } from '../tuber.interfaces'
  * @id _21_C_1
  */
 export function form_submit_new_daily_bookmark(redux: IRedux) {
-  return () => {
+  return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()
     const formKey = rootState.stateRegistry[FORM_DAILY_NEW_ID]

@@ -9,7 +9,7 @@ import net_default_404_driver from './net.default.404.driver.c'
 import net_default_409_driver from './net.default.409.driver.c'
 import net_default_500_driver from './net.default.500.driver.c'
 import {
-  appHideSpinner, appRequestFailed, appRequestStart, appRequestSuccess
+  appHideSpinner, appRequestFailed, appRequestStart,
 } from '../slices/app.slice'
 import { get_query_starting_fixed, get_origin_ending_fixed } from '../controllers'
 import { RootState } from '.'
@@ -137,69 +137,19 @@ function _resolve_unexpected_nesting (response: any) {
   return response
 }
 
-/**
- *
- * @param endpoint 
- * @param body 
- * @param success 
- * @param failure 
- */
-export const _post_request = (
-  endpoint: string,
-  body: RequestInit['body'],
-  success?: (state: Promise<any>, dispatch?: Dispatch, store?: () => RootState) => void,
-  failure?: (error: any, dispatch?: Dispatch, state?: () => RootState) => void
-) => {
-  return (dispatch: Dispatch, getState: () => RootState) => {
-    dispatch(appRequestStart())
-    return fetch(
-      getState().app.origin + endpoint,
-      { ...DEFAULT_POST_PAYLOAD, ...{ body } }
-    )
-      .then(
-        response => {
-          dispatch(appRequestSuccess())
-          success && success(response.json(), dispatch, getState)
-        },
-        error => {
-          dispatch(appRequestFailed())
-          failure && failure(error, dispatch, getState)
-        }
-      )
-  }
+export async function post_fetch<T=any>(url: string, body: T): Promise<any> {
+  const response = await fetch(url, {
+    ...DEFAULT_POST_PAYLOAD,
+    body: JSON.stringify(body)
+  })
+  const json = await response.json()
+  return json
 }
 
-/**
- * Get file content from the server.
- *
- * @param endpoint
- * @param args
- * @param success
- * @param failure
- *
- * @toto do a unit test for this. We need to make sure it works great.
- */
-export const _get_request = (
-  endpoint: string,
-  args = '',
-  success: (state: any) => void,
-  failure?: (error: any) => void
-) => {
-  return (dispatch: Dispatch, getState: () => RootState) => {
-    dispatch(appRequestStart())
-    return fetch(getState().app.origin + endpoint + args)
-      .then(
-        response => {
-          dispatch(appRequestSuccess())
-          return response.json()
-        },
-        error => {
-          dispatch(appRequestFailed())
-          failure && failure(error)
-        }
-      )
-      .then(json => success(json))
-  }
+export async function get_fetch<T=any>(url: string): Promise<T> {
+  const response = await fetch(url, DEFAULT_GET_PAYLOAD)
+  const json = await response.json()
+  return json as T
 }
 
 /**
@@ -214,7 +164,7 @@ export const _get_request = (
  */
 export const post_req_state = (
   endpoint: string,
-  body?: any,
+  body: any,
   customHeaders?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -347,41 +297,39 @@ export const delete_req_state = (
 }
 
 /**
- * Makes a `POST` request to server by providing your own callback to handle
- * the response.
+ * Makes a `POST` request to server and handle the response yourself.
  *
- * @param route Slash-separated URL params only e.g. `param1/param2/`
- * @param payload Data (an object) to be sent to server
+ * @param pathname Slash-separated URL params only e.g. `param1/param2/`
+ * @param body Data (an object) to be sent to server
  * @param success callback to receive a legitimate server response if there is
  *                one.
  * @param failure callback for a failed request with no proper server response.
  */
-export const _origin_post = (
-  route: string,
-  payload: RequestInit['body'],
+export const post_req = async (
+  pathname: string,
+  body: any,
   success?: (state: any, endpoint: string) => void,
   failure?: (error: any) => void
 ) => {
-  const endpoint = get_endpoint(route)
-  return (dispatch: Dispatch, getState: () => RootState) => {
+  const endpoint = get_endpoint(pathname)
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(appRequestStart())
     schedule_spinner()
-    const body = JSON.stringify(payload)
-    return fetch(
-      getState().app.origin + route,
-      { ...DEFAULT_POST_PAYLOAD, ...{ body } } as RequestInit
-    )
-      .then(
-        response => response.json(),
-        error => failure
-          ? failure(error)
-          : delegate_error_handling(dispatch)
-      )
-      .then(
-        json => success
-          ? success(json, endpoint)
-          : delegate_data_handling(dispatch, getState, endpoint, json)
-      )
+    try {
+      const originEndingFixed = get_origin_ending_fixed(getState().app.origin)
+      const url = `${originEndingFixed}${pathname}`
+      const response = await fetch( url,{
+        ...DEFAULT_POST_PAYLOAD,
+        body: JSON.stringify(body)
+      } as RequestInit)
+      const json = await response.json()
+      success
+      ? success(json, endpoint)
+      : delegate_data_handling(dispatch, getState, endpoint, json)
+    } catch (error) {
+      remember_exception(error)
+      failure ? failure(error) : delegate_error_handling(dispatch)
+    }
   }
 }
 
@@ -389,31 +337,31 @@ export const _origin_post = (
  * Makes a `GET` request to server by providing your own callbacks to handle
  * the response.
  *
- * @param route   Slash-separated URL params only e.g. `param1/param2/`
+ * @param pathname   Slash-separated URL params only e.g. `param1/param2/`
  * @param success callback to receive a legitimate server response if there is
  *                one.
  * @param failure callback for a failed request with no proper server response.
  */
-export const _origin_get = (
-  route: string,
+export const get_req = (
+  pathname: string,
   success?: (endpoint: string, state: any) => void,
   failure?: (error: any) => void
 ) => {
-  const endpoint = get_endpoint(route)
-  return (dispatch: Dispatch, getState: () => RootState) => {
+  const endpoint = get_endpoint(pathname)
+  return async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(appRequestStart())
     schedule_spinner()
-    return fetch(getState().app.origin + route)
-      .then(
-        response => response.json(),
-        error => failure
-          ? failure(error)
-          : delegate_error_handling(dispatch)
-      )
-      .then(
-        json => success
-          ? success(endpoint, json)
-          : delegate_data_handling(dispatch, getState, endpoint, json)
-      )
+    try {
+      const originEndingFixed = get_origin_ending_fixed(getState().app.origin)
+      const url = `${originEndingFixed}${pathname}`
+      const response = await fetch(url)
+      const json = await response.json()
+      success
+      ? success(endpoint, json)
+      : delegate_data_handling(dispatch, getState, endpoint, json)
+    } catch (error) {
+      remember_exception(error)
+      failure ? failure(error) : delegate_error_handling(dispatch)
+    }
   }
 }

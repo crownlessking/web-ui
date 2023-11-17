@@ -42,7 +42,7 @@ import StateJsxInput from '../mui/form/items/state.jsx.input'
 import StateJsxRadio from '../mui/form/items/state.jsx.radio'
 import JsonSelect from '../mui/form/items/state.jsx.select'
 import StateJsxSwitch from '../mui/form/items/state.jsx.switch'
-import JsonLink from '../mui/link'
+import StateJsxLink from '../mui/link'
 import JsonPicker from '../mui/form/items/state.jsx.picker'
 import JsonForm from '../mui/form'
 import StateForm from '../controllers/StateForm'
@@ -246,7 +246,7 @@ function RecursiveComponents({
       />
     ),
     [LINK]:({ type, key, getState: getJson }:IDefProps): number => components.push(
-      <JsonLink
+      <StateJsxLink
         key={`${type}-${key}`}
         def={new StateLink(getJson(), parent)}
       />
