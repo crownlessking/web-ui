@@ -78,6 +78,7 @@ export function form_submit_edit_unknown_bookmark(redux: IRedux) {
         `bookmarks/${editedBookmarkResource.id}`,
         { data: editedBookmarkResource }
       ))
+      dispatch({ type: 'formsData/formsDataClear', payload: formName })
       dispatch({ type: 'dialog/dialogClose' })
     } catch (e: any) {
       ler(e.message)

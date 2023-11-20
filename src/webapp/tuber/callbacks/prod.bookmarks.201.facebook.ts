@@ -57,10 +57,12 @@ export function form_submit_new_facebook_bookmark(redux: IRedux) {
       policy.emit('embed_url', 'Bad embed URL.')
       return
     }
+    const url = formData.url
     const start_seconds = parseInt(start)
     const title = formData.title
     const note = formData.note
     const requestBody = new JsonapiRequest('bookmarks', {
+      url,
       videoid,
       author,
       platform,
@@ -71,7 +73,7 @@ export function form_submit_new_facebook_bookmark(redux: IRedux) {
     log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
     dispatch(post_req_state('bookmarks', requestBody))
+    dispatch({ type: 'formsData/formsDataClear', payload: formName })
     dispatch({ type: 'dialog/dialogClose' })
-    dispatch({ type: 'formsData/formsDataClear' })
   }
 }

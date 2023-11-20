@@ -88,7 +88,9 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
           value: ''
         }
       })
-      if (video.platform === 'unknown') {
+      if (video.platform === 'unknown'
+        || video.platform === 'facebook'
+      ) {
         redux.store.dispatch({
           type: 'formsData/formsDataUpdate',
           payload: {

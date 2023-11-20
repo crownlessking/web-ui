@@ -64,7 +64,7 @@ export function form_submit_new_daily_bookmark(redux: IRedux) {
     log('form_submit_new_daily_bookmark: requestBody', requestBody)
 
     dispatch(post_req_state('bookmarks', requestBody))
+    dispatch({ type: 'formsData/formsDataClear', payload: formName })
     dispatch({ type: 'dialog/dialogClose' })
-    dispatch({ type: 'formsData/formsDataClear' })
   }
 }

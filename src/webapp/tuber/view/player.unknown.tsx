@@ -16,19 +16,25 @@ const IframeStyled = styled('iframe')(() => ({
   height: '100%'
 }))
 
-const VideoStyled = styled('video')(() => ({
-  position: 'relative',
+const VideoContainerStyled = styled('div')(({ theme }) => ({
   width: '100%',
-  height: 'auto',
+  height: '100%',
+  backgroundColor: theme.palette.background.default,
+}))
+
+const VideoStyled = styled('video')(() => ({
+  width: '100%',
 }))
 
 const PlaybackSwitch: React.FC<IUnknown> = ({ bookmark }) => {
   const { embed_url } = bookmark
   if (embed_url?.slice(-4) === '.mp4') {
     return (
-      <VideoStyled controls>
-        <source src={embed_url} type='video/mp4' />
-      </VideoStyled>
+      <VideoContainerStyled>
+        <VideoStyled controls>
+          <source src={embed_url} type='video/mp4' />
+        </VideoStyled>
+      </VideoContainerStyled>
     )
   }
   return (

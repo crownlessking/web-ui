@@ -4,13 +4,14 @@ import { IBookmark } from '../tuber.interfaces'
 interface IFacebookPlayerProps {
   bookmark: IBookmark
 }
-const StyledIframeWrapper = styled('div')(() => ({
+const StyledIframeWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   overflow:'hidden',
   position:'relative',
-  height: '100%'
+  height: '100%',
+  backgroundColor: theme.palette.background.default,
 }))
 
 const IframeStyled = styled('iframe')(() => ({
