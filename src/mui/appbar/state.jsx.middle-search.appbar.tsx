@@ -15,7 +15,7 @@ import StatePageAppBarMidSearch from '../../controllers/templates/StatePageAppBa
 import StateJsxLogo from './state.jsx.logo'
 import AppBarButton from '../link'
 import InputAdornment from '@mui/material/InputAdornment'
-import StateJsxIcon from '../state.jsx.icons'
+import { StateJsxIcon } from '../state.jsx.icons'
 import { get_search_query } from 'src/business.logic/errors'
 import Menu from '@mui/material/Menu'
 

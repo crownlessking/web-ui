@@ -5,6 +5,7 @@ import { IRedux, ler } from 'src/state'
 import { remember_exception } from 'src/business.logic/errors'
 import { get_state_form_name } from '../../../business.logic'
 import { TPlatform } from '../tuber.interfaces'
+import { get_dialog_state } from 'src/state/net.actions'
 
 /**
  * [YouTube] Shows a dialog containing a form to create a new bookmark.
@@ -17,7 +18,7 @@ export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
     const { store: { dispatch } } = redux
     const rootState = redux.store.getState()
     const dialogKey = rootState.stateRegistry['6']
-    const dialogState = rootState.dialogs[dialogKey]
+    const dialogState = await get_dialog_state(redux, dialogKey)
     if (!dialogState) {
       ler(`'${dialogKey}' does not exist.`)
       return
@@ -50,11 +51,8 @@ export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
         }
       })
     } catch (e: any) { remember_exception(e) }
-
-    const mountedDialogId = rootState.dialog._id
   
-    // if the dialog was NOT mounted
-    if (mountedDialogId !== dialogState._id) {
+    if (rootState.dialog._id !== dialogState._id) { // if the dialog was NOT mounted
       dispatch({ type: 'dialog/dialogMount', payload: dialogState })
     } else {
       dispatch({ type: 'dialog/dialogOpen' })

@@ -1,6 +1,15 @@
 import fetch from 'cross-fetch'
 import { Dispatch } from 'redux'
-import { remember_exception } from '../business.logic/errors'
+import {
+  get_endpoint,
+  get_origin_ending_fixed,
+  get_query_starting_fixed
+} from '../business.logic'
+import {
+  remember_error,
+  remember_exception,
+  remember_jsonapi_errors
+} from '../business.logic/errors'
 import net_default_200_driver from './net.default.200.driver.c'
 import net_default_201_driver from './net.default.201.driver.c'
 import net_default_400_driver from './net.default.400.driver.c'
@@ -10,11 +19,10 @@ import net_default_500_driver from './net.default.500.driver.c'
 import {
   appHideSpinner, appRequestFailed, appRequestStart,
 } from '../slices/app.slice'
-import { get_query_starting_fixed } from '../controllers'
-import { RootState } from '.'
+import { IRedux, ler, RootState } from '.'
 import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
-import { get_endpoint, get_origin_ending_fixed } from '../business.logic'
-import { schedule_spinner } from './spinner'
+import { cancel_spinner, schedule_spinner } from './spinner'
+import IStateDialog from '../interfaces/IStateDialog'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Content-Type': 'application/json',
@@ -55,8 +63,9 @@ const DEFAULT_DELETE_PAYLOAD: RequestInit = {
  * be handled by another function (delegateDataHandling).
  */
 const delegate_error_handling = (dispatch: Dispatch) => {
-  dispatch(appRequestFailed())
+  cancel_spinner()
   dispatch(appHideSpinner())
+  dispatch(appRequestFailed())
 }
 
 /** Handles successful responses. */
@@ -66,6 +75,7 @@ const delegate_data_handling = (
   endpoint: string,
   json: IJsonapiBaseResponse
 ) => {
+  cancel_spinner()
   dispatch(appHideSpinner())
   const status = json.meta?.status || 500
 
@@ -136,6 +146,54 @@ function _resolve_unexpected_nesting (response: any) {
   // ... other cases
 
   return response
+}
+
+export async function get_dialog_state <T=any>(
+  redux: IRedux,
+  dialogId: string
+): Promise<IStateDialog<T>|null> {
+  const rootState = redux.store.getState()
+  const dialogState = rootState.dialogs[dialogId]
+  if (dialogState) { return dialogState }
+  const origin = get_origin_ending_fixed(rootState.app.origin)
+  const dialogPathname = rootState.pathnames.DIALOGS
+  const url = `${origin}${dialogPathname}`
+  const remoteState = await post_fetch(url, {
+    'key': dialogId
+  })
+  if (remoteState?.errors) {
+    ler(`get_dialog_state: ${remoteState.errors?.[0]?.title}`)
+    remember_jsonapi_errors(remoteState.errors)
+    return null
+  }
+  const dialogRemoteState = remoteState?.state?.dialogs?.[dialogId]
+  if (!dialogRemoteState) {
+    ler(`get_dialog_state: ${dialogId} not found.`)
+    remember_error({
+      code: 'not_found',
+      title: `${dialogId} Not Found`,
+      source: { pointer: dialogId }
+    })
+    return null
+  }
+  if (dialogRemoteState._key !== dialogId) {
+    ler(`get_dialog_state: ${dialogId} does not match ${dialogRemoteState._key}.`)
+    remember_error({
+      code: 'not_found',
+      title: `${dialogId} Not Found`,
+      detail: `${dialogId} does not match ${dialogRemoteState._key}.`,
+      source: { pointer: dialogId }
+    })
+    return null
+  }
+  redux.store.dispatch({
+    type: 'dialogs/dialogsAdd',
+    payload: {
+      name: dialogId,
+      dialog: dialogRemoteState
+    }
+  })
+  return dialogRemoteState
 }
 
 export async function post_fetch<T=any>(url: string, body: T): Promise<any> {

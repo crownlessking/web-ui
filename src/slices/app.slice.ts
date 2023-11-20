@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { cancel_spinner } from '../state/spinner'
 import initialState from '../state/initial.state'
 
 export const APP_IS_BOOTSTRAPPED   = 'APP_IS_BOOTSTRAPPED'
@@ -40,7 +39,6 @@ export const appSlice = createSlice({
       state.showSpinner = true
     },
     appHideSpinner: (state) => {
-      cancel_spinner()
       state.showSpinner = false
     },
     appDisableSpinner: (state) => {

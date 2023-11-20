@@ -7,7 +7,7 @@ import StateDrawerResponsive from 'src/controllers/templates/StateDrawerResponsi
 import store, { RootState, actions } from 'src/state'
 import { Link as RouterLink } from 'react-router-dom'
 import { get_formatted_route } from 'src/controllers/StateLink'
-import StateJsxIcon from '../state.jsx.icons'
+import { StateJsxIcon } from '../state.jsx.icons'
 
 interface IResDrawerProps {
   def: StateDrawerResponsive

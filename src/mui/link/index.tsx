@@ -1,19 +1,15 @@
 import { Fragment } from 'react'
 import Button from '@mui/material/Button'
-import Icon from '@mui/material/Icon'
 import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { get_font_awesome_icon_prop } from '../../controllers'
 import { get_formatted_route } from '../../controllers/StateLink'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import store, { IRedux, actions, err } from '../../state'
+import store, { IRedux, actions } from '../../state'
 import StateLink from '../../controllers/StateLink'
 import { Link as RouterLink } from 'react-router-dom'
-import { Badge, Chip, SvgIcon } from '@mui/material'
+import Chip from '@mui/material/Chip'
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip'
-import { StateJsxMuiIcon } from '../state.jsx.icons'
+import StateJsxBadgedIcon from '../state.jsx.icons'
 
 interface IJsonLinkProps {
   def: StateLink
@@ -158,136 +154,44 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
     ),
 
     // icon only
-    'icon': () => {
-      if (has.faIcon) {
-        const icon = get_font_awesome_icon_prop(has.faIcon)
-        return (
-          <IconButton
-            component={RouterLink}
-            color={color}
-            aria-label={has.label}
-            sx={{
-              ...menuItemsSx,
-              fontFamily: def.parent.typography.fontFamily,
-              color: def.parent.typography.color
-            }}
-            {...props}
-            to={route}
-            onClick={def.onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <FontAwesomeIcon {...has.iconProps} icon={icon} />
-              </Badge>
-            ) : (
-              <FontAwesomeIcon {...has.iconProps} icon={icon} />
-            )}
-          </IconButton>
-        )
-      } else if (has.icon) {
-        return (
-          <IconButton
-            component={RouterLink}
-            color={color}
-            aria-label={has.label}
-            sx={{
-              ...menuItemsSx,
-              fontFamily: def.parent.typography.fontFamily,
-              color: def.parent.typography.color
-            }}
-            {...props}
-            to={route}
-            onClick={def.onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <SvgIcon {...has.iconProps}>{ has.icon }</SvgIcon>
-              </Badge>
-            ) : (
-              <StateJsxMuiIcon def={has} />
-            )}
-          </IconButton>
-        )
-      }
-      err('Neither `has.icon` or `has.faIcon` is defined.')
-      return <Fragment />
-    },
+    'icon': () => (
+      <IconButton
+        component={RouterLink}
+        color={color}
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        <StateJsxBadgedIcon def={has} />
+      </IconButton>
+    ),
 
     // The icon and the text
-    'hybrid': () => {
-      if (has.icon) {
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            sx={{
-              ...menuItemsSx,
-              fontFamily: def.parent.typography.fontFamily,
-              color: def.parent.typography.color
-            }}
-            {...props}
-            to={route}
-            onClick={def.onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <Icon {...has.iconProps}>{ has.icon }</Icon>
-              </Badge>
-            ) : (
-              <Icon {...has.iconProps}>{ has.icon }</Icon>
-            )}
-            &nbsp;
-            { has.text }
-          </IconButton>
-        )
-      } else if (has.faIcon) {
-        const icon = get_font_awesome_icon_prop(has.faIcon) as IconProp
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            sx={{
-              ...menuItemsSx,
-              fontFamily: def.parent.typography.fontFamily,
-              color: def.parent.typography.color
-            }}
-            {...props}
-            to={route}
-            onClick={def.onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <FontAwesomeIcon icon={icon} />
-              </Badge>
-            ) : (
-              <FontAwesomeIcon icon={icon} />
-            )}
-            &nbsp;
-            { has.text }
-          </IconButton>
-        )
-      }
-      err('Neither `has.icon` or `has.faIcon` is defined.')
-      return <Fragment />
-    },
+    'hybrid': () => (
+      <IconButton
+        component={RouterLink}
+        color={color}
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        <StateJsxBadgedIcon def={has} />
+        &nbsp;
+        { has.text }
+      </IconButton>
+    ),
 
     // Capsule or chip with avatar or just text
     'chip': () => {

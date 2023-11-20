@@ -1,4 +1,4 @@
-import { get_head_meta_content } from '../controllers'
+import { get_head_meta_content } from '../business.logic'
 import { orange } from '@mui/material/colors'
 import IState from '../interfaces/IState'
 import { get_global_var } from '../business.logic/errors'

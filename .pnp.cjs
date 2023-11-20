@@ -58,6 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-react-app", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:7.0.1"],\
             ["html-react-parser", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:4.2.7"],\
             ["jest", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:29.7.0"],\
+            ["marked", "npm:10.0.0"],\
             ["module-alias", "npm:2.2.3"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0"],\
@@ -14147,6 +14148,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["marked", [\
+        ["npm:10.0.0", {\
+          "packageLocation": "./.yarn/cache/marked-npm-10.0.0-c08f9d5b94-343c2c9a1c.zip/node_modules/marked/",\
+          "packageDependencies": [\
+            ["marked", "npm:10.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["mdn-data", [\
         ["npm:2.0.14", {\
           "packageLocation": "./.yarn/cache/mdn-data-npm-2.0.14-0acd669f0d-9d0128ed42.zip/node_modules/mdn-data/",\
@@ -19457,6 +19467,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-react-app", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:7.0.1"],\
             ["html-react-parser", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:4.2.7"],\
             ["jest", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:29.7.0"],\
+            ["marked", "npm:10.0.0"],\
             ["module-alias", "npm:2.2.3"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0"],\

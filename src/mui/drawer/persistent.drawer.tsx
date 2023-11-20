@@ -8,7 +8,7 @@ import store, { AppDispatch, RootState, actions } from 'src/state'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Link as RouterLink } from 'react-router-dom'
-import StateJsxIcon from '../state.jsx.icons'
+import { StateJsxIcon } from '../state.jsx.icons'
 import { Fragment } from 'react'
 import { get_formatted_route } from 'src/controllers/StateLink'
 

@@ -1,9 +1,9 @@
-import { Icon } from '@mui/material'
+import { Badge, Icon } from '@mui/material'
 import { get_font_awesome_icon_prop } from '../controllers'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import getSvgIcon from './state.jsx.imported.svg.icons'
 import StateFormItemCustom from '../controllers/StateFormItemCustom'
+import { Fragment } from 'react'
 
 interface IJsonIconProps {
   def: StateFormItemCustom<any> // StateFormItem | StateLink
@@ -20,23 +20,35 @@ interface IJsonIconProps {
  * }
  * ```
  */
-export default function StateJsxIcon ({ def: has }: IJsonIconProps) {
-  if (has.icon) {
-    return getSvgIcon(has.icon, has.iconProps)
-      || <Icon {...has.iconProps}>{ has.icon }</Icon>
-  } else if (has.faIcon) {
-    const faProps: any = { size: 'lg', ...has.iconProps }
-    const faIcon = get_font_awesome_icon_prop(has.faIcon)
-    return <FontAwesomeIcon icon={faIcon as IconProp} {...faProps} />
+export function StateJsxIcon ({ def: has }: IJsonIconProps) {
+  const map: {[type: string]: () => JSX.Element} = {
+    icon: () => getSvgIcon(has.icon, has.iconProps)
+      || <Icon {...has.iconProps}>{ has.icon }</Icon>,
+    faIcon: () => {
+      const faProps: any = { size: 'lg', ...has.iconProps }
+      const faIcon = get_font_awesome_icon_prop(has.faIcon)
+      return <FontAwesomeIcon icon={faIcon} {...faProps} />
+    },
+    none: () => <Fragment>❌</Fragment>
   }
-
-  return ( null )
+  const type = has.icon ? 'icon' : has.faIcon ? 'faIcon' : 'none'
+  return map[type]()
 }
 
-export function StateJsxMuiIcon ({ def: has }: IJsonIconProps) {
-  if (has.icon) {
-    return getSvgIcon(has.icon, has.iconProps)
-      ?? <Icon {...has.iconProps}>{ has.icon }</Icon>
-  }
-  return ( null )
+export default function StateJsxBadgedIcon ({ def: has }: IJsonIconProps) {
+  return (
+    <Fragment>
+      {has.badge ? (
+        <Badge
+          color='error'
+          {...has.badge}
+          badgeContent='-'
+        >
+          <StateJsxIcon def={has} />
+        </Badge>
+      ): (
+        <StateJsxIcon def={has} />
+      )}
+    </Fragment>
+  )
 }

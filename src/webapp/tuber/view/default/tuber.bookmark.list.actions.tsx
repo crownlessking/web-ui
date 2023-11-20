@@ -8,7 +8,7 @@ import {
   dialog_delete_bookmark
 } from '../../callbacks/prod.bookmarks.actions'
 import { IBookmark } from '../../tuber.interfaces'
-import { get_ratio_color } from './_business.logic'
+import { get_ratio_color } from './view.default.logic'
 
 interface IBookmarkActionToolbarProps {
   i: number

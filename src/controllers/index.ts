@@ -1,6 +1,11 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { err, ler } from '../state'
-import { APP_CONTENT_VIEW, DEFAULT_LANDING_PAGE_VIEW, TCallback } from '../constants'
+import store, { err, ler } from '../state'
+import {
+  APP_CONTENT_VIEW,
+  DEFAULT_LANDING_PAGE_VIEW,
+  DRAWER_DEFAULT_WIDTH,
+  TCallback
+} from '../constants'
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
 import { IStatePageContent } from '../interfaces/IStatePage'
 
@@ -86,7 +91,8 @@ export function get_font_awesome_icon_prop(iconDef: string): IconProp {
 /**
  * Get viewport size.
  *
- * Creedit:
+ * @deprecated
+ * Credit:
  * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
  */
 export function get_viewport_size(): { width: number; height: number }
@@ -107,6 +113,7 @@ export function get_viewport_size(): { width: number; height: number }
  *               element.
  *               e.g. How much space do you want between the bottom of the
  *                    viewport and your element
+ * @deprecated
  */
 export function stretch_to_bottom(bottom: number): number {
   const height = get_viewport_size().height
@@ -337,51 +344,6 @@ export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
 }
 
 /**
- * Given a URL, it will return the content as a string.
- *
- * Note: This function is NOT used anywhere. Most likely, it is safe to remove.
- *
- * @param theUrl 
- *
- * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
- */
-export function http_get(theUrl: string): void
-{
-  // code for IE7+, Firefox, Chrome, Opera, Safari
-  const xmlhttp = new XMLHttpRequest()
-
-  xmlhttp.onreadystatechange = function () {
-    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-      return xmlhttp.responseText;
-    }
-  }
-  xmlhttp.open("GET", theUrl, false);
-  xmlhttp.send();    
-}
-
-/**
- * Ensures the origin URL is valid and has an ending forward slash.
- *
- * @returns string
- */
-export function get_origin_ending_fixed(origin?: string): string {
-  if (origin) {
-    const endingChar = origin.charAt(origin.length - 1)
-    return endingChar === '/' ? origin : origin + '/'
-  }
-  return window.location.origin + '/'
-}
-
-/** Ensures that question mark symbol is included query string. */
-export function get_query_starting_fixed(query?: string): string {
-  if (query) {
-    const startingChar = query.charAt(0)
-    return startingChar === '?' ? query : '?' + query
-  }
-  return ''
-}
-
-/**
  * Parses the definition string found in `PageState.content` and
  * `StateDialogForm.content`.
  *
@@ -421,26 +383,6 @@ export function get_parsed_page_content(str?: string): IStatePageContent {
   return contentObj
 }
 
-/**
- * Save array index into the array element.
- * 
- * **Purpose:** Useful for array of object where an element needs to be modify
- * and retrieve in the index directly from the element to be modify avoid
- * having to iterate through the array find it.
- *
- * **Be careful:** Object to be indexed must extends the `IFeetlyIndexed`
- * interface.
- */
-export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]) {
-  if (a.length <= 0
-    || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
-  ) {
-    err('Cannot index non-object array element.')
-    return
-  }
-  a.map((e, i) => e._index = i)
-}
-
 /** Type for event's callback defined with a string. */
 export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur'
 
@@ -462,4 +404,33 @@ export function get_handle_prop_name(handle: string): {
     event: 'onclick',
     callbackName: handle
   }
+}
+
+/**
+ * Save array index into the array element.
+ * 
+ * **Purpose:** Useful for array of object where an element needs to be modify
+ * and retrieve in the index directly from the element to be modify avoid
+ * having to iterate through the array find it.
+ *
+ * **Be careful:** Object to be indexed must extends the `IFeetlyIndexed`
+ * interface.
+ * @param a
+ * @see IFeetlyIndexed
+ * @see jsonapi_fleetly_index
+ * @deprecated
+ */
+export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]) {
+  if (a.length <= 0
+    || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
+  ) {
+    return
+  }
+  a.map((e, i) => e._index = i)
+}
+
+/** Get the default drawer width. */
+export function get_drawer_width(): number {
+  return store.getState().drawer.width
+    || DRAWER_DEFAULT_WIDTH
 }

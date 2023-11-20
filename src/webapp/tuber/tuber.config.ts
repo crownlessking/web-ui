@@ -63,6 +63,7 @@ export const FORM_AUTHORIZATION_URL_ID = '50'
 export const FORM_RUMBLE_URL_REGEX_ID = '54'
 export const FORM_UNKNOWN_URL_REGEX_ID = '57'
 
+export const DIALOG_DELETE_BOOKMARK_ID = '34'
 export const URL_DIALOG_ID_NEW = '2'
 export const DIALOG_ALERT_CLIENTSIDE = '35'
 export const DIALOG_LOGIN_ID = '32'

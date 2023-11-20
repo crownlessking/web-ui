@@ -16,17 +16,37 @@ const IframeStyled = styled('iframe')(() => ({
   height: '100%'
 }))
 
-const UnknownPlayer: React.FC<IUnknown> = ({ bookmark: { embed_url } }) => (
-  <IframeWrapperStyled>
-    <IframeStyled
-      title='Unknown Platform'
-      src={embed_url}
-      frameBorder='0'
-      scrolling='no'
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowFullScreen
-    />
-  </IframeWrapperStyled>
+const VideoStyled = styled('video')(() => ({
+  position: 'relative',
+  width: '100%',
+  height: 'auto',
+}))
+
+const PlaybackSwitch: React.FC<IUnknown> = ({ bookmark }) => {
+  const { embed_url } = bookmark
+  if (embed_url?.slice(-4) === '.mp4') {
+    return (
+      <VideoStyled controls>
+        <source src={embed_url} type='video/mp4' />
+      </VideoStyled>
+    )
+  }
+  return (
+    <IframeWrapperStyled>
+      <IframeStyled
+        title='Unknown Platform'
+        src={embed_url}
+        frameBorder='0'
+        scrolling='no'
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    </IframeWrapperStyled>
+  )
+}
+
+const UnknownPlayer: React.FC<IUnknown> = ({ bookmark }) => (
+  <PlaybackSwitch bookmark={bookmark} />
 )
 
 export default UnknownPlayer

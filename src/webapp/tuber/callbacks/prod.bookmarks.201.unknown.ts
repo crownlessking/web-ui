@@ -54,12 +54,14 @@ export function form_submit_new_unknown_bookmark(redux: IRedux) {
     const formData = policy.getFilteredData()
     const url = formData.url
     const embed_url = get_iframe_url_src(formData.embed_url)
+    const thumbnail_url = formData.thumbnail_url
     const platform = formData.platform
     const title = formData.title
     const note = formData.note
     const requestBody = new JsonapiRequest('bookmarks', {
       url,
       embed_url,
+      thumbnail_url,
       platform,
       title,
       note
@@ -67,7 +69,7 @@ export function form_submit_new_unknown_bookmark(redux: IRedux) {
     log('form_submit_new_youtube_bookmark: requestBody', requestBody)
 
     dispatch(post_req_state('bookmarks', requestBody))
-    dispatch({ type: 'formsData/formsDataClear' })
+    dispatch({ type: 'formsData/formsDataClear', payload: formName })
     dispatch({ type: 'dialog/dialogClose' })
   }
 }

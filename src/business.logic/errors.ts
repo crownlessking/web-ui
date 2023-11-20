@@ -1,26 +1,10 @@
 import { mongo_object_id } from '.'
-import { IGenericObject } from 'src/interfaces/IState'
-import IStateAppBarQueries from 'src/interfaces/IStateAppBarQueries'
-import C from '../config'
+import { IGenericObject } from '../interfaces/IState'
+import IStateAppBarQueries from '../interfaces/IStateAppBarQueries'
+import Config from '../config'
 import { IJsonapiError } from '../interfaces/IJsonapi'
 
 let tmpErrorsList: IJsonapiError[]
-
-/**
- * A simple shortcut for triggering exceptions and preventing unecessarily
- * inflated code blocks.
- */
-function _err(message: string): void {
-  if (C.DEBUG) {
-    throw new Error (message)
-  }
-}
-
-function _ler(...args: any): void {
-  if (C.DEBUG) {
-    console.error(...args)
-  }
-}
 
 /**
  * Get global variable value.
@@ -38,7 +22,6 @@ export function get_global_var(varName: string): any {
     return window[varName]
   } catch (e: any) {
     const message = `Global variable "${varName}" does not exist.`
-    _err(message)
     remember_exception(e, message)
   }
   return { }
@@ -53,7 +36,6 @@ export function get_search_query(
     return queries[route] || ''
   } catch (e: any) {
     const message = `Search query for route '${route}' does not exist.`
-    _ler(message)
     remember_exception(e, message)
   }
   return ''
@@ -129,7 +111,7 @@ export function color_json_code(obj: IGenericObject | string): string {
     const jsonStrHighlighted = _color_json_code_regex_highlight(obj)
     return jsonStrHighlighted
   }
-  C.ler(`color_json_code: obj is not an object or string. obj: ${obj}`)
+  //C.ler(`color_json_code: obj is not an object or string. obj: ${obj}`)
   return ''
 }
 
@@ -155,7 +137,7 @@ export function to_jsonapi_error(error: any, title?: string, meta?: any): IJsona
  * statement.
  */
 export function remember_exception(e: unknown, title?: string) {
-  if (C.DEBUG) {
+  if (Config.DEBUG) {
     tmpErrorsList = tmpErrorsList || []
     tmpErrorsList.push(to_jsonapi_error(e, title))
   }
@@ -163,7 +145,7 @@ export function remember_exception(e: unknown, title?: string) {
 
 /** Temporarily saves a manually defined error. */
 export function remember_error(error: IJsonapiError) {
-  if (C.DEBUG) {
+  if (Config.DEBUG) {
     tmpErrorsList = tmpErrorsList || []
     tmpErrorsList.push(error)
   }
@@ -174,7 +156,7 @@ export function remember_error(error: IJsonapiError) {
  * server.
  */
 export function remember_jsonapi_errors(errors: IJsonapiError[]) {
-  if (C.DEBUG) {
+  if (Config.DEBUG) {
     errors.forEach(set_status_error_code)
     tmpErrorsList = tmpErrorsList || []
     tmpErrorsList.push(...errors)
@@ -186,7 +168,7 @@ export function remember_jsonapi_errors(errors: IJsonapiError[]) {
  * but no exception will be thrown.
  */
 export function remember_possible_error(title: string, data?: any) {
-  if (C.DEBUG) {
+  if (Config.DEBUG) {
     tmpErrorsList = tmpErrorsList || []
     const detail = data
       ? JSON.stringify(data, null, 4)

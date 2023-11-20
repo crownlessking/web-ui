@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
 import StateDialogSelection from '../../controllers/templates/StateDialogSelection'
 import StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem'
-import StateJsxIcon from '../state.jsx.icons'
+import { StateJsxIcon } from '../state.jsx.icons'
 
 /*
   Selection Dialog

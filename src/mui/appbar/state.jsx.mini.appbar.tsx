@@ -10,7 +10,7 @@ import StateJsxLogo from './state.jsx.logo'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
 import { styled } from '@mui/material/styles'
-import { get_drawer_width } from '../../state'
+import { get_drawer_width } from '../../controllers'
 
 interface IJsonBasicAB {
   def: StatePage

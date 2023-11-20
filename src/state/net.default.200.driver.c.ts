@@ -11,9 +11,9 @@ import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
 } from '../interfaces/IJsonapi'
-import StateDataPagesRange from 'src/controllers/StateDataPagesRange'
-import JsonapiPaginationLinks from 'src/controllers/JsonapiPaginationLinks'
-import { is_object, safely_get_as } from 'src/controllers'
+import StateDataPagesRange from '../controllers/StateDataPagesRange'
+import JsonapiPaginationLinks from '../controllers/JsonapiPaginationLinks'
+import { is_object, safely_get_as } from '../controllers'
 import { remember_jsonapi_errors } from '../business.logic/errors'
 
 // [TODO] The `included` state does not exist yet and needs to be created

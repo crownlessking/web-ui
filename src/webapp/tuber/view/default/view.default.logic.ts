@@ -47,3 +47,4 @@ export function get_ratio_color (upvotes?: string, downvotes?: string) {
 
   return 'red'
 }
+

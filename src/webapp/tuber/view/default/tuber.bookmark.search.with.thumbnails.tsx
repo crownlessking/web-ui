@@ -16,6 +16,7 @@ import LoadMoreBookmarksFromServer, {
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
 import Thumbnail from './tuber.bookmark.thumbnail'
+import { marked } from 'marked'
 
 const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
@@ -39,6 +40,11 @@ const Note = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(3),
   // maxWidth: theme.spacing(50),
 }))
+
+// const Note = styled(Markdown)(({ theme }) => ({
+//   marginLeft: theme.spacing(3),
+//   // maxWidth: theme.spacing(50),
+// }))
 
 const StackGrid = styled(Grid)(() => ({
   position: 'relative',
@@ -118,7 +124,7 @@ export default function TuberBookmarkSearchWithThumbnails (props: ITuberBookmark
   }
 
   const handleExpandDetailIconOnClick = (
-    annotaion: IBookmark,
+    bookmark: IBookmark,
     i: number
   ) => (e: React.MouseEvent) => {
     e.preventDefault()
@@ -135,10 +141,12 @@ export default function TuberBookmarkSearchWithThumbnails (props: ITuberBookmark
     }
     if (expandNote[i]) {
       // Insert the full note into the detail div using text node
-      detail.appendChild(document.createTextNode(annotaion.note ?? '(No note)'))
+      // const note = bookmark.note?.replace(/\n/g, '<br />')
+      const note = bookmark.note ? bookmark.note.replace('\n', '<br>') : '(No note)'
+      detail.innerHTML = note
     } else {
       // Insert the shortened note into the detail div using text node
-      detail.appendChild(document.createTextNode(shorten_text(annotaion.note)))
+      detail.appendChild(document.createTextNode(shorten_text(bookmark.note)))
     }
   }
 

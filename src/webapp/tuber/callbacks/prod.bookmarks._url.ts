@@ -1,11 +1,10 @@
 import { get_parsed_page_content, safely_get_as } from 'src/controllers'
 import { IRedux, ler } from 'src/state'
 import { remember_error, remember_exception } from 'src/business.logic/errors'
-import { get_bootstrap_key } from '../../../business.logic'
 import { URL_DIALOG_ID_NEW } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
-import { post_req_state } from 'src/state/net.actions'
+import { get_dialog_state } from 'src/state/net.actions'
 import { get_state_form_name } from '../../../business.logic'
 
 /**
@@ -15,21 +14,25 @@ import { get_state_form_name } from '../../../business.logic'
  * @id $3_C_1
  */
 export function dialog_new_video_url(redux: IRedux) {
-  return () => {
-    const { store: { getState, dispatch } } = redux
-    const rootState = getState()
+  return async () => {
+    const { store: { dispatch } } = redux
+    const rootState = redux.store.getState()
     if (rootState.dialog._id === URL_DIALOG_ID_NEW) {
       dispatch({ type: 'dialog/dialogOpen' })
       return
     }
     const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW]
-    const newVideoUrlDialogState = rootState.dialogs[dialogKey]
-    if (newVideoUrlDialogState) {
-      dispatch({ type: 'dialog/dialogMount', payload: newVideoUrlDialogState })
+    const newVideoUrlDialogState = await get_dialog_state(redux, dialogKey)
+    if (!newVideoUrlDialogState) {
+      ler(`'${dialogKey}' does not exists.`)
       return
     }
-    const bootstrapKey = get_bootstrap_key()
-    dispatch(post_req_state(`${bootstrapKey}/${URL_DIALOG_ID_NEW}`, {}))
+    // if the dialog was NOT mounted
+    if (rootState.dialog._key !== newVideoUrlDialogState._key) {
+      dispatch({ type: 'dialog/dialogMount', payload: newVideoUrlDialogState })
+    } else {
+      dispatch({ type: 'dialog/dialogOpen' })
+    }
   }
 }
 
@@ -42,7 +45,11 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
   return async () => {
     const rootState = redux.store.getState()
     const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW]
-    const urlDialogState = rootState.dialogs[dialogKey]
+    const urlDialogState = await get_dialog_state(redux, dialogKey)
+    if (!urlDialogState) {
+      ler(`'${dialogKey}' does not exists.`)
+      return
+    }
     const urlContent = get_parsed_page_content(urlDialogState.content)
     const urlFormName = get_state_form_name(urlContent.name)
     const url = safely_get_as<string>(rootState.formsData[urlFormName], `url`, '')
@@ -66,7 +73,11 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         ler(`dialog_new_bookmark_from_url: ${video.platform} dialog key not found.`)
         return
       }
-      const newBookmarkDialogJson = rootState.dialogs[newBookmarkDialogKey]
+      const newBookmarkDialogJson = await get_dialog_state(redux, newBookmarkDialogKey)
+      if (!newBookmarkDialogJson) {
+        ler(`dialog_new_bookmark_from_url: ${video.platform} dialog json not found.`)
+        return
+      }
       const content = get_parsed_page_content(newBookmarkDialogJson.content)
       const formName = get_state_form_name(content.name)
       redux.store.dispatch({
@@ -150,12 +161,12 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
           }
         })
       }
-
-      const mountedDialogId = rootState.dialog._id
-
       // if the dialog was NOT mounted
-      if (mountedDialogId !== newBookmarkDialogJson._id) {
-        redux.store.dispatch({ type: 'dialog/dialogMount', payload: newBookmarkDialogJson })
+      if (rootState.dialog._id !== newBookmarkDialogJson._id) {
+        redux.store.dispatch({
+          type: 'dialog/dialogMount',
+          payload: newBookmarkDialogJson
+        })
       } else {
         redux.store.dispatch({ type: 'dialog/dialogOpen' })
       }

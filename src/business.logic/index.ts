@@ -2,6 +2,65 @@ import Config from '../config'
 // WARNING: Do not import anything here.
 
 /**
+ * Get HTML head meta data.
+ *
+ * @param name 
+ * @returns 
+ */
+export function get_head_meta_content(name: string): string {
+  const meta = document.querySelector(`meta[name="${name}"]`)
+
+  if (meta) {
+    return (meta as HTMLMetaElement).content
+  }
+
+  // err(`Meta with '${name}' name does not exist.`)
+
+  return ''
+}
+
+/**
+ * Find nested values in object using a string of dot-separated object keys.
+ *
+ * e.i.
+ * ```ts
+ * const obj = {
+ *    account: {
+ *      user: {
+ *        lastname: 'Foo'
+ *      }
+ *    }
+ * };
+ * const lastname = getVal(obj, 'account.user.lastname')
+ * ```
+ *
+ * @param obj 
+ * @param path dot-separated object (nested) keys
+ */
+export function get_val<T=any>(obj: any, path: string): T|null {
+  if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
+    return null
+  }
+  const paths = path.split('.')
+  let i = 0,
+    key = paths[i],
+    candidate = obj[key]
+
+  while (i < paths.length) {
+    if (!candidate) {
+      break
+    } else if (i >= paths.length - 1) {
+      return candidate
+    }
+    i++
+    key = paths[i]
+    candidate = candidate[key]
+  }
+
+  return null
+}
+
+/**
  * Ensures the origin is a valid URL has an ending forward slash.
  *
  * @returns string
@@ -11,6 +70,15 @@ export function get_origin_ending_fixed(origin?: string): string {
     return origin.slice(-1) === '/' ? origin : origin + '/'
   }
   return window.location.origin + '/'
+}
+
+/** Ensures that question mark symbol is included query string. */
+export function get_query_starting_fixed(query?: string): string {
+  if (query) {
+    const startingChar = query.charAt(0)
+    return startingChar === '?' ? query : '?' + query
+  }
+  return ''
 }
 
 /**
@@ -99,4 +167,28 @@ export function get_endpoint(pathname: string): string {
   const params = pname.split(/\/|\\/)
 
   return params[params.length - 1]
+}
+
+/**
+ * Given a URL, it will return the content as a string.
+ *
+ * Note: This function is NOT used anywhere. Most likely, it is safe to remove.
+ *
+ * @param theUrl 
+ *
+ * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
+ * @deprecated
+ */
+export function http_get(theUrl: string): void
+{
+  // code for IE7+, Firefox, Chrome, Opera, Safari
+  const xmlhttp = new XMLHttpRequest()
+
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+      return xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET", theUrl, false);
+  xmlhttp.send();    
 }
