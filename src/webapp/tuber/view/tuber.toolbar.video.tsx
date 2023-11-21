@@ -101,6 +101,26 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 //   return <Link def={iconDef} />
 // }
 
+const ShowThumbnailsToggle = ({ callback, def: appBar }: IToolbarIcon) => {
+  const iconDef = new StateLink({
+    'type': 'icon',
+    'props': {
+      'size': 'small'
+    },
+    'has': {
+      'icon': 'insert_photo_outline',
+      'iconProps': {
+        'sx': {
+          'color': grey[600],
+          'fontSize': 34
+        }
+      },
+    },
+    'onClick': callback
+  }, appBar)
+  return <Link def={iconDef} />
+}
+
 const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
@@ -127,6 +147,10 @@ export default function ResearchToolbar (props: IResearchToolbarProps) {
   return (
     <Toolbar>
       <ToggleWrapper>
+        <ShowThumbnailsToggle
+          callback={props.toggleThumbnailsCallback}
+          def={appBar}
+        />
         <IntegratedPlayerToggle
           callback={props.togglePlayerCallback}
           def={appBar}

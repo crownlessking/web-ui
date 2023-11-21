@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid'
 import { useSelector } from 'react-redux'
 import StateData from 'src/controllers/StateData'
 import { RootState } from 'src/state'
-import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.business.logic'
+import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.common.logic'
 import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
@@ -16,7 +16,6 @@ import LoadMoreBookmarksFromServer, {
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
 import Thumbnail from './tuber.bookmark.thumbnail'
-import { marked } from 'marked'
 
 const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),

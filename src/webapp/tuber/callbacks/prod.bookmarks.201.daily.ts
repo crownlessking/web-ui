@@ -6,6 +6,7 @@ import { IRedux, ler, log } from '../../../state'
 import { get_state_form_name } from '../../../business.logic'
 import { FORM_DAILY_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
+import { get_start_time_in_seconds } from '../_tuber.common.logic'
 
 /**
  * [Dailymotion] Save bookmark to server.
@@ -51,12 +52,14 @@ export function form_submit_new_daily_bookmark(redux: IRedux) {
     const formData = policy.getFilteredData()
     const platform = formData.platform
     const videoid = formData.videoid
-    const start_seconds = formData.start_seconds
+    const start_seconds = get_start_time_in_seconds(formData.start_time)
     const title = formData.title
     const note = formData.note
+    const thumbnail_url = formData.thumbnail_url
     const requestBody = new JsonapiRequest<IBookmark>('bookmarks', {
       platform,
       videoid,
+      thumbnail_url,
       start_seconds,
       title,
       note

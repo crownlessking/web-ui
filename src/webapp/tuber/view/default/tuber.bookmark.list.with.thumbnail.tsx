@@ -5,7 +5,6 @@ import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import Grid from '@mui/material/Grid'
 import { styled } from '@mui/material/styles'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/state'
 import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.common.logic'
@@ -15,7 +14,7 @@ import LoadMoreBookmarksFromServer, {
 import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import StateData from 'src/controllers/StateData'
-import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
+import Thumbnail from './tuber.bookmark.thumbnail'
 
 const BookmarkListWrapper = styled('div')(({ theme }) => ({
   height: 'calc(100vh - 64px)',
@@ -56,7 +55,7 @@ const TitleWrapper = styled('div')(() => ({
   position: 'relative',
 }))
 
-const Title = styled('a')(() => ({
+const ClickTitle = styled('a')(() => ({
   textDecoration: 'none',
   fontSize: '1.13rem',
   color: '#1b74e4',
@@ -67,6 +66,11 @@ const Title = styled('a')(() => ({
   }
 }))
 
+const ClickThumbnail = styled('a')(() => ({
+  textDecoration: 'none',
+  transition: 'all 0.2s ease-in-out',
+}))
+
 const PlatformIcon = styled('img')(() => ({
   width: '1.5rem',
   height: '1.5rem',
@@ -75,26 +79,7 @@ const PlatformIcon = styled('img')(() => ({
   // top: 0,
 }))
 
-const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  position: 'absolute',
-  left: 0,
-  top: 0,
-  textDecoration: 'none',
-  color: theme.palette.grey[500],
-}))
-
-const ExpandNoteIcon = styled(PlayArrowIcon)(({ theme }) => ({
-  width: '1.5rem',
-  height: '1.5rem',
-}))
-
-const expandNote: boolean[] = []
-
-export default function TuberBookmarkList(props: ITuberBookmarksProps) {
+export default function TuberBookmarkThumbnailedList(props: ITuberBookmarksProps) {
   const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props
   const data = new StateData(
     useSelector((state: RootState) => state.data)
@@ -114,59 +99,38 @@ export default function TuberBookmarkList(props: ITuberBookmarksProps) {
     }
   }
 
-  const handleExpandDetailIconOnClick = (
-    annotaion: IBookmark,
-    i: number
-  ) => (e: React.MouseEvent) => {
-    e.preventDefault()
-    const element = e.currentTarget as HTMLAnchorElement
-    const icon = element.children.item(0) as HTMLOrSVGImageElement
-    icon.style.transition = 'all 0.4s ease'
-    expandNote[i] = !expandNote[i]
-    icon.style.transform = expandNote[i]
-      ? 'rotateZ(90deg)'
-      : 'rotateZ(0deg)'
-    const detail = element.parentElement?.children.item(1) as HTMLDivElement
-    while (detail.firstChild) {
-      detail.removeChild(detail.firstChild)
-    }
-    if (expandNote[i]) {
-      // Insert the full note into the detail div using text node
-      detail.appendChild(document.createTextNode(annotaion.note ?? '(No note)'))
-    } else {
-      // Insert the shortened note into the detail div using text node
-      detail.appendChild(document.createTextNode(shorten_text(annotaion.note)))
-    }
-  }
-
   return (
     <BookmarkListWrapper>
       <LoadEarlierBookmarksFromServer def={data} />
       <StyledList>
         {bookmarks.map((bookmark, i) => (
           <StyledListItem key={`bookmark[${i}]`} disablePadding>
+            { bookmark.thumbnail_url ? ( // If bookmark has a thumbnail, it can be clicked.
+              <ClickThumbnail
+                href={`#${bookmark.videoid ?? bookmark.slug}`}
+                onClick={handleOnClick(bookmark)}
+              >
+                <Thumbnail i={i} bookmark={bookmark} />
+              </ClickThumbnail>
+            ): ( // Otherwise, it is not clickable.
+              <Thumbnail i={i} bookmark={bookmark} />
+            )}
             <Stack sx={{ position: 'relative' }}>
               <Grid container direction='column'>
                 <TitleWrapper>
                   <PlatformIcon src={get_platform_icon_src(bookmark.platform)} />
-                  <Title href='#' onClick={handleOnClick(bookmark)}>
-                    <ListItemText primary={bookmark.title} />
-                  </Title>
+                  <ClickTitle href='#' onClick={handleOnClick(bookmark)}>
+                    <ListItemText
+                      primary={shorten_text(bookmark.title, false, 27)}
+                    />
+                  </ClickTitle>
                 </TitleWrapper>
               </Grid>
               { bookmark.note ? (
                 <Fragment>
                   <NoteGrid container direction='row'>
                     <NoteWrapper>
-                      {bookmark.note.length > SHORTENED_NOTE_MAX_LENGTH ? (
-                        <ExpandNoteIconWrapper
-                          href='#'
-                          onClick={handleExpandDetailIconOnClick(bookmark, i)}
-                        >
-                          <ExpandNoteIcon aria-label='expand row' />
-                        </ExpandNoteIconWrapper>
-                      ) : ( null )}
-                      <Note>{ shorten_text(bookmark.note) }</Note>
+                      <Note>{ shorten_text(bookmark.note, false, 27) }</Note>
                     </NoteWrapper>
                   </NoteGrid>
                   <BookmarkActionsToolbar i={i} bookmark={bookmark} />

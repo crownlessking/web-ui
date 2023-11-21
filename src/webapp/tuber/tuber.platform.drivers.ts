@@ -21,7 +21,7 @@ import {
   twitch_get_start_time,
   daily_get_start_time,
   odysee_get_url_data,
-} from './_tuber.business.logic'
+} from './_tuber.common.logic'
 import { IUrlStatus, IVideoData } from './tuber.interfaces'
 
 const DATA_SKELETON: IVideoData = {
@@ -249,22 +249,22 @@ function _extract_data_from_dailymotion_url(url: string): IVideoData {
     return DATA_SKELETON
   }
   const start = daily_get_start_time(url)
-  if (!start) {
-    remember_error({
-      code: 'value_not_found',
-      title: 'daily_get_start_time failed',
-      detail: 'The "daily_get_start_time" function failed to extract the video '
-        + 'start time from the URL.',
-      source: { pointer: url }
-    })
-    return {
-      ...DATA_SKELETON,
-      urlCheck: {
-        message: NO_START_MSG,
-        valid: false
-      }
-    }
-  }
+  // if (!start) {
+  //   remember_error({
+  //     code: 'value_not_found',
+  //     title: 'daily_get_start_time failed',
+  //     detail: 'The "daily_get_start_time" function failed to extract the video '
+  //       + 'start time from the URL.',
+  //     source: { pointer: url }
+  //   })
+  //   return {
+  //     ...DATA_SKELETON,
+  //     urlCheck: {
+  //       message: NO_START_MSG,
+  //       valid: false
+  //     }
+  //   }
+  // }
   const data: IVideoData = {
     ...DATA_SKELETON,
     platform: 'dailymotion',

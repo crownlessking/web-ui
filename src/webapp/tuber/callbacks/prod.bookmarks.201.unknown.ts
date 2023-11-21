@@ -5,7 +5,7 @@ import { post_req_state } from 'src/state/net.actions'
 import { get_state_form_name } from '../../../business.logic'
 import { remember_error } from 'src/business.logic/errors'
 import { FORM_UNKNOWN_NEW_ID } from '../tuber.config'
-import { get_iframe_url_src } from '../_tuber.business.logic'
+import { get_iframe_url_src } from '../_tuber.common.logic'
 import { IBookmark } from '../tuber.interfaces'
 
 /**

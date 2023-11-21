@@ -110,8 +110,10 @@ export function vimeo_get_video_id(url: string): string | undefined {
 }
 
 /** 
- * Converts a time (in seconds) in the readable format.
+ * Converts a time (in seconds) in a readable format.
  * e.g. 3661 -> 1h1m1s
+ * @param timeInSeconds Time in seconds
+ * @returns Formatted time string
  */
 export function format_seconds_to_readable_time (timeInSeconds: number): string {
   const remainingSeconds = timeInSeconds % 60
@@ -130,9 +132,15 @@ export function format_seconds_to_readable_time (timeInSeconds: number): string 
   return `${timeInHoursStr}h${remainingMinutesStr}m${secondsStr}s`
 }
 
-/** Get the video start time in seconds. */
-export function _get_start_time_in_seconds(startTime: string): number {
-  const temp = startTime.toLowerCase().match(/\d+h|\d+m|\d+s/g)
+/**
+ * Get the video start time in seconds from a formatted time string.
+ * e.g. 1h1m1s -> 3661
+ * @param startTime Formatted time string
+ * @returns The start time in seconds
+ */
+export function get_start_time_in_seconds(startTime?: string): number {
+  if (!startTime) { return 0 }
+  const temp = startTime.toLowerCase().match(/\d+h|\d+m|\d+s|\d+/g)
   if (!temp) { return parseInt(startTime) }
   let timeInSeconds = 0
   temp.forEach(fragment => {
@@ -142,6 +150,8 @@ export function _get_start_time_in_seconds(startTime: string): number {
       timeInSeconds += parseInt(fragment.replace(/\D+/, '')) * 60 || 0
     } else if (fragment.slice(-1) === 's') {
       timeInSeconds += parseInt(fragment.replace(/\D+/, '')) || 0
+    } else {
+      timeInSeconds += parseInt(fragment) || 0
     }
   })
   return timeInSeconds
@@ -155,7 +165,7 @@ export function vimeo_get_start_time(url: string): number {
   const qsTime = url.split('#')[1]
   if (!qsTime) return 0
   const startTime = qsTime.replace(/^t=/, '')
-  return _get_start_time_in_seconds(startTime)
+  return get_start_time_in_seconds(startTime)
 }
 
 /**
@@ -165,7 +175,7 @@ export function vimeo_get_start_time(url: string): number {
 export function twitch_get_start_time(url: string): number {
   const twitchTime = get_query_values(url)['t']
   if (!twitchTime) { return 0 }
-  const t = _get_start_time_in_seconds(twitchTime)
+  const t = get_start_time_in_seconds(twitchTime)
   return t
 }
 
@@ -236,7 +246,7 @@ export function daily_get_video_id(url: string): string {
 export function daily_get_start_time(url: string): number {
   const queryValues = get_query_values(url)
   if (queryValues.start) {
-    return _get_start_time_in_seconds(queryValues.start)
+    return get_start_time_in_seconds(queryValues.start)
   }
   return 0
 }

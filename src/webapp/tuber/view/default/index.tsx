@@ -13,6 +13,7 @@ import ResearchToolbarFixed from '../tuber.toolbar.video.search'
 import TuberBookmarkSearchWithThumbnails from './tuber.bookmark.search.with.thumbnails'
 import { dialog_new_youtube_bookmark_from_video } from '../../callbacks/prod.bookmarks.youtube'
 import { useMediaQuery } from '@mui/material'
+import TuberBookmarkThumbnailedList from './tuber.bookmark.list.with.thumbnail'
 
 tuber_register_callbacks()
 
@@ -29,6 +30,7 @@ const TuberPlayerWrapper = styled('div')(({ theme }) => ({
 export default function ViewDefault({ def: page }: { def: StatePage}) {
   const [ playerOpen, setPlayerOpen ] = useState<boolean>(false)
   const [ bookmarkToPlay, setBookmarkToPlay ] = useState<IBookmark>()
+  const [ showThumbnail, setShowThumbnail ] = useState<boolean>(false)
   const theme = useTheme()
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -42,6 +44,9 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
     },
     /** Creates a new bookmark @deprecated */
     bookmarkAddCallback: dialog_new_youtube_bookmark_from_video,
+    toggleThumbnailsCallback: () => () => {
+      setShowThumbnail(!showThumbnail)
+    },
     // appbar definition
     def: page.appBar
   }
@@ -63,11 +68,19 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
       <Toolbar />
         {playerOpen ? (
           <Grid container direction='row'>
-            <TuberBookmarkList
-              playerOpen={playerOpen}
-              setPlayerOpen={setPlayerOpen}
-              setBookmarkToPlay={setBookmarkToPlay}
-            />
+            {showThumbnail ? (
+              <TuberBookmarkThumbnailedList
+                playerOpen={playerOpen}
+                setPlayerOpen={setPlayerOpen}
+                setBookmarkToPlay={setBookmarkToPlay}
+              />
+            ) : (
+              <TuberBookmarkList
+                playerOpen={playerOpen}
+                setPlayerOpen={setPlayerOpen}
+                setBookmarkToPlay={setBookmarkToPlay}
+              />
+            )}
             <TuberPlayerWrapper>
               <TuberPlayer
                 isOpen={playerOpen}

@@ -5,7 +5,7 @@ import { IRedux, ler, log, pre } from 'src/state'
 import { remember_exception } from 'src/business.logic/errors'
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions'
 import { get_state_form_name } from '../../../business.logic'
-import { get_dialog_id_for_edit } from '../_tuber.business.logic'
+import { get_dialog_id_for_edit } from '../_tuber.common.logic'
 import { IBookmark } from '../tuber.interfaces'
 import { DIALOG_DELETE_BOOKMARK_ID } from '../tuber.config'
 

@@ -29,6 +29,7 @@ export interface IBookmark {
   embed_url?: string
   slug?: string
   platform: TPlatform
+  start_time?: string
   startSeconds?: number
   start_seconds?: number
   endSeconds?: number
@@ -85,6 +86,7 @@ export interface IResearchToolbarProps {
    * a new bookmark.
    */
   bookmarkAddCallback: IStateLink['onClick']
+  toggleThumbnailsCallback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
   def: StatePageAppBar
 }
