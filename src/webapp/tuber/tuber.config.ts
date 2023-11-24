@@ -62,6 +62,8 @@ export const FORM_AUTHORIZATION_KEY_ID = '49'
 export const FORM_AUTHORIZATION_URL_ID = '50'
 export const FORM_RUMBLE_URL_REGEX_ID = '54'
 export const FORM_UNKNOWN_URL_REGEX_ID = '57'
+export const FORM_TWITCH_CLIENT_ID_ID = '60'
+export const FORM_SAVE_CONFIG_VALUE_ID = '62'
 
 export const DIALOG_DELETE_BOOKMARK_ID = '34'
 export const URL_DIALOG_ID_NEW = '2'

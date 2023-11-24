@@ -30,7 +30,7 @@ const TuberPlayerWrapper = styled('div')(({ theme }) => ({
 export default function ViewDefault({ def: page }: { def: StatePage}) {
   const [ playerOpen, setPlayerOpen ] = useState<boolean>(false)
   const [ bookmarkToPlay, setBookmarkToPlay ] = useState<IBookmark>()
-  const [ showThumbnail, setShowThumbnail ] = useState<boolean>(false)
+  const [ showThumbnail, setShowThumbnail ] = useState<boolean>(true)
   const theme = useTheme()
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'))
 

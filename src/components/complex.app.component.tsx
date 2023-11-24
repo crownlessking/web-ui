@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import Box from '@mui/material/Box'
-import { CssBaseline } from '@mui/material'
 import AppBar from '../mui/appbar'
 import Drawer from '../mui/drawer'
 import StatePage from '../controllers/StatePage'
@@ -21,7 +20,6 @@ export default function ComplexApp ({ def: page }: IComplexAppProps) {
     <Fragment>
       <Background def={page.background} />
       <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
         <AppBar def={page} />
         <Drawer def={page} />
         <Layout def={page}>

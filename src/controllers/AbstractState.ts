@@ -1,4 +1,4 @@
-import { err, ler, log, warn } from "../state"
+import Config from '../config'
 
 export default abstract class AbstractState {
 
@@ -29,7 +29,9 @@ export default abstract class AbstractState {
    * @param $return **required** dummy default value for compatibility sake.
    */
   protected die<T=any>(msg: string, $return: T): T {
-    err(msg)
+    if (Config.DEBUG) {
+      throw new Error(msg)
+    }
     return $return
   }
 
@@ -39,7 +41,9 @@ export default abstract class AbstractState {
    * @param $return **required** dummy default value for compatibility sake.
    */
   protected err<T=any>(msg: string, $return: T): T {
-    ler(msg)
+    if (Config.DEBUG) {
+      console.error(msg)
+    }
     return $return
   }
 
@@ -49,7 +53,9 @@ export default abstract class AbstractState {
    * @param $return **required** dummy default value for compatibility sake.
    */
   protected warn<T=any>(msg: string, $return: T): T {
-    warn(msg)
+    if (Config.DEBUG) {
+      console.warn(msg)
+    }
     return $return
   }
 
@@ -59,7 +65,9 @@ export default abstract class AbstractState {
    * @param $return **required** dummy default value for compatibility sake.
    */
   protected notice<T=any>(msg: string, $return: T): T {
-    log(msg)
+    if (Config.DEBUG) {
+      console.log(msg)
+    }
     return $return
   }
 }

@@ -16,8 +16,11 @@ import {
   FORM_AUTHORIZATION_KEY_ID,
   FORM_AUTHORIZATION_URL_ID,
   FORM_RUMBLE_URL_REGEX_ID,
-  FORM_UNKNOWN_URL_REGEX_ID
+  FORM_UNKNOWN_URL_REGEX_ID,
+  FORM_TWITCH_CLIENT_ID_ID,
+  FORM_SAVE_CONFIG_VALUE_ID
 } from '../tuber.config'
+import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 function dev_create_user(redux: IRedux) {
   return () => {
@@ -219,6 +222,68 @@ function dev_form_submit_unknown_regex(redux: IRedux) {
   }
 }
 
+function dev_form_submit_twitch_client_id(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = rootState.stateRegistry[FORM_TWITCH_CLIENT_ID_ID]
+    if (!formName) {
+      ler('dev_form_submit_twitch_client_id: Form name not found.')
+      return
+    }
+    const policy = new FormValidationPolicy<Record<string, string>>(
+      redux,
+      formName
+    )
+    const validation = policy.getValidationSchemes()
+    if (validation && validation.length > 0) {
+      validation.forEach(vError => {
+        const message = vError.message ?? ''
+        policy.emit(vError.name, message)
+      })
+      return
+    }
+    const formData = policy.getFilteredData()
+    dispatch(post_req_state('dev/twitch/client-id', {
+      client_id: formData.client_id,
+      client_secret: formData.client_secret
+    }, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
+function dev_form_submit_save_config_value(redux: IRedux) {
+  return async () => {
+    const { store: { dispatch, getState } } = redux
+    const rootState = getState()
+    const { headers } = rootState.net
+    const formName = rootState.stateRegistry[FORM_SAVE_CONFIG_VALUE_ID]
+    if (!formName) {
+      ler('dev_form_submit_save_config_value: Form name not found.')
+      return
+    }
+    const policy = new FormValidationPolicy<Record<string, string>>(
+      redux,
+      formName
+    )
+    const validation = policy.getValidationSchemes()
+    if (validation && validation.length > 0) {
+      validation.forEach(vError => {
+        const message = vError.message ?? ''
+        policy.emit(vError.name, message)
+      })
+      return
+    }
+    const formData = policy.getFilteredData()
+    dispatch(post_req_state('dev/save-config-value', {
+      key: formData.key,
+      value: formData.value
+    }, headers))
+    dispatch({ type: 'formsData/formsDataClear' })
+  }
+}
+
 const devCallbacks = {
   devCreateUser: dev_create_user,
   devResetDatabase: dev_reset_database,
@@ -237,6 +302,8 @@ const devCallbacks = {
   '$50_C_1': dev_form_submit_authorization_url,
   '$54_C_1': dev_form_submit_rumble_regex,
   '$57_C_1': dev_form_submit_unknown_regex,
+  '$60_C_1': dev_form_submit_twitch_client_id,
+  '$62_C_1': dev_form_submit_save_config_value
 }
 
 export default devCallbacks

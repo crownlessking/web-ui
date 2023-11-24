@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  CardContent, CssBaseline, Grid, IconButton, InputAdornment, Paper, Toolbar, 
+  CardContent, Grid, IconButton, InputAdornment, Paper, Toolbar, 
   Typography
 } from '@mui/material'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
@@ -267,7 +267,6 @@ export default function PageErrors({ def: page }: IPageErrorsProps) {
 
   return (
     <Fragment>
-      <CssBaseline />
       <Grid container spacing={0}>
         <Grid md={3} sx={{ pl: 1 }} item>
           <Toolbar />

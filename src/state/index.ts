@@ -28,7 +28,7 @@ import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice'
 import stateRegistryReducer from '../slices/stateRegistry.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import { remember_exception } from '../business.logic/errors'
-import Config from 'src/config'
+import Config from '../config'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const net_patch_state = (stateFragment: any) => ({

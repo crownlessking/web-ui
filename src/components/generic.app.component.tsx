@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { CssBaseline } from '@mui/material'
 import AppBar from '../mui/appbar'
 import Drawer from '../mui/drawer'
 import Layout from './layout.component'
@@ -19,7 +18,6 @@ export default function GenericApp ({ def: page }: IGenericAppProps) {
   return (
     <Fragment>
       <Background def={page.background} />
-      <CssBaseline />
       <AppBar def={page} />
       <Drawer def={page} />
       <Layout def={page}>

@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from './state'
 import { post_req_state } from './state/net.actions'
 import { get_bootstrap_key } from './business.logic'
 import Config from './config'
-import { createTheme, ThemeProvider } from '@mui/material'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import StateAllPages from './controllers/StateAllPages'
 import StateApp from './controllers/StateApp'
 import StateNet from './controllers/StateNet'
@@ -64,6 +64,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={createTheme(themeState)}>
+      <CssBaseline />
       <AppPage def={allPages} />
     </ThemeProvider>
   )
