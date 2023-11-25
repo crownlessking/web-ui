@@ -1,6 +1,7 @@
 // Tuber app types and interfaces gathered in one spot
 import IStateLink from '../../interfaces/IStateLink'
 import StatePageAppBar from '../../controllers/templates/StatePageAppBar'
+import { TWithRequired } from 'src/interfaces'
 
 /**
  * Online video platform.
@@ -59,20 +60,10 @@ export interface IBookmarkOrigin
   end_seconds?: number
 }
 
-export interface ITuberProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  bookmark: IBookmark
-}
-
 export interface ITuberBookmarksProps {
   playerOpen: boolean
   setBookmarkToPlay: React.Dispatch<React.SetStateAction<IBookmark|undefined>>
   setPlayerOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export interface ITuberPlatform {
-  platform: TPlatform
 }
 
 // export type TTuberPlatformMap = {[brand in TPlatform]: (...args: any) => JSX.Element | null }
@@ -89,6 +80,52 @@ export interface IResearchToolbarProps {
   toggleThumbnailsCallback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
   def: StatePageAppBar
+}
+
+export interface ITuberPlayer {
+  isOpen?: boolean
+  bookmark?: IBookmark
+  toolbarProps: IResearchToolbarProps
+}
+
+export interface ITuberProps {
+  playerOpen?: boolean
+  setBookmarkToPlay?: React.Dispatch<React.SetStateAction<IBookmark|undefined>>
+  setPlayerOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  open?: boolean
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>
+  isOpen?: boolean
+  bookmark?: IBookmark
+  toolbarProps?: IResearchToolbarProps
+}
+
+export type TTBListProps = TWithRequired<
+  ITuberProps,
+  'playerOpen'
+  | 'setPlayerOpen'
+  | 'setBookmarkToPlay'
+>
+
+export type TTTBListProps = TWithRequired<
+  ITuberProps,
+  'setBookmarkToPlay'
+  | 'setPlayerOpen'
+>
+
+export type TTPlayerProps = TWithRequired<ITuberProps, 'toolbarProps'>
+
+/** Tuber bookmark list */
+export interface ITBList {
+  props: TTBListProps
+}
+
+/** Tuber thumbnailed bookmark list */
+export interface ITTBList {
+  props: TTTBListProps
+}
+
+export interface TTPlayer {
+  props: TTPlayerProps
 }
 
 export interface IUrlStatus {

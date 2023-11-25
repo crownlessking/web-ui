@@ -185,7 +185,10 @@ export default interface IHtmlAttributes {
  *
  * @see https://stackoverflow.com/a/61108377/1875859
  */
-export type TOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
+export type TWithOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
+
+/** @see https://stackoverflow.com/a/69328045/1875859 */
+export type TWithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
 
 export interface ITypography extends IHtmlAttributes {
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify'

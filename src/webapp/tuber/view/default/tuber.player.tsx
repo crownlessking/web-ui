@@ -1,10 +1,6 @@
 import { styled } from '@mui/material/styles'
 import { Fragment } from 'react'
-import {
-  IBookmark,
-  IResearchToolbarProps,
-  TTuberPlatformMap
-} from '../../tuber.interfaces'
+import { IBookmark, TTPlayer, TTuberPlatformMap } from '../../tuber.interfaces'
 import RumblePlayer from '../player.rumble'
 import ResearchToolbar from '../tuber.toolbar.video'
 import YouTubePlayerApi from '../player.youtube.api'
@@ -25,12 +21,6 @@ export const PlayerPlaceholder = styled('div')(() => ({
   width: '100%',
   height: '100%'
 }))
-
-interface ITuberPlayer {
-  isOpen?: boolean
-  bookmark?: IBookmark
-  toolbarProps: IResearchToolbarProps
-}
 
 function VideoPlayer({ bookmark: receivedBookmark }: { bookmark?: IBookmark }) {
   const bookmark = receivedBookmark ?? {
@@ -54,13 +44,13 @@ function VideoPlayer({ bookmark: receivedBookmark }: { bookmark?: IBookmark }) {
   return players[bookmark.platform]
 }
 
-export default function TuberPlayer(props: ITuberPlayer) {
+export default function TuberPlayer(props: TTPlayer) {
   return (
     <Fragment>
       <VideoCanvas>
-        <VideoPlayer bookmark={props.bookmark} />
+        <VideoPlayer bookmark={props.props.bookmark} />
       </VideoCanvas>
-      <ResearchToolbar {...props.toolbarProps} />
+      <ResearchToolbar {...props.props.toolbarProps} />
     </Fragment>
   )
 }

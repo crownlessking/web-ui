@@ -12,7 +12,7 @@ import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
 } from './tuber.bookmark.list.load.more'
-import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
+import { IBookmark, ITBList } from '../../tuber.interfaces'
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import StateData from 'src/controllers/StateData'
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config'
@@ -94,8 +94,8 @@ const ExpandNoteIcon = styled(PlayArrowIcon)(({ theme }) => ({
 
 const expandNote: boolean[] = []
 
-export default function TuberBookmarkList(props: ITuberBookmarksProps) {
-  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props
+export default function TuberBookmarkList(props: ITBList) {
+  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props
   const data = new StateData(
     useSelector((state: RootState) => state.data)
   )

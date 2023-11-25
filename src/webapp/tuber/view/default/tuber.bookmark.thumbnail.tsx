@@ -11,15 +11,15 @@ interface IThumbnailProps {
   bookmark: IBookmark
 }
 
-const ThumbnailGrid = styled(Grid)(({ theme }) => ({
+const ThumbnailGrid = styled(Grid)(({ theme: { spacing, palette } }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: theme.palette.grey[800],
+  backgroundColor: '#424242',
   borderRadius: '0.5rem',
   overflow: 'hidden',
-  border: '1px solid #e0e0e0',
-  marginRight: theme.spacing(2),
+  border: '1px solid ' + palette.mode === 'dark' ? '#424242' : '#e0e0e0',
+  marginRight: spacing(2),
   width: 148,
   height: 83,
   backgroundSize: 'cover',

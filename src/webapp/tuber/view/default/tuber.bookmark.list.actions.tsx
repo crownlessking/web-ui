@@ -21,7 +21,7 @@ interface IRatingProps {
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark'
-    ? '#1A2027'
+    ? '#141a1f'
     : theme.palette.grey[200],
   ...theme.typography.body2,
   textAlign: 'center',
@@ -30,7 +30,9 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }))
 
 const RatingWrapper = styled('span')(({ theme }) => ({
-  backgroundColor: theme.palette.grey[300],
+  backgroundColor: theme.palette.mode === 'dark'
+    ? theme.palette.grey[50]
+    : theme.palette.grey[300],
   padding: theme.spacing(.25),
   borderRadius: '10%'
 }))

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import StateData from 'src/controllers/StateData'
 import { RootState } from 'src/state'
 import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber.common.logic'
-import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
+import { IBookmark, ITTBList } from '../../tuber.interfaces'
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
 } from './tuber.bookmark.list.load.more'
@@ -98,8 +98,8 @@ const ExpandNoteIcon = styled(PlayArrowIcon)(({ theme }) => ({
 
 const expandNote: boolean[] = []
 
-export default function TuberBookmarkSearchWithThumbnails (props: ITuberBookmarksProps) {
-  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props
+export default function TuberBookmarkSearchWithThumbnails (props: ITTBList) {
+  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props
   const data = new StateData(
     useSelector((state: RootState) => state.data)
   )

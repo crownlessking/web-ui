@@ -1,4 +1,4 @@
-import { TOptional } from '.'
+import { TWithOptional } from '.'
 import IAbstractState from './IAbstractState'
 import IStateLink from './IStateLink'
 
@@ -16,6 +16,6 @@ export default interface IStateDrawer extends IAbstractState {
 }
 
 /** Type for a drawer defined within a page. */
-export interface IStatePageDrawer extends TOptional<IStateDrawer, 'width'> {
+export interface IStatePageDrawer extends TWithOptional<IStateDrawer, 'width'> {
   constent?: String[]
 }

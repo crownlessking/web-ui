@@ -11,7 +11,7 @@ import { gen_video_url, get_platform_icon_src, shorten_text } from '../../_tuber
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
 } from './tuber.bookmark.list.load.more'
-import { IBookmark, ITuberBookmarksProps } from '../../tuber.interfaces'
+import { IBookmark, ITTBList } from '../../tuber.interfaces'
 import BookmarkActionsToolbar from './tuber.bookmark.list.actions'
 import StateData from 'src/controllers/StateData'
 import Thumbnail from './tuber.bookmark.thumbnail'
@@ -79,8 +79,8 @@ const PlatformIcon = styled('img')(() => ({
   // top: 0,
 }))
 
-export default function TuberBookmarkThumbnailedList(props: ITuberBookmarksProps) {
-  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props
+export default function TuberThumbnailedBookmarkList(props: ITTBList) {
+  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props
   const data = new StateData(
     useSelector((state: RootState) => state.data)
   )

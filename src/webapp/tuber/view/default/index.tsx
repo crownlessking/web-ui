@@ -11,9 +11,12 @@ import Toolbar from '@mui/material/Toolbar'
 import ResearchToolbarFixed from '../tuber.toolbar.video.search'
 // import TuberBookmarkSearchEngine from './tuber.bookmark.search.engine'
 import TuberBookmarkSearchWithThumbnails from './tuber.bookmark.search.with.thumbnails'
-import { dialog_new_youtube_bookmark_from_video } from '../../callbacks/prod.bookmarks.youtube'
+import { dialog_new_youtube_bookmark_from_video }
+  from '../../callbacks/prod.bookmarks.youtube'
 import { useMediaQuery } from '@mui/material'
-import TuberBookmarkThumbnailedList from './tuber.bookmark.list.with.thumbnail'
+import TuberThumbnailedBookmarkList from './tuber.bookmark.list.with.thumbnail'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/state'
 
 tuber_register_callbacks()
 
@@ -31,6 +34,7 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
   const [ playerOpen, setPlayerOpen ] = useState<boolean>(false)
   const [ bookmarkToPlay, setBookmarkToPlay ] = useState<IBookmark>()
   const [ showThumbnail, setShowThumbnail ] = useState<boolean>(true)
+  const themeMode = useSelector((state: RootState) => state.theme.palette?.mode)
   const theme = useTheme()
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -69,32 +73,40 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
         {playerOpen ? (
           <Grid container direction='row'>
             {showThumbnail ? (
-              <TuberBookmarkThumbnailedList
-                playerOpen={playerOpen}
-                setPlayerOpen={setPlayerOpen}
-                setBookmarkToPlay={setBookmarkToPlay}
+              <TuberThumbnailedBookmarkList
+                props={{
+                  playerOpen,
+                  setPlayerOpen,
+                  setBookmarkToPlay
+                }}
               />
             ) : (
               <TuberBookmarkList
-                playerOpen={playerOpen}
-                setPlayerOpen={setPlayerOpen}
-                setBookmarkToPlay={setBookmarkToPlay}
+                props={{
+                  playerOpen,
+                  setPlayerOpen,
+                  setBookmarkToPlay
+                }}
               />
             )}
             <TuberPlayerWrapper>
               <TuberPlayer
-                isOpen={playerOpen}
-                bookmark={bookmarkToPlay}
-                toolbarProps={toolbarProps}
+                props={{
+                  isOpen: playerOpen,
+                  bookmark: bookmarkToPlay,
+                  toolbarProps
+                }}
               />
             </TuberPlayerWrapper>
           </Grid>
         ) : (
           <Fragment>
             <TuberBookmarkSearchWithThumbnails
-              playerOpen={playerOpen}
-              setPlayerOpen={setPlayerOpen}
-              setBookmarkToPlay={setBookmarkToPlay}
+              props={{
+                playerOpen,
+                setPlayerOpen,
+                setBookmarkToPlay
+              }}
             />
             <ResearchToolbarFixed {...toolbarProps} />
           </Fragment>

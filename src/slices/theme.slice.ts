@@ -1,16 +1,30 @@
+import { ThemeOptions } from '@mui/material/styles/createTheme'
 import { createSlice } from '@reduxjs/toolkit'
-import { remember_exception } from 'src/business.logic/errors'
+import { remember_exception } from '../business.logic/errors'
 import initialState from '../state/initial.state'
 
-type TThemeProps = {[x: string]: any}
+type TThemeProps = Record<string, any>
+interface IThemeSetAction {
+  payload: ThemeOptions
+}
 
 export const themeSlice = createSlice({
   name: 'theme',
   initialState: initialState.theme,
   reducers: {
-    themeSet: (state, action) => {
-      const { key, obj } = action.payload as {key: string, obj: any}
-      (state as {[prop: string]: any})[key] = obj
+    /** [TODO] Fix this. I don't think it works. */
+    themeSet: (state, action: IThemeSetAction) => {
+      const stack = [[state, action.payload]] as any
+      while (stack.length > 0) {
+        const [s, ap] = stack.pop()
+        for (const key in ap) {
+          if (ap[key] instanceof Object && s[key] instanceof Object) {
+            stack.push([s[key], ap[key]])
+          } else {
+            s[key] = ap[key]
+          }
+        }
+      }
     },
     themeClear: (state) => {
       for (const prop in initialState.theme) {
