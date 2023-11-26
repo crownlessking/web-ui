@@ -4,17 +4,17 @@ import State from './State'
 
 export default class StateAllDialogs extends AbstractState {
 
-  private parentDef?: State
-  private allDialogsState: IStateAllDialogs
+  private _parentDef?: State
+  private _allDialogsState: IStateAllDialogs
 
   constructor(allDialogsState: any, parent?: State) {
     super()
-    this.parentDef = parent
-    this.allDialogsState = allDialogsState
+    this._parentDef = parent
+    this._allDialogsState = allDialogsState
   }
 
-  get state(): IStateAllDialogs { return this.allDialogsState }
-  get parent(): State { return this.parentDef || new State() }
+  get state(): IStateAllDialogs { return this._allDialogsState }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any {
     return this.die('Not implemented yet.', {})
   }

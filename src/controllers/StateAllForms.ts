@@ -6,30 +6,30 @@ import { log } from '../state'
 
 export default class StateAllForms extends Controller {
 
-  private allFormsState: IStateAllForms
-  private parentDef?: State
-  private lastFormName: string
+  private _allFormsState: IStateAllForms
+  private _parentDef?: State
+  private _lastFormName: string
 
   constructor (allFormsState: IStateAllForms, parent?: State) {
     super()
-    this.parentDef = parent
-    this.allFormsState = allFormsState
-    this.lastFormName = ''
+    this._parentDef = parent
+    this._allFormsState = allFormsState
+    this._lastFormName = ''
   }
 
   /** Get all forms json. */
-  get state(): IStateAllForms { return this.allFormsState }
+  get state(): IStateAllForms { return this._allFormsState }
   /** Chain-access to root definition. */
-  get parent(): State { return this.parentDef || new State() }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 
   getForm = (name: string): StateForm | null => {
     const formName = this.getStateFormName(name)
-    const formState = this.allFormsState[formName]
+    const formState = this._allFormsState[formName]
 
     if (formState) {
-      this.lastFormName = formName
+      this._lastFormName = formName
       const formDef = new StateForm(formState, this)
 
       return formDef
@@ -42,7 +42,7 @@ export default class StateAllForms extends Controller {
   /**
    * Get the (`formName`) name of the last form that was retrieved.
    */
-  getLastFormName = (): string => this.lastFormName
+  getLastFormName = (): string => this._lastFormName
 
   /**
    * Get the form state name

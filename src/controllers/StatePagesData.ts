@@ -7,18 +7,18 @@ import State from './State'
  */
 export default class StatePagesData extends AbstractState {
 
-  private parentDef?: State
-  private pagesDataState: IGenericObject
+  private _parentDef?: State
+  private _pagesDataState: IGenericObject
 
   constructor(pagesDataState: IGenericObject, parent?: State) {
     super()
-    this.parentDef = parent
-    this.pagesDataState = pagesDataState
+    this._parentDef = parent
+    this._pagesDataState = pagesDataState
   }
 
-  get state(): IGenericObject { return this.pagesDataState }
+  get state(): IGenericObject { return this._pagesDataState }
   /** Chain-access to the root definition. */
-  get parent(): State { return this.parentDef || new State() }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 }

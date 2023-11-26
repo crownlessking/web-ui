@@ -9,32 +9,6 @@ import {
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
 import { IStatePageContent } from '../interfaces/IStatePage'
 
-/** Helps to shorten error message */
-let _msgPrefix = ''
-
-/**
- * Set message prefix.
- *
- * Helps keep error message short. Works with `msg()`, `log()`, `warn()`,
- * and `ler()`.
- */
-export function pre(prefix?: string): void {
-  _msgPrefix = prefix ?? ''
-}
-
-/** Prepends message prefix. */
-export function msg(msg: string): string {
-  return _msgPrefix + msg
-}
-
-/** Returns `true` if the argument is an object. */
-export const is_object = (obj: any) => {
-  if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
-    return true
-  }
-  return false
-}
-
 /**
  * Get page name.
  *

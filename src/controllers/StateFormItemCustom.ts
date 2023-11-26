@@ -11,7 +11,7 @@ export default class StateFormItemCustom<P, T = any>
   protected parentDef: P
   protected hasCallback?: TReduxCallback
   protected hasClasses: any
-  private fieldOk = true
+  private _fieldOk = true
 
   constructor (hasState: IStateFormItemCustom, parent: P) {
     super()
@@ -105,7 +105,7 @@ export default class StateFormItemCustom<P, T = any>
    * `maxLength` or `invalidChars` must be set first. Run the `evaluateVal()`
    * function. Then retrieve the result from this field.
    */
-  get validInput(): boolean { return this.fieldOk }
+  get validInput(): boolean { return this._fieldOk }
   get required(): boolean { return this.hasState.required === true }
   get requiredMessage(): string { return this.hasState.requiredMessage ?? '' }
   get maxLength(): number | undefined { return this.hasState.maxLength }
@@ -166,10 +166,10 @@ export default class StateFormItemCustom<P, T = any>
   evaluation(value: string) {
     const maxLength = this.hasState.maxLength ?? 0
     if (maxLength > 0 && value.length > maxLength) {
-      this.fieldOk = false
+      this._fieldOk = false
     }
-    if (this.fieldOk && this.hasState.invalidationRegex) {
-      this.fieldOk = new RegExp(this.hasState.invalidationRegex).test(value)
+    if (this._fieldOk && this.hasState.invalidationRegex) {
+      this._fieldOk = new RegExp(this.hasState.invalidationRegex).test(value)
     }
   }
 }

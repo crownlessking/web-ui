@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { is_object } from 'src/controllers'
+import { is_object } from '../business.logic'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse

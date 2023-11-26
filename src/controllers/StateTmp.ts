@@ -12,26 +12,26 @@ function error_msg(msg: string) {
 }
 
 export default class StateTmp extends AbstractState {
-  private parentDef?: State
-  private dispatch: any
+  private _parentDef?: State
+  private _dispatch: any
 
   constructor(private tmpState: IGenericObject, parent?: State) {
     super()
-    this.parentDef = parent
+    this._parentDef = parent
   }
 
   get state(): IGenericObject { return this.tmpState }
-  get parent(): State { return this.parentDef || new State() }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 
   configure ({ dispatch }: IConfiguration): void {
-    this.dispatch = dispatch
+    this._dispatch = dispatch
   }
 
   private removeTemporaryValue(id: string): void {
-    if (this.dispatch) {
-      this.dispatch({ type: 'state/tmpRemove', payload: id })
+    if (this._dispatch) {
+      this._dispatch({ type: 'state/tmpRemove', payload: id })
       return
     }
     error_msg('configure instance with dispatch.')
@@ -44,8 +44,8 @@ export default class StateTmp extends AbstractState {
   }
 
   set = <T=any>(id: string, name: string, value: T): void => {
-    if (this.dispatch) {
-      this.dispatch({
+    if (this._dispatch) {
+      this._dispatch({
         type: 'tmp/tmpAdd',
         payload: { id, name, value }
       })

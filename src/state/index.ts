@@ -27,8 +27,8 @@ import netReducer, { netActions } from '../slices/net.slice'
 import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice'
 import stateRegistryReducer from '../slices/stateRegistry.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
-import { remember_exception } from '../business.logic/errors'
 import Config from '../config'
+import { remember_exception } from '../business.logic/errors'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const net_patch_state = (stateFragment: any) => ({
@@ -124,6 +124,7 @@ const rootReducer = (state: any, action: any) => {
   if (action.type === NET_STATE_PATCH) {
     const newState = net_patch_state_reducer(state, action.payload)
     Config.write('DEBUG', state.app.inDebugMode ?? false)
+    Config.write('DEV', state.app.inDevelMode ?? false)
 
     // TODO Set more configuration here.
 

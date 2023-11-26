@@ -9,10 +9,10 @@ import { IGenericObject } from '../interfaces/IState'
 /** Format the request using the jsonapi specification */
 export default class JsonapiRequest<T=IJsonapiDataAttributes> {
 
-  private request: IJsonapiRequest<T>
+  private _request: IJsonapiRequest<T>
 
   constructor(type: string, attributes: T) {
-    this.request = {
+    this._request = {
       data: {
         type,
         attributes
@@ -21,50 +21,50 @@ export default class JsonapiRequest<T=IJsonapiDataAttributes> {
   }
 
   setType(type: string) {
-    this.request.data.type = type
+    this._request.data.type = type
     return this
   }
 
   setId(id: string) {
-    this.request.data.id = id
+    this._request.data.id = id
     return this
   }
 
   setAttributes(attributes: T) {
-    this.request.data.attributes = attributes
+    this._request.data.attributes = attributes
     return this
   }
 
   setRelationships(relationships: IJsonapiDataRelationships) {
-    this.request.data.relationships = relationships
+    this._request.data.relationships = relationships
     return this
   }
 
   setMeta(meta: IGenericObject) {
-    this.request.data.meta = meta
+    this._request.data.meta = meta
     return this
   }
 
   meta(key: string, value: any) {
-    if (!this.request.data.meta) {
-      this.request.data.meta = {}
+    if (!this._request.data.meta) {
+      this._request.data.meta = {}
     }
-    this.request.data.meta[key] = value
+    this._request.data.meta[key] = value
     return this
   }
 
   setLinks(links: IJsonapiResourceLinks) {
-    this.request.data.links = links
+    this._request.data.links = links
     return this
   }
 
   link(key: string, value: string) {
-    if (!this.request.data.links) {
-      this.request.data.links = { self: '' }
+    if (!this._request.data.links) {
+      this._request.data.links = { self: '' }
     }
-    this.request.data.links[key] = value
+    this._request.data.links[key] = value
     return this
   }
 
-  build() { return this.request }
+  build() { return this._request }
 }

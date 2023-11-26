@@ -4,13 +4,13 @@ import {
 } from '../interfaces/IJsonapi'
 
 export default class JsonapiError implements IJsonapiError {
-  private idJson?: string
+  private _idJson?: string
 
   constructor(private e: IJsonapiError) {}
 
   get json(): IJsonapiError { return this.e }
   get id(): string {
-    return this.idJson || (this.idJson = this.e.id || mongo_object_id())
+    return this._idJson || (this._idJson = this.e.id || mongo_object_id())
   }
   get links(): IJsonapiErrorLinks { return this.e.links ?? {} }
   get status(): string { return this.e.status ?? '' }

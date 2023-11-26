@@ -1,6 +1,14 @@
 import Config from '../config'
 // WARNING: Do not import anything here.
 
+/** Returns `true` if the argument is an object. */
+export const is_object = (obj: any) => {
+  if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
+    return true
+  }
+  return false
+}
+
 /**
  * Get HTML head meta data.
  *

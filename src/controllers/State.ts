@@ -24,27 +24,27 @@ import StatePathnames from './StatePathnames'
 
 export default class State extends AbstractState {
 
-  private appDef?: StateApp
-  private appBarDef?: StateAppBarDefault
-  private appBarQueriesDef?: StateAppBarQueries
-  private backgroundDef?: StateBackground
-  private typographyDef?: StateTypography
-  private dataDef?: StateData
-  private dialogDef?: StateDialog
-  private allDialogsDef?: StateAllDialogs
-  private drawerDef?: StateDrawer<this>
-  private allErrorsDef?: StateAllErrors
-  private allFormsDef?: StateAllForms
-  private formsDataDef?: StateFormsData
-  private formsDataErrorsDef?: StateFormsDataErrors
-  private metaDef?: StateMeta
-  private allPagesDef?: StateAllPages
-  private pagesDataDef?: StatePagesData
-  private snackbarDef?: StateSnackbar
-  private tmpDef?: StateTmp
-  private topLevelLinksDef?: StateTopLevelLinks
-  private netDef?: StateNet
-  private pathnamesDef?: StatePathnames
+  private _appDef?: StateApp
+  private _appBarDef?: StateAppBarDefault
+  private _appBarQueriesDef?: StateAppBarQueries
+  private _backgroundDef?: StateBackground
+  private _typographyDef?: StateTypography
+  private _dataDef?: StateData
+  private _dialogDef?: StateDialog
+  private _allDialogsDef?: StateAllDialogs
+  private _drawerDef?: StateDrawer<this>
+  private _allErrorsDef?: StateAllErrors
+  private _allFormsDef?: StateAllForms
+  private _formsDataDef?: StateFormsData
+  private _formsDataErrorsDef?: StateFormsDataErrors
+  private _metaDef?: StateMeta
+  private _allPagesDef?: StateAllPages
+  private _pagesDataDef?: StatePagesData
+  private _snackbarDef?: StateSnackbar
+  private _tmpDef?: StateTmp
+  private _topLevelLinksDef?: StateTopLevelLinks
+  private _netDef?: StateNet
+  private _pathnamesDef?: StatePathnames
 
   /**
    * Get a copy of the (store) state.
@@ -74,8 +74,8 @@ export default class State extends AbstractState {
    * Chain-access to app definition.
    */
   get app(): StateApp {
-    return this.appDef
-      || (this.appDef = new StateApp(
+    return this._appDef
+      || (this._appDef = new StateApp(
           store.getState().app,
           this
         ))
@@ -85,16 +85,16 @@ export default class State extends AbstractState {
    * Get the default appbar definition.
    */
   get appBar(): StateAppBarDefault {
-    return this.appBarDef
-      || (this.appBarDef = new StateAppBarDefault(
+    return this._appBarDef
+      || (this._appBarDef = new StateAppBarDefault(
           store.getState().appBar,
           this
         ))
   }
 
   get appBarQueries(): StateAppBarQueries {
-    return this.appBarQueriesDef
-      || (this.appBarQueriesDef = new StateAppBarQueries(
+    return this._appBarQueriesDef
+      || (this._appBarQueriesDef = new StateAppBarQueries(
             store.getState().appBarQueries,
             this
           ))
@@ -104,39 +104,39 @@ export default class State extends AbstractState {
    * Get the default background definition.
    */
   get background(): StateBackground {
-    return this.backgroundDef
-      || (this.backgroundDef = new StateBackground(
+    return this._backgroundDef
+      || (this._backgroundDef = new StateBackground(
           store.getState().background,
           this
         ))
   }
 
   get typography(): StateTypography {
-    return this.typographyDef
-      || (this.typographyDef = new StateTypography(
+    return this._typographyDef
+      || (this._typographyDef = new StateTypography(
           store.getState().typography,
           this
         ))
   }
 
   get data(): StateData {
-    return this.dataDef
-      || (this.dataDef = new StateData(
+    return this._dataDef
+      || (this._dataDef = new StateData(
         store.getState().data
       ))
   }
 
   get dialog(): StateDialog {
-    return this.dialogDef
-      || (this.dialogDef = new StateDialog(
+    return this._dialogDef
+      || (this._dialogDef = new StateDialog(
           store.getState().dialog,
           this
         ))
   }
 
   get allDialogs(): StateAllDialogs {
-    return this.allDialogsDef
-      || (this.allDialogsDef = new StateAllDialogs(
+    return this._allDialogsDef
+      || (this._allDialogsDef = new StateAllDialogs(
           store.getState().dialogs,
           this
         ))
@@ -148,16 +148,16 @@ export default class State extends AbstractState {
    * Get the default drawer definition.
    */
   get drawer(): StateDrawer {
-    return this.drawerDef
-      || (this.drawerDef = new StateDrawer(
+    return this._drawerDef
+      || (this._drawerDef = new StateDrawer(
           store.getState().drawer,
           this
         ))
   }
 
   get allErrors(): StateAllErrors {
-    return this.allErrorsDef
-      || (this.allErrorsDef = new StateAllErrors(
+    return this._allErrorsDef
+      || (this._allErrorsDef = new StateAllErrors(
           store.getState().errors,
           this
         ))
@@ -169,8 +169,8 @@ export default class State extends AbstractState {
    * Chain-access to all form definitions.
    */
   get allForms(): StateAllForms {
-    return this.allFormsDef
-      || (this.allFormsDef = new StateAllForms(
+    return this._allFormsDef
+      || (this._allFormsDef = new StateAllForms(
           store.getState().forms,
           this
         ))
@@ -182,16 +182,16 @@ export default class State extends AbstractState {
    * Chain-access to forms data.
    */
   get formsData(): StateFormsData {
-    return this.formsDataDef
-      || (this.formsDataDef = new StateFormsData(
+    return this._formsDataDef
+      || (this._formsDataDef = new StateFormsData(
           store.getState().formsData,
           this
         ))
   }
 
   get formsDataErrors(): StateFormsDataErrors {
-    return this.formsDataErrorsDef
-      || (this.formsDataErrorsDef = new StateFormsDataErrors(
+    return this._formsDataErrorsDef
+      || (this._formsDataErrorsDef = new StateFormsDataErrors(
           store.getState().formsDataErrors,
           this
         ))
@@ -201,8 +201,8 @@ export default class State extends AbstractState {
    * Chain-access to metadata.
    */
   get meta(): StateMeta {
-    return this.metaDef
-      || (this.metaDef = new StateMeta(
+    return this._metaDef
+      || (this._metaDef = new StateMeta(
           store.getState().meta,
           this
         ))
@@ -212,8 +212,8 @@ export default class State extends AbstractState {
    * Chain-access to all page definitions.
    */
   get allPages(): StateAllPages {
-    return this.allPagesDef
-      || (this.allPagesDef = new StateAllPages(
+    return this._allPagesDef
+      || (this._allPagesDef = new StateAllPages(
           store.getState().pages,
           this
         ))
@@ -222,32 +222,32 @@ export default class State extends AbstractState {
   get pages (): StateAllPages { return this.allPages }
 
   get pagesData(): StatePagesData {
-    return this.pagesDataDef
-      || (this.pagesDataDef = new StatePagesData(
+    return this._pagesDataDef
+      || (this._pagesDataDef = new StatePagesData(
           store.getState().pagesData,
           this
         ))
   }
 
   get snackbar(): StateSnackbar {
-    return this.snackbarDef
-      || (this.snackbarDef = new StateSnackbar(
+    return this._snackbarDef
+      || (this._snackbarDef = new StateSnackbar(
           store.getState().snackbar,
           this
         ))
   }
 
   get tmp(): StateTmp {
-    return this.tmpDef
-      || (this.tmpDef = new StateTmp(
+    return this._tmpDef
+      || (this._tmpDef = new StateTmp(
           store.getState().tmp,
           this
         ))
   }
 
   get topLevelLinks(): StateTopLevelLinks {
-    return this.topLevelLinksDef
-      || (this.topLevelLinksDef = new StateTopLevelLinks(
+    return this._topLevelLinksDef
+      || (this._topLevelLinksDef = new StateTopLevelLinks(
           store.getState().topLevelLinks,
           this
         ))
@@ -256,16 +256,16 @@ export default class State extends AbstractState {
   get theme(): any { return store.getState().theme }
 
   get net(): StateNet {
-    return this.netDef
-      || (this.netDef = new StateNet(
+    return this._netDef
+      || (this._netDef = new StateNet(
         store.getState().net,
         this
       ))
   }
 
   get pathnames(): StatePathnames {
-    return this.pathnamesDef
-      || (this.pathnamesDef = new StatePathnames(
+    return this._pathnamesDef
+      || (this._pathnamesDef = new StatePathnames(
         store.getState().pathnames
       ))
   }

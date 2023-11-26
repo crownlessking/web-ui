@@ -15,8 +15,6 @@ import { dialog_new_youtube_bookmark_from_video }
   from '../../callbacks/prod.bookmarks.youtube'
 import { useMediaQuery } from '@mui/material'
 import TuberThumbnailedBookmarkList from './tuber.bookmark.list.with.thumbnail'
-import { useSelector } from 'react-redux'
-import { RootState } from 'src/state'
 
 tuber_register_callbacks()
 
@@ -34,7 +32,6 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
   const [ playerOpen, setPlayerOpen ] = useState<boolean>(false)
   const [ bookmarkToPlay, setBookmarkToPlay ] = useState<IBookmark>()
   const [ showThumbnail, setShowThumbnail ] = useState<boolean>(true)
-  const themeMode = useSelector((state: RootState) => state.theme.palette?.mode)
   const theme = useTheme()
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'))
 

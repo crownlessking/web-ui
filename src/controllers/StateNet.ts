@@ -7,24 +7,24 @@ import State from './State'
 
 export default class StateNet extends AbstractState implements IStateNet {
 
-  private netState: IStateNet
-  private parentDef?: State
-  private netCsrfToken?: string
-  private netHeaders?: { [prop: string]: string }
+  private _netState: IStateNet
+  private _parentDef?: State
+  private _netCsrfToken?: string
+  private _netHeaders?: { [prop: string]: string }
 
   constructor(netState: IStateNet, parent?: State) {
     super()
-    this.netState   = netState
-    this.parentDef = parent
+    this._netState   = netState
+    this._parentDef = parent
   }
 
-  get state(): IStateNet { return this.netState }
-  get parent(): State { return this.parentDef || new State() }
+  get state(): IStateNet { return this._netState }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
-  get csrfTokenName(): string { return this.netState.csrfTokenName ?? '' }
+  get csrfTokenName(): string { return this._netState.csrfTokenName ?? '' }
   get csrfTokenMethod(): Required<IStateNet>['csrfTokenMethod'] {
-    return this.netState.csrfTokenMethod || 'meta'
+    return this._netState.csrfTokenMethod || 'meta'
   }
 
   /** Attempts to locate the CSRF token. */
@@ -44,17 +44,17 @@ export default class StateNet extends AbstractState implements IStateNet {
   }
 
   get csrfToken(): string {
-    return this.netCsrfToken = this.netCsrfToken || (
-      this.netCsrfToken = this.locateCsrfToken()
+    return this._netCsrfToken = this._netCsrfToken || (
+      this._netCsrfToken = this.locateCsrfToken()
     )
   }
 
   /** Helper function for `get headers()`.  */
   private parseHeadersConeExp(): IStateNet['headers'] {
-    if (this.netState.headers) {
+    if (this._netState.headers) {
       const netHeaders: IStateNet['headers'] = {}
-      for (const p in this.netState.headers) {
-        netHeaders[p] = parse_cone_exp(this, this.netState.headers[p])
+      for (const p in this._netState.headers) {
+        netHeaders[p] = parse_cone_exp(this, this._netState.headers[p])
       }
       return netHeaders
     }
@@ -62,15 +62,15 @@ export default class StateNet extends AbstractState implements IStateNet {
   }
 
   get headers(): IStateNet['headers'] {
-    return this.netHeaders || (
-      this.netHeaders = this.parseHeadersConeExp()
+    return this._netHeaders || (
+      this._netHeaders = this.parseHeadersConeExp()
     )
   }
 
   setHeader(prop: string, value: string): void {
     const parsedValue = parse_cone_exp(this, value)
-    this.netHeaders = this.netHeaders || {}
-    this.netHeaders[prop] = parsedValue
+    this._netHeaders = this._netHeaders || {}
+    this._netHeaders[prop] = parsedValue
   }
 
 }

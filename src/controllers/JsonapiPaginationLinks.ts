@@ -1,4 +1,4 @@
-import { remember_exception } from 'src/business.logic/errors'
+import { remember_exception } from '../business.logic/errors'
 import { get_query_val } from '.'
 import AbstractState from './AbstractState'
 import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi'

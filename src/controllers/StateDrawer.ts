@@ -4,8 +4,9 @@ import State from './State'
 import IStateDrawer from '../interfaces/IStateDrawer'
 
 export default class StateDrawer<P = State>
-    extends AbstractState implements IStateDrawer {
-
+  extends AbstractState
+  implements IStateDrawer
+{
   /** Default drawer width */
   static DEFAULT_WIDTH: number = 300
 

@@ -7,7 +7,7 @@ export interface IDataAdd {
   payload: {
     /** Collection of resources retrieved from server. */
     data: any
-    /** The endpoint at which there collection was retrieved. */
+    /** The endpoint at which the collection was retrieved. */
     endpoint: string
   }
 }
@@ -22,7 +22,7 @@ export interface ICollectionStore {
   payload: {
     /** Collection of resources retrieved from server. */
     collection: IJsonapiResource<any>[]
-    /** The endpoint at which there collection was retrieved. */
+    /** The endpoint at which the collection was retrieved. */
     endpoint: string
   }
 }
@@ -31,12 +31,12 @@ export interface ICollectionLimitedStore {
   type: string
   payload: {
     /** Collection of resources retrieved from server. */
-    collection: IJsonapiResource<any>[] // Array<any>
-    /** The endpoint at which there collection was retrieved. */
+    collection: IJsonapiResource<any>[]
+    /** The endpoint at which the collection was retrieved. */
     endpoint: string
-    /** The page size of collection. */
+    /** Maximum number of resources per page. */
     pageSize: number
-    /** The maximum number of pages to be loaded. */
+        /** The maximum number of pages to be loaded. */
     limit: number
   }
 }
@@ -109,10 +109,11 @@ export const dataSlice = createSlice({
       const { endpoint, collection, pageSize, limit } = action.payload
       // [TODO] fleetly_index(collection)
       //        Make it work with accumulation of data.
-      let arr = state[endpoint] || []
+      let arr = state[endpoint] ?? []
       const totalPage = Math.ceil(arr.length / pageSize)
       if (totalPage > limit) {
-        arr = arr.slice(0, arr.length - pageSize)
+        const dropSize = limit * pageSize - arr.length
+        arr = arr.slice(0, dropSize)
       }
       state[endpoint] = collection.concat(arr)
     },

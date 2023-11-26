@@ -1,5 +1,5 @@
 // import store from '../state'
-import { IRedux } from 'src/state'
+import { IRedux } from '../state'
 import { IStateFormsDataErrors } from '../interfaces/IState'
 import StateFormsDataErrors from './StateFormsDataErrors'
 

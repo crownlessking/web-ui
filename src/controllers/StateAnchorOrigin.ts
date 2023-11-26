@@ -6,22 +6,25 @@ import IStateAnchorOrigin, {
 } from '../interfaces/IStateAnchorOrigin'
 
 export default class StateAnchorOrigin
-    extends AbstractState implements IStateAnchorOrigin {
-
-  private parentDef: StateSnackbar
-  private anchorOriginState: IStateAnchorOrigin
+  extends AbstractState
+  implements IStateAnchorOrigin
+{
+  private _parentDef: StateSnackbar
+  private _anchorOriginState: IStateAnchorOrigin
 
   constructor(anchorOriginState: IStateAnchorOrigin, parent: StateSnackbar) {
     super()
-    this.parentDef = parent
-    this.anchorOriginState = anchorOriginState
+    this._parentDef = parent
+    this._anchorOriginState = anchorOriginState
   }
 
-  get state(): IStateAnchorOrigin { return this.anchorOriginState }
-  get parent(): StateSnackbar { return this.parentDef }
+  get state(): IStateAnchorOrigin { return this._anchorOriginState }
+  get parent(): StateSnackbar { return this._parentDef }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 
-  get vertical(): AnchorVertical { return this.anchorOriginState.vertical }
-  get horizontal(): AnchorHorizontal { return this.anchorOriginState.horizontal }
+  get vertical(): AnchorVertical { return this._anchorOriginState.vertical }
+  get horizontal(): AnchorHorizontal {
+    return this._anchorOriginState.horizontal
+  }
 }

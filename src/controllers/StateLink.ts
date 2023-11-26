@@ -8,56 +8,56 @@ export default class StateLink<P = any>
   extends AbstractState
   implements IStateLink
 {
-  private linkState: IStateLink
-  private parentDef: P
-  private linkHasState: IStateFormItemCustom
-  private linkHas?: StateFormItemCustom<this>
-  private handleOnClick?: TReduxCallback
+  private _linkState: IStateLink
+  private _parentDef: P
+  private _linkHasState: IStateFormItemCustom
+  private _linkHas?: StateFormItemCustom<this>
+  private _handleOnClick?: TReduxCallback
 
   constructor (linkState: IStateLink, parent?: P) {
     super()
-    this.linkState = linkState
-    this.parentDef = parent || ({
+    this._linkState = linkState
+    this._parentDef = parent || ({
       menuItemsProps: {},
       menuItemsSx: {},
       typography: {}
     }) as any
-    this.linkHasState = this.linkState.has || { }
+    this._linkHasState = this._linkState.has || { }
   }
 
-  get state(): IStateLink { return this.linkState }
-  get parent(): P { return this.parentDef }
-  get props(): any { return this.linkState.props }
+  get state(): IStateLink { return this._linkState }
+  get parent(): P { return this._parentDef }
+  get props(): any { return this._linkState.props }
   get theme(): any { return this.die('Not implemented yet.', {}) }
-  get type(): Required<IStateLink>['type'] { return this.linkState.type || 'text' }
+  get type(): Required<IStateLink>['type'] { return this._linkState.type || 'text' }
   get has(): StateFormItemCustom<this> {
-    return this.linkHas
-      || (this.linkHas = new StateFormItemCustom(
-        this.linkHasState, this
+    return this._linkHas
+      || (this._linkHas = new StateFormItemCustom(
+        this._linkHasState, this
       ))
   }
   private setHandleOnClick = (): TReduxCallback => {
-    if (this.linkState.onClick) {
-      return this.handleOnClick = this.linkState.onClick
+    if (this._linkState.onClick) {
+      return this._handleOnClick = this._linkState.onClick
     }
-    if (this.linkHas) {
-      const handleCallback = this.linkHas.getHandleCallback()
+    if (this._linkHas) {
+      const handleCallback = this._linkHas.getHandleCallback()
       if (handleCallback) {
-        return this.handleOnClick = handleCallback
+        return this._handleOnClick = handleCallback
       }
     }
-    return this.handleOnClick = default_callback
+    return this._handleOnClick = default_callback
   }
 
   get onClick(): TReduxCallback {
-    return this.handleOnClick || this.setHandleOnClick()
+    return this._handleOnClick || this.setHandleOnClick()
   }
-  get href(): string { return this.linkState.href ?? '' }
-  get color(): string { return this.linkHasState.color || 'inherit' }
+  get href(): string { return this._linkState.href ?? '' }
+  get color(): string { return this._linkHasState.color || 'inherit' }
 
   /** Set form field `onClick` attribute */
   set onClick(cb: TReduxCallback) {
-    this.handleOnClick = cb
+    this._handleOnClick = cb
   }
 }
 

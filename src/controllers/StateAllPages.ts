@@ -9,25 +9,25 @@ import StatePage from './StatePage'
 
 export default class StateAllPages extends AbstractState {
 
-  private allPagesState: IStateAllPages
-  private parentDef?: State
-  private appDef?: StateApp
+  private _allPagesState: IStateAllPages
+  private _parentDef?: State
+  private _appDef?: StateApp
 
   constructor(allPagesState: IStateAllPages, parent?: State) {
     super()
-    this.allPagesState = allPagesState
-    this.parentDef = parent
+    this._allPagesState = allPagesState
+    this._parentDef = parent
   }
 
   /** Get a copy of all pages json. */
-  get state(): IStateAllPages { return this.allPagesState }
+  get state(): IStateAllPages { return this._allPagesState }
   /** Chain-access root definition. */
-  get parent(): State { return this.parentDef || new State() }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
   /** Shortcutted chain-access to app definition. */
   get app(): StateApp {
-    return this.appDef || ( this.appDef = new State().app )
+    return this._appDef || ( this._appDef = new State().app )
   }
 
   /**
@@ -41,9 +41,9 @@ export default class StateAllPages extends AbstractState {
    * @param route the specified route
    */
   getPageState = (route: string): IStatePage | null => {
-    return this.allPagesState[route]
-      || this.allPagesState[`/${route}`]
-      || this.allPagesState[route.substring(1)]
+    return this._allPagesState[route]
+      || this._allPagesState[`/${route}`]
+      || this._allPagesState[route.substring(1)]
   }
 
   /**
@@ -67,7 +67,7 @@ export default class StateAllPages extends AbstractState {
     let pageState: IStatePage | null
     const route = this.app.route
     if (route === '/') {
-      pageState = this.allPagesState[this.app.homePage]
+      pageState = this._allPagesState[this.app.homePage]
       if (pageState) {
         return new StatePage(pageState, this)
       }
@@ -85,7 +85,7 @@ export default class StateAllPages extends AbstractState {
     // Oops! route is bad!
     if (route) {
       log(`'${route}' page not loaded. Fetching now..`)
-      return new StatePage(this.allPagesState[DEFAULT_BLANK_PAGE], this)
+      return new StatePage(this._allPagesState[DEFAULT_BLANK_PAGE], this)
     }
     if (this.app.homePage) {
       pageState = this.getPageState(this.app.homePage)
@@ -93,7 +93,7 @@ export default class StateAllPages extends AbstractState {
         return new StatePage(pageState, this)
       }
     }
-    return new StatePage(this.allPagesState[DEFAULT_LANDING_PAGE], this)
+    return new StatePage(this._allPagesState[DEFAULT_LANDING_PAGE], this)
   }
 
   // set app(app: StateApp) { this.appDef = app }

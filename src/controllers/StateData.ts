@@ -17,34 +17,34 @@ interface IConfigure {
  */
 export default class StateData extends AbstractState {
 
-  private dataState: IStateData
-  private parentDef?: State
-  private reduxDispatch?: AppDispatch
-  private endpoint?: string
-  private currentCollection?: any[]
-  private includedProps: { id: boolean, types: boolean }
+  private _dataState: IStateData
+  private _parentDef?: State
+  private _reduxDispatch?: AppDispatch
+  private _endpoint?: string
+  private _currentCollection?: any[]
+  private _includedProps: { id: boolean, types: boolean }
 
   constructor(dataState: IStateData, parent?: State) {
     super()
-    this.dataState = dataState
-    this.parentDef = parent
-    this.includedProps = { id: false, types: false}
+    this._dataState = dataState
+    this._parentDef = parent
+    this._includedProps = { id: false, types: false}
   }
 
-  get state(): IStateData { return this.dataState }
-  get parent(): State { return this.parentDef || new State() }
+  get state(): IStateData { return this._dataState }
+  get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
 
   get noCollection(): boolean {
-    return this.dataState && Object.keys(this.dataState).length === 0
+    return this._dataState && Object.keys(this._dataState).length === 0
   }
 
   /** Enable redux dispach here if you didn't supply it when instantiating. */
   configure(opts: IConfigure): this {
     const { dispatch, endpoint } = opts
-    this.reduxDispatch = dispatch
-    this.endpoint = endpoint
+    this._reduxDispatch = dispatch
+    this._endpoint = endpoint
     return this
   }
 
@@ -55,11 +55,11 @@ export default class StateData extends AbstractState {
    * @param page
    */
   fetch(page: number): void {
-    if (!this.endpoint) {
+    if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', undefined)
     }
-    if (this.reduxDispatch) {
-      this.reduxDispatch(get_req_state(this.endpoint, `page[number]=${page}`))
+    if (this._reduxDispatch) {
+      this._reduxDispatch(get_req_state(this._endpoint, `page[number]=${page}`))
     } else {
       this.die('StateData: Redux dispatch not enabled.', undefined)
     }
@@ -75,7 +75,7 @@ export default class StateData extends AbstractState {
   private getResource = (endpoint: string,
     index?: number
   ): IJsonapiResource | null => {
-    const collection = this.dataState[endpoint]
+    const collection = this._dataState[endpoint]
     if (!collection) {
       return null
     }
@@ -86,13 +86,13 @@ export default class StateData extends AbstractState {
   }
 
   private getCollection = (): IJsonapiResource[] => {
-    if (!this.endpoint) {
+    if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', [])
     }
-    const collection = this.dataState[this.endpoint]
+    const collection = this._dataState[this._endpoint]
     if (!collection) {
       return this.notice(
-        `StateData: '${this.endpoint}' collection not found.`,
+        `StateData: '${this._endpoint}' collection not found.`,
         []
       )
     }
@@ -101,20 +101,20 @@ export default class StateData extends AbstractState {
 
    /** Include the 'id' or the 'type'. */
    include(prop: 'id' | 'types'): this {
-    if (this.currentCollection) {
+    if (this._currentCollection) {
       return this.die('StateData: Run \'include()\' before collect().', this)
     }
-    this.includedProps[prop] = true
+    this._includedProps[prop] = true
     return this
   }
 
   /** Acquire collection from the data state. */
   collection(): this {
-    if (!this.endpoint) {
+    if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', this)
     }
-    const { id, types } = this.includedProps
-    this.currentCollection = this.getCollection().map(
+    const { id, types } = this._includedProps
+    this._currentCollection = this.getCollection().map(
       (resource: IJsonapiResource) =>
     {
       if (!id && !types) {
@@ -140,10 +140,10 @@ export default class StateData extends AbstractState {
 
   /** Get collection */
   get<T=any>(): T[] {
-    if (!this.currentCollection) {
+    if (!this._currentCollection) {
       return this.die('StateData: Run collect() first.', [])
     }
-    return this.currentCollection
+    return this._currentCollection
   }
 
   /** */

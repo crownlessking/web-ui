@@ -7,27 +7,27 @@ export default class StateFormItemSwitchToggle
   implements IStateFormItemSwitchToggle
 {
 
-  private switchToggleState: IStateFormItemSwitchToggle
-  private parentDef: StateFormItemSwitch
+  private _switchToggleState: IStateFormItemSwitchToggle
+  private _parentDef: StateFormItemSwitch
 
   constructor (
     switchToggleState: IStateFormItemSwitchToggle,
     parent: StateFormItemSwitch) 
   {
     super()
-    this.switchToggleState = switchToggleState
-    this.parentDef = parent
+    this._switchToggleState = switchToggleState
+    this._parentDef = parent
   }
 
-  get state(): IStateFormItemSwitchToggle { return this.switchToggleState }
-  get parent(): StateFormItemSwitch { return this.parentDef }
-  get props(): any { return this.switchToggleState.props }
-  get theme(): any { return this.switchToggleState.theme }
+  get state(): IStateFormItemSwitchToggle { return this._switchToggleState }
+  get parent(): StateFormItemSwitch { return this._parentDef }
+  get props(): any { return this._switchToggleState.props }
+  get theme(): any { return this._switchToggleState.theme }
 
-  get label(): string { return this.switchToggleState.label ?? '' }
-  get name(): string { return this.switchToggleState.name ?? '' }
+  get label(): string { return this._switchToggleState.label ?? '' }
+  get name(): string { return this._switchToggleState.name ?? '' }
 
   get formControlLabelProps(): any {
-    return this.switchToggleState.formControlLabelProps
+    return this._switchToggleState.formControlLabelProps
   }
 }

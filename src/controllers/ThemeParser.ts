@@ -14,7 +14,7 @@ type TThemeFuncArgs = string | number | (string | number)[]
 
 export default class ThemeParser {
 
-  private theme?: Theme
+  private _theme?: Theme
 
   /**
    * If a function is called from the JSON theme definitions but it is not a
@@ -42,12 +42,12 @@ export default class ThemeParser {
     this.fnList = fnList
   }
 
-  getTheme(): Theme|undefined { return this.theme }
+  getTheme(): Theme|undefined { return this._theme }
 
   /** Get a simplified parser */
   getParser (): any {
     return  (theme: Theme, rules: any) => {
-      this.theme = theme
+      this._theme = theme
       return this._parse({ ...rules })
     }
   }
@@ -84,7 +84,7 @@ export default class ThemeParser {
       const arg = strFnPieces[i]
       const parsedArg = +arg || NaN
       isNaN(parsedArg)
-        ? parsed.push(safely_get(this.theme, arg, arg))
+        ? parsed.push(safely_get(this._theme, arg, arg))
         : parsed.push(parsedArg)
     }
     return parsed
@@ -96,7 +96,7 @@ export default class ThemeParser {
     if (typeof fn === 'function') {
       return fn(...args)
     }
-    fn = get_val(this.theme, fname)
+    fn = get_val(this._theme, fname)
     if (typeof fn === 'function') {
       return fn(...args)
     }
@@ -261,7 +261,7 @@ export default class ThemeParser {
       const parsedProp = this._eval(prop)
       switch (typeof parsedProp) {
       case 'string':
-        rules[safely_get(this.theme,parsedProp,parsedProp)] = val
+        rules[safely_get(this._theme,parsedProp,parsedProp)] = val
         break
       case 'object':
         propertyBin.push(prop)
@@ -282,7 +282,7 @@ export default class ThemeParser {
         case 'number':
           break
         case 'string':
-          rules[prop] = this._filter(safely_get(this.theme, parsedVal, parsedVal))
+          rules[prop] = this._filter(safely_get(this._theme, parsedVal, parsedVal))
           break
         case 'object':
           if (Array.isArray(parsedVal)) {
