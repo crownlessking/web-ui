@@ -1,7 +1,7 @@
+import { TCallback } from '../constants'
 import Config from '../config'
 
 export default abstract class AbstractState {
-
   /**
    * Get the state.
    *
@@ -40,7 +40,7 @@ export default abstract class AbstractState {
    * @param msg error message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected err<T=any>(msg: string, $return: T): T {
+  protected ler<T=any>(msg: string, $return: T): T {
     if (Config.DEBUG) {
       console.error(msg)
     }
@@ -69,5 +69,15 @@ export default abstract class AbstractState {
       console.log(msg)
     }
     return $return
+  }
+
+  /**
+   * If a callback is required for a link or button but is not defined, then this
+   * method will provide a dummy one.
+   */
+  protected get_dud_event_callback (): TCallback {
+    return (e: any) => {
+      this.ler('No callback was assigned.', undefined)
+    }
   }
 }

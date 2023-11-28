@@ -19,6 +19,12 @@ export const pagesSlice = createSlice({
   name:'pages',
   initialState: initialState.pages,
   reducers: {
+    pagesAddMultiple: (state, action) => {
+      const pages = action.payload
+      Object.keys(pages).forEach(key => {
+        state[key] = pages[key]
+      })
+    },
     pagesAdd: (state, action: IArgs) => {
       const { route, page } = action.payload
       state[route] = page as any
@@ -30,6 +36,6 @@ export const pagesSlice = createSlice({
 })
 
 export const pagesActions = pagesSlice.actions
-export const { pagesAdd, pagesRemove } = pagesSlice.actions
+export const { pagesAddMultiple, pagesAdd, pagesRemove } = pagesSlice.actions
 
 export default pagesSlice.reducer

@@ -41,7 +41,7 @@ export function dialog_new_video_url(redux: IRedux) {
  *
  * @id $1_C_1
  */
-export function dialog_new_bookmark_from_url(redux: IRedux) {
+export default function dialog_new_bookmark_from_url(redux: IRedux) {
   return async () => {
     const rootState = redux.store.getState()
     const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW]
@@ -73,12 +73,12 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         ler(`dialog_new_bookmark_from_url: ${video.platform} dialog key not found.`)
         return
       }
-      const newBookmarkDialogJson = await get_dialog_state(redux, newBookmarkDialogKey)
-      if (!newBookmarkDialogJson) {
+      const newBookmarkDialogState = await get_dialog_state(redux, newBookmarkDialogKey)
+      if (!newBookmarkDialogState) {
         ler(`dialog_new_bookmark_from_url: ${video.platform} dialog json not found.`)
         return
       }
-      const content = get_parsed_page_content(newBookmarkDialogJson.content)
+      const content = get_parsed_page_content(newBookmarkDialogState.content)
       const formName = get_state_form_name(content.name)
       redux.store.dispatch({
         type: 'formsData/formsDataUpdate',
@@ -164,10 +164,10 @@ export function dialog_new_bookmark_from_url(redux: IRedux) {
         })
       }
       // if the dialog was NOT mounted
-      if (rootState.dialog._id !== newBookmarkDialogJson._id) {
+      if (rootState.dialog._id !== newBookmarkDialogState._id) {
         redux.store.dispatch({
           type: 'dialog/dialogMount',
-          payload: newBookmarkDialogJson
+          payload: newBookmarkDialogState
         })
       } else {
         redux.store.dispatch({ type: 'dialog/dialogOpen' })

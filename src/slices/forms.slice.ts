@@ -29,6 +29,12 @@ export const formsSlice = createSlice({
   name:'forms',
   initialState: initialState.forms,
   reducers: {
+    formsAddMultiple: (state, action) => {
+      const forms = action.payload
+      Object.keys(forms).forEach(key => {
+        state[key] = forms[key]
+      })
+    },
     formsAdd: (state, action: IFormsReducerArgs) => {
       const { name, form } = action.payload
       state[`${name}Form`] = form as any
@@ -45,6 +51,7 @@ export const formsSlice = createSlice({
 
 export const formsActions = formsSlice.actions
 export const {
+  formsAddMultiple,
   formsAdd,
   formRemove,
   errorCountSet

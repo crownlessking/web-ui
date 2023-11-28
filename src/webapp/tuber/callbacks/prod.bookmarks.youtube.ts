@@ -13,7 +13,7 @@ import { get_dialog_state } from 'src/state/net.actions'
  * @id 6
  * @deprecated
  */
-export function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
+export default function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
     const { store: { dispatch } } = redux
     const rootState = redux.store.getState()

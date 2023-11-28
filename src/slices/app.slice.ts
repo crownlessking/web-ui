@@ -66,6 +66,9 @@ export const appSlice = createSlice({
     appSetFetchMessage: (state, actions) => {
       state.fetchMessage = actions.payload
     },
+    appThemeModeUpdate: (state, actions) => {
+      state.themeMode = actions.payload
+    }
   },
 })
 
@@ -87,6 +90,7 @@ export const {
   appStatusUpdate,
   appUrlPageUpdate,
   appSetFetchMessage,
+  appThemeModeUpdate
 } = appSlice.actions
 
 export default appSlice.reducer

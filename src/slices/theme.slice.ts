@@ -12,17 +12,13 @@ export const themeSlice = createSlice({
   name: 'theme',
   initialState: initialState.theme,
   reducers: {
-    /** [TODO] Fix this. I don't think it works. */
     themeSet: (state, action: IThemeSetAction) => {
-      const stack = [[state, action.payload]] as any
-      while (stack.length > 0) {
-        const [s, ap] = stack.pop()
-        for (const key in ap) {
-          if (ap[key] instanceof Object && s[key] instanceof Object) {
-            stack.push([s[key], ap[key]])
-          } else {
-            s[key] = ap[key]
-          }
+      for (const prop in action.payload) {
+        try {
+          (state as TThemeProps)[prop] = (action.payload as TThemeProps)[prop]
+        } catch (e: any) {
+          (state as TThemeProps)[prop] = undefined
+          remember_exception(e)
         }
       }
     },

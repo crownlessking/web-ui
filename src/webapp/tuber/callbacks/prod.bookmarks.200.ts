@@ -8,7 +8,7 @@ import { set_url_query_val } from 'src/controllers'
  * Callback to handle the search field in the appbar when the user submits a
  * query to search for bookmarks.
  */
-export function appbar_search_bookmarks (redux: IRedux) {
+export default function appbar_search_bookmarks (redux: IRedux) {
   return async () => {
     const rootState = redux.store.getState()
     const route = rootState.app.route ?? ''
@@ -45,10 +45,10 @@ export function appbar_search_bookmarks (redux: IRedux) {
 
     pre()
     const encodedSearchQuery = encodeURIComponent(searchQuery)
-    const args = `query=${encodedSearchQuery}`
+    const args = `filter[search]=${encodedSearchQuery}`
     redux.store.dispatch(get_req_state(endpoint, args))
     const href = window.location.href
-    const url = set_url_query_val(href, 'query', encodedSearchQuery)
+    const url = set_url_query_val(href, 'filter[search]', encodedSearchQuery)
     window.history.pushState({ path: url }, '', url)
   }
 }

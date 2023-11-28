@@ -3,31 +3,45 @@ import store, { err, ler } from '../state'
 import {
   APP_CONTENT_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
-  DRAWER_DEFAULT_WIDTH,
-  TCallback
+  DRAWER_DEFAULT_WIDTH
 } from '../constants'
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
 import { IStatePageContent } from '../interfaces/IStatePage'
 
+const stateOverride: Record<string, any> = {}
+
 /**
- * Get page name.
- *
- * This function is only used to store a data for a page into `state.tmp`.
- *
- * @param name 
+ * Override state
+ * 
+ * This a solution for modifying the state while keeping the original state
+ * intact.
+ * @param key property at which the value will be stored
+ * @param value value to be stored
  */
- export function get_page_name(name: string): string {
-  return name + 'Page'
+export function save_state(key: string, value: any): void {
+  stateOverride[key] = value
 }
 
 /**
- * If a callback is required for a link or button but is not defined, then this
- * method will provide a dummy one.
+ * Get state
+ * 
+ * This a solution for modifying the state while keeping the original state
+ * intact.
+ * @param key property at which the value will be retrieved.
  */
-export function get_dud_event_callback (): TCallback {
-  return (e: any) => {
-    ler('No callback was assigned.')
-  }
+export function get_state<T=any>(key: string): T {
+  return stateOverride[key]
+}
+
+/**
+ * Clear state
+ * 
+ * This a solution for modifying the state while keeping the original state
+ * intact.
+ * @param key property at which the value is stored and will be deleted.
+ */
+export function clear_state(key: string) {
+  delete stateOverride[key]
 }
 
 /**

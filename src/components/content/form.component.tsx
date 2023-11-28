@@ -20,6 +20,7 @@ export default function FormContent ({ def, formName, type }: IFormContent) {
   const dispatch = useDispatch<AppDispatch>()
   const { fetchingStateAllowed } = useSelector((state: RootState) => state.app)
   const formsState = useSelector((state: RootState) => state.forms)
+  const { themeMode: mode } = useSelector((state: RootState) => state.app)
   const allFormsDef = useMemo(() => new StateAllForms(formsState), [formsState])
   const formDef = def ?? new StateForm({ items: []}, allFormsDef)
 
@@ -29,10 +30,10 @@ export default function FormContent ({ def, formName, type }: IFormContent) {
     const formLoadAttempts = Config.read<number>(`${key}_load_attempts`, 0)
     if (formLoadAttempts < ALLOWED_ATTEMPTS) {
       const { FORMS } = allFormsDef.parent.pathnames
-      dispatch(post_req_state(FORMS, { key }))
+      dispatch(post_req_state(FORMS, { key, mode }))
       Config.write(`${key}_load_attempts`, formLoadAttempts + 1)
     }
-  }, [def, formName, allFormsDef, dispatch, fetchingStateAllowed])
+  }, [def, formName, allFormsDef, dispatch, fetchingStateAllowed, mode])
 
   const map: {[key in Required<IFormContent>['type']]: JSX.Element | null} = {
     page: (

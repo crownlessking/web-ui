@@ -56,6 +56,8 @@ export default interface IStateApp {
   isBootstrapped?: boolean
   /** Custom fetch message  */
   fetchMessage?: string
+  /** Indicates the currently rendered theme mode */
+  themeMode?: 'light' | 'dark'
 }
 
 /** @see https://www.npmjs.com/package/jsonwebtoken */

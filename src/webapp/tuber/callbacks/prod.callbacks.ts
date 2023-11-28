@@ -1,33 +1,29 @@
 import { IRedux, TReduxCallback } from '../../../state'
 import { dialog_login } from './prod.login'
-import {
-  form_submit_new_youtube_bookmark,
-} from './prod.bookmarks.201.youtube'
-import {
-  form_submit_delete_bookmark,
-} from './prod.bookmarks.actions'
-import {
-  dialog_new_bookmark_from_url,
+import form_submit_new_youtube_bookmark from './prod.bookmarks.201.youtube'
+import form_submit_delete_bookmark from './prod.bookmarks.actions'
+import dialog_new_bookmark_from_url, {
   dialog_new_bookmark_from_url_on_enter_key,
   dialog_new_video_url,
 } from './prod.bookmarks._url'
-import { appbar_search_bookmarks } from './prod.bookmarks.200'
-import { dialog_new_youtube_bookmark_from_video } from './prod.bookmarks.youtube'
-import { form_submit_new_rumble_bookmark } from './prod.bookmarks.201.rumble'
-import { form_submit_edit_youtube_bookmark } from './prod.bookmarks.204.youtube'
-import { form_submit_edit_rumble_bookmark } from './prod.bookmarks.204.rumble'
-import { form_submit_new_vimeo_bookmark } from './prod.bookmarks.201.vimeo'
-import { form_submit_edit_vimeo_bookmark } from './prod.bookmarks.204.vimeo'
-import { form_submit_new_odysee_bookmark } from './prod.bookmarks.201.odysee'
-import { form_submit_edit_odysee_bookmark } from './prod.bookmarks.204.odysee'
-import { form_submit_new_daily_bookmark } from './prod.bookmarks.201.daily'
-import { form_submit_edit_daily_bookmark } from './prod.bookmarks.204.daily'
-import { form_submit_new_facebook_bookmark } from './prod.bookmarks.201.facebook'
-import { form_submit_edit_facebook_bookmark } from './prod.bookmarks.204.facebook'
-import { form_submit_new_unknown_bookmark } from './prod.bookmarks.201.unknown'
-import { form_submit_edit_unknown_bookmark } from './prod.bookmarks.204.unknown'
-import { form_submit_new_twitch_bookmark } from './prod.bookmarks.201.twitch'
-import { form_submit_edit_twitch_bookmark } from './prod.bookmarks.204.twitch'
+import appbar_search_bookmarks from './prod.bookmarks.200'
+import dialog_new_youtube_bookmark_from_video from './prod.bookmarks.youtube'
+import form_submit_new_rumble_bookmark from './prod.bookmarks.201.rumble'
+import form_submit_edit_youtube_bookmark from './prod.bookmarks.204.youtube'
+import form_submit_edit_rumble_bookmark from './prod.bookmarks.204.rumble'
+import form_submit_new_vimeo_bookmark from './prod.bookmarks.201.vimeo'
+import form_submit_edit_vimeo_bookmark from './prod.bookmarks.204.vimeo'
+import form_submit_new_odysee_bookmark from './prod.bookmarks.201.odysee'
+import form_submit_edit_odysee_bookmark from './prod.bookmarks.204.odysee'
+import form_submit_new_daily_bookmark from './prod.bookmarks.201.daily'
+import form_submit_edit_daily_bookmark from './prod.bookmarks.204.daily'
+import form_submit_new_facebook_bookmark from './prod.bookmarks.201.facebook'
+import form_submit_edit_facebook_bookmark from './prod.bookmarks.204.facebook'
+import form_submit_new_unknown_bookmark from './prod.bookmarks.201.unknown'
+import form_submit_edit_unknown_bookmark from './prod.bookmarks.204.unknown'
+import form_submit_new_twitch_bookmark from './prod.bookmarks.201.twitch'
+import form_submit_edit_twitch_bookmark from './prod.bookmarks.204.twitch'
+import toggle_theme_mode from './prod.toggle.theme.mode'
 
 /** Default callback for closing dialogs */
 function close_default (redux: IRedux) {
@@ -59,7 +55,7 @@ const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   '$37_C_1': form_submit_edit_twitch_bookmark,
   '$30_C_1': form_submit_new_unknown_bookmark,
   '$31_C_1': form_submit_edit_unknown_bookmark,
-
+  '$44_C_1': toggle_theme_mode,
   // TODO Add more callbacks here
 }
 

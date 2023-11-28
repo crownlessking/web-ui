@@ -11,13 +11,11 @@ import { APP_CONTENT_VIEW } from '../../constants'
 import { remember_exception } from 'src/business.logic/errors'
 import FormContent from './form.component'
 import WebApps from './webapp.content.component'
-import { get_state_form_name } from '../../business.logic'
-
-/**
- * Holds the last rendered content so that if a new one was not provided,
- * that one can be used.
- */
-let currentContentJsx: JSX.Element | null
+import {
+  get_last_content_jsx,
+  get_state_form_name,
+  save_content_jsx
+} from '../../business.logic'
 
 export interface IContentState {
   stateApp: IStateApp
@@ -52,16 +50,16 @@ export default function Content (props: IContentProps) {
     [APP_CONTENT_FORM]: () => {
       const form = page.parent.parent.allForms.getForm(page.contentName)
       if (form) { form.endpoint = page.contentEndpoint }
-      currentContentJsx = contentJsx = (
+      save_content_jsx(contentJsx = (
         <FormContent
           formName={page.contentName}
           def={form}
           type={'page'}
         />
-      )
+      ))
     },
     [APP_CONTENT_VIEW]: () => {
-      currentContentJsx = contentJsx = <View def={page} />
+      save_content_jsx(contentJsx = <View def={page} />)
     },
     // full-fledge application content type
     // Think of WebApp as independent pieces of software
@@ -70,15 +68,15 @@ export default function Content (props: IContentProps) {
       try {
         contentJsx = <WebApps def={page} />
         if (contentJsx) {
-          currentContentJsx = contentJsx
+          save_content_jsx(contentJsx)
         } else {
-          currentContentJsx = contentJsx = ( null )
+          save_content_jsx(contentJsx = ( null ))
         }
       } catch (e: any) {
         const message = `Bad page content.\n${e.message}`
         ler(message)
         remember_exception(e, message)
-        currentContentJsx = contentJsx = ( null )
+        save_content_jsx(contentJsx = ( null ))
       }
     },
     /*
@@ -87,7 +85,7 @@ export default function Content (props: IContentProps) {
      *        https://stackoverflow.com/questions/3535055/load-html-file-contents-to-div-without-the-use-of-iframes/3535126        
      */
     [APP_CONTENT_HTML]: () => {
-      currentContentJsx = contentJsx = <HtmlContent def={page} />
+      save_content_jsx(contentJsx = <HtmlContent def={page} />)
     },
     [APP_CONTENT_FORM_LOAD]: () => {
       const { fetchingStateAllowed } = page.parent.app
@@ -97,13 +95,13 @@ export default function Content (props: IContentProps) {
           key: get_state_form_name(page.contentName),
         }))
       }
-      currentContentJsx = contentJsx = ( null )
+      save_content_jsx(contentJsx = ( null ))
     },
-    [APP_CONTENT_HTML_LOAD]: () => currentContentJsx = contentJsx = ( null ),
+    [APP_CONTENT_HTML_LOAD]: () => save_content_jsx(contentJsx = ( null )),
 
     // [TODO] add more properties here for different types of content
 
-    $default: () => contentJsx = currentContentJsx
+    $default: () => contentJsx = get_last_content_jsx(),
   }
 
   try {

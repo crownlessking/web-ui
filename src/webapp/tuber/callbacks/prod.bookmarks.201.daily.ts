@@ -13,7 +13,7 @@ import { get_start_time_in_seconds } from '../_tuber.common.logic'
  *
  * @id _21_C_1
  */
-export function form_submit_new_daily_bookmark(redux: IRedux) {
+export default function form_submit_new_daily_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()

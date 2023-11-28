@@ -12,7 +12,7 @@ import { remember_error } from '../../../business.logic/errors'
  *
  * @id 4
  */
-export function form_submit_new_youtube_bookmark(redux: IRedux) {
+export default function form_submit_new_youtube_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()

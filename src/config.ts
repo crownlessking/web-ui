@@ -1,15 +1,15 @@
 import getConfig, { IConfiguration } from './controllers/config.controller'
 
-let msg_prefix = ''
+interface IInitConfObj {
+  DEFAULT_THEME_MODE: 'light' | 'dark',
+  // TODO Add your config object values here e.g.
+  // MY_CONFIG: string
+}
 
-const initConfObj = {
-  /**
-   * Insert prefix to help keep messages short.  
-   * Works with `log()`, `warn()`, `ler()`, `msg()`.
-   */
-  pre: (prefix: string): void => {msg_prefix = prefix},
-  /** Insert prefix to help keep messages short. */
-  msg: (msg: string): string => `${msg_prefix}${msg}`,
+const initConfObj: IInitConfObj = {
+  DEFAULT_THEME_MODE: 'light',
+  // TODO Add your config object values here e.g.
+  // MY_CONFIG: 'my config value',
 }
 
 const Config = getConfig()

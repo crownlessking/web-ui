@@ -1,6 +1,5 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import StatePage from '../../controllers/StatePage'
-import { get_page_name } from '../../controllers'
 import { styled } from '@mui/material'
 
 const MsgDiv = styled('div')(() => ({
@@ -28,10 +27,8 @@ const MsgDiv = styled('div')(() => ({
  * Tags: `success`, `page`, `message`
  */
 export default function PageSuccess ({ def: page }:{ def: StatePage }) {
-  const route = page.parent.parent.app.route
-  const pageName = get_page_name(route)
   const msg = page.parent.parent.tmp.get(
-    pageName,
+    page.parent.parent.app.route,
     'message',
     page.data.message
   )

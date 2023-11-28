@@ -88,13 +88,19 @@ export default interface IState {
   dataPagesRange: IStateDataPagesRange
   dialog: IStateDialog
   dialogs: IStateAllDialogs
+  dialogsLight: IStateAllDialogs
+  dialogsDark: IStateAllDialogs
   drawer: IStateDrawer
   errors: IJsonapiError[]
   forms: IStateAllForms
+  formsLight: IStateAllForms
+  formsDark: IStateAllForms
   formsData: IGenericObject
   formsDataErrors: IStateFormsDataErrors
   meta: IGenericObject
   pages: IStateAllPages
+  pagesLight: IStateAllPages
+  pagesDark: IStateAllPages
   pagesData: IGenericObject
   snackbar: IStateSnackbar
   /**
@@ -111,6 +117,8 @@ export default interface IState {
   topLevelLinks: IStateTopLevelLinks
   /** Material-ui `ThemeOptions` */
   theme: ThemeOptions
+  themeLight: ThemeOptions
+  themeDark: ThemeOptions
   net: IStateNet
   /** Get the pathnames needed to retrieve missing states. */
   pathnames: IStatePathnames

@@ -13,7 +13,7 @@ import { IBookmark } from '../tuber.interfaces'
  *
  * @id _30_C_1
  */
-export function form_submit_new_unknown_bookmark(redux: IRedux) {
+export default function form_submit_new_unknown_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()

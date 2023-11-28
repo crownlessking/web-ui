@@ -144,6 +144,9 @@ export default {
     ...get_global_var(`${GLOBAL_PREFIX}Dialogs`)
   },
 
+  'dialogsLight': {},
+  'dialogsDark': {},
+
   /**
    * Drawer general state
    *
@@ -165,6 +168,9 @@ export default {
 
     ...get_global_var(`${GLOBAL_PREFIX}Forms`)
   }, // forms
+
+  'formsLight': {},
+  'formsDark': {},
 
   /**
    * Object containing all page definitions.
@@ -243,6 +249,9 @@ export default {
     ...get_global_var(`${GLOBAL_PREFIX}Pages`)
   }, // pages,
 
+  'pagesLight': {},
+  'pagesDark': {},
+
   /**
    * All resources acquired from the server will be stored in this object. The
    * endpoint would be used as the key through which each dataset would be
@@ -286,14 +295,16 @@ export default {
    */
   'theme': { ...{
     'palette': {
-      'primary': {
-        'main': '#318ee8' // '#808000' // olive
-      },
+      // 'primary': {
+      //   'main': '#318ee8' // '#808000' // olive
+      // },
       'secondary': {
         'main': orange[800]
       },
     },
   }, ...get_global_var(`${GLOBAL_PREFIX}Theme`) },
+  'themeLight': {},
+  'themeDark': {},
 
   'net': {
     // TODO Insert default values here.

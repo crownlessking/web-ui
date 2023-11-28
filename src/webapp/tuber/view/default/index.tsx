@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar'
 import ResearchToolbarFixed from '../tuber.toolbar.video.search'
 // import TuberBookmarkSearchEngine from './tuber.bookmark.search.engine'
 import TuberBookmarkSearchWithThumbnails from './tuber.bookmark.search.with.thumbnails'
-import { dialog_new_youtube_bookmark_from_video }
+import dialog_new_youtube_bookmark_from_video
   from '../../callbacks/prod.bookmarks.youtube'
 import { useMediaQuery } from '@mui/material'
 import TuberThumbnailedBookmarkList from './tuber.bookmark.list.with.thumbnail'

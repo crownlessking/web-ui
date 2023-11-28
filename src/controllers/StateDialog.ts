@@ -1,12 +1,10 @@
 import AbstractState from './AbstractState'
 import State from './State'
-import { get_dud_event_callback } from '.'
 import IStateDialog from '../interfaces/IStateDialog'
 import StateDialogSelectionItem from './templates/StateDialogSelectionItem'
 import IStateFormItem from '../interfaces/IStateFormItem'
 
 export default class StateDialog<T = any> extends AbstractState implements IStateDialog<T> {
-
   protected parentDef?: State
   protected dialogState: IStateDialog
 
@@ -29,21 +27,20 @@ export default class StateDialog<T = any> extends AbstractState implements IStat
   get showActions(): Required<IStateDialog>['showActions'] {
     return this.dialogState.showActions ?? false
   }
-  get onSubmit() { return this.dialogState.onSubmit || get_dud_event_callback }
+  get onSubmit() {
+    return this.dialogState.onSubmit || this.get_dud_event_callback
+  }
   get open(): boolean { return this.dialogState.open ?? false }
-
   get titleProps() { return this.dialogState.titleProps }
   get actionProps() { return this.dialogState.actionsProps }
   get contentProps() { return this.dialogState.contentProps }
   get contentTextProps() { return this.dialogState.contentTextProps }
-
   get list() {
     return this.die<StateDialogSelectionItem[]>(
       'Use a `StateDialogSelection` instance to call `list`.',
       []
     )
   }
-
   get callback() {
     return this.dialogState.callback || this.die(
       'StateDialogSelection.callback needs to be defined.',

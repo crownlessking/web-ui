@@ -3,7 +3,8 @@ import { Dispatch } from 'redux'
 import {
   get_endpoint,
   get_origin_ending_fixed,
-  get_query_starting_fixed
+  get_query_starting_fixed,
+  get_themed_state
 } from '../business.logic'
 import {
   remember_error,
@@ -19,10 +20,11 @@ import net_default_500_driver from './net.default.500.driver.c'
 import {
   appHideSpinner, appRequestFailed, appRequestStart,
 } from '../slices/app.slice'
-import { IRedux, ler, RootState } from '.'
+import { IRedux, ler, net_patch_state, RootState } from '.'
 import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
 import { cancel_spinner, schedule_spinner } from './spinner'
 import IStateDialog from '../interfaces/IStateDialog'
+import Config from '../config'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Content-Type': 'application/json',
@@ -153,47 +155,61 @@ export async function get_dialog_state <T=any>(
   dialogId: string
 ): Promise<IStateDialog<T>|null> {
   const rootState = redux.store.getState()
-  const dialogState = rootState.dialogs[dialogId]
+  const mode = rootState.app.themeMode ?? Config.DEFAULT_THEME_MODE
+  const dialogState = get_themed_state<IStateDialog<T>>(
+    mode,
+    rootState.dialogs[dialogId],
+    rootState.dialogsLight[dialogId],
+    rootState.dialogsDark[dialogId]
+  )
   if (dialogState) { return dialogState }
   const origin = get_origin_ending_fixed(rootState.app.origin)
   const dialogPathname = rootState.pathnames.DIALOGS
   const url = `${origin}${dialogPathname}`
-  const remoteState = await post_fetch(url, {
-    'key': dialogId
+  const response = await post_fetch(url, {
+    'key': dialogId,
+    'mode': mode
   })
-  if (remoteState?.errors) {
-    ler(`get_dialog_state: ${remoteState.errors?.[0]?.title}`)
-    remember_jsonapi_errors(remoteState.errors)
+  if (response?.errors) {
+    ler(`get_dialog_state: ${response.errors?.[0]?.title}`)
+    remember_jsonapi_errors(response.errors)
     return null
   }
-  const dialogRemoteState = remoteState?.state?.dialogs?.[dialogId]
-  if (!dialogRemoteState) {
+  const main = response?.state?.dialogs?.[dialogId]
+  const light = response?.state?.dialogsLight?.[dialogId]
+  const dark = response?.state?.dialogsDark?.[dialogId]
+  if (!main
+    || !light
+    || !dark
+  ) {
     ler(`get_dialog_state: ${dialogId} not found.`)
     remember_error({
       code: 'not_found',
       title: `${dialogId} Not Found`,
+      detail: `All three state of ${dialogId} are required but one or more are`
+        + `missing.`,
       source: { pointer: dialogId }
     })
     return null
   }
-  if (dialogRemoteState._key !== dialogId) {
-    ler(`get_dialog_state: ${dialogId} does not match ${dialogRemoteState._key}.`)
+  const themedDialogState = get_themed_state<IStateDialog<T>>(
+    mode,
+    main,
+    light,
+    dark
+  )
+  if (themedDialogState._key !== dialogId) {
+    ler(`get_dialog_state: ${dialogId} does not match ${themedDialogState._key}.`)
     remember_error({
       code: 'not_found',
       title: `${dialogId} Not Found`,
-      detail: `${dialogId} does not match ${dialogRemoteState._key}.`,
+      detail: `${dialogId} does not match ${themedDialogState._key}.`,
       source: { pointer: dialogId }
     })
     return null
   }
-  redux.store.dispatch({
-    type: 'dialogs/dialogsAdd',
-    payload: {
-      name: dialogId,
-      dialog: dialogRemoteState
-    }
-  })
-  return dialogRemoteState
+  redux.store.dispatch(net_patch_state(response.state))
+  return themedDialogState
 }
 
 export async function post_fetch<T=any>(url: string, body: T): Promise<any> {

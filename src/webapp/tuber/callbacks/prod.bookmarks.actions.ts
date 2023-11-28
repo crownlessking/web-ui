@@ -217,7 +217,7 @@ export function dialog_delete_bookmark (i: number) {
 }
 
 /** Callback to delete bookmarks */
-export function form_submit_delete_bookmark (redux: IRedux) {
+export default function form_submit_delete_bookmark (redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()

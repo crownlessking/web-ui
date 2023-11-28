@@ -8,7 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 /** @id _15_C_1 */
-export function form_submit_edit_vimeo_bookmark(redux: IRedux) {
+export default function form_submit_edit_vimeo_bookmark(redux: IRedux) {
   return async () => {
     try {
       const { store: { getState, dispatch } } = redux

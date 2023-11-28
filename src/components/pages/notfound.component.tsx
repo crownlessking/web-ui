@@ -1,6 +1,5 @@
 import { styled } from '@mui/material'
 import StatePage from '../../controllers/StatePage'
-import { get_page_name } from '../../controllers'
 
 const H1 = styled('h1')(() => ({
   width: '100%',
@@ -17,9 +16,8 @@ const H2 = styled('h2')(() => ({
 }))
 
 export default function PageNotFound ({ def: page }: { def: StatePage }) {
-  const pageName = get_page_name(page.parent.parent.app.route)
   const message = page.parent.parent.tmp.get(
-    pageName,
+    page.parent.parent.app.route,
     'message',
     page.data.message
   )

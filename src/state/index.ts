@@ -26,6 +26,14 @@ import themeReducer, { themeActions } from '../slices/theme.slice'
 import netReducer, { netActions } from '../slices/net.slice'
 import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice'
 import stateRegistryReducer from '../slices/stateRegistry.slice'
+import dialogsLightReducer, { dialogsLightActions } from 'src/slices/dialogsLight.slice'
+import dialogsDarkReducer, { dialogsDarkActions } from 'src/slices/dialogsDark.slice'
+import formsLightReducer, { formsLightActions } from 'src/slices/formsLight.slice'
+import formsDarkReducer, { formsDarkActions } from 'src/slices/formsDark.slice'
+import pagesLightReducer, { pagesLightActions } from 'src/slices/pagesLight.slice'
+import pagesDarkReducer, { pagesDarkActions } from 'src/slices/pagesDark.slice'
+import themeLightReducer, { themeLightActions } from 'src/slices/themeLight.slice'
+import themeDarkReducer, { themeDarkActions } from 'src/slices/themeDark.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import Config from '../config'
 import { remember_exception } from '../business.logic/errors'
@@ -100,17 +108,25 @@ const appReducer = combineReducers({
   dataLoadedPages: dataLoadedPagesSlice,
   dialog: dialogReducer,
   dialogs: dialogsReducer,
+  dialogsLight: dialogsLightReducer,
+  dialogsDark: dialogsDarkReducer,
   drawer: drawerReducer,
   errors: errorsReducer,
   forms: formsReducer,
+  formsLight: formsLightReducer,
+  formsDark: formsDarkReducer,
   formsData: formsDataReducer,
   formsDataErrors: formsDataErrorsReducer,
   meta: metaReducer,
   net: netReducer,
   pages: pagesReducer,
+  pagesLight: pagesLightReducer,
+  pagesDark: pagesDarkReducer,
   pagesData: pagesDataReducer,
   snackbar: snackbarReducer,
   theme: themeReducer,
+  themeLight: themeLightReducer,
+  themeDark: themeDarkReducer,
   tmp: tmpReducer,
   topLevelLinks: topLevelLinksReducer,
   typography: typographyReducer,
@@ -171,10 +187,18 @@ export const actions = {
   ...pagesDataActions,
   ...snackbarActions,
   ...themeActions,
+  ...themeLightActions,
+  ...themeDarkActions,
   ...tmpActions,
   ...topLevelLinksActions,
   ...typographyActions,
   ...pathnamesActions,
+  ...dialogsLightActions,
+  ...dialogsDarkActions,
+  ...formsLightActions,
+  ...formsDarkActions,
+  ...pagesLightActions,
+  ...pagesDarkActions,
 }
 
 export type TAllActions = typeof actions

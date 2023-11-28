@@ -7,7 +7,7 @@ import { get_state_form_name } from '../../../business.logic'
 import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
-export function form_submit_edit_youtube_bookmark(redux: IRedux) {
+export default function form_submit_edit_youtube_bookmark(redux: IRedux) {
   return async () => {
     try {
       const { store: { getState, dispatch } } = redux

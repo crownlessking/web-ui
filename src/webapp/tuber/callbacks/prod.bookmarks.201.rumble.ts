@@ -12,7 +12,7 @@ import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
  *
  * @id _8_C_1
  */
-export function form_submit_new_rumble_bookmark(redux: IRedux) {
+export default function form_submit_new_rumble_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
     const rootState = getState()

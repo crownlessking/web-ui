@@ -16,9 +16,10 @@ export default function PageBlank ({ def: page }:{ def: StatePage }) {
     if (!fetchingStateAllowed) { return }
     const { headers } = page.parent.parent.net
     const { PAGES } = page.parent.parent.pathnames
+    const { themeMode: mode } = page.parent.parent.app
     const pageLoadAttempts = Config.read<number>(`${key}_load_attempts`, 0)
     if (pageLoadAttempts < ALLOWED_ATTEMPTS) {
-      dispatch(post_req_state(PAGES, { key }, headers))
+      dispatch(post_req_state(PAGES, { key, mode }, headers))
       Config.write(`${key}_load_attempts`, pageLoadAttempts + 1)
     }
   }, [ dispatch, page ])

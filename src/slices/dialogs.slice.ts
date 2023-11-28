@@ -11,6 +11,12 @@ export const dialogsSlice = createSlice({
   name: 'dialogs',
   initialState: initialState.dialogs,
   reducers: {
+    dialogsAddMultiple: (state, action) => {
+      const dialogs = action.payload
+      Object.keys(dialogs).forEach(key => {
+        state[key] = dialogs[key]
+      })
+    },
     /**
      * Saves a dialog definition into the redux store i.e.
      * ```ts
@@ -42,6 +48,7 @@ export const dialogsSlice = createSlice({
 
 export const dialogsAction = dialogsSlice.actions
 export const {
+  dialogsAddMultiple,
   dialogsAdd,
   dialogsRemove,
   dialogsOpen,

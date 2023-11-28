@@ -1,6 +1,36 @@
 import Config from '../config'
 // WARNING: Do not import anything here.
 
+/**
+ * Log Error message if in debug mode.
+ * @param msg
+ */
+function ler(msg: string): void {
+  if (Config.DEBUG) {
+    console.error(msg)
+  }
+}
+
+/**
+ * Holds the last rendered content so that if a new one was not provided,
+ * that one can be used.
+ */
+let currentContentJsx: JSX.Element | null
+
+/** Get the last rendered content. */
+export function get_last_content_jsx(): JSX.Element | null {
+  return currentContentJsx
+}
+
+/** Save the newly rendered content. */
+export function save_content_jsx(content: JSX.Element | null): void {
+  currentContentJsx = content
+}
+
+export function clear_last_content_jsx(): void {
+  currentContentJsx = null
+}
+
 /** Returns `true` if the argument is an object. */
 export const is_object = (obj: any) => {
   if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
@@ -199,4 +229,25 @@ export function http_get(theUrl: string): void
   }
   xmlhttp.open("GET", theUrl, false);
   xmlhttp.send();    
+}
+
+/**
+ * Get the right theme state.
+ * @param mode light or dark
+ * @param main the main state
+ * @param light the light state
+ * @param dark the dark state
+ * @returns the right state
+ */
+export function get_themed_state<T=any>(
+  mode: 'dark'|'light',
+  main: any,
+  light: any,
+  dark: any
+): T {
+  if (light && dark) {
+    return mode === 'dark' ? dark : light
+  }
+  ler(`get_themed_state: light or dark state is missing.`)
+  return main
 }
