@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { err } from '../state'
 import { IJsonapiError } from '../interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
@@ -23,7 +22,6 @@ export const errorsSlice = createSlice({
     },
     errorsRemove: (state, action) => {
       // [TODO] Implement logic to remove an error element
-      err('Not implemented yet.')
     },
     errorsClear: (state) => {
       while(state.length > 0) {

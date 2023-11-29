@@ -1,6 +1,7 @@
 import { clear_last_content_jsx } from 'src/business.logic'
-import { IRedux } from '../../../state'
+import { IRedux } from 'src/state'
 
+/** @id 44_C_1 */
 export default function toggle_theme_mode (redux: IRedux) {
   return async () => {
     const { dispatch } = redux.store

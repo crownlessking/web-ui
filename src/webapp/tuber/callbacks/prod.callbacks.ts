@@ -1,5 +1,5 @@
-import { IRedux, TReduxCallback } from '../../../state'
-import { dialog_login } from './prod.login'
+import { IRedux, ler, TReduxCallback } from '../../../state'
+import form_submit_login from './prod.login'
 import form_submit_new_youtube_bookmark from './prod.bookmarks.201.youtube'
 import form_submit_delete_bookmark from './prod.bookmarks.actions'
 import dialog_new_bookmark_from_url, {
@@ -7,7 +7,6 @@ import dialog_new_bookmark_from_url, {
   dialog_new_video_url,
 } from './prod.bookmarks._url'
 import appbar_search_bookmarks from './prod.bookmarks.200'
-import dialog_new_youtube_bookmark_from_video from './prod.bookmarks.youtube'
 import form_submit_new_rumble_bookmark from './prod.bookmarks.201.rumble'
 import form_submit_edit_youtube_bookmark from './prod.bookmarks.204.youtube'
 import form_submit_edit_rumble_bookmark from './prod.bookmarks.204.rumble'
@@ -24,23 +23,48 @@ import form_submit_edit_unknown_bookmark from './prod.bookmarks.204.unknown'
 import form_submit_new_twitch_bookmark from './prod.bookmarks.201.twitch'
 import form_submit_edit_twitch_bookmark from './prod.bookmarks.204.twitch'
 import toggle_theme_mode from './prod.toggle.theme.mode'
+import { DIALOG_LOGIN_ID } from '../tuber.config'
+import { get_dialog_state } from 'src/state/net.actions'
 
 /** Default callback for closing dialogs */
 function close_default (redux: IRedux) {
   return () => redux.store.dispatch({ type: 'dialog/dialogClose' })
 }
 
+/** @id 32_C_1 */
+export function dialog_login(redux: IRedux) {
+  return async () => {
+    const dispatch = redux.store.dispatch
+    const rootState = redux.store.getState()
+    if (rootState.dialog._id === DIALOG_LOGIN_ID) {
+      dispatch({ type: 'dialog/dialogOpen' })
+      return
+    }
+    const dialogKey = rootState.stateRegistry[DIALOG_LOGIN_ID]
+    const dialogState = await get_dialog_state(redux, dialogKey)
+    if (!dialogState) {
+      ler(`'${dialogKey}' does not exists.`)
+      return
+    }
+    // if the dialog was NOT mounted
+    if (rootState.dialog._key !== dialogState._key) {
+      dispatch({ type: 'dialog/dialogMount', payload: dialogState })
+    } else {
+      dispatch({ type: 'dialog/dialogOpen' })
+    }
+  }
+}
+
 const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   defaultClose: close_default,
-  bookmarkAdd: dialog_new_youtube_bookmark_from_video,
   '$1_C_1': dialog_new_bookmark_from_url,
   '$3_C_1': dialog_new_video_url,
-  loginDialog: dialog_login,
+  '$32_C_1': dialog_login,
   appBarSearchBookmarks: appbar_search_bookmarks,
   '$1_C_2': dialog_new_bookmark_from_url_on_enter_key,
   '$6_C_1': form_submit_new_youtube_bookmark,
   '$7_C_1': form_submit_edit_youtube_bookmark,
-  bookmarkDeleteCallback: form_submit_delete_bookmark,
+  '$34_C_1': form_submit_delete_bookmark,
   '$8_C_1': form_submit_new_rumble_bookmark,
   '$11_C_1': form_submit_edit_rumble_bookmark,
   '$14_C_1': form_submit_new_vimeo_bookmark,
@@ -55,6 +79,7 @@ const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   '$37_C_1': form_submit_edit_twitch_bookmark,
   '$30_C_1': form_submit_new_unknown_bookmark,
   '$31_C_1': form_submit_edit_unknown_bookmark,
+  '$41_C_1': form_submit_login,
   '$44_C_1': toggle_theme_mode,
   // TODO Add more callbacks here
 }

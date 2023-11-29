@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ILoadedPagesRange } from 'src/interfaces/IState'
-import initialState from 'src/state/initial.state'
+import { ILoadedPagesRange } from '../interfaces/IState'
+import initialState from '../state/initial.state'
 
 export interface IDataLoadedPagesPayload {
   type: string

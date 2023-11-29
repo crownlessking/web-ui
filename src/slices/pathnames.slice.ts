@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import initialState from 'src/state/initial.state'
+import initialState from '../state/initial.state'
 
 export const pathnamesSlice = createSlice({
   name: 'pathnames',

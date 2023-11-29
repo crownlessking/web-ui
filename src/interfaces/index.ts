@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 import { SxProps } from '@mui/material/styles'
 
-export default interface IHtmlAttributes {
+export interface IHtmlAttributes {
   accept?: string
   acceptCharset?: string
   accessKey?: string
@@ -215,3 +215,5 @@ export interface ITypography extends IHtmlAttributes {
   sx?: SxProps
   variantMapping?: Partial<Record<'body1' | 'body2', string>>
 }
+
+export type TThemeMode = 'light' | 'dark'

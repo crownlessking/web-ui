@@ -1,7 +1,7 @@
 import { 
   AppBarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
 } from '@mui/material'
-import IHtmlAttributes from '.'
+import { IHtmlAttributes } from '.'
 import IAbstractState from './IAbstractState'
 import IStateBackground from './IStateBackground'
 import IStateComponent from './IStateComponent'

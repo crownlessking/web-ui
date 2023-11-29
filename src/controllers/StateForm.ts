@@ -60,7 +60,9 @@ export default class StateForm extends AbstractState implements IStateForm {
           item => new StateFormItem(item, this)
         ))
   }
-  /** Get the form name (`formName`) */
+  /**
+   * Get the form name, (`formName`). This is an _alias_ for `_key`.
+   */
   get name(): string { return this._formState._key ?? this._fname }
   get endpoint(): string { return this._ePoint ?? '' }
   get paperProps(): any { return this._formState.paperProps }

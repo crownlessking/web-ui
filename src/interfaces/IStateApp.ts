@@ -1,3 +1,4 @@
+import { TThemeMode } from '.'
 
 /**
  * App information state.
@@ -57,7 +58,7 @@ export default interface IStateApp {
   /** Custom fetch message  */
   fetchMessage?: string
   /** Indicates the currently rendered theme mode */
-  themeMode?: 'light' | 'dark'
+  themeMode?: TThemeMode
 }
 
 /** @see https://www.npmjs.com/package/jsonwebtoken */

@@ -84,10 +84,10 @@ export default function getImportedSvgIcon (
     'filter_none_outline': <Icons.FilterNoneOutlined {...props} />,
     'insertphotooutlined': <Icons.InsertPhotoOutlined {...props} />,
     'insert_photo_outline': <Icons.InsertPhotoOutlined {...props} />,
-    'darkmodeoutlined': <Icons.DarkModeOutlined />,
-    'dark_mode_outline': <Icons.DarkModeOutlined />,
-    'wbsunnyoutlined': <Icons.WbSunnyOutlined {...props} />,
-    'wb_sunny_outline': <Icons.WbSunnyOutlined {...props} />,
+    'darkmodeoutlined': <Icons.DarkModeOutlined {...props} />,
+    'dark_mode_outline': <Icons.DarkModeOutlined {...props} />,
+    'lightmodeoutlined': <Icons.LightModeOutlined {...props} />,
+    'light_mode_outline': <Icons.LightModeOutlined {...props} />,
     'none': <Fragment />
   }
   const iconName_lc = iconName.toLowerCase()

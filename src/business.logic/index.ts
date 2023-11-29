@@ -110,6 +110,32 @@ export function get_origin_ending_fixed(origin?: string): string {
   return window.location.origin + '/'
 }
 
+/**
+ * Ensures that the endpoint has an ending forward slash.
+ *
+ * @returns string
+ * @returns fixed endpoint
+ */
+export function get_endpoint_ending_fixed(endpoint?: string): string {
+  if (endpoint) {
+    return endpoint.slice(-1) === '/' ? endpoint : endpoint + '/'
+  }
+  return ''
+}
+
+/**
+ * Removes ending forward slash from the endpoint if there is one.
+ *
+ * @param endpoint
+ * @returns string
+ */
+export function clean_endpoint_ending(endpoint?: string): string {
+  if (endpoint) {
+    return endpoint.slice(-1) === '/' ? endpoint.slice(0, -1) : endpoint
+  }
+  return ''
+}
+
 /** Ensures that question mark symbol is included query string. */
 export function get_query_starting_fixed(query?: string): string {
   if (query) {

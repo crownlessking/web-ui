@@ -7,12 +7,17 @@ import { get_state_form_name } from '../../../business.logic'
 import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
-/** @id _11_C_1 */
+/**
+ * [ __Rumble__ ] Save bookmark changes to server.
+ * @param redux store, actions, and route.
+ * @returns The callback function.
+ * @id $11_C_1
+ */
 export default function form_submit_edit_rumble_bookmark(redux: IRedux) {
   return async () => {
     try {
-      const { store: { getState, dispatch } } = redux
-      const rootState = getState()      
+      const { store: { getState, dispatch }, actions } = redux
+      const rootState = getState()
       const tmp = new StateTmp(rootState.tmp)
       tmp.configure({ dispatch })
       const index = tmp.get<number>('dialogEditBookmark', 'index', -1)
@@ -25,9 +30,21 @@ export default function form_submit_edit_rumble_bookmark(redux: IRedux) {
         })
         return
       }
-      const content = rootState.dialog.content as string
-      const pageContentForm = get_parsed_page_content(content)
-      const formName = get_state_form_name(pageContentForm.name)
+      // Careful, `rootState.dialog` is only valid if the right dialog state
+      // is mounted.
+      const { _key, content } = rootState.dialog
+      const {name, endpoint } = get_parsed_page_content(content)
+      if (!endpoint) {
+        const errorMsg = `No endpoint defined for '${_key}'.`
+        ler(errorMsg)
+        remember_error({
+          code: 'value_not_found',
+          title: errorMsg,
+          source: { parameter: 'endpoint' }
+        })
+        return
+      }
+      const formName = get_state_form_name(name)
       if (!rootState.formsData[formName]) {
         const errorMsg = msg(` '${formName}' data does not exist.`)
         ler(errorMsg)
@@ -64,22 +81,17 @@ export default function form_submit_edit_rumble_bookmark(redux: IRedux) {
           ...formData
         }
       }
-
-      dispatch({
-        type: 'data/resourceUpdate',
-        payload: {
-          endpoint: 'bookmarks',
-          index,
-          resource: editedBookmarkResource
-        }
-      })
-
+      dispatch(actions.resourceUpdate({
+        endpoint,
+        index,
+        resource: editedBookmarkResource
+      }))
       dispatch(put_req_state(
-        `bookmarks/${editedBookmarkResource.id}`,
+        `${endpoint}/${editedBookmarkResource.id}`,
         { data: editedBookmarkResource }
       ))
-      dispatch({ type: 'formsData/formsDataClear', payload: formName })
-      dispatch({ type: 'dialog/dialogClose' })
+      dispatch(actions.formsDataClear(formName))
+      dispatch(actions.dialogClose())
     } catch (e: any) {
       ler(e.message)
       remember_exception(e, msg(e.message))

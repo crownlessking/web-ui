@@ -24,9 +24,9 @@ const Search = styled('div')(({ theme }) => ({
   borderRadius: 20, // theme.shape.borderRadius,
   border: `2px solid ${theme.palette.grey[300]}`,
   backgroundColor: theme.palette.grey[300],
-  '&:hover': {
-    backgroundColor: theme.palette.grey[200],
-  },
+  // '&:hover': {
+  //   backgroundColor: theme.palette.grey[300],
+  // },
   marginRight: 'auto',
   marginLeft: 'auto',
   width: '100%',
@@ -143,13 +143,14 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
               { page.parent.parent.app.title }
             </Typography>
           )}
-          <Search>
+          <Search {...appBar.searchFieldProps}>
             {appBar.state.searchFieldIcon ? (
               <UrlIconWrapper>
                 <StateJsxIcon def={appBar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase
+              autoComplete='off'
               {...appBar.inputBaseProps}
               endAdornment={
                 <InputAdornment position='end'>

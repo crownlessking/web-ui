@@ -56,10 +56,10 @@ const TitleWrapper = styled('div')(() => ({
   justifyContent: 'flex-start'
 }))
 
-const Title = styled('a')(() => ({
+const Title = styled('a')(({ theme }) => ({
   textDecoration: 'none',
   fontSize: '1.13rem',
-  color: '#1b74e4',
+  color: theme.palette.primary.main,
   transition: 'all 0.2s ease-in-out',
   '&:hover': {
     textDecoration: 'underline',

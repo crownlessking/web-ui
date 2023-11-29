@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { is_object } from '../business.logic'
+import { is_object, clean_endpoint_ending } from '../business.logic'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
@@ -8,7 +8,7 @@ import {
   appRequestFailed,
   appRequestSuccess
 } from 'src/slices/app.slice'
-import { ler, net_patch_state, RootState } from '.'
+import { log, ler, pre, net_patch_state, RootState } from '.'
 
 export default function net_default_201_driver (
   dispatch: Dispatch,
@@ -17,23 +17,24 @@ export default function net_default_201_driver (
   response: IJsonapiAbstractResponse
 ): void {
   const doc = response as IJsonapiResponse
-
+  pre('net_default_201_driver:')
+  log('Received response:', doc)
   if (doc.data) {
     if (Array.isArray(doc.data) && doc.data.length === 1) {
       dispatch({
         type: 'data/collectionStack',
         payload: {
-          endpoint,
+          endpoint: clean_endpoint_ending(endpoint),
           data: doc.data
         }
       })
     } else if (Array.isArray(doc.data) && doc.data.length > 1) {
-      ler('net_default_201_driver: more than one data received on a 201 response.')
+      ler('more than one resource received on a 201 response.')
     } else if (is_object(doc.data)) {
       dispatch({
         type: 'data/dataStack',
         payload: {
-          endpoint,
+          endpoint: clean_endpoint_ending(endpoint),
           data: doc.data
         }
       })
@@ -57,4 +58,6 @@ export default function net_default_201_driver (
   } else {
     dispatch(appRequestFailed())
   }
+
+  pre()
 }

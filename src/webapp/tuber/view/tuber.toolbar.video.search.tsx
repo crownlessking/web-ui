@@ -1,4 +1,3 @@
-import grey from '@mui/material/colors/grey'
 import { styled } from '@mui/material/styles'
 import IStateLink from 'src/interfaces/IStateLink'
 import StateLink from 'src/controllers/StateLink'
@@ -48,7 +47,7 @@ const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
       'icon': 'add_outline',
       'iconProps': {
         'sx': {
-          'color': grey[600],
+          'color': 'grey.600',
           'fontSize': 34
         }
       },
@@ -69,7 +68,7 @@ const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
       'icon': 'monitor_outline',
       'iconProps': {
         'sx': {
-          'color': grey[600],
+          'color': 'grey.600',
           'fontSize': 34
         }
       },

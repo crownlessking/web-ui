@@ -4,6 +4,7 @@ import AbstractState from './AbstractState'
 import IStateApp, { IStateAppSession } from '../interfaces/IStateApp'
 import State from './State'
 import Config from '../config'
+import { TThemeMode } from '../interfaces'
 
 const dudSession: IStateAppSession = { accessToken: '', name: '' }
 
@@ -73,7 +74,7 @@ export default class StateApp extends AbstractState implements IStateApp {
   get fetchMessage(): string {
     return this._appState.fetchMessage ?? ''
   }
-  get themeMode(): 'light' | 'dark' {
+  get themeMode(): TThemeMode {
     return this._appState.themeMode ?? Config.DEFAULT_THEME_MODE
   }
 }

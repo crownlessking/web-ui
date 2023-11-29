@@ -91,7 +91,8 @@ export const {
   dialogContentTextUpdate,
   dialogOnSubmitUpdate,
   dialogShowActionsUpdate,
-  dialogMount
+  dialogMount,
+  dialogDismount,
 } = dialogSlice.actions
 
 export default dialogSlice.reducer

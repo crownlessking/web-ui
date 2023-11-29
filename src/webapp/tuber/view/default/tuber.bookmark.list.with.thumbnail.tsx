@@ -55,10 +55,10 @@ const TitleWrapper = styled('div')(() => ({
   position: 'relative',
 }))
 
-const ClickTitle = styled('a')(() => ({
+const ClickTitle = styled('a')(({ theme }) => ({
   textDecoration: 'none',
   fontSize: '1.13rem',
-  color: '#1b74e4',
+  color: theme.palette.primary.main,
   transition: 'all 0.2s ease-in-out',
   '&:hover': {
     textDecoration: 'underline',

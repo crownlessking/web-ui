@@ -1,62 +1,36 @@
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
-import { remember_error } from 'src/business.logic/errors'
-import { IRedux, ler, log } from '../../../state'
-import { get_state_form_name } from '../../../business.logic'
+import { IRedux, log } from '../../../state'
 import { FORM_DAILY_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
 import { get_start_time_in_seconds } from '../_tuber.common.logic'
+import {
+  get_dialog_form_endpoint,
+  get_form_data
+} from './_callbacks.common.logic'
 
 /**
- * [Dailymotion] Save bookmark to server.
- *
- * @id _21_C_1
+ * [ __Dailymotion__ ] Save bookmark to server.
+ * @param redux store, actions, and route.
+ * @returns The callback function.
+ * @id $21_C_1
  */
 export default function form_submit_new_daily_bookmark(redux: IRedux) {
   return async () => {
-    const { store: { getState, dispatch } } = redux
+    const { store: { getState, dispatch }, actions } = redux
     const rootState = getState()
-    const formKey = rootState.stateRegistry[FORM_DAILY_NEW_ID]
-    if (!formKey) {
-      const errorMsg = 'form_submit_new_facebook_bookmark: Form key not found.'
-      ler(errorMsg)
-      remember_error({
-        code: 'value_not_found',
-        title: errorMsg,
-        source: { parameter: 'formKey' }
-      })
-      return
-    }
-    const formName = get_state_form_name(formKey)
-    if (!rootState.formsData?.[formName]) {
-      const errorMsg = `form_submit_new_facebook_bookmark: '${formName}' `
-        + `data does not exist.`
-      ler(errorMsg)
-      remember_error({
-        code: 'value_not_found',
-        title: errorMsg,
-        source: { parameter: 'formData' }
-      })
-      return
-    }
-    const policy = new FormValidationPolicy<IBookmark>(redux, formName)
-    const validation = policy.getValidationSchemes()
-    if (validation && validation.length > 0) {
-      validation.forEach(vError => {
-        const message = vError.message ?? ''
-        policy.emit(vError.name, message)
-      })
-      return
-    }
-    const formData = policy.getFilteredData()
+    const endpoint = get_dialog_form_endpoint(rootState, FORM_DAILY_NEW_ID)
+    if (!endpoint) { return }
+    const data = get_form_data<IBookmark>(redux, FORM_DAILY_NEW_ID)
+    if (!data) { return }
+    const { formData, formName } = data
     const platform = formData.platform
     const videoid = formData.videoid
     const start_seconds = get_start_time_in_seconds(formData.start_time)
     const title = formData.title
     const note = formData.note
     const thumbnail_url = formData.thumbnail_url
-    const requestBody = new JsonapiRequest<IBookmark>('bookmarks', {
+    const requestBody = new JsonapiRequest<IBookmark>(endpoint, {
       platform,
       videoid,
       thumbnail_url,
@@ -66,8 +40,8 @@ export default function form_submit_new_daily_bookmark(redux: IRedux) {
     }).build()
     log('form_submit_new_daily_bookmark: requestBody', requestBody)
 
-    dispatch(post_req_state('bookmarks', requestBody))
-    dispatch({ type: 'formsData/formsDataClear', payload: formName })
-    dispatch({ type: 'dialog/dialogClose' })
+    dispatch(post_req_state(endpoint, requestBody))
+    dispatch(actions.formsDataClear(formName))
+    dispatch(actions.dialogClose())
   }
 }

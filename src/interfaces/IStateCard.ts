@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material/styles'
 import { CSSProperties } from 'react'
-import IHtmlAttributes from '.'
+import { IHtmlAttributes } from '.'
 import IAbstractState from './IAbstractState'
 import IStateFormItem from './IStateFormItem'
 

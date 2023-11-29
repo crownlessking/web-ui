@@ -17,7 +17,10 @@ export type TPlatform = '_blank'
   | 'twitch'
   | 'unknown'
 
-/** Type for bookmark */
+/**
+ * Type for bookmark.  
+ * Server uses snake_case, but client uses camelCase.
+ */
 export interface IBookmark {
   createdAt?: Date
   modifiedAt?: Date
@@ -26,25 +29,33 @@ export interface IBookmark {
   author?: string
   videoid: string
   url?: string
-  embedUrl?: string
+  /** Server field */
   embed_url?: string
+  embedUrl?: string
   slug?: string
   platform: TPlatform
+  /** Server field */
   start_time?: string
-  startSeconds?: number
+  startTime?: string
+  /** Server field */
   start_seconds?: number
-  endSeconds?: number
+  startSeconds?: number
+  /** Server field */
   end_seconds?: number
+  endSeconds?: number
   title: string
   note?: string
   rating?: number
   upvotes?: string
   downvotes?: string
+  /** Server field */
   thumbnail_url?: string
+  thumbnailUrl?: string
   tags?: string[]
   groupid?: string
-  htmlTag?: string
+  /** Server field */
   html_tag?: string
+  htmlTag?: string
   sortOrder?: number
   // [TODO] Add properties what will help in bolding search terms.
 }

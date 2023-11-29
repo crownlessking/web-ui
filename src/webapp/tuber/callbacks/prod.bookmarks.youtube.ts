@@ -8,7 +8,7 @@ import { TPlatform } from '../tuber.interfaces'
 import { get_dialog_state } from 'src/state/net.actions'
 
 /**
- * [YouTube] Shows a dialog containing a form to create a new bookmark.
+ * [ __YouTube__ ] Shows a dialog containing a form to create a new bookmark.
  *
  * @id 6
  * @deprecated

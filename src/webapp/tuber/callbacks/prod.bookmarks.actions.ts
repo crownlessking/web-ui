@@ -2,9 +2,9 @@ import { get_parsed_page_content } from 'src/controllers'
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi'
 import StateTmp from 'src/controllers/StateTmp'
 import { IRedux, ler, log, pre } from 'src/state'
-import { remember_exception } from 'src/business.logic/errors'
+import { remember_error, remember_exception } from 'src/business.logic/errors'
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions'
-import { get_state_form_name } from '../../../business.logic'
+import { get_endpoint_ending_fixed, get_state_form_name } from '../../../business.logic'
 import { get_dialog_id_for_edit } from '../_tuber.common.logic'
 import { IBookmark } from '../tuber.interfaces'
 import { DIALOG_DELETE_BOOKMARK_ID } from '../tuber.config'
@@ -15,7 +15,11 @@ function get_bookmark_resources (data: any) {
     || []
 }
 
-/** Callback to open a form within a dialog to edit an bookmark. */
+/**
+ * Callback to open a form within a dialog to edit an bookmark.
+ * @param i The index of the bookmark to edit.
+ * @returns The callback function.
+ */
 export function dialog_edit_bookmark (i: number) {
   return (redux: IRedux) => {
     return async () => {
@@ -173,15 +177,20 @@ export function dialog_edit_bookmark (i: number) {
   }
 }
 
+/**
+ * Callback to open a dialog to delete an bookmark.
+ * @param i The index of the bookmark to delete.
+ * @returns The callback function.
+ */
 export function dialog_delete_bookmark (i: number) {
   return (redux: IRedux) => {
     return async () => {
       const { store: { dispatch } } = redux
       const rootState = redux.store.getState()
       const dialogKey = rootState.stateRegistry[DIALOG_DELETE_BOOKMARK_ID]
-      const dialogJson = await get_dialog_state(redux, dialogKey)
+      const dialogState = await get_dialog_state(redux, dialogKey)
       pre('bookmark_delete_open_dialog_callback:')
-      if (!dialogJson) {
+      if (!dialogState) {
         ler(`'${dialogKey}' does not exist.`)
         return
       }
@@ -198,8 +207,8 @@ export function dialog_delete_bookmark (i: number) {
       pre()
 
       // Open the dialog
-      if (rootState.dialog._id !== dialogJson._id) {// if the dialog was NOT mounted
-        dispatch({ type: 'dialog/dialogMount', payload: dialogJson })
+      if (rootState.dialog._id !== dialogState._id) {// if the dialog was NOT mounted
+        dispatch({ type: 'dialog/dialogMount', payload: dialogState })
       } else {
         dispatch({ type: 'dialog/dialogOpen' })
       }
@@ -216,7 +225,11 @@ export function dialog_delete_bookmark (i: number) {
   }
 }
 
-/** Callback to delete bookmarks */
+/**
+ * Callback to delete bookmarks
+ * @param redux The redux store.
+ * @returns The callback function.
+ */
 export default function form_submit_delete_bookmark (redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux
@@ -235,6 +248,28 @@ export default function form_submit_delete_bookmark (redux: IRedux) {
       ler(`resourceList['${index}'] does not exist.`)
       return
     }
+    const dialogKey = rootState.stateRegistry[DIALOG_DELETE_BOOKMARK_ID]
+    const dialogState = rootState.dialogs[dialogKey]
+    if (!dialogState) {
+      ler(`'${dialogKey}' does not exist.`)
+      remember_error({
+        code: 'value_not_found',
+        title: `'${dialogKey}' does not exist.`,
+        source: { parameter: 'dialogKey' }
+      })
+      return
+    }
+    const endpoint = get_parsed_page_content(dialogState.content).endpoint
+    if (!endpoint) {
+      ler(`No endpoint defined for '${dialogKey}'.`)
+      remember_error({
+        code: 'value_not_found',
+        title: `'endpoint' does not exist.`,
+        source: { parameter: 'endpoint' }
+      })
+      return
+    }
+    const endpointFixed = get_endpoint_ending_fixed(endpoint)
     pre()
     dispatch({ type: 'dialog/dialogClose' })
     dispatch({
@@ -244,6 +279,6 @@ export default function form_submit_delete_bookmark (redux: IRedux) {
         index
       }
     })
-    dispatch(delete_req_state(`bookmarks/${bookmark.id}`))
+    dispatch(delete_req_state(`${endpointFixed}${bookmark.id}`))
   }
 }

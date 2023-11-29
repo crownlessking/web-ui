@@ -139,8 +139,10 @@ const rootReducer = (state: any, action: any) => {
 
   if (action.type === NET_STATE_PATCH) {
     const newState = net_patch_state_reducer(state, action.payload)
-    Config.write('DEBUG', state.app.inDebugMode ?? false)
-    Config.write('DEV', state.app.inDevelMode ?? false)
+    if (!state.app.isBootstrapped) {
+      Config.set('DEBUG', action.payload.app.inDebugMode ?? false)
+      Config.set('DEV', action.payload.app.inDevelMode ?? false)
+    }
 
     // TODO Set more configuration here.
 

@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit'
-import IStateFormItem from 'src/interfaces/IStateFormItem'
+import IStateFormItem from '../interfaces/IStateFormItem'
 import initialState from '../state/initial.state'
 
 export interface ISliceFormsDataErrorsArgs {
