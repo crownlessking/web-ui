@@ -82,5 +82,6 @@ export function get_formatted_route(has: StateFormItemCustom<any>, href?: string
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route
   }
-  return href || window.location.pathname
+  const {pathname, search } = window.location
+  return href || pathname + (search ?? '')
 }

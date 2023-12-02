@@ -47,3 +47,15 @@ export function get_ratio_color (upvotes?: string, downvotes?: string) {
 
   return 'red'
 }
+
+/**
+ * Get the search query from the URL
+ * @returns string
+ */
+export function get_endpoint_search(param?: string): string {
+  const search = decodeURIComponent(window.location.search)
+  if (param) {
+    return param + search
+  }
+  return search
+}

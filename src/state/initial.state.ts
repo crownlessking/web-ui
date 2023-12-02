@@ -8,10 +8,14 @@ import { get_global_var } from '../business.logic/errors'
  */
 
 /** Allows you to rename global variables to prevent conflicts. */
-const GLOBAL_PREFIX = get_head_meta_content('web-ui') || 'app'
+const GLOBAL_PREFIX = get_head_meta_content('web-ui')
 
 export const PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
-export const DEFAULT_BACKGROUND_COLOR = '#af74b0'
+/**
+ * Default background color  
+ * History: `#af74b0`
+ */
+export const DEFAULT_BACKGROUND_COLOR = '#72A0C1'
 
 /**
  * Raw data obtained from server will be stored in this object as an
@@ -105,6 +109,7 @@ export default {
    * Contains the appbar search field text of all pages. The key is the page name.
    */
   'appBarQueries': {},
+  'queryHistory': {},
 
   /**
    * Application background color

@@ -1,6 +1,5 @@
 import { mongo_object_id } from '.'
 import { IGenericObject } from '../interfaces/IState'
-import IStateAppBarQueries from '../interfaces/IStateAppBarQueries'
 import Config from '../config'
 import { IJsonapiError } from '../interfaces/IJsonapi'
 
@@ -29,16 +28,10 @@ export function get_global_var(varName: string): any {
 
 /** Get search query */
 export function get_search_query(
-  queries: IStateAppBarQueries,
+  queries: Record<string, string>,
   route: string
 ): string {
-  try {
-    return queries[route] || ''
-  } catch (e: any) {
-    const message = `Search query for route '${route}' does not exist.`
-    remember_exception(e, message)
-  }
-  return ''
+    return queries[route] ?? ''
 }
 
 /**

@@ -13,7 +13,7 @@ import {
 } from '../interfaces/IJsonapi'
 import StateDataPagesRange from '../controllers/StateDataPagesRange'
 import JsonapiPaginationLinks from '../controllers/JsonapiPaginationLinks'
-import { safely_get_as } from '../controllers'
+import { safely_get_as } from '../business.logic'
 import { remember_jsonapi_errors } from '../business.logic/errors'
 import { is_object } from 'src/business.logic'
 

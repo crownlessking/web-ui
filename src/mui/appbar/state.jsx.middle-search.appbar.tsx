@@ -18,15 +18,13 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { StateJsxIcon } from '../state.jsx.icons'
 import { get_search_query } from 'src/business.logic/errors'
 import Menu from '@mui/material/Menu'
+import StateLink from 'src/controllers/StateLink'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20, // theme.shape.borderRadius,
   border: `2px solid ${theme.palette.grey[300]}`,
   backgroundColor: theme.palette.grey[300],
-  // '&:hover': {
-  //   backgroundColor: theme.palette.grey[300],
-  // },
   marginRight: 'auto',
   marginLeft: 'auto',
   width: '100%',
@@ -154,6 +152,18 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
               {...appBar.inputBaseProps}
               endAdornment={
                 <InputAdornment position='end'>
+                  {value ? (
+                    <AppBarButton def={new StateLink({
+                      'type': 'icon',
+                      'has': {
+                        'icon': 'clear_outline',
+                        'iconProps': { 'color': 'error', 'fontSize': 'small' },
+                      },
+                      'onClick': ({ store, actions }) => () => store.dispatch(
+                        actions.appBarQueriesDelete(route)
+                      )
+                    })} />
+                  ): ( null )}
                   <AppBarButton def={appBar.searchFieldIconButton} />
                 </InputAdornment>
               }

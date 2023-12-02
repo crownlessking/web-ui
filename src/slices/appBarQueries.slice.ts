@@ -24,6 +24,9 @@ export const appBarQueriesSlice = createSlice({
 })
 
 export const appBarQueriesActions = appBarQueriesSlice.actions
-export const { appBarQueriesSet } = appBarQueriesSlice.actions
+export const {
+  appBarQueriesSet,
+  appBarQueriesDelete
+} = appBarQueriesSlice.actions
 
 export default appBarQueriesSlice.reducer

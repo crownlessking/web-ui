@@ -6,9 +6,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from './state'
+import { AppDispatch, RootState, get_bootstrap_key } from './state'
 import { post_req_state } from './state/net.actions'
-import { get_bootstrap_key } from './business.logic'
 import Config from './config'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import StateAllPages from './controllers/StateAllPages'
@@ -16,6 +15,7 @@ import StateApp from './controllers/StateApp'
 import StateNet from './controllers/StateNet'
 import AppPage from './components/app.component'
 import { ALLOWED_ATTEMPTS } from './constants'
+
 /**
  * Making all FontAwesome 'Regular', 'Solid', and 'Brand' icons available
  * throughout the entire application

@@ -103,7 +103,7 @@ const appReducer = combineReducers({
   app: infoReducer,
   appBar: appBarReducer,
   appBarQueries: appBarQueriesReducer,
-  background: backgroundReducer,
+    background: backgroundReducer,
   data: dataReducer,
   dataLoadedPages: dataLoadedPagesSlice,
   dialog: dialogReducer,
@@ -276,6 +276,19 @@ export function err (...args: any[]): void {
   if (redux.store.getState().app.inDebugMode) {
     throw new Error(...args)
   }
+}
+
+/** Get the bootstrap key from head tag. */
+export function get_bootstrap_key(): string {
+  const savedKey = Config.read('bootstrap_key', '')
+  if (savedKey) { return savedKey }
+  const meta = document.querySelector('meta[name="bootstrap"]')
+  const key = (meta as HTMLMetaElement)?.content
+  if (key) {
+    Config.set('bootstrap_key', key)
+    return key
+  }
+  return ''
 }
 
 /**

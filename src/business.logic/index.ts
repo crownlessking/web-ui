@@ -1,15 +1,4 @@
-import Config from '../config'
 // WARNING: Do not import anything here.
-
-/**
- * Log Error message if in debug mode.
- * @param msg
- */
-function ler(msg: string): void {
-  if (Config.DEBUG) {
-    console.error(msg)
-  }
-}
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -43,18 +32,12 @@ export const is_object = (obj: any) => {
  * Get HTML head meta data.
  *
  * @param name 
- * @returns 
+ * @returns string
  */
-export function get_head_meta_content(name: string): string {
-  const meta = document.querySelector(`meta[name="${name}"]`)
-
-  if (meta) {
-    return (meta as HTMLMetaElement).content
-  }
-
-  // err(`Meta with '${name}' name does not exist.`)
-
-  return ''
+export function get_head_meta_content(name: string, $default = 'app'): string {
+  const element = document.querySelector(`meta[name="${name}"]`)
+  const meta = element as HTMLMetaElement | null
+  return meta && meta.content ? meta.content : $default
 }
 
 /**
@@ -146,6 +129,36 @@ export function get_query_starting_fixed(query?: string): string {
 }
 
 /**
+ * Get a value from an object as the same type as the default value without
+ * causing an exception.
+ */
+export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
+  const value = get_val<T>(obj, path)
+
+  return value !== null ? value : _default
+}
+
+/**
+ * Get the search query from the URL.
+ *
+ * @param url 
+ * @returns string
+ */
+export function set_url_query_val(url: string, param: string, val?: string) {
+  const urlObj = new URL(url)
+  const query = new URLSearchParams(urlObj.searchParams)
+  const { origin, pathname } = urlObj
+  if (typeof val === 'undefined') {
+    query.delete(param)
+    const newUrl = `${origin}${pathname}?${query.toString()}`
+    return newUrl
+  }
+  query.set(param, val.toString())
+  const newUrl = `${origin}${pathname}?${query.toString()}`
+  return newUrl
+}
+
+/**
  * Get the form state name
  *
  * __Problem__: We needed a way to get the `formName` without the use of any
@@ -167,19 +180,6 @@ export function get_state_form_name(name: string): string {
  */
 export function get_state_dialog_name(name: string): string {
   return name.slice(-6) === 'Dialog' ? name : name + 'Dialog'
-}
-
-/** Get the bootstrap key from head tag. */
-export function get_bootstrap_key(): string {
-  const savedKey = Config.read('bootstrap_key', '')
-  if (savedKey) { return savedKey }
-  const meta = document.querySelector('meta[name="bootstrap"]')
-  const key = (meta as HTMLMetaElement)?.content
-  if (key) {
-    Config.set('bootstrap_key', key)
-    return key
-  }
-  return ''
 }
 
 /**
@@ -274,6 +274,5 @@ export function get_themed_state<T=any>(
   if (light && dark) {
     return mode === 'dark' ? dark : light
   }
-  ler(`get_themed_state: light or dark state is missing.`)
   return main
 }

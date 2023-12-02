@@ -150,17 +150,36 @@ function _resolve_unexpected_nesting (response: any) {
   return response
 }
 
+/**
+ * Get dialog state from the server.
+ *
+ * @param redux store, actions, etc.
+ * @param dialogId
+ * @returns dialog state
+ */
 export async function get_dialog_state <T=any>(
   redux: IRedux,
   dialogId: string
 ): Promise<IStateDialog<T>|null> {
   const rootState = redux.store.getState()
   const mode = rootState.app.themeMode ?? Config.DEFAULT_THEME_MODE
+  const dialogActiveState = rootState.dialogs[dialogId]
+  const dialogLightState = rootState.dialogsLight[dialogId]
+  const dialogDarkState = rootState.dialogsDark[dialogId]
+  if (!dialogLightState || !dialogDarkState) {
+    ler(`get_dialog_state: ${dialogId} missing light or/and dark theme(s).`)
+    remember_error({
+      code: 'not_found',
+      title: `${dialogId} Not Found`,
+      detail: `${dialogId} missing light or/and dark theme(s).`,
+      source: { pointer: dialogId }
+    })
+  }
   const dialogState = get_themed_state<IStateDialog<T>>(
     mode,
-    rootState.dialogs[dialogId],
-    rootState.dialogsLight[dialogId],
-    rootState.dialogsDark[dialogId]
+    dialogActiveState,
+    dialogLightState,
+    dialogDarkState
   )
   if (dialogState) { return dialogState }
   const origin = get_origin_ending_fixed(rootState.app.origin)

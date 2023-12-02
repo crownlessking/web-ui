@@ -65,7 +65,7 @@ export default interface IState {
   app: IStateApp
   appBar: IStateAppBar
   appBarQueries: IStateAppBarQueries
-  background: IStateBackground
+    background: IStateBackground
   typography: IStateTypography
   data: IStateData
   /**

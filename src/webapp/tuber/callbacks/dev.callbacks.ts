@@ -14,8 +14,6 @@ import { get_parsed_page_content, safely_get_as } from 'src/controllers'
 import { remember_exception } from 'src/business.logic/errors'
 import dev_get_video_thumbnail from './dev.get.video.thumbnail'
 import {
-  FORM_AUTHORIZATION_KEY_ID,
-  FORM_AUTHORIZATION_URL_ID,
   FORM_RUMBLE_URL_REGEX_ID,
   FORM_UNKNOWN_URL_REGEX_ID,
   FORM_TWITCH_CLIENT_ID_ID,
@@ -194,46 +192,6 @@ function dev_populate_collection(redux: IRedux) {
   }
 }
 
-function dev_form_submit_authorization_key(redux: IRedux) {
-  return async () => {
-    const { store: { dispatch, getState } } = redux
-    const rootState = getState()
-    const { headers } = rootState.net
-    const formName = rootState.stateRegistry[FORM_AUTHORIZATION_KEY_ID]
-    if (!formName) {
-      ler('dev_form_submit_authorization: Form name not found.')
-      return
-    }
-    const formData = safely_get_as<Record<string, string>>(
-      rootState.formsData,
-      formName,
-      {}
-    )
-    dispatch(post_req_state('dev/save-authorization-key', formData, headers))
-    dispatch({ type: 'formsData/formsDataClear' })
-  }
-}
-
-function dev_form_submit_authorization_url(redux: IRedux) {
-  return async () => {
-    const { store: { dispatch, getState } } = redux
-    const rootState = getState()
-    const { headers } = rootState.net
-    const formName = rootState.stateRegistry[FORM_AUTHORIZATION_URL_ID]
-    if (!formName) {
-      ler('dev_form_submit_authorization: Form name not found.')
-      return
-    }
-    const formData = safely_get_as<Record<string, string>>(
-      rootState.formsData,
-      formName,
-      {}
-    )
-    dispatch(post_req_state('dev/save-authorization-url', formData, headers))
-    dispatch({ type: 'formsData/formsDataClear' })
-  }
-}
-
 function dev_form_submit_rumble_regex(redux: IRedux) {
   return async () => {
     const { store: { dispatch, getState } } = redux
@@ -357,8 +315,8 @@ const devCallbacks = {
   devPopulateCollection: dev_populate_collection,
   devCreateBookmarkSearchIndex: dev_create_bookmark_search_index,
   '$45_C_1': dev_get_video_thumbnail,
-  '$49_C_1': dev_form_submit_authorization_key,
-  '$50_C_1': dev_form_submit_authorization_url,
+  '$49_C_1': () => {},
+  '$50_C_1': () => {},
   '$54_C_1': dev_form_submit_rumble_regex,
   '$57_C_1': dev_form_submit_unknown_regex,
   '$60_C_1': dev_form_submit_twitch_client_id,
