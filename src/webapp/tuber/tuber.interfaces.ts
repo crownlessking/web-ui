@@ -19,7 +19,8 @@ export type TPlatform = '_blank'
 
 /**
  * Type for bookmark.  
- * Server uses snake_case, but client uses camelCase.
+ * Contains two versions of the same field. Server uses snake_case, but client
+ * uses camelCase.
  */
 export interface IBookmark {
   createdAt?: Date
