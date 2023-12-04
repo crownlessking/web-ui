@@ -129,5 +129,5 @@ export default function Bookmark (props: IBookmarkProps) {
   )
 
   // lazy render
-  return <>{ loaded ? <BookmarkCard /> : ( null ) }</>
+  return loaded ? <BookmarkCard /> : null
 }
