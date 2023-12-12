@@ -6,6 +6,7 @@ import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config
 /**
  * Callback to handle the search field in the appbar when the user submits a
  * query to search for bookmarks.
+ * @param redux store, actions, and route
  */
 export default function appbar_search_bookmarks (redux: IRedux) {
   return async () => {

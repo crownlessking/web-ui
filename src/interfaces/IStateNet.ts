@@ -40,9 +40,9 @@ export default interface IStateNet {
    */
   csrfToken?: string
   /**
-   * Any value inserted here is automatically included as POST request headers.
+   * Any value inserted here is automatically included as a request headers.
    *
    * In addition, cone expressions are supported.
    */
-  headers?: { [prop: string]: string }
+  headers?: Record<string, string>
 }

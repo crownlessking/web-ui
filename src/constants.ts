@@ -118,3 +118,4 @@ export const NAME_NOT_SET = 'NAME NOT SET!'
 export const LAST_DRAWER_STATE = 'last_drawer_state'
 export const NOT_FOUND = -1
 export const NET_STATE_PATCH_DELETE = '<#DEL>'
+export const BOOTSTRAP_ATTEMPTS = 'bootstrap_attempts'

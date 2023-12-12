@@ -51,10 +51,12 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
 
   get inputBaseProps(): Required<IStateAppBar>['inputBaseProps'] {
     return {
+      'autoComplete': 'off',
       'placeholder': 'Search…',
       'inputProps': { 'aria-label': 'search' },
       'fullWidth': true,
-      ...this.appBarState.inputBaseProps
+      'id': 'search-field',
+      ...this.appBarState.inputBaseProps,
     }
   }
 

@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
 import { useDispatch, useSelector } from 'react-redux'
-import store, { actions, AppDispatch, RootState } from '../../state'
+import { AppDispatch, RootState, redux } from '../../state'
 import StatePageAppBarMidSearch from '../../controllers/templates/StatePageAppBarMidSearch'
 import StateJsxLogo from './state.jsx.logo'
 import AppBarButton from '../link'
@@ -78,7 +78,7 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      appBar.searchFieldIconButton.onClick({ store, actions })(e)
+      appBar.searchFieldIconButton.onClick(redux)(e)
     }
   }
 
@@ -148,7 +148,6 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase
-              autoComplete='off'
               {...appBar.inputBaseProps}
               endAdornment={
                 <InputAdornment position='end'>
@@ -159,9 +158,13 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
                         'icon': 'clear_outline',
                         'iconProps': { 'color': 'error', 'fontSize': 'small' },
                       },
-                      'onClick': ({ store, actions }) => () => store.dispatch(
-                        actions.appBarQueriesDelete(route)
-                      )
+                      'onClick': ({ store, actions }) => () => {
+                        store.dispatch(actions.appBarQueriesDelete(route))
+                        const inputId = appBar.inputBaseProps.id
+                        if (inputId) {
+                          document.getElementById(inputId)?.focus()
+                        }
+                      }
                     })} />
                   ): ( null )}
                   <AppBarButton def={appBar.searchFieldIconButton} />

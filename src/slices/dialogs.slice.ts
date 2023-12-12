@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
+import IStateAllDialogs from 'src/interfaces/IStateAllDialogs'
 import { get_state_dialog_name } from '../business.logic'
 import initialState from '../state/initial.state'
 
-export const DIALOGS_ADD = 'dialogs/dialogsAdd'
-export const DIALOGS_REMOVE = 'dialogs/dialogsRemove'
-export const DIALOGS_OPEN = 'dialogs/dialogsOpen'
-export const DIALOGS_CLOSE = 'dialogs/dialogsClose'
+interface IAddMultipleAction {
+  type: string
+  payload: IStateAllDialogs
+}
 
 export const dialogsSlice = createSlice({
   name: 'dialogs',
   initialState: initialState.dialogs,
   reducers: {
-    dialogsAddMultiple: (state, action) => {
+    dialogsAddMultiple: (state, action: IAddMultipleAction) => {
       const dialogs = action.payload
       Object.keys(dialogs).forEach(key => {
-        state[key] = dialogs[key]
+        state[key] = dialogs[key] as any
       })
     },
     /**

@@ -1,30 +1,8 @@
 import { mongo_object_id } from '.'
-import { IGenericObject } from '../interfaces/IState'
 import Config from '../config'
 import { IJsonapiError } from '../interfaces/IJsonapi'
 
 let tmpErrorsList: IJsonapiError[]
-
-/**
- * Get global variable value.
- *
- * Since there's a number of global variables that are defined by clients,
- * there's a strong chance that some or all of them may be undefined.
- * This function is a solution to that problem.
- *
- * @param varName string representation of in-code variable identifier.
- * @returns object or throws an exception
- * @throws an exception if the global variable name is invalid.
- */
-export function get_global_var(varName: string): any {
-  try {
-    return window[varName]
-  } catch (e: any) {
-    const message = `Global variable "${varName}" does not exist.`
-    remember_exception(e, message)
-  }
-  return { }
-}
 
 /** Get search query */
 export function get_search_query(
@@ -64,7 +42,7 @@ export function set_status_error_code(error: IJsonapiError): void {
 }
 
 /** Format JSON */
-export function format_json_code(state: IGenericObject | string): string {
+export function format_json_code(state: Record<string,any> | string): string {
   const jsonStr = typeof state === 'string' ? state : JSON.stringify(state, null, 4)
   return jsonStr
     .replace(/\n/g, '<br>')
@@ -95,7 +73,7 @@ function _color_json_code_regex_highlight(jsonStr: string): string {
  * Takes json as an object and apply color-coded highlighting to make it more
  * readable after converting it to a string using `JSON.stringify`.
  */
-export function color_json_code(obj: IGenericObject | string): string {
+export function color_json_code(obj: Record<string,any> | string): string {
   if (typeof obj === 'object' && obj !== null && !(obj instanceof Array)) {
     const jsonStr = JSON.stringify(obj, null, 4)
     const jsonStrHighlighted = _color_json_code_regex_highlight(jsonStr)

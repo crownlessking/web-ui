@@ -8,42 +8,6 @@ import {
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
 import { IStatePageContent } from '../interfaces/IStatePage'
 
-const stateOverride: Record<string, any> = {}
-
-/**
- * Override state
- * 
- * This a solution for modifying the state while keeping the original state
- * intact.
- * @param key property at which the value will be stored
- * @param value value to be stored
- */
-export function save_state(key: string, value: any): void {
-  stateOverride[key] = value
-}
-
-/**
- * Get state
- * 
- * This a solution for modifying the state while keeping the original state
- * intact.
- * @param key property at which the value will be retrieved.
- */
-export function get_state<T=any>(key: string): T {
-  return stateOverride[key]
-}
-
-/**
- * Clear state
- * 
- * This a solution for modifying the state while keeping the original state
- * intact.
- * @param key property at which the value is stored and will be deleted.
- */
-export function clear_state(key: string) {
-  delete stateOverride[key]
-}
-
 /**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
  * element.

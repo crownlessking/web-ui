@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { TThemeMode } from 'src/interfaces'
 import initialState from '../state/initial.state'
 
 export const APP_IS_BOOTSTRAPPED   = 'APP_IS_BOOTSTRAPPED'
@@ -66,7 +67,7 @@ export const appSlice = createSlice({
     appSetFetchMessage: (state, actions) => {
       state.fetchMessage = actions.payload
     },
-    appThemeModeUpdate: (state, actions) => {
+    appThemeModeUpdate: (state, actions:{type:string;payload:TThemeMode}) => {
       state.themeMode = actions.payload
     }
   },

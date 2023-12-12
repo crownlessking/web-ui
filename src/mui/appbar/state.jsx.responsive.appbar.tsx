@@ -12,15 +12,15 @@ interface IJRAppBarProps {
 }
 
 // const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = [ 'Home', 'About', 'Contact' ]
 
 export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) {
-  const { appBar } = page;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { appBar } = page
+  const [ mobileOpen, setMobileOpen ] = React.useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
   // const drawer = (
   //   <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -62,5 +62,5 @@ export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) 
         </Toolbar>
       </AppBar>
     </Box>
-  );
+  )
 }

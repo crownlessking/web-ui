@@ -1,5 +1,5 @@
 import { IRedux, ler, TReduxCallback } from '../../../state'
-import form_submit_login from './prod.login'
+import form_submit_sign_in, { sign_out } from './prod.authentication'
 import form_submit_new_youtube_bookmark from './prod.bookmarks.201.youtube'
 import form_submit_delete_bookmark from './prod.bookmarks.actions'
 import dialog_new_bookmark_from_url, {
@@ -32,7 +32,7 @@ function close_default (redux: IRedux) {
 }
 
 /** @id 32_C_1 */
-export function dialog_login(redux: IRedux) {
+export function dialog_sign_in(redux: IRedux) {
   return async () => {
     const dispatch = redux.store.dispatch
     const rootState = redux.store.getState()
@@ -59,7 +59,7 @@ const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   defaultClose: close_default,
   '$1_C_1': dialog_new_bookmark_from_url,
   '$3_C_1': dialog_new_video_url,
-  '$32_C_1': dialog_login,
+  '$32_C_1': dialog_sign_in,
   appBarSearchBookmarks: appbar_search_bookmarks,
   '$1_C_2': dialog_new_bookmark_from_url_on_enter_key,
   '$6_C_1': form_submit_new_youtube_bookmark,
@@ -79,8 +79,9 @@ const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   '$37_C_1': form_submit_edit_twitch_bookmark,
   '$30_C_1': form_submit_new_unknown_bookmark,
   '$31_C_1': form_submit_edit_unknown_bookmark,
-  '$41_C_1': form_submit_login,
+  '$41_C_1': form_submit_sign_in,
   '$44_C_1': toggle_theme_mode,
+  '$66_C_1': sign_out
   // TODO Add more callbacks here
 }
 

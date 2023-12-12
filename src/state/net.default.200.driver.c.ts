@@ -15,7 +15,11 @@ import StateDataPagesRange from '../controllers/StateDataPagesRange'
 import JsonapiPaginationLinks from '../controllers/JsonapiPaginationLinks'
 import { safely_get_as } from '../business.logic'
 import { remember_jsonapi_errors } from '../business.logic/errors'
-import { is_object } from 'src/business.logic'
+import { is_object } from '../business.logic'
+import Config from '../config'
+import { BOOTSTRAP_ATTEMPTS } from 'src/constants'
+import { loadedRangeUpdate } from 'src/slices/dataLoadedPages.slice'
+import StateSession from 'src/controllers/StateSession'
 
 // [TODO] The `included` state does not exist yet and needs to be created
 
@@ -29,13 +33,18 @@ export default function net_default_200_driver (
   response: IJsonapiAbstractResponse
 ): void {
   const doc = response as IJsonapiResponse
+  if (!!(doc.meta || doc.data || doc.links || doc.state)) {
+    dispatch(appRequestSuccess())
+  } else {
+    dispatch(appRequestFailed())
+  }
   let insertPosition: 'beginning' | 'end' | '' = 'end'
   const maxLoadedPages = parseInt(safely_get_as(
     doc.meta,
     'max_loaded_pages',
     '4'
   ))
-  const dataManager = new StateDataPagesRange(getState().dataLoadedPages)
+  const dataManager = new StateDataPagesRange(getState().dataPagesRange)
   dataManager.configure({ endpoint })
   let currentPageNumber = 1
   let pageSize = 25
@@ -85,13 +94,10 @@ export default function net_default_200_driver (
     const newRange = dataManager.pageToBeLoaded(currentPageNumber)
       .getNewPageRange()
     if (newRange) {
-      dispatch({
-        type: 'dataLoadedPages/loadedRangeUpdate',
-        payload: {
-          endpoint,
-          pageNumbers: newRange
-        }
-      })
+      dispatch(loadedRangeUpdate({
+        endpoint,
+        pageNumbers: newRange
+      }))
     }
   } else if (doc.errors) {
     remember_jsonapi_errors(doc.errors)
@@ -100,15 +106,21 @@ export default function net_default_200_driver (
   // This if-condition handles redux state loaded from the server (remote).
   if (is_object(doc.state)) {
     dispatch(net_patch_state(doc.state))
+    // If the response is a state bootstrap
     if (doc.state?.app?.isBootstrapped) {
       bootstrap()
     }
+    // Setting a condition to force app to bootstrap again.
+    else if (doc.state?.app?.isBootstrapped === false) {
+      Config.write(BOOTSTRAP_ATTEMPTS, 0)
+    }
+    if (doc.state?.session) {
+      const session = new StateSession(doc.state.session)
+      // https://www.tabnine.com/academy/javascript/how-to-set-cookies-javascript/
+      document.cookie = `token=${session.token}`
+      document.cookie = `role=${session.role}`
+      document.cookie = `name=${session.name}`
+      document.cookie = `jwt_version=${session.jwt_version}`
+    }
   }
-
-  if (!!(doc.meta || doc.data || doc.links || doc.state)) {
-    dispatch(appRequestSuccess())
-  } else {
-    dispatch(appRequestFailed())
-  }
-
 }

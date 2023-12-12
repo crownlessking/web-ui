@@ -23,6 +23,15 @@ export type TPlatform = '_blank'
  * uses camelCase.
  */
 export interface IBookmark {
+  /** Same as `_id` field */
+  id?: string
+  /** Server `id` field */
+  _id?: string
+  /** Same as `_type` field */
+  type?: string
+  /** Server `type` field. This is the collection name. */
+  _type?: string
+  /** Server `created_at` field */
   createdAt?: Date
   modifiedAt?: Date
   isPrivate?: boolean

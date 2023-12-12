@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 // import logger from 'redux-logger'// TODO Uncomment when debugging Redux
-// import thunk from 'redux-thunk'
 import infoReducer, { appActions } from '../slices/app.slice'
 import appBarReducer, { appBarActions } from '../slices/appBar.slice'
 import metaReducer, { metaActions } from '../slices/meta.slice'
@@ -9,7 +8,7 @@ import appBarQueriesReducer, { appBarQueriesActions } from '../slices/appBarQuer
 import backgroundReducer, { backgroundActions } from '../slices/background.slice'
 import typographyReducer, { typographyActions } from '../slices/typography.slice'
 import dialogReducer, { dialogActions } from '../slices/dialog.slice'
-import dialogsReducer from '../slices/dialogs.slice'
+import dialogsReducer, { dialogsAction } from '../slices/dialogs.slice'
 import drawerReducer, { drawerActions } from '../slices/drawer.slice'
 import formsReducer, { formsActions } from '../slices/forms.slice'
 import pagesReducer, { pagesActions } from '../slices/pages.slice'
@@ -34,14 +33,21 @@ import pagesLightReducer, { pagesLightActions } from 'src/slices/pagesLight.slic
 import pagesDarkReducer, { pagesDarkActions } from 'src/slices/pagesDark.slice'
 import themeLightReducer, { themeLightActions } from 'src/slices/themeLight.slice'
 import themeDarkReducer, { themeDarkActions } from 'src/slices/themeDark.slice'
+import sessionReducer, { sessionActions } from 'src/slices/session.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import Config from '../config'
 import { remember_exception } from '../business.logic/errors'
+import initialState from './initial.state'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const net_patch_state = (stateFragment: any) => ({
   type: NET_STATE_PATCH,
   payload: stateFragment
+})
+
+export const STATE_RESET = 'STATE_RESET'
+export const state_reset = () => ({
+  type: STATE_RESET
 })
 
 /**
@@ -103,9 +109,9 @@ const appReducer = combineReducers({
   app: infoReducer,
   appBar: appBarReducer,
   appBarQueries: appBarQueriesReducer,
-    background: backgroundReducer,
+  background: backgroundReducer,
   data: dataReducer,
-  dataLoadedPages: dataLoadedPagesSlice,
+  dataPagesRange: dataLoadedPagesSlice,
   dialog: dialogReducer,
   dialogs: dialogsReducer,
   dialogsLight: dialogsLightReducer,
@@ -132,6 +138,7 @@ const appReducer = combineReducers({
   typography: typographyReducer,
   pathnames: pathnamesReducer,
   stateRegistry: stateRegistryReducer,
+  session: sessionReducer
 })
 
 // https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
@@ -149,6 +156,11 @@ const rootReducer = (state: any, action: any) => {
     return appReducer(newState, action)
   }
 
+  // Reset of the state
+  if (action.type === STATE_RESET) {
+    return appReducer(initialState, action)
+  }
+
   return appReducer(state, action)
 }
 
@@ -160,10 +172,9 @@ const store = configureStore({
   // middleware: (getDefaultMiddleware) =>
   // getDefaultMiddleware()
   //   .prepend(
-  //     thunk
   //     // TODO add more middlewares here
   //   )
-    // .concat(logger) // TODO Uncomment when debugging Redux
+  //   .concat(logger) // TODO Uncomment when debugging Redux
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -178,6 +189,7 @@ export const actions = {
   ...backgroundActions,
   ...dataActions,
   ...dialogActions,
+  ...dialogsAction,
   ...drawerActions,
   ...errorsActions,
   ...formsActions,
@@ -201,6 +213,7 @@ export const actions = {
   ...formsDarkActions,
   ...pagesLightActions,
   ...pagesDarkActions,
+  ...sessionActions
 }
 
 export type TAllActions = typeof actions
@@ -213,7 +226,6 @@ export type TAllActions = typeof actions
 export interface IRedux {
   store: typeof store
   actions: typeof actions
-
   /**
    * If you don't want to define a callback for your button or link,
    * you can use the href prop to set the target page. It's value should

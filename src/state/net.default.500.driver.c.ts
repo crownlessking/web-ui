@@ -33,4 +33,3 @@ export default function net_default_500_driver (
   ler(`net_default_500_driver: endpoint: ${endpoint}`)
   ler('net_default_500_driver: response:', response)
 }
-

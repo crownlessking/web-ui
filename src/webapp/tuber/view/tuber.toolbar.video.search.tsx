@@ -4,6 +4,9 @@ import StateLink from 'src/controllers/StateLink'
 import StatePageAppBar from 'src/controllers/templates/StatePageAppBar'
 import Link from 'src/mui/link'
 import { IResearchToolbarProps } from '../tuber.interfaces'
+import StateSession from 'src/controllers/StateSession'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/state'
 
 // const Spacing = styled('div')(({ theme }) =>  ({
 //   marginRight: '33%'
@@ -80,17 +83,24 @@ const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
 
 export default function ResearchToolbarFixed (props: IResearchToolbarProps) {
   const { def: appBar } = props
+  const { sessionValid } = new StateSession(
+    useSelector((state: RootState) => state.session)
+  )
   return (
     <Toolbar>
       <ToggleWrapper>
-        <AddBookmark
-          callback={props.bookmarkAddCallback}
-          def={appBar}
-        />
-        <IntegratedPlayerToggle
-          callback={props.togglePlayerCallback}
-          def={appBar}
-        />
+        {sessionValid ? (
+          <>
+            <AddBookmark
+              callback={props.bookmarkAddCallback}
+              def={appBar}
+            />
+            <IntegratedPlayerToggle
+              callback={props.togglePlayerCallback}
+              def={appBar}
+            />
+          </>
+        ): ( null )}
       </ToggleWrapper>
     </Toolbar>
   )

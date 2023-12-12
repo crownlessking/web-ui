@@ -14,7 +14,7 @@ import StateAllPages from './controllers/StateAllPages'
 import StateApp from './controllers/StateApp'
 import StateNet from './controllers/StateNet'
 import AppPage from './components/app.component'
-import { ALLOWED_ATTEMPTS } from './constants'
+import { ALLOWED_ATTEMPTS, BOOTSTRAP_ATTEMPTS } from './constants'
 
 /**
  * Making all FontAwesome 'Regular', 'Solid', and 'Brand' icons available
@@ -50,10 +50,13 @@ export default function App() {
     const onPostReqHomePageState = () => {
       const key = get_bootstrap_key()
       if (!key) { return }
-      const bootstrapAttempts = Config.read<number>('bootstrap_attempts', 0)
+      const bootstrapAttempts = Config.read<number>(BOOTSTRAP_ATTEMPTS, 0)
       if (bootstrapAttempts < ALLOWED_ATTEMPTS && key) {
-        dispatch(post_req_state(key, {}, net.headers))
-        Config.write('bootstrap_attempts', bootstrapAttempts + 1)
+        console.log('Bootstrap cookie:', document.cookie)
+        dispatch(post_req_state(key, {
+          cookie: document.cookie,
+        }, net.headers))
+        Config.write(BOOTSTRAP_ATTEMPTS, bootstrapAttempts + 1)
       }
     }
     // Get bootstrap state from server if none was provided.

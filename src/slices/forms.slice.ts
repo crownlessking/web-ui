@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import IStateAllForms from 'src/interfaces/IStateAllForms'
 import IStateForm from '../interfaces/IStateForm'
 import initialState from '../state/initial.state'
 
@@ -25,14 +26,19 @@ interface IFormsErrorCountReducerArgs {
   payload: IFormsErrorCountArgs
 }
 
+interface IAddMultipleAction {
+  type: string
+  payload: IStateAllForms
+}
+
 export const formsSlice = createSlice({
   name:'forms',
   initialState: initialState.forms,
   reducers: {
-    formsAddMultiple: (state, action) => {
+    formsAddMultiple: (state, action:IAddMultipleAction) => {
       const forms = action.payload
       Object.keys(forms).forEach(key => {
-        state[key] = forms[key]
+        state[key] = forms[key] as any
       })
     },
     formsAdd: (state, action: IFormsReducerArgs) => {

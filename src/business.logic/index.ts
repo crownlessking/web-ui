@@ -41,6 +41,27 @@ export function get_head_meta_content(name: string, $default = 'app'): string {
 }
 
 /**
+ * Get global variable value.
+ *
+ * Since there's a number of global variables that are defined by clients,
+ * there's a strong chance that some or all of them may be undefined.
+ * This function is a solution to that problem.
+ *
+ * @param varName string representation of in-code variable identifier.
+ * @returns object or throws an exception
+ * @throws an exception if the global variable name is invalid.
+ */
+export function get_global_var(varName: string): any {
+  try {
+    return window[varName]
+  } catch (e: any) {
+    const message = `Global variable "${varName}" does not exist.`
+    console.error(message)
+  }
+  return { }
+}
+
+/**
  * Find nested values in object using a string of dot-separated object keys.
  *
  * e.i.
@@ -275,4 +296,22 @@ export function get_themed_state<T=any>(
     return mode === 'dark' ? dark : light
   }
   return main
+}
+
+/**
+ * Parse cookie string into an object.
+ * @param cookieString Cookie string
+ * @returns object
+ */
+export function parse_cookies(cookieString?: string) {
+  if (!cookieString) return {}
+  const cookies = {} as Record<string, string>
+  const pairs = cookieString.split(';')
+
+  pairs.forEach(pair => {
+    const [key, value] = pair.split('=').map(s => s.trim())
+    cookies[key] = value
+  })
+
+  return cookies
 }

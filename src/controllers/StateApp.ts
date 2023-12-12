@@ -1,12 +1,9 @@
 import { get_origin_ending_fixed } from '../business.logic'
-import { remember_possible_error } from '../business.logic/errors'
 import AbstractState from './AbstractState'
-import IStateApp, { IStateAppSession } from '../interfaces/IStateApp'
+import IStateApp from '../interfaces/IStateApp'
 import State from './State'
 import Config from '../config'
 import { TThemeMode } from '../interfaces'
-
-const dudSession: IStateAppSession = { accessToken: '', name: '' }
 
 export default class StateApp extends AbstractState implements IStateApp {
 
@@ -53,21 +50,6 @@ export default class StateApp extends AbstractState implements IStateApp {
    *        in or not).
    */
   get homePage(): string { return this._appState.homePage ?? '' }
-  /** Returns `true` if the session's information is available. */
-  get sessionValid(): boolean {
-    if (this._appState.session
-      && this._appState.session.accessToken
-      && this._appState.session.name
-    ) {
-      return true
-    }
-
-    remember_possible_error(`BAD session values`, this._appState.session)
-    return false
-  }
-  get session(): IStateAppSession {
-    return this._appState.session || dudSession
-  }
   get isBootstrapped(): boolean {
     return this._appState.isBootstrapped ?? false
   }

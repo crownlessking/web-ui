@@ -14,6 +14,7 @@ import IStateTopLevelLinks from './IStateTopLevelLinks'
 import IStateTypography from './IStateTypography'
 import IStateFormItemCustom from './IStateFormItemCustom'
 import { ThemeOptions } from '@mui/material'
+import { IStateSession } from './IStateSession'
 
 export interface IGenericObject<T=any> {
   [prop: string]: T
@@ -124,6 +125,7 @@ export default interface IState {
   pathnames: IStatePathnames
   /** List of state keys */
   stateRegistry: Record<string, string>
+  session: IStateSession
 }
 
 /**

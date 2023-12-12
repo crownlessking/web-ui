@@ -51,6 +51,7 @@ export default function TuberThumbnailedBookmarkList(props: ITTBList) {
           <BookmarkWithThumbnail
             handleOnClick={handleOnClick}
             index={i}
+            key={bookmark.id ?? `bookmark-${i}`}
           >
             { bookmark }
           </BookmarkWithThumbnail>

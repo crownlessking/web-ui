@@ -4,13 +4,16 @@ import { get_head_meta_content } from '../business.logic'
 import AbstractState from './AbstractState'
 import IStateNet from '../interfaces/IStateNet'
 import State from './State'
+import StateSession from './StateSession'
 
 export default class StateNet extends AbstractState implements IStateNet {
 
   private _netState: IStateNet
   private _parentDef?: State
   private _netCsrfToken?: string
-  private _netHeaders?: { [prop: string]: string }
+  private _netHeaders?: Record<string, string>
+  private _token?: string
+  private _session?: StateSession
 
   constructor(netState: IStateNet, parent?: State) {
     super()
@@ -43,6 +46,28 @@ export default class StateNet extends AbstractState implements IStateNet {
     return token
   }
 
+  get session(): StateSession {
+    return this._session || (
+      this._session = new State().session
+    )
+  }
+
+  private _getTokenFromCookie(): string {
+    const cookies = document.cookie.split(';')
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=')
+      if (name.trim() === 'token') {
+        return value.trim()
+      }
+    }
+    return this.session.token ?? ''
+  }
+  get token(): string {
+    return this._token = this._token ?? (
+      this._token = this._getTokenFromCookie()
+    )
+  }
+
   get csrfToken(): string {
     return this._netCsrfToken = this._netCsrfToken || (
       this._netCsrfToken = this.locateCsrfToken()
@@ -63,7 +88,10 @@ export default class StateNet extends AbstractState implements IStateNet {
 
   get headers(): IStateNet['headers'] {
     return this._netHeaders || (
-      this._netHeaders = this.parseHeadersConeExp()
+      this._netHeaders = {
+        ...(this.token ? {'Authorization':`Bearer ${this.token}`} : {}),
+        ...this.parseHeadersConeExp()
+      }
     )
   }
 

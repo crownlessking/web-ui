@@ -4,7 +4,7 @@ import { IRedux } from 'src/state'
 /** @id 44_C_1 */
 export default function toggle_theme_mode (redux: IRedux) {
   return async () => {
-    const { dispatch } = redux.store
+    const { store: { dispatch }, actions } = redux
     const rootState = redux.store.getState()
     const { themeMode } = rootState.app
     const newMode = themeMode === 'light' ? 'dark' : 'light'
@@ -18,49 +18,27 @@ export default function toggle_theme_mode (redux: IRedux) {
       themeLight,
       themeDark
     } = rootState
-    if (newMode === 'light') {
-      clear_last_content_jsx()
-      dispatch({ type: 'dialog/dialogDismount' })
-      dispatch({
-        type: 'app/appThemeModeUpdate',
-        payload: newMode
-      })
-      dispatch({
-        type: 'forms/formsAddMultiple',
-        payload: formsLight
-      })
-      dispatch({
-        type: 'dialogs/dialogsAddMultiple',
-        payload: dialogsLight
-      })
-      dispatch({
-        type: 'pages/pagesAddMultiple',
-        payload: pagesLight
-      })
-      dispatch({ type: 'theme/themeSet', payload: themeLight })
-      return
-    }
-    if (newMode === 'dark') {
-      clear_last_content_jsx()
-      dispatch({ type: 'dialog/dialogDismount' })
-      dispatch({
-        type: 'app/appThemeModeUpdate',
-        payload: newMode
-      })
-      dispatch({
-        type: 'forms/formsAddMultiple',
-        payload: formsDark
-      })
-      dispatch({
-        type: 'dialogs/dialogsAddMultiple',
-        payload: dialogsDark
-      })
-      dispatch({
-        type: 'pages/pagesAddMultiple',
-        payload: pagesDark
-      })
-      dispatch({ type: 'theme/themeSet', payload: themeDark })
-      return
-    }
+    setTimeout(() => {
+      if (newMode === 'light') {
+        clear_last_content_jsx()
+        dispatch(actions.dialogDismount())
+        dispatch(actions.appThemeModeUpdate('light'))
+        dispatch(actions.formsAddMultiple(formsLight))
+        dispatch(actions.dialogsAddMultiple(dialogsLight))
+        dispatch(actions.pagesAddMultiple(pagesLight))
+        dispatch(actions.themeSet(themeLight))
+        return
+      }
+      if (newMode === 'dark') {
+        clear_last_content_jsx()
+        dispatch(actions.dialogDismount())
+        dispatch(actions.appThemeModeUpdate('dark'))
+        dispatch(actions.formsAddMultiple(formsDark))
+        dispatch(actions.dialogsAddMultiple(dialogsDark))
+        dispatch(actions.pagesAddMultiple(pagesDark))
+        dispatch(actions.themeSet(themeDark))
+        return
+      }
+    })
   }
 }

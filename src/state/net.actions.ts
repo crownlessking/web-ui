@@ -14,6 +14,7 @@ import {
 import net_default_200_driver from './net.default.200.driver.c'
 import net_default_201_driver from './net.default.201.driver.c'
 import net_default_400_driver from './net.default.400.driver.c'
+import net_default_401_driver from './net.default.401.driver.c'
 import net_default_404_driver from './net.default.404.driver.c'
 import net_default_409_driver from './net.default.409.driver.c'
 import net_default_500_driver from './net.default.500.driver.c'
@@ -25,8 +26,10 @@ import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
 import { cancel_spinner, schedule_spinner } from './spinner'
 import IStateDialog from '../interfaces/IStateDialog'
 import Config from '../config'
+import StateNet from '../controllers/StateNet'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
+  'Accept': 'application/json',
   'Content-Type': 'application/json',
 }
 
@@ -70,7 +73,9 @@ const delegate_error_handling = (dispatch: Dispatch) => {
   dispatch(appRequestFailed())
 }
 
-/** Handles successful responses. */
+/**
+ * Handles (arguebly) successful responses.
+ */
 const delegate_data_handling = (
   dispatch: Dispatch,
   getState: () => RootState,
@@ -80,19 +85,21 @@ const delegate_data_handling = (
   cancel_spinner()
   dispatch(appHideSpinner())
   const status = json.meta?.status || 500
-
   const defaultDriver: { [key: number]: () => void } = {
     200: () => net_default_200_driver(dispatch, getState, endpoint, json),
     201: () => net_default_201_driver(dispatch, getState, endpoint, json),
     400: () => net_default_400_driver(dispatch, getState, endpoint, json),
+    401: () => net_default_401_driver(dispatch, getState, endpoint, json),
     404: () => net_default_404_driver(dispatch, getState, endpoint, json),
     409: () => net_default_409_driver(dispatch, getState, endpoint, json),
     500: () => net_default_500_driver(dispatch, getState, endpoint, json),
   }
-
-  // We need to apply the right drivers to the JSON response
+  // Handle the JSON response here.
   try {
     switch (json.driver) {
+
+      // TODO Define custom ways of handling the response here.
+
       default:
         defaultDriver[status]()
     }
@@ -185,10 +192,12 @@ export async function get_dialog_state <T=any>(
   const origin = get_origin_ending_fixed(rootState.app.origin)
   const dialogPathname = rootState.pathnames.DIALOGS
   const url = `${origin}${dialogPathname}`
+  const { headers } = new StateNet(rootState.net)
+  console.log('headers:', headers)
   const response = await post_fetch(url, {
     'key': dialogId,
     'mode': mode
-  })
+  }, headers)
   if (response?.errors) {
     ler(`get_dialog_state: ${response.errors?.[0]?.title}`)
     remember_jsonapi_errors(response.errors)
@@ -231,9 +240,21 @@ export async function get_dialog_state <T=any>(
   return themedDialogState
 }
 
-export async function post_fetch<T=any>(url: string, body: T): Promise<any> {
-  const response = await fetch(url, {
+export async function post_fetch<T=any>(
+  url: string,
+  body: T,
+  customHeaders?: RequestInit['headers']
+): Promise<any> {
+  const headers = {
     ...DEFAULT_POST_PAYLOAD,
+    headers: {
+      ...DEFAULT_POST_PAYLOAD.headers,
+      ...customHeaders
+    }
+  }
+  console.log('headers:', headers)
+  const response = await fetch(url, {
+    ...headers,
     body: JSON.stringify(body)
   })
   const json = await response.json()
@@ -265,12 +286,17 @@ export const post_req_state = (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const origin = get_origin_ending_fixed(getState().app.origin)
+      const rootState = getState()
+      const origin = get_origin_ending_fixed(rootState.app.origin)
       const url = `${origin}${endpoint}`
-      const headers = customHeaders || getState().net.headers || {}
+      const { headers: netHeaders } = new StateNet(rootState.net)
+      const headers = { ...netHeaders, ...customHeaders }
       const response = await fetch(url, {
         ...DEFAULT_POST_PAYLOAD,
-        ...headers,
+        headers: {
+          ...DEFAULT_POST_PAYLOAD.headers,
+          ...headers
+        },
         body: JSON.stringify(body)
       })
       const json = _resolve_unexpected_nesting(await response.json())
@@ -295,12 +321,17 @@ export const put_req_state = (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const origin = get_origin_ending_fixed(getState().app.origin)
+      const rootState = getState()
+      const origin = get_origin_ending_fixed(rootState.app.origin)
       const url = `${origin}${endpoint}`
-      const headers = customHeaders || getState().net.headers || {}
+      const headersDef = new StateNet(rootState.net).headers
+      const headers = { ...headersDef, ...customHeaders }
       const response = await fetch(url, {
         ...DEFAULT_PUT_PAYLOAD,
-        ...headers,
+        headers: {
+          ...DEFAULT_PUT_PAYLOAD.headers,
+          ...headers
+        },
         body: JSON.stringify(body)
       })
       const json = await response.json()
@@ -345,11 +376,19 @@ export const get_req_state = (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const origin = get_origin_ending_fixed(getState().app.origin)
+      const rootState  = getState()
+      const origin = get_origin_ending_fixed(rootState.app.origin)
       const query  = get_query_starting_fixed(args)
       const uri = `${origin}${endpoint}${query}`
-      const headers = customHeaders || getState().net.headers || {}
-      const response = await fetch(uri, { ...DEFAULT_GET_PAYLOAD, ...headers})
+      const headersDef = new StateNet(rootState.net).headers
+      const headers = { ...headersDef, ...customHeaders }
+      const response = await fetch(uri, {
+        ...DEFAULT_GET_PAYLOAD,
+        headers: {
+          ...DEFAULT_GET_PAYLOAD.headers,
+          ...headers
+        }
+      })
       const json = await response.json()
       json.meta = json.meta || {}
       json.meta.status = response.status
@@ -372,11 +411,19 @@ export const delete_req_state = (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const origin = get_origin_ending_fixed(getState().app.origin)
+      const rootState = getState()
+      const origin = get_origin_ending_fixed(rootState.app.origin)
       const query  = get_query_starting_fixed(args)
       const uri = `${origin}${endpoint}${query}`
-      const headers = customHeaders || getState().net.headers || {}
-      const response = await fetch(uri, { ...DEFAULT_DELETE_PAYLOAD, ...headers})
+      const headersDef = new StateNet(rootState.net).headers
+      const headers = { ...headersDef, ...customHeaders }
+      const response = await fetch(uri, {
+        ...DEFAULT_DELETE_PAYLOAD,
+        headers: {
+          ...DEFAULT_DELETE_PAYLOAD.headers,
+          ...headers
+        }
+      })
       const json = await response.json()
       json.meta = json.meta || {}
       json.meta.status = response.status
@@ -410,10 +457,15 @@ export const post_req = async (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const originEndingFixed = get_origin_ending_fixed(getState().app.origin)
+      const rootState = getState()
+      const originEndingFixed = get_origin_ending_fixed(rootState.app.origin)
       const url = `${originEndingFixed}${pathname}`
       const response = await fetch( url,{
         ...DEFAULT_POST_PAYLOAD,
+        headers: {
+          ...DEFAULT_POST_PAYLOAD.headers,
+          ...new StateNet(rootState.net).headers
+        },
         body: JSON.stringify(body)
       } as RequestInit)
       const json = await response.json()
@@ -446,9 +498,16 @@ export const get_req = (
     dispatch(appRequestStart())
     schedule_spinner()
     try {
-      const originEndingFixed = get_origin_ending_fixed(getState().app.origin)
+      const rootState = getState()
+      const originEndingFixed = get_origin_ending_fixed(rootState.app.origin)
       const url = `${originEndingFixed}${pathname}`
-      const response = await fetch(url)
+      const response = await fetch(url, {
+        ...DEFAULT_GET_PAYLOAD,
+        headers: {
+          ...DEFAULT_GET_PAYLOAD.headers,
+          ...new StateNet(rootState.net).headers
+        }
+      })
       const json = await response.json()
       success
       ? success(endpoint, json)
@@ -459,3 +518,20 @@ export const get_req = (
     }
   }
 }
+
+// [TODO] I was trying to add the network actions to the redux object but it
+//        didn't work. I'll try again later.
+
+// export const netActions = {
+//   get_dialog_state,
+//   post_req_state,
+//   get_req_state,
+//   delete_req_state,
+//   put_req_state,
+//   post_req,
+//   get_req,
+// }
+
+// export interface IReduxNet extends IRedux {
+//   net: typeof netActions
+// }

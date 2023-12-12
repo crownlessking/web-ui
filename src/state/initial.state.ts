@@ -1,7 +1,6 @@
-import { get_head_meta_content } from '../business.logic'
+import { get_head_meta_content, get_global_var } from '../business.logic'
 import { orange } from '@mui/material/colors'
 import IState from '../interfaces/IState'
-import { get_global_var } from '../business.logic/errors'
 
 /*
  * WARNING: Be careful what you import in here. It might cause WEBPACK errors.
@@ -330,4 +329,6 @@ export default {
 
   /** Use to let the app know where to find your states. */
   'stateRegistry': {},
+
+  'session': {},
 } as IState
