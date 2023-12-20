@@ -16,7 +16,7 @@ export default class StatePageAppBar
   protected pageAppBarBackgroundDef?: StatePageAppBarBackground
   protected appBarTypography?: StatePageAppBarTypography
   private _default: StateAppBarDefault
-  private appBarLogoProps?: Required<IStateAppBar>['logoProps']
+  private _appBarLogoProps?: Required<IStateAppBar>['logoProps']
 
   constructor(appBar: IStateAppBar, parent: StatePage) {
     super(appBar, parent)
@@ -111,13 +111,13 @@ export default class StatePageAppBar
   }
 
   get logoProps() {
-    if (this.appBarLogoProps) {
-      return this.appBarLogoProps
+    if (this._appBarLogoProps) {
+      return this._appBarLogoProps
     }
     const logoUri = this.parent.parent.parent.app.logoUri
     if (logoUri) {
       if (this.logoTag.toLowerCase() === 'div') {
-        return this.appBarLogoProps = {
+        return this._appBarLogoProps = {
           ...this._default.logoProps,
           sx: {
             backgroundSize: 'contain',
@@ -128,14 +128,14 @@ export default class StatePageAppBar
         }
       }
       if (this.logoTag.toLowerCase() === 'img') {
-        return this.appBarLogoProps = {
+        return this._appBarLogoProps = {
           ...this._default.logoProps,
           src: logoUri,
           ...this.appBarState.logoProps
         }
       }
     }
-    return this.appBarLogoProps = {
+    return this._appBarLogoProps = {
       ...this._default.logoProps,
       ...this.appBarState.logoProps
     }

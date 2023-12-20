@@ -7,6 +7,7 @@ import {
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi'
 import { appRequestFailed } from 'src/slices/app.slice'
 import { ler, net_patch_state, RootState } from '.'
+import execute_directives from './net.directives.c'
 
 export default function net_default_401_driver (
   dispatch: Dispatch,
@@ -18,6 +19,11 @@ export default function net_default_401_driver (
 
   if (is_object(response.state)) {
     dispatch(net_patch_state(response.state))
+    // dispatch(state_reset())
+  }
+
+  if (response.meta) {
+    execute_directives(dispatch, response.meta)
   }
 
   if (!response.errors) {

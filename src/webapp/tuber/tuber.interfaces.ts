@@ -166,3 +166,37 @@ export interface IVideoData {
 }
 
 export type TVideoData = Partial<IVideoData>
+
+export interface IListing {
+  is_active?: boolean
+  /** Only the user who created the listing can see it. */
+  is_private?: boolean
+  /** Will come up in the global search result if this is true. */
+  is_published?: boolean
+  name: string
+  description?: string
+  /** The user who created the listing. */
+  user_id?: string
+  created_at?: Date
+  modified_at?: Date
+  slug?: string
+  tags?: string[]
+  bookmarks?: {
+    is_active?: boolean
+    /**
+     * Only the user who created the listing can see this bookmark is
+     * included.
+     */
+    is_private?: boolean
+    created_at?: Date
+    modified_at?: Date
+    /** 
+     * Within the context of a listing, this is the HTML tag that
+     * the bookmark is associated with.
+     */
+    html_tag?: string
+    bookmark_id?: string
+  }[]
+  restrict?: Record<string, string>
+  rules?: Record<string, string>
+}

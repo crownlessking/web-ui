@@ -20,6 +20,7 @@ import Config from '../config'
 import { BOOTSTRAP_ATTEMPTS } from 'src/constants'
 import { loadedRangeUpdate } from 'src/slices/dataLoadedPages.slice'
 import StateSession from 'src/controllers/StateSession'
+import execute_directives from './net.directives.c'
 
 // [TODO] The `included` state does not exist yet and needs to be created
 
@@ -70,8 +71,9 @@ export default function net_default_200_driver (
   }
 
   // meta member
-  if (is_object(doc.meta) && insertPosition) {
+  if (doc.meta && insertPosition) {
     dispatch(metaAdd({ endpoint, meta: doc.meta }))
+    execute_directives(dispatch, doc.meta)
   }
 
   // data member

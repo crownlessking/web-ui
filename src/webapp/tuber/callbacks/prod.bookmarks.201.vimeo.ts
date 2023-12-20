@@ -6,7 +6,7 @@ import { IBookmark } from '../tuber.interfaces'
 import { get_dialog_form_endpoint, get_form_data } from './_callbacks.common.logic'
 
 /**
- * [ __Vimeo__ ] Save bookmark to server.
+ * [ **Vimeo** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $14_C_1

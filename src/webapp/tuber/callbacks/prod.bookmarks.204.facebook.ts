@@ -8,7 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 /** 
- * [ __Facebook__ ] Save bookmark changes to server.
+ * [ **Facebook** ] Save bookmark changes to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $27_C_1

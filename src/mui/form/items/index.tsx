@@ -10,7 +10,7 @@ import StateJsxTextfield from './state.jsx.textfield'
 import JsonPicker from './state.jsx.picker'
 import * as C from '../../../constants'
 import { post_req_state } from '../../../state/net.actions'
-import { ICheckboxesData, update_checkboxes } from './_items.business.logic'
+import { ICheckboxesData, update_checkboxes } from './_items.common.logic'
 import {
   BOOL_TRUEFALSE,
   BOOL_ONOFF,
@@ -29,7 +29,7 @@ import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup'
 import FormLabel from '@mui/material/FormLabel'
 import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
-import set_all_default_values from './_items.default.values.business.logic'
+import set_all_default_values from './_items.default.values.common.logic'
 import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
 import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
 import StateJsxPhoneInput from './state.jsx.phone.input'
@@ -41,7 +41,7 @@ import {
   StateJsxHtml,
   StateJsxHtmlTag
 } from './state.jsx.html'
-import { get_bool_type } from '../_form.business.logic'
+import { get_bool_type } from '../_form.common.logic'
 import StateJsxButton from './state.jsx.button'
 
 interface IRecursiveFormBuilder {

@@ -25,8 +25,10 @@ import { IRedux, ler, net_patch_state, RootState } from '.'
 import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
 import { cancel_spinner, schedule_spinner } from './spinner'
 import IStateDialog from '../interfaces/IStateDialog'
-import Config from '../config'
 import StateNet from '../controllers/StateNet'
+import { TThemeMode } from '../interfaces'
+import Config from '../config'
+import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Accept': 'application/json',
@@ -169,7 +171,7 @@ export async function get_dialog_state <T=any>(
   dialogId: string
 ): Promise<IStateDialog<T>|null> {
   const rootState = redux.store.getState()
-  const mode = rootState.app.themeMode ?? Config.DEFAULT_THEME_MODE
+  const mode = Config.read<TThemeMode>(THEME_MODE, THEME_DEFAULT_MODE)
   const dialogActiveState = rootState.dialogs[dialogId]
   const dialogLightState = rootState.dialogsLight[dialogId]
   const dialogDarkState = rootState.dialogsDark[dialogId]
@@ -193,7 +195,6 @@ export async function get_dialog_state <T=any>(
   const dialogPathname = rootState.pathnames.DIALOGS
   const url = `${origin}${dialogPathname}`
   const { headers } = new StateNet(rootState.net)
-  console.log('headers:', headers)
   const response = await post_fetch(url, {
     'key': dialogId,
     'mode': mode
@@ -252,7 +253,6 @@ export async function post_fetch<T=any>(
       ...customHeaders
     }
   }
-  console.log('headers:', headers)
   const response = await fetch(url, {
     ...headers,
     body: JSON.stringify(body)

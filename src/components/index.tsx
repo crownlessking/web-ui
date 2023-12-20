@@ -35,7 +35,7 @@ import {
   TEXT_NODE,
   TIME_PICKER
 } from '../constants'
-import { update_checkboxes } from '../mui/form/items/_items.business.logic'
+import { update_checkboxes } from '../mui/form/items/_items.common.logic'
 import StateJsxButton from '../mui/form/items/state.jsx.button'
 import StateJsxCheckboxes from '../mui/form/items/state.jsx.checkboxes'
 import StateJsxInput from '../mui/form/items/state.jsx.input'
@@ -54,7 +54,7 @@ import store from '../state'
 import { remember_exception } from '../business.logic/errors'
 import { formsDataClear } from '../slices/formsData.slice'
 import StateFormItemSwitch from '../controllers/templates/StateFormItemSwitch'
-import { get_bool_type } from 'src/mui/form/_form.business.logic'
+import { get_bool_type } from 'src/mui/form/_form.common.logic'
 
 interface IComponentsBuilderProps {
   def: StateComponent[]

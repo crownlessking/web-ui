@@ -11,7 +11,7 @@ import {
   get_redux_store_val,
   get_statuses,
   ICheckboxesData
-} from './_items.business.logic'
+} from './_items.common.logic'
 
 interface IJsonCheckboxes {
   def: StateFormItemCheckbox

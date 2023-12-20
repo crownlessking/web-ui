@@ -14,7 +14,13 @@ import StateAllPages from './controllers/StateAllPages'
 import StateApp from './controllers/StateApp'
 import StateNet from './controllers/StateNet'
 import AppPage from './components/app.component'
-import { ALLOWED_ATTEMPTS, BOOTSTRAP_ATTEMPTS } from './constants'
+import {
+  ALLOWED_ATTEMPTS,
+  BOOTSTRAP_ATTEMPTS,
+  THEME_DEFAULT_MODE,
+  THEME_MODE
+} from './constants'
+import { get_cookie } from './business.logic'
 
 /**
  * Making all FontAwesome 'Regular', 'Solid', and 'Brand' icons available
@@ -31,6 +37,8 @@ import { ALLOWED_ATTEMPTS, BOOTSTRAP_ATTEMPTS } from './constants'
  * for more info
  */
 library.add(fab, fas, far)
+
+Config.write(THEME_MODE, get_cookie('mode') || THEME_DEFAULT_MODE)
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -52,7 +60,6 @@ export default function App() {
       if (!key) { return }
       const bootstrapAttempts = Config.read<number>(BOOTSTRAP_ATTEMPTS, 0)
       if (bootstrapAttempts < ALLOWED_ATTEMPTS && key) {
-        console.log('Bootstrap cookie:', document.cookie)
         dispatch(post_req_state(key, {
           cookie: document.cookie,
         }, net.headers))
@@ -68,7 +75,7 @@ export default function App() {
   return (
     <ThemeProvider theme={createTheme(themeState)}>
       <CssBaseline />
-      <AppPage def={allPages} />
+      <AppPage def={allPages} info={app} />
     </ThemeProvider>
   )
 }

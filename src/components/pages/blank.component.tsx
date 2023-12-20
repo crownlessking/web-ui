@@ -4,7 +4,12 @@ import { post_req_state } from '../../state/net.actions'
 import StatePage from '../../controllers/StatePage'
 import { AppDispatch } from '../../state'
 import Config from '../../config'
-import { ALLOWED_ATTEMPTS } from '../../constants'
+import {
+  ALLOWED_ATTEMPTS,
+  THEME_DEFAULT_MODE,
+  THEME_MODE
+} from '../../constants'
+import { TThemeMode } from 'src/interfaces'
 
 export default function PageBlank ({ def: page }:{ def: StatePage }) {
   const dispatch = useDispatch<AppDispatch>()
@@ -16,7 +21,7 @@ export default function PageBlank ({ def: page }:{ def: StatePage }) {
     if (!fetchingStateAllowed) { return }
     const { headers } = page.parent.parent.net
     const { PAGES } = page.parent.parent.pathnames
-    const { themeMode: mode } = page.parent.parent.app
+    const mode = Config.read<TThemeMode>(THEME_MODE, THEME_DEFAULT_MODE)
     const pageLoadAttempts = Config.read<number>(`${key}_load_attempts`, 0)
     if (pageLoadAttempts < ALLOWED_ATTEMPTS) {
       dispatch(post_req_state(PAGES, { key, mode }, headers))

@@ -188,6 +188,7 @@ export default {
 
     // Default blank page
     'default-blank': {
+      '_key': 'default-blank',
       'content': '$view : default_blank_page_view',
       'layout': 'LAYOUT_CENTERED_NO_SCROLL',
       'typography': { 'color': '#74d2b3' },
@@ -198,6 +199,7 @@ export default {
 
     // Default success feedback page
     'default-success': {
+      '_key': 'default-success',
       'content': '$view : default_success_page_view',
       'layout': 'LAYOUT_CENTERED_NO_SCROLL',
       'typography': { 'color': '#74d2b3' },
@@ -208,6 +210,7 @@ export default {
 
     // Default 404 not found page
     'default-notfound': {
+      '_key': 'default-notfound',
       'content': '$view : default_notfound_page_view',
       'layout': 'layout_centered',
       'appBar': { 'items': [{ 'has': { 'text': 'Home', 'route': '/' }}]},
@@ -220,6 +223,7 @@ export default {
 
     'default-landing': {
       '_id': PAGE_HARD_CODED,
+      '_key': 'default-landing',
       'content': '$view : default_landing_page_view',
     },
 
@@ -232,6 +236,7 @@ export default {
     },
 
     'default-errors-view': {
+      '_key': 'default-errors-view',
       'content': '$view : default_errors_page_view',
       'background': {
         'type': 'color',

@@ -7,6 +7,9 @@ import StateNet from 'src/controllers/StateNet'
 import { post_req_state } from 'src/state/net.actions'
 import { get_parsed_page_content } from 'src/controllers'
 import StateSession from 'src/controllers/StateSession'
+import Config from 'src/config'
+import { TThemeMode } from 'src/interfaces'
+import { THEME_DEFAULT_MODE, THEME_MODE } from 'src/constants'
 
 interface ILogin {
   username?: string
@@ -73,11 +76,14 @@ export default function form_submit_sign_in(redux: IRedux) {
       return
     }
     const formData = policy.getFilteredData()
+    const mode = Config.read<TThemeMode>(THEME_MODE, THEME_DEFAULT_MODE)
     dispatch(post_req_state(
       endpoint,
       {
         'credentials': formData,
-        'route': rootState.app.route
+        'route': rootState.app.route,
+        'mode': mode,
+        'cookie': document.cookie
       },
       new StateNet(rootState.net).headers
     ))
@@ -95,6 +101,9 @@ export function sign_out(redux: IRedux) {
     const session = new StateSession(sessionState)
     session.deleteCookie()
     dispatch(state_reset())
-    dispatch(post_req_state(get_bootstrap_key(), {}))
+    dispatch(post_req_state(get_bootstrap_key(), {
+      // 'route': '/',
+      'cookie': document.cookie
+    }))
   }
 }

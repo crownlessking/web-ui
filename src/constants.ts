@@ -85,6 +85,8 @@ export const BAD_FORM_ITEM = ''
 // miscellanous
 
 export type TCallback = (e: any) => void
+export const THEME_MODE = 'theme_mode'
+export const THEME_DEFAULT_MODE = 'dark'
 
 /** Type for page layout. */
 export type TStatePageLayout =

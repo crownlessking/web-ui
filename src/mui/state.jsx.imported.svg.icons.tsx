@@ -90,6 +90,10 @@ export default function getImportedSvgIcon (
     'light_mode_outline': <Icons.LightModeOutlined {...props} />,
     'clearoutlined': <Icons.ClearOutlined {...props} />,
     'clear_outline': <Icons.ClearOutlined {...props} />,
+    'publicoutlined': <Icons.PublicOutlined {...props} />,
+    'public_outline': <Icons.PublicOutlined {...props} />,
+    'travelexploreoutlined': <Icons.TravelExploreOutlined {...props} />,
+    'travel_explore_outline': <Icons.TravelExploreOutlined {...props} />,
     'none': <Fragment />
   }
   const iconName_lc = iconName.toLowerCase()

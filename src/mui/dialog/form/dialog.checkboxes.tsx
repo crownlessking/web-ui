@@ -6,7 +6,7 @@ import { THive } from '.'
 import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import StateFormItemCheckboxBox from '../../../controllers/StateFormItemCheckboxBox'
-import { ICheckboxesData, update_checkboxes } from '../../form/items/_items.business.logic'
+import { ICheckboxesData, update_checkboxes } from '../../form/items/_items.common.logic'
 
 interface IDialogCheckboxes {
   def: StateFormItem<StateForm, StateFormItemCheckboxBox>

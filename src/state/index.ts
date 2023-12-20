@@ -25,19 +25,20 @@ import themeReducer, { themeActions } from '../slices/theme.slice'
 import netReducer, { netActions } from '../slices/net.slice'
 import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice'
 import stateRegistryReducer from '../slices/stateRegistry.slice'
-import dialogsLightReducer, { dialogsLightActions } from 'src/slices/dialogsLight.slice'
-import dialogsDarkReducer, { dialogsDarkActions } from 'src/slices/dialogsDark.slice'
-import formsLightReducer, { formsLightActions } from 'src/slices/formsLight.slice'
-import formsDarkReducer, { formsDarkActions } from 'src/slices/formsDark.slice'
-import pagesLightReducer, { pagesLightActions } from 'src/slices/pagesLight.slice'
-import pagesDarkReducer, { pagesDarkActions } from 'src/slices/pagesDark.slice'
-import themeLightReducer, { themeLightActions } from 'src/slices/themeLight.slice'
-import themeDarkReducer, { themeDarkActions } from 'src/slices/themeDark.slice'
-import sessionReducer, { sessionActions } from 'src/slices/session.slice'
+import dialogsLightReducer, { dialogsLightActions } from '../slices/dialogsLight.slice'
+import dialogsDarkReducer, { dialogsDarkActions } from '../slices/dialogsDark.slice'
+import formsLightReducer, { formsLightActions } from '../slices/formsLight.slice'
+import formsDarkReducer, { formsDarkActions } from '../slices/formsDark.slice'
+import pagesLightReducer, { pagesLightActions } from '../slices/pagesLight.slice'
+import pagesDarkReducer, { pagesDarkActions } from '../slices/pagesDark.slice'
+import themeLightReducer, { themeLightActions } from '../slices/themeLight.slice'
+import themeDarkReducer, { themeDarkActions } from '../slices/themeDark.slice'
+import sessionReducer, { sessionActions } from '../slices/session.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import Config from '../config'
 import { remember_exception } from '../business.logic/errors'
 import initialState from './initial.state'
+import { clear_last_content_jsx } from '../business.logic'
 
 export const NET_STATE_PATCH = 'NET_STATE_PATCH'
 export const net_patch_state = (stateFragment: any) => ({
@@ -66,6 +67,9 @@ const net_patch_state_reducer = (oldState: any, fragment: any) => {
     for (const prop in fragment) {
       const newStateVal = fragment[prop]
       switch (typeof newStateVal) {
+      case 'undefined':
+        state[prop] = undefined
+        break
       case 'object':
         if (newStateVal === null) continue
         if (!Array.isArray(newStateVal)) {
@@ -82,8 +86,9 @@ const net_patch_state_reducer = (oldState: any, fragment: any) => {
         state[prop] = newStateVal
         break
       case 'string':
-        if (newStateVal === NET_STATE_PATCH_DELETE) {
+        if (newStateVal === NET_STATE_PATCH_DELETE) { // delete state
           state[prop] = undefined
+          clear_last_content_jsx()
         } else {
           state[prop] = newStateVal
         }

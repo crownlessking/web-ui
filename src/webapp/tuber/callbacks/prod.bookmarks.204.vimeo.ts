@@ -8,7 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 /**
- * [ __Vimeo__ ] Save bookmark changes to server.
+ * [ **Vimeo** ] Save bookmark changes to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $15_C_1

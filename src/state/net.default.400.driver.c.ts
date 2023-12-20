@@ -7,6 +7,7 @@ import {
   remember_error,
   remember_jsonapi_errors
 } from '../business.logic/errors'
+import execute_directives from './net.directives.c'
 
 export default function net_default_400_driver (
   dispatch: Dispatch,
@@ -18,6 +19,10 @@ export default function net_default_400_driver (
 
   if (is_object(response.state)) {
     dispatch(net_patch_state(response.state))
+  }
+
+  if (response.meta) {
+    execute_directives(dispatch, response.meta)
   }
 
   if (!response.errors) {

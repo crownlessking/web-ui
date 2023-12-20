@@ -8,7 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 /**
- * [ __Twitch__ ] Save bookmark changes to server.
+ * [ **Twitch** ] Save bookmark changes to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $37_C_1

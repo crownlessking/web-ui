@@ -4,7 +4,7 @@ import { get_font_awesome_icon_prop } from 'src/controllers'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import store, { actions } from '../../../../state'
 import StateFormItem from '../../../../controllers/StateFormItem'
-import { get_button_content_code, TCombinations } from './_1.logic'
+import { get_button_content_code, TCombinations } from './_button.common.logic'
 
 interface IJsonButtonProps { def: StateFormItem }
 

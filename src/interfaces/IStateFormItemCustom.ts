@@ -1,5 +1,5 @@
 import { BadgeProps } from '@mui/material'
-import { IRedux } from '../state'
+import { IRedux, TReduxCallback } from '../state'
 import IAdornment from './IAdornment'
 import { IStateFormItemInputProps } from './IStateFormItem'
 
@@ -83,6 +83,11 @@ export default interface IStateFormItemCustom<T = any> {
   onchangeHandle?: string
   onkeydownHandle?: string
   onblurHandle?: string
+  ondeleteHandle?: string
+  /** Used by the Chip component */
+  onClick?: TReduxCallback
+  /** Used by the Chip component */
+  onDelete?: TReduxCallback
   /**
    * Load metadata into field from `state.meta`. The metadata will be
    * identified by the endpoint (this value). If the data is missing, the
@@ -154,3 +159,4 @@ export type THandleCallback = 'onclick'
   | 'onkeydown'
   | 'onblur'
   | 'onfocus'
+  | 'ondelete'

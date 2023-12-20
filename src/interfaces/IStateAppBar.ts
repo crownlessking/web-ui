@@ -28,9 +28,15 @@ export default interface IStateAppBar extends IAbstractState {
   logoContainerProps?: IHtmlAttributes
   /** AppBar textfield props */
   inputBaseProps?: InputBaseProps
+  /** AppBar input chips */
+  inputBaseChips?: IStateFormItemCustom[]
+  /** AppBar search field props */
   searchFieldProps?: any
   /** Icon that's in the left corner of app bar search field. */
   searchFieldIcon?: IStateFormItemCustom
+  /** Whether to hide the search field icon. */
+  hideSearchFieldIcon?: boolean
+  /** Icon button that's in the right corner of app bar search field. */
   searchFieldIconButton?: IStateLink
   searchFieldIconButtonProps?: any
   // searchFieldIconButtonOnClickHandle?: string

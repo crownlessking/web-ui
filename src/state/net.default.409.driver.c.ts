@@ -10,6 +10,7 @@ import {
   remember_error,
   remember_jsonapi_errors
 } from '../business.logic/errors'
+import execute_directives from './net.directives.c'
 
 export default function net_default_409_driver (
   dispatch: Dispatch,
@@ -22,6 +23,10 @@ export default function net_default_409_driver (
 
   if (is_object(doc.state)) {
     dispatch(net_patch_state(response.state))
+  }
+
+  if (doc.meta) {
+    execute_directives(dispatch, doc.meta)
   }
 
   if (!doc.errors) {

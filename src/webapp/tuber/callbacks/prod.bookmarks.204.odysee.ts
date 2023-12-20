@@ -8,7 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 
 /**
- * [ __Odysee__ ] Save bookmark changes to server.
+ * [ **Odysee** ] Save bookmark changes to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $23_C_1

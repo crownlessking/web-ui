@@ -303,10 +303,9 @@ export function get_themed_state<T=any>(
  * @param cookieString Cookie string
  * @returns object
  */
-export function parse_cookies(cookieString?: string) {
-  if (!cookieString) return {}
+export function parse_cookies() {
   const cookies = {} as Record<string, string>
-  const pairs = cookieString.split(';')
+  const pairs = document.cookie.split(';')
 
   pairs.forEach(pair => {
     const [key, value] = pair.split('=').map(s => s.trim())
@@ -314,4 +313,15 @@ export function parse_cookies(cookieString?: string) {
   })
 
   return cookies
+}
+
+/**
+ * Get the cookie value by name.
+ * @param name Cookie name
+ * @returns T
+ */
+export function get_cookie<T=string>(name: string): T {
+  const cookies = parse_cookies()
+  const cookie = cookies[name] ?? ''
+  return cookie as unknown as T
 }

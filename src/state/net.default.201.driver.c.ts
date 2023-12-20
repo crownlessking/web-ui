@@ -41,7 +41,7 @@ export default function net_default_201_driver (
       }))
     }
   }
-  if (is_object(doc.meta)) {
+  if (doc.meta) {
     const { meta } = doc
     dispatch(metaAdd({ endpoint, meta }))
   }

@@ -88,7 +88,7 @@ export default function Content (props: IContentProps) {
       save_content_jsx(contentJsx = <HtmlContent def={page} />)
     },
     [APP_CONTENT_FORM_LOAD]: () => {
-      const { fetchingStateAllowed } = page.parent.app
+      const { fetchingStateAllowed } = page.parent.parent.app
       if (fetchingStateAllowed) {
         const { FORMS } = page.parent.parent.pathnames
         dispatch(post_req_state(FORMS, {

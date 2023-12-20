@@ -1,11 +1,48 @@
 
 /** Reserved methods/keys of the configuration object. */
 export interface IConfigMethods {
+  /**
+   * Initialize the configuration object with values.
+   * @param data arbitrary object containing key-value pairs.
+   * @returns void
+   */
   readonly init: (data?: any) => void
+  /**
+   * Save a value.
+   *
+   * __WARNING__: This value is immutable.
+   * @param path period-seperated list of properties
+   * @param val value to be saved.
+   * @returns void
+   */
   readonly set: (path: string, val: any) => void
+  /**
+   * Read a value.
+   *
+   * @param path period-seperated list of properties
+   * @param $default default value to return if the value at the specified path
+   *                 is undefined.
+   * @returns the value at the specified path or the default value.
+   */
   readonly read: <T=any>(path: string, $default?: T) => T
+  /**
+   * Save a value.
+   *
+   * @param path period-seperated list of properties
+   * @param val value to be saved.
+   * @returns void
+   */
   readonly write: <T=any>(path: string, val: T) => void
+  /**
+   * Delete a property.
+   *
+   * @param path period-seperated list of properties
+   * @returns void
+   */
   readonly delete: (path: string) => void
+  /**
+   * Use this method if you want to remove all values from the config object.
+   */
   readonly clear: () => void
 }
 
@@ -118,39 +155,22 @@ const config: IConfiguration = {
     resolve(config, path, val)
   },
 
-  /**
-   * Reads a value
-   *
-   * @param prop period-seperated list of properties
-   */
   read: <T=any>(path: string, $default?: T): T => {
     return resolve(config, path) ?? $default
   },
 
-  /**
-   * Saves a value
-   *
-   * This value is mutable
-   *
-   * @param prop period-seprated list of properties
-   * @param val value to be saved.
-   */
   write: <T=any>(path: string, val: T): void => {
     writable = true
     resolve(config, path, val)
     writable = false
   },
 
-  /** Delete a property. */
   delete: (path: string): void => {
     $delete = true
     resolve(config, path)
     $delete = false
   },
 
-  /**
-   * Use this method if you want to remove all values from the config object.
-   */
   clear: (): void => {
     for (const configKey in config) {
       delete config[configKey]

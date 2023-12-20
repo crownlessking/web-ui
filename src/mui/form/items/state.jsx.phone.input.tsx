@@ -6,7 +6,7 @@ import { IMaskInput } from 'react-imask'
 import { useSelector } from 'react-redux'
 import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
 import { RootState } from '../../../state'
-import { get_field_value } from './_items.business.logic'
+import { get_field_value } from './_items.common.logic'
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;

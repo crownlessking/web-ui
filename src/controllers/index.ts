@@ -132,8 +132,7 @@ const create_writable_property = (data: any, prop: string, val: any): void => {
  * Set a value within an object.
  *
  * @param obj arbitrary object
- * @param path dot-separated list of properties
- *              e.g. "pagination.users.limit"
+ * @param path dot-separated list of properties e.g. "pagination.users.limit"
  * @param val value to be assigned
  *
  * @todo NOT TESTED, please test
@@ -385,4 +384,80 @@ export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]) {
 export function get_drawer_width(): number {
   return store.getState().drawer.width
     || DRAWER_DEFAULT_WIDTH
+}
+
+/**
+ * Get the real route from the template route by ignoring the path variables.
+ * @param templateRoute 
+ */
+export function get_real_route(templateRoute: string): string {
+  return templateRoute.replace(/^\/|\/$/g, '').split('/')[0]
+}
+
+/**
+ * Get endpoint and path variables values from route.  
+ * @param template e.g. "/users/:id"
+ * @param rawRoute e.g. "/users/1"
+ * @returns Object with endpoint and path variables values.
+ */
+export function get_endpoint_and_path_vars(
+  template: string,
+  rawRoute: string
+): { route: string, pathVars: Record<string, string> } {
+  const pathVars: Record<string, string> = {}
+  const route = rawRoute.replace(/^\/|\/$/g, '')
+  const tpl = template.replace(/^\/|\/$/g, '')
+  const tplPieces = tpl.split('/')
+  const routePieces = route.split('/')
+  let i = 0
+  for (const piece of tplPieces) {
+    if (piece.startsWith(':')) {
+      const key = piece.substring(1)
+      pathVars[key] = routePieces[i]
+    }
+    i++
+  }
+  return { route: routePieces[0], pathVars }
+}
+
+/**
+ * Check to see if the route matches the template route.
+ * @param template e.g. "/users/:id" Key of the page state.
+ * @param rawRoute e.g. "/users/1" Usually defined by link states.
+ * @returns `true` if the route matches the template route.
+ */
+export function route_match_template(
+  template: string,
+  rawRoute: string
+): boolean {
+  if (rawRoute === '/') {
+    return template === rawRoute
+  }
+  const routePaths = rawRoute.replace(/^\/|\/$/g, '').split('/')
+  const templatePaths = template.replace(/^\/|\/$/g, '').split('/')
+  if (routePaths[0] === templatePaths[0]
+    && routePaths.length === templatePaths.length
+  ) {
+    return true
+  }
+  return false
+}
+
+/**
+ * Check to see if the route has path variables.
+ * @param rawRoute
+ * @returns `true` if the route has path variables.
+ * @see no_path_vars
+ */
+export function has_path_vars(rawRoute: string): boolean {
+  return rawRoute.replace(/^\/|\/$/g, '').split('/').length > 1
+}
+
+/**
+ * Check to see if the route has path variables.
+ * @param rawRoute 
+ * @returns `true` if the route has NO path variables.
+ */
+export function no_path_vars(rawRoute: string): boolean {
+  return !has_path_vars(rawRoute)
 }

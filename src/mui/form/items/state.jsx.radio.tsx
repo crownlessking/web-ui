@@ -6,7 +6,7 @@ import FormLabel from '@mui/material/FormLabel'
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
 import { RootState } from '../../../state'
 import { useSelector } from 'react-redux'
-import { get_redux_store_val } from './_items.business.logic'
+import { get_redux_store_val } from './_items.common.logic'
 
 interface IDialogRadio { def: StateFormItemRadio }
 

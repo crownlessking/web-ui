@@ -2,7 +2,7 @@ import { Input } from '@mui/material'
 import { useSelector } from 'react-redux'
 import StateFormItem from '../../../controllers/StateFormItem'
 import { RootState } from '../../../state'
-import { get_field_value } from './_items.business.logic'
+import { get_field_value } from './_items.common.logic'
 import { getAdornment } from './state.jsx.input.adornment'
 
 export default function StateJsxInput ({ def: input }: { def: StateFormItem }) {

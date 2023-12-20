@@ -9,7 +9,7 @@ import {
   youtube_get_start_time,
   format_seconds_to_readable_time,
   _get_start_time_in_seconds
-} from '../_tuber.business.logic'
+} from '../_tuber.common.logic'
 
 describe('get_platform', () => {
   it('should return youtube for youtube url', () => {

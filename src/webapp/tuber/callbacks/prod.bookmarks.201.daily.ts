@@ -1,7 +1,7 @@
 import JsonapiRequest from 'src/controllers/jsonapi.request'
 import { post_req_state } from 'src/state/net.actions'
 import { IRedux, log } from '../../../state'
-import { FORM_DAILY_NEW_ID } from '../tuber.config'
+import { DIALGO_DAILY_NEW_ID, FORM_DAILY_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
 import { get_start_time_in_seconds } from '../_tuber.common.logic'
 import {
@@ -10,7 +10,7 @@ import {
 } from './_callbacks.common.logic'
 
 /**
- * [ __Dailymotion__ ] Save bookmark to server.
+ * [ **Dailymotion** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $21_C_1
@@ -19,7 +19,7 @@ export default function form_submit_new_daily_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch }, actions } = redux
     const rootState = getState()
-    const endpoint = get_dialog_form_endpoint(rootState, FORM_DAILY_NEW_ID)
+    const endpoint = get_dialog_form_endpoint(rootState, DIALGO_DAILY_NEW_ID)
     if (!endpoint) { return }
     const data = get_form_data<IBookmark>(redux, FORM_DAILY_NEW_ID)
     if (!data) { return }

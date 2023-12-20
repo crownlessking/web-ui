@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux'
 import { NAME_NOT_SET } from '../../../constants'
 import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
 import { RootState } from '../../../state'
-import { to_bool_val } from '../_form.business.logic'
-import { get_redux_store_val } from './_items.business.logic'
+import { to_bool_val } from '../_form.common.logic'
+import { get_redux_store_val } from './_items.common.logic'
 
 interface IJsonSingleSwitch {
   def: StateFormItemSwitch

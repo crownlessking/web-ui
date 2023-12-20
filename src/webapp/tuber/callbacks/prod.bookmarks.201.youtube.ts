@@ -9,7 +9,7 @@ import {
 } from './_callbacks.common.logic'
 
 /**
- * [ __YouTube__ ] Save bookmark to server.
+ * [ **YouTube** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $6_C_1

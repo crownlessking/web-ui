@@ -209,7 +209,7 @@ export default class StatePage extends AbstractState implements IStatePage {
       return this.forcedTitle
     }
 
-    const appTitle = this.parent.app.title
+    const appTitle = this.parent.parent.app.title
 
     if (this.title) {
       return `${appTitle} | ${this.title}`

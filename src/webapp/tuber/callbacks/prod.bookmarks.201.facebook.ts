@@ -10,7 +10,7 @@ import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { get_dialog_form_endpoint } from './_callbacks.common.logic'
 
 /**
- * [ __Facebook__ ] Save bookmark to server.
+ * [ **Facebook** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $26_C_1

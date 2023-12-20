@@ -9,7 +9,7 @@ import {
   ICheckboxesData,
   update_checkboxes,
   update_switches_statuses
-} from '../../form/items/_items.business.logic'
+} from '../../form/items/_items.common.logic'
 
 interface IDialogSwitch {
   def: StateFormItemSwitch,

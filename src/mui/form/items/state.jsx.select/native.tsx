@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { NAME_NOT_SET } from '../../../../constants'
 import StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect'
 import { RootState } from '../../../../state'
-import { get_field_value } from '../_items.business.logic'
+import { get_field_value } from '../_items.common.logic'
 
 interface IDialogSelectNative { def: StateFormItemSelect }
 

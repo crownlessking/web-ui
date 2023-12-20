@@ -6,7 +6,7 @@ import { IBookmark } from '../tuber.interfaces'
 import { get_dialog_form_endpoint, get_form_data } from './_callbacks.common.logic'
 
 /**
- * [ __Rumble__ ] Save bookmark to server.
+ * [ **Rumble** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $8_C_1

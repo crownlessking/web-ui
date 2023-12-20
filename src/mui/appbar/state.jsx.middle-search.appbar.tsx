@@ -19,6 +19,7 @@ import { StateJsxIcon } from '../state.jsx.icons'
 import { get_search_query } from 'src/business.logic/errors'
 import Menu from '@mui/material/Menu'
 import StateLink from 'src/controllers/StateLink'
+import Chip from '@mui/material/Chip'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -48,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
   },
@@ -142,13 +143,28 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
             </Typography>
           )}
           <Search {...appBar.searchFieldProps}>
-            {appBar.state.searchFieldIcon ? (
+            {appBar.showSearchFieldIcon ? (
               <UrlIconWrapper>
                 <StateJsxIcon def={appBar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase
               {...appBar.inputBaseProps}
+              startAdornment={appBar.inputHasChips ? (
+                <InputAdornment position='start'>
+                  {appBar.inputBaseChips.map((chip, i) => (
+                    <Chip
+                      {...chip.props}
+                      key={`appbar-midsearch-input-chip-${i}`}
+                      label={chip.label}
+                      variant={chip.variant}
+                      color={chip.color}
+                      onClick={chip.onClick(redux)}
+                      onDelete={chip.onDelete(redux)}
+                    />
+                  ))}
+                </InputAdornment>
+              ) : ( null )}
               endAdornment={
                 <InputAdornment position='end'>
                   {value ? (

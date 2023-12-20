@@ -24,6 +24,10 @@ export default class StateSession extends AbstractState implements IStateSession
     const cookies = document.cookie.split(';')
     // set 1 Jan, 1970 expiry for every cookies
     for (let i = 0; i < cookies.length; i++) {
+      const [ name ] = cookies[i].trim().split('=') || []
+      if (name === 'mode') {
+        continue
+      }
       document.cookie = `${cookies[i]}=;expires=${new Date(0).toUTCString()}`
     }
   }

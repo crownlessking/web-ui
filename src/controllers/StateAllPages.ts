@@ -6,12 +6,11 @@ import IStatePage from '../interfaces/IStatePage'
 import State from './State'
 import StateApp from './StateApp'
 import StatePage from './StatePage'
+import { no_path_vars, route_match_template } from '.'
 
 export default class StateAllPages extends AbstractState {
-
   private _allPagesState: IStateAllPages
   private _parentDef?: State
-  private _appDef?: StateApp
 
   constructor(allPagesState: IStateAllPages, parent?: State) {
     super()
@@ -25,25 +24,30 @@ export default class StateAllPages extends AbstractState {
   get parent(): State { return this._parentDef || new State() }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
-  /** Shortcutted chain-access to app definition. */
-  get app(): StateApp {
-    return this._appDef || ( this._appDef = new State().app )
-  }
 
   /**
-   * Prevents app from crashing when given a bad route.
-   *
-   * Overall, this function is a temporary solution for a possibility where the
-   * specified route does not exist and would cause the app to crash.
-   * With this function however, the app will ignore the bad route and use the
-   * default one instead.
+   * Get a page state.
    *
    * @param route the specified route
+   * @returns the page state or null if not found
    */
   getPageState = (route: string): IStatePage | null => {
-    return this._allPagesState[route]
+    if (no_path_vars(route)) {
+      return this._allPagesState[route]
       || this._allPagesState[`/${route}`]
       || this._allPagesState[route.substring(1)]
+    }
+
+    // Handle routes with path variables
+
+    let pageState: IStatePage | null = null
+    for (const template of Object.keys(this._allPagesState)) {
+      if (route_match_template(template, route)) {
+        pageState = this._allPagesState[template]
+        break
+      }
+    }
+    return pageState
   }
 
   /**
@@ -63,15 +67,15 @@ export default class StateAllPages extends AbstractState {
    *
    * @returns 
    */
-  getPage = (): StatePage => {
+  getPage = (app: StateApp): StatePage => {
     let pageState: IStatePage | null
-    const route = this.app.route
-    if (route === '/') {
-      pageState = this._allPagesState[this.app.homePage]
+    if (app.route === '/') {
+      pageState = this._allPagesState[app.homePage]
       if (pageState) {
         return new StatePage(pageState, this)
       }
     }
+    const route = app.route
     pageState = this.getPageState(route)
     if (pageState) {
       return new StatePage(pageState, this)
@@ -87,8 +91,8 @@ export default class StateAllPages extends AbstractState {
       log(`'${route}' page not loaded. Fetching now..`)
       return new StatePage(this._allPagesState[DEFAULT_BLANK_PAGE], this)
     }
-    if (this.app.homePage) {
-      pageState = this.getPageState(this.app.homePage)
+    if (app.homePage) {
+      pageState = this.getPageState(app.homePage)
       if (pageState) {
         return new StatePage(pageState, this)
       }

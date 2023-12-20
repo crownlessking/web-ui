@@ -7,6 +7,7 @@ import {
   remember_error,
   remember_jsonapi_errors,
 } from '../business.logic/errors'
+import execute_directives from './net.directives.c'
 
 export default function net_default_500_driver (
   dispatch: Dispatch,
@@ -15,6 +16,10 @@ export default function net_default_500_driver (
   response: IJsonapiResponse
 ): void {
   dispatch(appRequestFailed())
+
+  if (response.meta) {
+    execute_directives(dispatch, response.meta)
+  }
 
   if (!response.errors) {
     const title = 'net_default_500_driver: No errors were received.'

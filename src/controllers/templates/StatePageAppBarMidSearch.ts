@@ -3,12 +3,18 @@ import { IconButtonProps } from '@mui/material/IconButton'
 import IStateAppBar from '../../interfaces/IStateAppBar'
 import StateFormItemCustom from '../StateFormItemCustom'
 import StateLink from '../StateLink'
+import StateFormItemCustomChip from './StateFormItemCustomChip'
 import StatePageAppBar from './StatePageAppBar'
 
 /** AppBar template for Middle Search Field app bars. */
 export default class StatePageAppBarMidSearch extends StatePageAppBar {
 
   protected searchFieldIconButtonDef?: StateLink<this>
+  protected inputBaseChipsDef?: StateFormItemCustomChip<this>[]
+
+  get inputHasNoChips(): boolean {
+    return !this.inputHasChips
+  }
 
   get menuIconProps(): IconButtonProps {
     return {
@@ -29,6 +35,18 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
       },
       ...this.appBarState.searchFieldIcon
     }, this)
+  }
+
+  /** Whether the search field icon should be hidden. */
+  get hideSearchFieldIcon(): boolean {
+    return this.appBarState.hideSearchFieldIcon
+      ?? this.inputHasChips
+      ?? false
+  }
+
+  /** Whether the search field icon should be shown. */
+  get showSearchFieldIcon(): boolean {
+    return !this.hideSearchFieldIcon && !!this.searchFieldIcon
   }
 
   get searchFieldIconButton(): StateLink<this> {
@@ -57,10 +75,32 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
       'fullWidth': true,
       'id': 'search-field',
       ...this.appBarState.inputBaseProps,
+      'sx': {
+        ...this.appBarState.inputBaseProps?.sx,
+        ...(this.inputHasNoChips ? {
+          'paddingLeft': (theme) => `calc(1em + ${theme.spacing(4)})`
+        } : {
+          'paddingLeft': .5,
+        }),
+      },
     }
   }
 
   get logoContainerProps(): any {
     return this.appBarState.logoContainerProps
   }
+
+  /** Whether the app bar has any chips in the search field. */
+  get inputHasChips(): boolean {
+    return !!this.appBarState.inputBaseChips?.length
+  }
+
+  /** Get all chips in the search field. */
+  get inputBaseChips(): StateFormItemCustomChip<this>[] {
+    return this.inputBaseChipsDef
+      || (this.inputBaseChipsDef = (this.appBarState.inputBaseChips || []).map(
+        item => new StateFormItemCustomChip(item, this)
+      ))
+  }
+
 }

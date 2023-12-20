@@ -9,7 +9,7 @@ import {
 } from './_callbacks.common.logic'
 
 /**
- * [ __Odysee__ ] Save bookmark to server.
+ * [ **Odysee** ] Save bookmark to server.
  * @param redux store, actions, and route.
  * @returns The callback function.
  * @id $16_C_1

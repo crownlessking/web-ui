@@ -11,17 +11,15 @@ export default function YouTubePlayerApi (props: IYTPlayerProps) {
   const { bookmark: {
     videoid,
     platform,
-    start_seconds,
-    end_seconds
+    start_seconds: start,
+    end_seconds: end,
   } } = props
 
   const opts: YouTubeProps['opts'] = {
-    playerVars: {
-
-      // https://developers.google.com/youtube/player_parameters
+    playerVars: { // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
-      start: start_seconds,
-      end: end_seconds
+      start,
+      end
     },
   }
 
