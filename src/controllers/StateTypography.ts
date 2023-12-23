@@ -24,7 +24,7 @@ export default class StateTypography<P = State>
 
   /** Get the typography json. */
   get state(): IStateTypography { return this.typographyState }
-  /** Chain-access to root, page, or appBar definition. */
+  /** Chain-access to root, page, or appbar definition. */
   get parent(): P { return this.parentDef }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }

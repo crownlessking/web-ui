@@ -82,7 +82,7 @@ export default function form_submit_edit_unknown_bookmark(redux: IRedux) {
         }
       }
 
-      dispatch(actions.resourceUpdate({
+      dispatch(actions.dataUpdateByIndex({
         endpoint,
         index,
         resource: editedBookmarkResource

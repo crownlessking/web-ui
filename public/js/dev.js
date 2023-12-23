@@ -43,7 +43,7 @@ w.appForms['devInstallForm'] = {
 w.appPages['dev-install'] = {
   'content': '$form:devInstall:dev-install',
   'layout': 'layout_default',
-  'appBar': {
+  'appbar': {
     'items': [
       {
         'has': {

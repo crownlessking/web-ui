@@ -1,16 +1,17 @@
 
 import { IconButtonProps } from '@mui/material/IconButton'
-import IStateAppBar from '../../interfaces/IStateAppBar'
+import IStateAppbar from '../../interfaces/IStateAppbar'
 import StateFormItemCustom from '../StateFormItemCustom'
 import StateLink from '../StateLink'
 import StateFormItemCustomChip from './StateFormItemCustomChip'
-import StatePageAppBar from './StatePageAppBar'
+import StatePageAppbar from './StatePageAppbar'
+import { get_path_vars } from '..'
 
-/** AppBar template for Middle Search Field app bars. */
-export default class StatePageAppBarMidSearch extends StatePageAppBar {
+/** Appbar template for Middle Search Field app bars. */
+export default class StatePageAppbarMidSearch extends StatePageAppbar {
 
   protected searchFieldIconButtonDef?: StateLink<this>
-  protected inputBaseChipsDef?: StateFormItemCustomChip<this>[]
+  protected inputChipsDefs?: StateFormItemCustomChip<this>[]
 
   get inputHasNoChips(): boolean {
     return !this.inputHasChips
@@ -23,7 +24,7 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
       'color': 'inherit',
       'aria-label': 'open drawer',
       'sx': { 'mr': 2 },
-      ...this.appBarState.menuIconProps
+      ...this.appbarState.menuIconProps
     }
   }
 
@@ -33,13 +34,13 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
       'iconProps': {
         'sx': { 'color': 'grey.500' }
       },
-      ...this.appBarState.searchFieldIcon
+      ...this.appbarState.searchFieldIcon
     }, this)
   }
 
   /** Whether the search field icon should be hidden. */
   get hideSearchFieldIcon(): boolean {
-    return this.appBarState.hideSearchFieldIcon
+    return this.appbarState.hideSearchFieldIcon
       ?? this.inputHasChips
       ?? false
   }
@@ -55,28 +56,28 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
       'has': {
         'icon': 'search_outline',
       },
-      ...this.appBarState.searchFieldIconButton,
+      ...this.appbarState.searchFieldIconButton,
       'props': {
         'aria-label': 'search',
         'onMouseDown': this.handleMouseDown,
         'edge': 'end',
         'size': 'small',
         'sx': { 'mr': .5 },
-        ...this.appBarState.searchFieldIconButtonProps
+        ...this.appbarState.searchFieldIconButtonProps
       },
     }, this))
   }
 
-  get inputBaseProps(): Required<IStateAppBar>['inputBaseProps'] {
+  get inputBaseProps(): Required<IStateAppbar>['inputBaseProps'] {
     return {
       'autoComplete': 'off',
       'placeholder': 'Search…',
       'inputProps': { 'aria-label': 'search' },
       'fullWidth': true,
       'id': 'search-field',
-      ...this.appBarState.inputBaseProps,
+      ...this.appbarState.inputBaseProps,
       'sx': {
-        ...this.appBarState.inputBaseProps?.sx,
+        ...this.appbarState.inputBaseProps?.sx,
         ...(this.inputHasNoChips ? {
           'paddingLeft': (theme) => `calc(1em + ${theme.spacing(4)})`
         } : {
@@ -87,18 +88,45 @@ export default class StatePageAppBarMidSearch extends StatePageAppBar {
   }
 
   get logoContainerProps(): any {
-    return this.appBarState.logoContainerProps
+    return this.appbarState.logoContainerProps
   }
 
   /** Whether the app bar has any chips in the search field. */
   get inputHasChips(): boolean {
-    return !!this.appBarState.inputBaseChips?.length
+    return !!this.appbarState.inputBaseChips?.length
+  }
+
+  /**
+   * Get input chip definition from state and path variables
+   * @param tpl template string
+   * @param route current route
+   * @returns array of input chips definitions
+   */
+  getChipFromPaths(tpl?: string, route?: string) {
+    if (this.inputChipsDefs) { return this.inputChipsDefs }
+    if (!tpl || !route) { return this.inputChips }
+    const path = get_path_vars(tpl, route)
+    if (path.values.length < 1) { return this.inputChips }
+    this.inputChipsDefs = []
+    for (const label of path.values) {
+      this.inputChipsDefs.push(
+        new StateFormItemCustomChip({
+          'label': decodeURIComponent(label.replace(/\+/g, '%20')),
+        }, this)
+      )
+    }
+    for (const ic of this.appbarState.inputBaseChips ?? []) {
+      this.inputChipsDefs.push(
+        new StateFormItemCustomChip(ic, this)
+      )
+    }
+    return this.inputChipsDefs
   }
 
   /** Get all chips in the search field. */
-  get inputBaseChips(): StateFormItemCustomChip<this>[] {
-    return this.inputBaseChipsDef
-      || (this.inputBaseChipsDef = (this.appBarState.inputBaseChips || []).map(
+  get inputChips(): StateFormItemCustomChip<this>[] {
+    return this.inputChipsDefs
+      || (this.inputChipsDefs = (this.appbarState.inputBaseChips || []).map(
         item => new StateFormItemCustomChip(item, this)
       ))
   }

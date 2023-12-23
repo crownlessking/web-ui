@@ -81,7 +81,7 @@ export default function form_submit_edit_vimeo_bookmark(redux: IRedux) {
           ...formData
         }
       }
-      dispatch(actions.resourceUpdate({
+      dispatch(actions.dataUpdateByIndex({
         endpoint,
         index,
         resource: editedBookmarkResource

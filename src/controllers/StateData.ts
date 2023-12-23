@@ -72,15 +72,18 @@ export default class StateData extends AbstractState {
    * @param endpoint
    * @param index
    */
-  private getResource = (endpoint: string,
-    index?: number
-  ): IJsonapiResource | null => {
-    const collection = this._dataState[endpoint]
+  getResourceById = (id: string): IJsonapiResource | null => {
+    if (!this._endpoint) {
+      return this.die('StateData: Endpoint not set.', null)
+    }
+    const collection = this._dataState[this._endpoint]
     if (!collection) {
       return null
     }
-    if (index && index >= 0 && index < collection.length) {
-      return collection[index]
+    for (const resource of collection) {
+      if (resource.id === id) {
+        return resource
+      }
     }
     return null
   }
@@ -127,14 +130,6 @@ export default class StateData extends AbstractState {
         return { id: resource.id, types: resource.type, ...resource.attributes }
       }
     })
-    return this
-  }
-
-  /**
-   * Acquire a single document from the data state.
-   */
-  document(): this {
-    // [TODO] Implement when the need arises.
     return this
   }
 

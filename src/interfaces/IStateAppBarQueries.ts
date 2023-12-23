@@ -1,4 +1,4 @@
 
-export default interface IStateAppBarQueries {
+export default interface IStateAppbarQueries {
   [pageName: string]: string
 }

@@ -75,29 +75,21 @@ export const dataSlice = createSlice({
     },
 
     /** Stores a collection but replaces existing */
-    collectionStore: (state, action: ICollectionStore) => {
+    dataStoreCol: (state, action: ICollectionStore) => {
       const { endpoint, collection } = action.payload
-      // [TODO] fleetly_index(collection)
-      //        Make it work with accumulation of data.
       state[endpoint] = collection
     },
     /** Store a collection by accumulation */
-    collectionQueue: (state, action: ICollectionStore) => {
+    dataQueueCol: (state, action: ICollectionStore) => {
       const { endpoint, collection } = action.payload
-      // [TODO] fleetly_index(collection)
-      //        Make it work with accumulation of data.
       state[endpoint] = (state[endpoint] || []).concat(collection)
     },
-    collectionStack: (state, action: ICollectionStore) => {
+    dataStackCol: (state, action: ICollectionStore) => {
       const { endpoint, collection } = action.payload
-      // [TODO] fleetly_index(collection)
-      //        Make it work with accumulation of data.
       state[endpoint] = collection.concat(state[endpoint] || [])
     },
-    collectionLimitedQueue: (state, action: ICollectionLimitedStore) => {
+    dataLimitQueueCol: (state, action: ICollectionLimitedStore) => {
       const { endpoint, collection, pageSize, limit } = action.payload
-      // [TODO] fleetly_index(collection)
-      //        Make it work with accumulation of data.
       let arr = state[endpoint] || []
       const totalPage = Math.ceil(arr.length / pageSize)
       if (totalPage > limit) {
@@ -105,10 +97,8 @@ export const dataSlice = createSlice({
       }
       state[endpoint] = arr.concat(collection)
     },
-    collectionLimitedStack: (state, action: ICollectionLimitedStore) => {
+    dataLimitStackCol: (state, action: ICollectionLimitedStore) => {
       const { endpoint, collection, pageSize, limit } = action.payload
-      // [TODO] fleetly_index(collection)
-      //        Make it work with accumulation of data.
       let arr = state[endpoint] ?? []
       const totalPage = Math.ceil(arr.length / pageSize)
       if (totalPage > limit) {
@@ -118,26 +108,66 @@ export const dataSlice = createSlice({
       state[endpoint] = collection.concat(arr)
     },
     /** Deletes a collection. */
-    collectionRemove: (state, action: ICollectionRemove) => {
+    dataRemoveCol: (state, action: ICollectionRemove) => {
       state[action.payload] = []
     },
     /** Save changes to a single resouce. */
-    resourceUpdate: (state, action: IDataResourceUpdate) => {
+    dataUpdateByIndex: (state, action: IDataResourceUpdate) => {
       const { endpoint, index, resource } = action.payload
       state[endpoint] = state[endpoint] || []
       state[endpoint][index] = resource
     },
-    resourceDelete: (state, action: IDataResourceUpdate) => {
+    /** Delete resource by index. */
+    dataDeleteByIndex: (state, action: IDataResourceUpdate) => {
       const { endpoint, index } = action.payload
       state[endpoint] = state[endpoint] || []
       state[endpoint].splice(index, 1)
     },
     /** Modifies a single data member. */
-    memberEdit: (state, action: IMemberEditAction) => {
+    dataSetAttrByIndex: (state, action: IMemberEditAction) => {
       const { endpoint, index, prop, val } = action.payload
       if (index) {
         state[endpoint][index].attributes[prop] = val
       }
+    },
+    dataUpdateByName: (state, action: {
+      type: string
+      payload: {
+        collectionName: string
+        name: string
+        resource: IJsonapiResource<any>
+      }
+    }) => {
+      const { collectionName, name, resource } = action.payload
+      const collection = state[collectionName]
+        ?? [] as IJsonapiResource[]
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].attributes.name === name) {
+          collection[i] = resource
+          break
+        }
+      }
+      state[collectionName] = collection
+    },
+    dataUpdateById: (state, action: {
+      type: string
+      payload: {
+        collectionName: string
+        id: string
+        resource: IJsonapiResource<any>
+      }
+    }) => {
+      const { collectionName, id, resource } = action.payload
+      const collection = state[collectionName]
+        ?? [] as IJsonapiResource[]
+      for (let i = 0; i < collection.length; i++) {
+        if (collection[i].id === id) {
+          collection[i] = resource
+          break
+        }
+      }
+      collection.push(resource)
+      state[collectionName] = collection
     }
   }
 })
@@ -145,15 +175,16 @@ export const dataSlice = createSlice({
 export const dataActions = dataSlice.actions
 export const {
   dataStack,
-  collectionStore,
-  collectionQueue,
-  collectionLimitedQueue,
-  collectionStack,
-  collectionLimitedStack,
-  collectionRemove,
-  resourceUpdate,
-  resourceDelete,
-  memberEdit
+  dataStoreCol,
+  dataQueueCol,
+  dataLimitQueueCol,
+  dataStackCol,
+  dataLimitStackCol,
+  dataRemoveCol,
+  dataUpdateByIndex,
+  dataDeleteByIndex,
+  dataSetAttrByIndex,
+  dataUpdateByName
 } = dataSlice.actions
 
 export default dataSlice.reducer

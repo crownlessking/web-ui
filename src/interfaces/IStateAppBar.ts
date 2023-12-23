@@ -1,5 +1,5 @@
 import { 
-  AppBarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
+  AppBarProps as AppbarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
 } from '@mui/material'
 import { IHtmlAttributes } from '.'
 import IAbstractState from './IAbstractState'
@@ -9,15 +9,15 @@ import IStateFormItemCustom from './IStateFormItemCustom'
 import IStateLink from './IStateLink'
 import IStateTypography from './IStateTypography'
 
-export type TAppBarStyle = 'basic' | 'mini' | 'responsive' | 'middle_search'
+export type TAppbarStyle = 'basic' | 'mini' | 'responsive' | 'middle_search'
 
-export default interface IStateAppBar extends IAbstractState {
+export default interface IStateAppbar extends IAbstractState {
   /** App bar style from Material-ui example's website. */
-  appBarStyle?: TAppBarStyle
+  appbarStyle?: TAppbarStyle
   /** mui5 logo tag. i.e. "img" */
   logoTag?: keyof JSX.IntrinsicElements
   /** app bar component props */
-  props?: AppBarProps
+  props?: AppbarProps
   /** toolbar component props */
   toolbarProps?: ToolbarProps
   /** hamburger icon props */
@@ -26,11 +26,11 @@ export default interface IStateAppBar extends IAbstractState {
   /** mui5 text-logo props */
   textLogoProps?: any
   logoContainerProps?: IHtmlAttributes
-  /** AppBar textfield props */
+  /** Appbar textfield props */
   inputBaseProps?: InputBaseProps
-  /** AppBar input chips */
+  /** Appbar input chips */
   inputBaseChips?: IStateFormItemCustom[]
-  /** AppBar search field props */
+  /** Appbar search field props */
   searchFieldProps?: any
   /** Icon that's in the left corner of app bar search field. */
   searchFieldIcon?: IStateFormItemCustom

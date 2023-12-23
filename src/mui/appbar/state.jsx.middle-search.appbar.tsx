@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
+import Appbar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -11,19 +11,20 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 import StatePage from '../../controllers/StatePage'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState, redux } from '../../state'
-import StatePageAppBarMidSearch from '../../controllers/templates/StatePageAppBarMidSearch'
+import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppbarMidSearch'
 import StateJsxLogo from './state.jsx.logo'
-import AppBarButton from '../link'
+import AppbarButton from '../link'
 import InputAdornment from '@mui/material/InputAdornment'
 import { StateJsxIcon } from '../state.jsx.icons'
-import { get_search_query } from 'src/business.logic/errors'
+import { get_search_query } from '../../business.logic'
 import Menu from '@mui/material/Menu'
-import StateLink from 'src/controllers/StateLink'
-import Chip from '@mui/material/Chip'
+import StateLink from '../../controllers/StateLink'
+import { StateJsxChip } from './state.jsx.chip'
+import { appbarQueriesSet } from 'src/slices/appbarQueries.slice'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 20, // theme.shape.borderRadius,
+  borderRadius: 20,
   border: `2px solid ${theme.palette.grey[300]}`,
   backgroundColor: theme.palette.grey[300],
   marginRight: 'auto',
@@ -57,29 +58,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 interface IJsonMidSearchAB { def: StatePage }
 
-export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB) {
+export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  const appBar = new StatePageAppBarMidSearch(page.appBarJson, page)
+  const appbar = new StatePageAppbarMidSearch(page.appbarJson, page)
   const dispatch = useDispatch<AppDispatch>()
   const route = page.parent.parent.app.route
-  const queries = useSelector((state: RootState) => state.appBarQueries)
+  const queries = useSelector((rootState: RootState) => rootState.appbarQueries)
   const value = get_search_query(queries, route)
 
   const handleSearchfieldOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: 'appBarQueries/appBarQueriesSet',
-      payload: {
-        route,
-        value: e.target.value
-      }
-    })
+    dispatch(appbarQueriesSet({ route, value: e.target.value }))
   }
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      appBar.searchFieldIconButton.onClick(redux)(e)
+      appbar.searchFieldIconButton.onClick(redux)(e)
     }
   }
 
@@ -102,7 +97,7 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
         vertical: 'top',
         horizontal: 'right',
       }}
-      id={appBar.mobileMenuId}
+      id={appbar.mobileMenuId}
       keepMounted
       transformOrigin={{
         vertical: 'top',
@@ -111,79 +106,71 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-        {appBar.items.map((item, i) => (
-          <AppBarButton def={item} key={`nav-menu-${i}`} />
-        ))}
+      {appbar.items.map((item, i) => (
+        <AppbarButton def={item} key={`nav-menu-${i}`} />
+      ))}
     </Menu>
   )
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar {...appBar.props} position="fixed">
+      <Appbar {...appbar.props} position="fixed">
         <Toolbar>
-          {appBar.parent.hasDrawer ? (
+          {appbar.parent.hasDrawer ? (
             <IconButton
-              {...appBar.menuIconProps}
+              {...appbar.menuIconProps}
               onClick={handleDrawerOpen}
             >
               <MenuIcon />
             </IconButton>
           ) : ( null )}
-          {appBar.hasLogo ? (
-            <StateJsxLogo def={appBar} />
+          {appbar.hasLogo ? (
+            <StateJsxLogo def={appbar} />
           ) : (
             <Typography
               sx={{
-                fontFamily: appBar.typography.fontFamily,
-                color: appBar.typography.color
+                fontFamily: appbar.typography.fontFamily,
+                color: appbar.typography.color
               }}
-              {...appBar.textLogoProps}
+              {...appbar.textLogoProps}
             >
               { page.parent.parent.app.title }
             </Typography>
           )}
-          <Search {...appBar.searchFieldProps}>
-            {appBar.showSearchFieldIcon ? (
+          <Search {...appbar.searchFieldProps}>
+            {appbar.showSearchFieldIcon ? (
               <UrlIconWrapper>
-                <StateJsxIcon def={appBar.searchFieldIcon} />
+                <StateJsxIcon def={appbar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase
-              {...appBar.inputBaseProps}
-              startAdornment={appBar.inputHasChips ? (
+              {...appbar.inputBaseProps}
+              startAdornment={appbar.inputHasChips ? (
                 <InputAdornment position='start'>
-                  {appBar.inputBaseChips.map((chip, i) => (
-                    <Chip
-                      {...chip.props}
-                      key={`appbar-midsearch-input-chip-${i}`}
-                      label={chip.label}
-                      variant={chip.variant}
-                      color={chip.color}
-                      onClick={chip.onClick(redux)}
-                      onDelete={chip.onDelete(redux)}
-                    />
-                  ))}
+                  <StateJsxChip
+                    def={appbar.getChipFromPaths(page._key, route)}
+                  />
                 </InputAdornment>
               ) : ( null )}
               endAdornment={
                 <InputAdornment position='end'>
                   {value ? (
-                    <AppBarButton def={new StateLink({
+                    <AppbarButton def={new StateLink({
                       'type': 'icon',
                       'has': {
                         'icon': 'clear_outline',
                         'iconProps': { 'color': 'error', 'fontSize': 'small' },
                       },
                       'onClick': ({ store, actions }) => () => {
-                        store.dispatch(actions.appBarQueriesDelete(route))
-                        const inputId = appBar.inputBaseProps.id
+                        store.dispatch(actions.appbarQueriesDelete(route))
+                        const inputId = appbar.inputBaseProps.id
                         if (inputId) {
                           document.getElementById(inputId)?.focus()
                         }
                       }
                     })} />
                   ): ( null )}
-                  <AppBarButton def={appBar.searchFieldIconButton} />
+                  <AppbarButton def={appbar.searchFieldIconButton} />
                 </InputAdornment>
               }
               onChange={handleSearchfieldOnChange}
@@ -192,15 +179,15 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
             />
           </Search>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {appBar.items.map((item, i) => (
-              <AppBarButton def={item} key={`nav-menu-${i}`} />
+            {appbar.items.map((item, i) => (
+              <AppbarButton def={item} key={`nav-menu-${i}`} />
             ))}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="show more"
-              aria-controls={appBar.mobileMenuId}
+              aria-controls={appbar.mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
@@ -209,7 +196,7 @@ export default function StateJsxMidSearchAppBar({ def: page }: IJsonMidSearchAB)
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>
+      </Appbar>
       { renderMobileMenu }
     </Box>
   )

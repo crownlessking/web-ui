@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import IStateLink from 'src/interfaces/IStateLink'
 import StateLink from 'src/controllers/StateLink'
-import StatePageAppBar from 'src/controllers/templates/StatePageAppBar'
+import StatePageAppbar from 'src/controllers/templates/StatePageAppbar'
 import Link from 'src/mui/link'
 import { IResearchToolbarProps } from '../tuber.interfaces'
 import StateSession from 'src/controllers/StateSession'
@@ -16,7 +16,7 @@ interface IToolbarIcon {
   /** Callback to run when the toolbar icon is clicked. */
   callback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
-  def: StatePageAppBar
+  def: StatePageAppbar
 }
 
 const Toolbar = styled('div')(({ theme }) => ({
@@ -40,7 +40,7 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 }))
 
 /** When clicked, this icon displays an interface to create a new video bookmark. */
-const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
+const AddBookmark = ({ def: appbar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
     'props': {
@@ -57,11 +57,11 @@ const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
       'onclickHandle': `tuberCallbacks.$3_C_1`,
     },
     // 'onClick': callback
-  }, appBar)
+  }, appbar)
   return <Link def={iconDef} />
 }
 
-const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
+const IntegratedPlayerToggle = ({ callback, def: appbar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
     'props': {
@@ -77,12 +77,12 @@ const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
       },
     },
     'onClick': callback
-  }, appBar)
+  }, appbar)
   return <Link def={iconDef} />
 }
 
 export default function ResearchToolbarFixed (props: IResearchToolbarProps) {
-  const { def: appBar } = props
+  const { def: appbar } = props
   const { sessionValid } = new StateSession(
     useSelector((state: RootState) => state.session)
   )
@@ -93,11 +93,11 @@ export default function ResearchToolbarFixed (props: IResearchToolbarProps) {
           <>
             <AddBookmark
               callback={props.bookmarkAddCallback}
-              def={appBar}
+              def={appbar}
             />
             <IntegratedPlayerToggle
               callback={props.togglePlayerCallback}
-              def={appBar}
+              def={appbar}
             />
           </>
         ): ( null )}

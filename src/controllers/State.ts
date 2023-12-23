@@ -16,8 +16,8 @@ import StatePagesData from './StatePagesData'
 import StateSnackbar from './StateSnackbar'
 import StateTmp from './StateTmp'
 import StateNet from './StateNet'
-import StateAppBarDefault from './templates/StateAppBarDefault'
-import StateAppBarQueries from './StateAppBarQueries'
+import StateAppbarDefault from './templates/StateAppbarDefault'
+import StateAppbarQueries from './StateAppbarQueries'
 import StateTopLevelLinks from './StateTopLevelLinks'
 import StateFormsDataErrors from './StateFormsDataErrors'
 import StatePathnames from './StatePathnames'
@@ -26,8 +26,8 @@ import StateSession from './StateSession'
 export default class State extends AbstractState {
 
   private _appDef?: StateApp
-  private _appBarDef?: StateAppBarDefault
-  private _appBarQueriesDef?: StateAppBarQueries
+  private _appbarDef?: StateAppbarDefault
+  private _appbarQueriesDef?: StateAppbarQueries
   private _backgroundDef?: StateBackground
   private _typographyDef?: StateTypography
   private _dataDef?: StateData
@@ -86,18 +86,18 @@ export default class State extends AbstractState {
   /**
    * Get the default appbar definition.
    */
-  get appBar(): StateAppBarDefault {
-    return this._appBarDef
-      || (this._appBarDef = new StateAppBarDefault(
-          store.getState().appBar,
+  get appbar(): StateAppbarDefault {
+    return this._appbarDef
+      || (this._appbarDef = new StateAppbarDefault(
+          store.getState().appbar,
           this
         ))
   }
 
-  get appBarQueries(): StateAppBarQueries {
-    return this._appBarQueriesDef
-      || (this._appBarQueriesDef = new StateAppBarQueries(
-            store.getState().appBarQueries,
+  get appbarQueries(): StateAppbarQueries {
+    return this._appbarQueriesDef
+      || (this._appbarQueriesDef = new StateAppbarQueries(
+            store.getState().appbarQueries,
             this
           ))
   }

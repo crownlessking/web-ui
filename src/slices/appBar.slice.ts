@@ -1,79 +1,79 @@
 import { createSlice } from '@reduxjs/toolkit'
 import initialState from '../state/initial.state'
 
-export const appBarSlice = createSlice({
-  name: 'appBar',
-  initialState: initialState.appBar,
+export const appbarSlice = createSlice({
+  name: 'appbar',
+  initialState: initialState.appbar,
   reducers: {
-    appBarBackgroundUpdate: (state, action) => {
+    appbarBackgroundUpdate: (state, action) => {
       state.background = action.payload
     },
-    appBarPropsUpdate: (state, action) => {
+    appbarPropsUpdate: (state, action) => {
       state.props = action.payload
     },
-    appBarToolbarPropsUpdate: (state, action) => {
+    appbarToolbarPropsUpdate: (state, action) => {
       state.toolbarProps = action.payload
     },
-    appBarMenuIconPropsUpdate: (state, action) => {
+    appbarMenuIconPropsUpdate: (state, action) => {
       state.menuIconProps = action.payload
     },
-    appBarLogoPropsUpdate: (state, action) => {
+    appbarLogoPropsUpdate: (state, action) => {
       state.logoProps = action.payload
     },
-    appBarTextLogoPropsUpdate: (state, action) => {
+    appbarTextLogoPropsUpdate: (state, action) => {
       state.textLogoProps = action.payload
     },
-    appBarSearchFieldPropsUpdate: (state, action) => {
+    appbarSearchFieldPropsUpdate: (state, action) => {
       state.searchFieldProps = action.payload
     },
-    appBarDesktopMenuItemsPropsUpdate: (state, action) => {
+    appbarDesktopMenuItemsPropsUpdate: (state, action) => {
       state.desktopMenuItemsProps = action.payload
     },
-    appBarMobileMenuItemsPropsUpdate: (state, action) => {
+    appbarMobileMenuItemsPropsUpdate: (state, action) => {
       state.mobileMenuItemsProps = action.payload
     },
-    appBarMobilMenuIconPropsUpdate: (state, action) => {
+    appbarMobilMenuIconPropsUpdate: (state, action) => {
       state.mobileMenuIconProps = action.payload
     },
-    appBarLogoThemeUpdate: (state, action) => {
+    appbarLogoThemeUpdate: (state, action) => {
       state.logoTheme = action.payload
     },
-    appBarBackgroundInheritedUpdate: (state, action) => {
+    appbarBackgroundInheritedUpdate: (state, action) => {
       state.backgroundInherited = action.payload
     },
-    appBarUseDefaultBackgroundUpdate: (state, action) => {
+    appbarUseDefaultBackgroundUpdate: (state, action) => {
       state.useDefaultBackground = action.payload
     },
-    appBarUseDefaultTypographyUpdate: (state, action) => {
+    appbarUseDefaultTypographyUpdate: (state, action) => {
       state.useDefaultTypography = action.payload
     },
-    appBarTypographyInheritedUpdate: (state, action) => {
+    appbarTypographyInheritedUpdate: (state, action) => {
       state.typographyInherited = action.payload
     },
-    appBarComponentsUpdate: (state, action) => {
+    appbarComponentsUpdate: (state, action) => {
       state.components = action.payload
     },
   }
 })
 
-export const appBarActions = appBarSlice.actions
+export const appbarActions = appbarSlice.actions
 export const {
-  appBarBackgroundUpdate,
-  appBarPropsUpdate,
-  appBarToolbarPropsUpdate,
-  appBarMenuIconPropsUpdate,
-  appBarLogoPropsUpdate,
-  appBarTextLogoPropsUpdate,
-  appBarSearchFieldPropsUpdate,
-  appBarDesktopMenuItemsPropsUpdate,
-  appBarMobileMenuItemsPropsUpdate,
-  appBarLogoThemeUpdate,
-  appBarMobilMenuIconPropsUpdate,
-  appBarBackgroundInheritedUpdate,
-  appBarUseDefaultBackgroundUpdate,
-  appBarUseDefaultTypographyUpdate,
-  appBarTypographyInheritedUpdate,
-  appBarComponentsUpdate
-} = appBarSlice.actions
+  appbarBackgroundUpdate,
+  appbarPropsUpdate,
+  appbarToolbarPropsUpdate,
+  appbarMenuIconPropsUpdate,
+  appbarLogoPropsUpdate,
+  appbarTextLogoPropsUpdate,
+  appbarSearchFieldPropsUpdate,
+  appbarDesktopMenuItemsPropsUpdate,
+  appbarMobileMenuItemsPropsUpdate,
+  appbarLogoThemeUpdate,
+  appbarMobilMenuIconPropsUpdate,
+  appbarBackgroundInheritedUpdate,
+  appbarUseDefaultBackgroundUpdate,
+  appbarUseDefaultTypographyUpdate,
+  appbarTypographyInheritedUpdate,
+  appbarComponentsUpdate
+} = appbarSlice.actions
 
-export default appBarSlice.reducer
+export default appbarSlice.reducer

@@ -9,8 +9,8 @@ import {
   appRequestSuccess
 } from '../slices/app.slice'
 import { log, ler, pre, net_patch_state, RootState } from '.'
-import { collectionStack, dataStack } from '../slices/data.slice'
-import { metaAdd } from 'src/slices/meta.slice'
+import { dataStackCol, dataStack } from '../slices/data.slice'
+import { metaAdd } from '../slices/meta.slice'
 
 export default function net_default_201_driver (
   dispatch: Dispatch,
@@ -28,7 +28,7 @@ export default function net_default_201_driver (
   log('Received response:', doc)
   if (doc.data) {
     if (Array.isArray(doc.data) && doc.data.length === 1) {
-      dispatch(collectionStack({
+      dispatch(dataStackCol({
         endpoint: clean_endpoint_ending(endpoint),
         collection: doc.data
       }))

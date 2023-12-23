@@ -1,42 +1,43 @@
-import IStateAppBar, { TAppBarStyle } from '../../interfaces/IStateAppBar'
+import IStateAppbar, { TAppbarStyle } from '../../interfaces/IStateAppbar'
 import IStateBackground from '../../interfaces/IStateBackground'
 import IStateTypography from '../../interfaces/IStateTypography'
-import StateAppBar from '../StateAppBar'
-import StateAppBarDefault from './StateAppBarDefault'
+import StateAppbar from '../StateAppbar'
+import StateAppbarDefault from './StateAppbarDefault'
 import StatePage from '../StatePage'
-import StatePageAppBarBackground from './StatePageAppBarBackground'
-import StatePageAppBarTypography from './StatePageAppBarTypography'
-import { remember_exception } from 'src/business.logic/errors'
+import StatePageAppbarBackground from './StatePageAppbarBackground'
+import StatePageAppbarTypography from './StatePageAppbarTypography'
+import { remember_exception } from '../../business.logic/errors'
 
-export default class StatePageAppBar 
-  extends StateAppBar<StatePage> implements IStateAppBar
+export default class StatePageAppbar 
+  extends StateAppbar<StatePage>
+  implements IStateAppbar
 {
-  protected noAppBarBackground: boolean
-  protected noAppBarTypography: boolean
-  protected pageAppBarBackgroundDef?: StatePageAppBarBackground
-  protected appBarTypography?: StatePageAppBarTypography
-  private _default: StateAppBarDefault
-  private _appBarLogoProps?: Required<IStateAppBar>['logoProps']
+  protected noAppbarBackground: boolean
+  protected noAppbarTypography: boolean
+  protected pageAppbarBackgroundDef?: StatePageAppbarBackground
+  protected appbarTypography?: StatePageAppbarTypography
+  private _default: StateAppbarDefault
+  private _appbarLogoProps?: Required<IStateAppbar>['logoProps']
 
-  constructor(appBar: IStateAppBar, parent: StatePage) {
-    super(appBar, parent)
-    this._default = this.parent.parent.parent.appBar
-    this.noAppBarBackground = !this.appBarState.background
-    this.appBarBackgroundState = this.appBarState.background || this.initBackground()
-    this.noAppBarTypography = !this.appBarState.typography
+  constructor(appbar: IStateAppbar, parent: StatePage) {
+    super(appbar, parent)
+    this._default = this.parent.parent.parent.appbar
+    this.noAppbarBackground = !this.appbarState.background
+    this.appbarBackgroundState = this.appbarState.background || this.initBackground()
+    this.noAppbarTypography = !this.appbarState.typography
   }
 
-  get theme(): any { return this.appBarState.theme || this._default.theme }
-  get props(): any { return this.appBarState.props || this._default.props }
-  get _type(): string { return this.appBarState._type || this._default._type }
-  get appBarStyle(): TAppBarStyle {
-    return this.appBarState.appBarStyle || this._default.appBarStyle
+  get theme(): any { return this.appbarState.theme || this._default.theme }
+  get props(): any { return this.appbarState.props || this._default.props }
+  get _type(): string { return this.appbarState._type || this._default._type }
+  get appbarStyle(): TAppbarStyle {
+    return this.appbarState.appbarStyle || this._default.appbarStyle
   }
 
-  get background(): StatePageAppBarBackground {
-    return this.pageAppBarBackgroundDef
-      || (this.pageAppBarBackgroundDef = new StatePageAppBarBackground(
-        this.appBarBackgroundState,
+  get background(): StatePageAppbarBackground {
+    return this.pageAppbarBackgroundDef
+      || (this.pageAppbarBackgroundDef = new StatePageAppbarBackground(
+        this.appbarBackgroundState,
         this
       ))
   }
@@ -44,80 +45,80 @@ export default class StatePageAppBar
   /**
    * Chain-access to typography definition.
    */
-  get typography(): StatePageAppBarTypography {
-    this.appBarTypographyState = this.appBarState.typography || this.initTypography()
-    return this.appBarTypography
-      || (this.appBarTypography = new StatePageAppBarTypography(
-        this.appBarTypographyState,
+  get typography(): StatePageAppbarTypography {
+    this.appbarTypographyState = this.appbarState.typography || this.initTypography()
+    return this.appbarTypography
+      || (this.appbarTypography = new StatePageAppbarTypography(
+        this.appbarTypographyState,
         this
       ))
   }
 
   get menuId(): string {
-    return this.appBarState.menuId
+    return this.appbarState.menuId
       || this._default.menuId
   }
 
   get mobileMenuId(): string {
-    return this.appBarState.mobileMenuId 
+    return this.appbarState.mobileMenuId 
       || this._default.mobileMenuId
   }
 
   get mobileMenu2Id(): string {
-    return this.appBarState.mobileMenu2Id
+    return this.appbarState.mobileMenu2Id
       || this._default.mobileMenu2Id
   }
 
-  get toolbarProps(): Required<IStateAppBar>['toolbarProps'] {
+  get toolbarProps(): Required<IStateAppbar>['toolbarProps'] {
     return {
       ...this._default.toolbarProps,
-      ...this.appBarState.toolbarProps
+      ...this.appbarState.toolbarProps
     }
   }
 
-  get mobileMenuProps(): Required<IStateAppBar>['mobileMenuProps'] {
+  get mobileMenuProps(): Required<IStateAppbar>['mobileMenuProps'] {
     return {
       ...this._default.mobileMenuProps,
-      ...this.appBarState.mobileMenuProps
+      ...this.appbarState.mobileMenuProps
     }
   }
 
-  get mobileMenu2Props(): Required<IStateAppBar>['mobileMenuProps'] {
+  get mobileMenu2Props(): Required<IStateAppbar>['mobileMenuProps'] {
     return {
       ...this._default.mobileMenu2Props,
-      ...this.appBarState.mobileMenu2Props
+      ...this.appbarState.mobileMenu2Props
     }
   }
 
-  get menuIconProps(): Required<IStateAppBar>['menuIconProps'] {
+  get menuIconProps(): Required<IStateAppbar>['menuIconProps'] {
     return {
       ...this._default.menuIconProps,
-      ...this.appBarState.menuIconProps
+      ...this.appbarState.menuIconProps
     }
   }
 
   get menuItemsProps(): any {
-    return this.appBarState.menuItemsProps || {}
+    return this.appbarState.menuItemsProps || {}
   }
 
   get menuItemsSx(): any {
-    return this.appBarState.menuItemsSx || this._default.menuItemsSx
+    return this.appbarState.menuItemsSx || this._default.menuItemsSx
   }
 
-  get logoTag(): Required<IStateAppBar>['logoTag'] {
+  get logoTag(): Required<IStateAppbar>['logoTag'] {
     return this.parent.parent.parent.app.logoTag
-      || this.appBarState.logoTag
+      || this.appbarState.logoTag
       || this._default.logoTag
   }
 
   get logoProps() {
-    if (this._appBarLogoProps) {
-      return this._appBarLogoProps
+    if (this._appbarLogoProps) {
+      return this._appbarLogoProps
     }
     const logoUri = this.parent.parent.parent.app.logoUri
     if (logoUri) {
       if (this.logoTag.toLowerCase() === 'div') {
-        return this._appBarLogoProps = {
+        return this._appbarLogoProps = {
           ...this._default.logoProps,
           sx: {
             backgroundSize: 'contain',
@@ -128,16 +129,16 @@ export default class StatePageAppBar
         }
       }
       if (this.logoTag.toLowerCase() === 'img') {
-        return this._appBarLogoProps = {
+        return this._appbarLogoProps = {
           ...this._default.logoProps,
           src: logoUri,
-          ...this.appBarState.logoProps
+          ...this.appbarState.logoProps
         }
       }
     }
-    return this._appBarLogoProps = {
+    return this._appbarLogoProps = {
       ...this._default.logoProps,
-      ...this.appBarState.logoProps
+      ...this.appbarState.logoProps
     }
   }
 
@@ -149,63 +150,63 @@ export default class StatePageAppBar
   get textLogoProps() {
     return {
       ...this._default.textLogoProps,
-      ...this.appBarState.textLogoProps
+      ...this.appbarState.textLogoProps
     }
   }
 
   get logoContainerProps(): any {
     return {
       ...this._default.logoContainerProps,
-      ...this.appBarState.logoContainerProps
+      ...this.appbarState.logoContainerProps
     }
   }
 
   get searchFieldProps() {
     return {
       ...this._default.searchFieldProps,
-      ...this.appBarState.searchFieldProps
+      ...this.appbarState.searchFieldProps
     }
   }
 
-  get desktopMenuItemsProps(): Required<IStateAppBar>['desktopMenuItemsProps'] {
+  get desktopMenuItemsProps(): Required<IStateAppbar>['desktopMenuItemsProps'] {
     return {
       ...this._default.desktopMenuItemsProps,
-      ...this.appBarState.desktopMenuItemsProps
+      ...this.appbarState.desktopMenuItemsProps
     }
   }
 
-  get desktopMenuItems2Props(): Required<IStateAppBar>['desktopMenuItems2Props'] {
+  get desktopMenuItems2Props(): Required<IStateAppbar>['desktopMenuItems2Props'] {
     return {
       ...this._default.desktopMenuItems2Props,
-      ...this.appBarState.desktopMenuItems2Props
+      ...this.appbarState.desktopMenuItems2Props
     }
   }
 
-  get mobileMenuItemsProps(): Required<IStateAppBar>['mobileMenuItemsProps'] {
+  get mobileMenuItemsProps(): Required<IStateAppbar>['mobileMenuItemsProps'] {
     return {
       ...this._default.mobileMenuItemsProps,
-      ...this.appBarState.mobileMenuItemsProps
+      ...this.appbarState.mobileMenuItemsProps
     }
   }
 
-  get mobileMenuItems2Props(): Required<IStateAppBar>['mobileMenuItems2Props'] {
+  get mobileMenuItems2Props(): Required<IStateAppbar>['mobileMenuItems2Props'] {
     return {
       ...this._default.mobileMenuItems2Props,
-      ...this.appBarState.mobileMenuItems2Props
+      ...this.appbarState.mobileMenuItems2Props
     }
   }
 
-  get mobileMenuIconProps(): Required<IStateAppBar>['mobileMenuIconProps'] {
+  get mobileMenuIconProps(): Required<IStateAppbar>['mobileMenuIconProps'] {
     return {
       ...this._default.mobileMenuIconProps,
-      ...this.appBarState.mobileMenuIconProps
+      ...this.appbarState.mobileMenuIconProps
     }
   }
 
-  get mobileMenuIcon2Props(): Required<IStateAppBar>['mobileMenuIcon2Props'] {
+  get mobileMenuIcon2Props(): Required<IStateAppbar>['mobileMenuIcon2Props'] {
     return {
       ...this._default.mobileMenuIcon2Props,
-      ...this.appBarState.mobileMenuIcon2Props
+      ...this.appbarState.mobileMenuIcon2Props
     }
   }
 
@@ -215,15 +216,15 @@ export default class StatePageAppBar
   }
 
   private initBackground = (): IStateBackground => {
-    if (this.noAppBarBackground) {
-      if (this.appBarState.useDefaultBackground) {
-        return this.parent.parent.parent.appBar.background
+    if (this.noAppbarBackground) {
+      if (this.appbarState.useDefaultBackground) {
+        return this.parent.parent.parent.appbar.background
       }
-      if (this.appBarState.backgroundInherited) {
-        const inheritedRoute = this.appBarState.backgroundInherited
+      if (this.appbarState.backgroundInherited) {
+        const inheritedRoute = this.appbarState.backgroundInherited
         const backgroundInheritedState = this.parent.parent
           .getPageState(inheritedRoute)
-          ?.appBar
+          ?.appbar
           ?.background
         if (backgroundInheritedState) { return backgroundInheritedState }
       }
@@ -232,13 +233,13 @@ export default class StatePageAppBar
   }
 
   private initTypography = (): IStateTypography => {
-    if (this.noAppBarTypography) {
-      const defaultTypography = this.parent.parent.parent.appBar.state.typography
-      if (this.appBarState.useDefaultTypography && defaultTypography) {
+    if (this.noAppbarTypography) {
+      const defaultTypography = this.parent.parent.parent.appbar.state.typography
+      if (this.appbarState.useDefaultTypography && defaultTypography) {
         return defaultTypography
       }
       try {
-        const route = this.appBarState.typographyInherited
+        const route = this.appbarState.typographyInherited
         if (route) {
           const inheritedTypography = this.parent.parent.state[route].typography
           if (inheritedTypography) {

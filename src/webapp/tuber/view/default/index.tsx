@@ -49,7 +49,7 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
       setShowThumbnail(!showThumbnail)
     },
     // appbar definition
-    def: page.appBar
+    def: page.appbar
   }
 
   // Closes the integrated player if window size too small.

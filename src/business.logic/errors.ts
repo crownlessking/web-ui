@@ -4,14 +4,6 @@ import { IJsonapiError } from '../interfaces/IJsonapi'
 
 let tmpErrorsList: IJsonapiError[]
 
-/** Get search query */
-export function get_search_query(
-  queries: Record<string, string>,
-  route: string
-): string {
-    return queries[route] ?? ''
-}
-
 /**
  * Set the error code in a Jsonapi error object.
  *

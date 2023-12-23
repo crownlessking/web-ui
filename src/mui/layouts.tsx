@@ -69,7 +69,7 @@ export const LayoutCenteredNoScroll = ({ children }: any) => (
  * Centered layout factory.
  *
  * Creates a layout where the content will be centered.
- * Use the parameter to adjust the gap between the `appBar` and the content.
+ * Use the parameter to adjust the gap between the `appbar` and the content.
  * The greater the number, the greater the gap.
  *
  * @param mHeight height of content in pixels
@@ -91,7 +91,7 @@ const LayoutCenteredFactory = (mHeight?: number) => ({ children }: any) => (
 )
 
 /**
- * LAYOUT CENTERED with the default `AppBar` space top margin.
+ * LAYOUT CENTERED with the default `Appbar` space top margin.
  */
 export const LayoutCentered = LayoutCenteredFactory(32)
 
@@ -115,7 +115,7 @@ const LayoutDefaultFactory = (mHeight = 0) => ({children}: any) => (
 export const DefaultLayout = LayoutDefaultFactory()
 export const VirtualizedTableLayout = LayoutDefaultFactory(49) // 29
 
-/** Applies toolbar space at the top if the page has an appBar */
+/** Applies toolbar space at the top if the page has an appbar */
 const LayoutNoneFactory = (mHeight = 0) => ({children}: any) => (
   <Box component='main' sx={{ w: '100%' }}>
     <Toolbar mHeight={mHeight} />
@@ -125,6 +125,6 @@ const LayoutNoneFactory = (mHeight = 0) => ({children}: any) => (
 
 /**
  * Applies toolbar space to prevent content from being hidden under the
- * appBar.
+ * appbar.
  */
 export const DefaultLayoutToolbared = LayoutNoneFactory(40)

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import {
-  collectionLimitedQueue,
-  collectionLimitedStack,
+  dataLimitQueueCol,
+  dataLimitStackCol,
 } from '../slices/data.slice'
 import { metaAdd } from '../slices/meta.slice'
 import { topLevelLinksStore } from '../slices/topLevelLinks.slice'
@@ -79,14 +79,14 @@ export default function net_default_200_driver (
   // data member
   if (doc.data && Array.isArray(doc.data)) {
     if (insertPosition === 'end') {
-      dispatch(collectionLimitedQueue({
+      dispatch(dataLimitQueueCol({
         collection: doc.data,
         endpoint,
         pageSize,
         limit: dataManager.getMaxLoadedPages()
       }))
     } else if (insertPosition === 'beginning') {
-      dispatch(collectionLimitedStack({
+      dispatch(dataLimitStackCol({
         collection: doc.data,
         endpoint,
         pageSize,
@@ -118,6 +118,9 @@ export default function net_default_200_driver (
     }
     if (doc.state?.session) {
       const session = new StateSession(doc.state.session)
+
+      // [TODO] This shouldn't be here. Move it inside a callback that will run when
+      //        the application is bootstrapped.
       // https://www.tabnine.com/academy/javascript/how-to-set-cookies-javascript/
       document.cookie = `token=${session.token}`
       document.cookie = `role=${session.role}`

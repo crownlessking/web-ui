@@ -78,7 +78,7 @@ export default function Layout({
       </VirtualizedTableLayout>
     ),
     [LAYOUT_NONE]: () => {
-      if (page.hasAppBar) {
+      if (page.hasAppbar) {
         return (
           <DefaultLayoutToolbared>
             { children }

@@ -80,7 +80,7 @@ export default function MiniDrawer({ def: drawer }: IMiniDrawerProps) {
       variant="permanent"
       open={open}
     >
-      { !drawer.parent.hideAppbar && drawer.parent.hasAppBar ? (
+      { !drawer.parent.hideAppbar && drawer.parent.hasAppbar ? (
         <Fragment>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>

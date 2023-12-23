@@ -18,7 +18,7 @@ export default function ResponsiveDrawer({ def: drawer }: IResDrawerProps) {
 
   const drawerContent = (
     <Fragment>
-      { !drawer.parent.hideAppbar && drawer.parent.hasAppBar ? (
+      { !drawer.parent.hideAppbar && drawer.parent.hasAppbar ? (
         <Fragment>
           <Toolbar />
           <Divider />

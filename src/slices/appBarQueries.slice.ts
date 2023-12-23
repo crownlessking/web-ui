@@ -9,24 +9,24 @@ interface IABSSliceAction {
   }
 }
 
-export const appBarQueriesSlice = createSlice({
-  name: 'appBarQueries',
-  initialState: initialState.appBarQueries,
+export const appbarQueriesSlice = createSlice({
+  name: 'appbarQueries',
+  initialState: initialState.appbarQueries,
   reducers: {
-    appBarQueriesSet: (state, action: IABSSliceAction) => {
+    appbarQueriesSet: (state, action: IABSSliceAction) => {
       const { route, value } = action.payload
       state[route] = value
     },
-    appBarQueriesDelete: (state, action) => {
+    appbarQueriesDelete: (state, action) => {
       state[action.payload] = ''
     }
   }
 })
 
-export const appBarQueriesActions = appBarQueriesSlice.actions
+export const appbarQueriesActions = appbarQueriesSlice.actions
 export const {
-  appBarQueriesSet,
-  appBarQueriesDelete
-} = appBarQueriesSlice.actions
+  appbarQueriesSet,
+  appbarQueriesDelete
+} = appbarQueriesSlice.actions
 
-export default appBarQueriesSlice.reducer
+export default appbarQueriesSlice.reducer

@@ -1,16 +1,16 @@
 import store from '../../state'
 import IStatePage from '../../interfaces/IStatePage'
 
-export function getAppBarFontColor(page: IStatePage) {
+export function getAppbarFontColor(page: IStatePage) {
   const state = store.getState()
 
-  return page.appBar?.typography?.color
-    || state.appBar?.typography?.color
+  return page.appbar?.typography?.color
+    || state.appbar?.typography?.color
 }
 
-export function getAppBarFontFamily(page: IStatePage) {
+export function getAppbarFontFamily(page: IStatePage) {
   const state = store.getState()
 
-  return page.appBar?.typography?.fontFamily
-    || state.appBar?.typography?.fontFamily
+  return page.appbar?.typography?.fontFamily
+    || state.appbar?.typography?.fontFamily
 }

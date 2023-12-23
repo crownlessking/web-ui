@@ -44,7 +44,7 @@ export default function PersistentDrawer({def: drawer }: PerDrawerProps) {
       {...drawer.props}
       open={open}
     >
-      { !drawer.parent.hideAppbar && drawer.parent.hasAppBar ? (
+      { !drawer.parent.hideAppbar && drawer.parent.hasAppbar ? (
         <Fragment>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>

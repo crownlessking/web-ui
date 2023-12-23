@@ -14,12 +14,12 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: initialState.app,
   reducers: {
-    appPageUpdate: (state, action) => {
+    appSwitchPage: (state, action) => {
       state.lastRoute = state.route
       state.route = action.payload
       state.status = APP_SWITCHED_PAGE
     },
-    appUrlPageUpdate: (state, action) => {
+    appBrowserSwitchPage: (state, action) => {
       state.lastRoute = state.route
       state.route = action.payload
       state.status = BROWSER_SWITCHED_PAGE
@@ -87,9 +87,9 @@ export const {
   appEnableSpinner,
   appTaskCompleted,
   appTitleUpdate,
-  appPageUpdate,
+  appSwitchPage,
   appStatusUpdate,
-  appUrlPageUpdate,
+  appBrowserSwitchPage,
   appSetFetchMessage,
   appThemeModeUpdate
 } = appSlice.actions

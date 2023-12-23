@@ -1,6 +1,6 @@
 import State from '../State'
-import StateAppBar from '../StateAppBar'
+import StateAppbar from '../StateAppbar'
 import StateTypography from '../StateTypography'
 
-export default class StateAppBarTypography<T = State>
-  extends StateTypography<StateAppBar<T>> { }
+export default class StateAppbarTypography<T = State>
+  extends StateTypography<StateAppbar<T>> { }

@@ -1,15 +1,16 @@
 import { set_val } from '..'
 import IStatePage from '../../interfaces/IStatePage'
-import StatePageAppBar from './StatePageAppBar'
 import StateTypography from '../StateTypography'
+import StateAppbar from '../StateAppbar'
+import StatePage from '../StatePage'
 
-export default class StatePageAppBarTypography
-  extends StateTypography<StatePageAppBar>
+export default class StatePageAppbarTypography
+  extends StateTypography<StateAppbar<StatePage>>
 {
-  patchStatePageAppBarTypography (page: IStatePage): void {
-    const fontColor = page.appBar?.typography?.color
+  patchStatePageAppbarTypography (page: IStatePage): void {
+    const fontColor = page.appbar?.typography?.color
     if (!fontColor) {
-      set_val(page, 'appBar.typography.color', 'inherit')
+      set_val(page, 'appbar.typography.color', 'inherit')
     }
   } 
 }

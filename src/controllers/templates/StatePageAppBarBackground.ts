@@ -1,8 +1,9 @@
+import StateAppbar from '../StateAppbar';
 import StateBackground from '../StateBackground'
-import StatePageAppBar from './StatePageAppBar'
+import StatePage from '../StatePage';
 
-export default class StatePageAppBarBackground
-  extends StateBackground<StatePageAppBar>
+export default class StatePageAppbarBackground
+  extends StateBackground<StateAppbar<StatePage>>
 {
 
 }

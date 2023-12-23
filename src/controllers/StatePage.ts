@@ -1,11 +1,11 @@
 import { get_parsed_page_content } from '.'
-import StatePageAppBar from './templates/StatePageAppBar'
+import StatePageAppbar from './templates/StatePageAppbar'
 import StatePageBackground from './templates/StatePageBackground'
 import StateAllPages from './StateAllPages'
 import StatePageDrawer from './templates/StatePageDrawer'
 import StatePageTypography from './templates/StatePageTypography'
 import AbstractState from './AbstractState'
-import IStateAppBar from '../interfaces/IStateAppBar'
+import IStateAppbar from '../interfaces/IStateAppbar'
 import StateComponent from './StateComponent'
 import IStatePage, { IStatePageContent } from '../interfaces/IStatePage'
 import IStateBackground from '../interfaces/IStateBackground'
@@ -20,7 +20,7 @@ import { mongo_object_id } from '../business.logic'
 
 export default class StatePage extends AbstractState implements IStatePage {
 
-  static EMPTY_APPBAR: IStateAppBar = { items: [] }
+  static EMPTY_APPBAR: IStateAppbar = { items: [] }
   static EMPTY_DRAWER: IStateDrawer = {
     items: [],
     open: false,
@@ -29,11 +29,11 @@ export default class StatePage extends AbstractState implements IStatePage {
   private _parentDef?: StateAllPages
   private _pageState: IStatePage
   private _pageId?: string
-  private _pageAppBarState?: IStateAppBar
-  private _pageAppBar?: StatePageAppBar
-  private _noPageAppBar: boolean
-  private _pageAppBarCustomState?: IStateComponent
-  private _pageAppBarCustom?: StateComponent<this>
+  private _pageAppbarState?: IStateAppbar
+  private _pageAppbar?: StatePageAppbar
+  private _noPageAppbar: boolean
+  private _pageAppbarCustomState?: IStateComponent
+  private _pageAppbarCustom?: StateComponent<this>
   private _pageDrawerState?: IStateDrawer
   private _noPageDrawer: boolean
   private _pageContentState?: IStatePageContent
@@ -53,7 +53,7 @@ export default class StatePage extends AbstractState implements IStatePage {
     this._parentDef = parent
     this._pageState = pageState
     this._pageId = this._pageState._id
-    this._noPageAppBar = !this._pageState.appBar
+    this._noPageAppbar = !this._pageState.appbar
     this._noPageDrawer = !this._pageState.drawer
     // this.noPageBackground = !this.pageJson.background
     this._pageTypographyState = this._pageState.typography || {}
@@ -72,7 +72,7 @@ export default class StatePage extends AbstractState implements IStatePage {
    * **Note:** Inheritances and swaps are ignored.
    * 
    */
-  get appBarJson(): IStateAppBar { return this.state.appBar || {} }
+  get appbarJson(): IStateAppbar { return this.state.appbar || {} }
 
   /**
    * A unique id is assigned if you would like to use an identifier for the
@@ -85,22 +85,22 @@ export default class StatePage extends AbstractState implements IStatePage {
   get forcedTitle(): string { return this._pageState.forcedTitle ?? '' }
 
   /** Chain-access to the page appbar definition. */
-  get appBar(): StatePageAppBar {
-    if (this._pageAppBar) {
-      return this._pageAppBar
+  get appbar(): StatePageAppbar {
+    if (this._pageAppbar) {
+      return this._pageAppbar
     }
-    this._pageAppBarState = this.initPageAppBar()
-    this._pageAppBar = new StatePageAppBar(this._pageAppBarState, this)
-    return this._pageAppBar
+    this._pageAppbarState = this.initPageAppbar()
+    this._pageAppbar = new StatePageAppbar(this._pageAppbarState, this)
+    return this._pageAppbar
   }
 
-  get appBarCustom(): StateComponent<this> {
-    if (this._pageAppBarCustom) {
-      return this._pageAppBarCustom
+  get appbarCustom(): StateComponent<this> {
+    if (this._pageAppbarCustom) {
+      return this._pageAppbarCustom
     }
-    this._pageAppBarCustomState = this.initPageAppBarCustom()
-    this._pageAppBarCustom = new StateComponent(this._pageAppBarCustomState, this)
-    return this._pageAppBarCustom
+    this._pageAppbarCustomState = this.initPageAppbarCustom()
+    this._pageAppbarCustom = new StateComponent(this._pageAppbarCustomState, this)
+    return this._pageAppbarCustom
   }
 
   /** Chain-access to the page background definition. */
@@ -164,15 +164,15 @@ export default class StatePage extends AbstractState implements IStatePage {
   /** Chain-access to the page's layout definition */
   get layout(): TStatePageLayout { return this._pageState.layout || 'layout_none' }
   /** Check if an appbar was defined for the current page. */
-  get hasAppBar(): boolean {
-    return !this._noPageAppBar
-      || !!this._pageState.appBarInherited
+  get hasAppbar(): boolean {
+    return !this._noPageAppbar
+      || !!this._pageState.appbarInherited
       || !!this._pageState.useDefaultAppbar
   }
   /** Check if a custom appbar was defined for the current page. */
-  get hasCustomAppBar(): boolean {
-    return !!this._pageState.appBarCustom
-      || !!this._pageState.appBarCustomInherited
+  get hasCustomAppbar(): boolean {
+    return !!this._pageState.appbarCustom
+      || !!this._pageState.appbarCustomInherited
   }
   /** Check if a drawer was defined for the current page. */
   get hasDrawer(): boolean {
@@ -187,7 +187,7 @@ export default class StatePage extends AbstractState implements IStatePage {
   get useDefaultBackground(): boolean { return !!this._pageState.useDefaultBackground }
   get useDefaultTypography(): boolean { return !!this._pageState.useDefaultTypography }
   get inherit(): string { return this._pageState.inherited ?? '' }
-  get appBarInherited(): string { return this._pageState.appBarInherited ?? '' }
+  get appbarInherited(): string { return this._pageState.appbarInherited ?? '' }
   get drawerInherited(): string { return this._pageState.drawerInherited ?? '' }
   get generateDefaultDrawer(): boolean { return this._pageState.generateDefaultDrawer === true }
   get contentInherited(): string { return this._pageState.contentInherited ?? '' }
@@ -245,40 +245,40 @@ export default class StatePage extends AbstractState implements IStatePage {
   }
 
   /** Ensures the page has the correct appbar. */
-  private initPageAppBar = (): IStateAppBar => {
-    if (this._pageState.appBar) {
-      return { ...StatePage.EMPTY_APPBAR, ...this._pageState.appBar }
+  private initPageAppbar = (): IStateAppbar => {
+    if (this._pageState.appbar) {
+      return { ...StatePage.EMPTY_APPBAR, ...this._pageState.appbar }
     }
     if (this._pageState.inherited) {
       const inheritedRoute = this._pageState.inherited
-      const inheritedState = this.parent.getPageState(inheritedRoute)?.appBar
+      const inheritedState = this.parent.getPageState(inheritedRoute)?.appbar
       if (inheritedState) { return inheritedState }
-      ler(`StatePage.initPageAppBar: Failed to inherit app bar.`)
+      ler(`StatePage.initPageAppbar: Failed to inherit app bar.`)
     }
-    if (this._pageState.appBarInherited) {
-      const appBarInheritedRoute = this._pageState.appBarInherited
-      const appBarInheritedState = this.parent
-        .getPageState(appBarInheritedRoute)
-        ?.appBar
-      if (appBarInheritedState) { return appBarInheritedState }
-      ler(`StatePage.initPageAppBar: Failed to inherit app bar.`)
+    if (this._pageState.appbarInherited) {
+      const appbarInheritedRoute = this._pageState.appbarInherited
+      const appbarInheritedState = this.parent
+        .getPageState(appbarInheritedRoute)
+        ?.appbar
+      if (appbarInheritedState) { return appbarInheritedState }
+      ler(`StatePage.initPageAppbar: Failed to inherit app bar.`)
     }
     if (this._pageState.useDefaultAppbar) {
-      return this.parent.parent.appBar.state
+      return this.parent.parent.appbar.state
     }
     return StatePage.EMPTY_APPBAR
   }
 
   /** There's no default custom appbar but you can inherit one. */
-  private initPageAppBarCustom = (): IStateComponent => {
-    if (this._pageState.appBarCustom) {
-      return this._pageState.appBarCustom
+  private initPageAppbarCustom = (): IStateComponent => {
+    if (this._pageState.appbarCustom) {
+      return this._pageState.appbarCustom
     }
-    if (this._pageState.appBarCustomInherited) {
-      const route = this._pageState.appBarCustomInherited
-      return this.parent.getPageState(route)?.appBarCustom || {}
+    if (this._pageState.appbarCustomInherited) {
+      const route = this._pageState.appbarCustomInherited
+      return this.parent.getPageState(route)?.appbarCustom || {}
     }
-    return this._pageAppBarCustomState || {}
+    return this._pageAppbarCustomState || {}
   }
 
   /** Initializes and ensures that the page has the correct drawer. */

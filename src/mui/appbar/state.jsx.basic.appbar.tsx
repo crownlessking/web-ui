@@ -1,4 +1,4 @@
-import AppBar from '@mui/material/AppBar'
+import Appbar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -7,15 +7,15 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useDispatch } from 'react-redux'
 import StatePage from '../../controllers/StatePage'
 import { AppDispatch } from '../../state'
-import AppBarButton from '../link'
+import AppbarButton from '../link'
 import StateJsxLogo from './state.jsx.logo'
 
 interface IJsonBasicAB {
   def: StatePage
 }
 
-export default function StateJsxBasicAppBar({ def: page }: IJsonBasicAB) {
-  const { appBar } = page
+export default function StateJsxBasicAppbar({ def: page }: IJsonBasicAB) {
+  const { appbar } = page
   const dispatch = useDispatch<AppDispatch>()
 
   const handleDrawerOpen = () => {
@@ -24,37 +24,37 @@ export default function StateJsxBasicAppBar({ def: page }: IJsonBasicAB) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        {...appBar.props}
+      <Appbar
+        {...appbar.props}
         position="fixed"
       >
-        <Toolbar {...appBar.toolbarProps}>
-          {appBar.parent.hasDrawer ? (
+        <Toolbar {...appbar.toolbarProps}>
+          {appbar.parent.hasDrawer ? (
             <IconButton
-              {...appBar.menuIconProps}
+              {...appbar.menuIconProps}
               onClick={handleDrawerOpen}
             >
               <MenuIcon />
             </IconButton>
           ) : ( null )}
-          {appBar.hasLogo ? (
-            <StateJsxLogo def={appBar} />
+          {appbar.hasLogo ? (
+            <StateJsxLogo def={appbar} />
           ) : (
             <Typography
               sx={{
-                fontFamily: appBar.typography.fontFamily,
-                color: appBar.typography.color
+                fontFamily: appbar.typography.fontFamily,
+                color: appbar.typography.color
               }}
-              {...appBar.textLogoProps}
+              {...appbar.textLogoProps}
             >
               { page.parent.parent.app.title }
             </Typography>
           )}
-          {appBar.items.map((item, i) => (
-            <AppBarButton def={item} key={`nav-menu-${i}`} />
+          {appbar.items.map((item, i) => (
+            <AppbarButton def={item} key={`nav-menu-${i}`} />
           ))}
         </Toolbar>
-      </AppBar>
+      </Appbar>
     </Box>
   )
 }

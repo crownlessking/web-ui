@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
 import IStateLink from 'src/interfaces/IStateLink'
 import StateLink from 'src/controllers/StateLink'
-import StatePageAppBar from 'src/controllers/templates/StatePageAppBar'
+import StatePageAppbar from 'src/controllers/templates/StatePageAppbar'
 import Link from 'src/mui/link'
 import { IResearchToolbarProps } from '../tuber.interfaces'
 import { RootState } from 'src/state'
@@ -16,7 +16,7 @@ interface IToolbarIcon {
   /** Callback to run when the toolbar icon is clicked. */
   callback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
-  def: StatePageAppBar
+  def: StatePageAppbar
 }
 
 const Toolbar = styled('div')(({ theme }) => ({
@@ -40,7 +40,7 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 }))
 
 /** When clicked, this icon will show or hide the list of bookmarks. */
-// const BookmarksListIcon = ({ callback, def: appBar }: IToolbarIcon) => {
+// const BookmarksListIcon = ({ callback, def: appbar }: IToolbarIcon) => {
 //   const bookmarksListIconDef = new StateLink({
 //     'type': 'icon',
 //     'props': {
@@ -57,12 +57,12 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
 //       }
 //     },
 //     'onClick': callback
-//   }, appBar)
+//   }, appbar)
 //   return <Link def={bookmarksListIconDef} />
 // }
 
 /** When clicked, this icon displays an interface to create a new video bookmark. */
-const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
+const AddBookmark = ({ def: appbar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
     'props': {
@@ -79,12 +79,12 @@ const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
       'onclickHandle': `tuberCallbacks.$3_C_1`,
     },
     // 'onClick': callback
-  }, appBar)
+  }, appbar)
   return <Link def={iconDef} />
 }
 
 /** When clicked, this icon will show or hide the list of bookmarks. */
-// const ToggleBookmarksIcon = ({ callback, def: appBar }: IToolbarIcon) => {
+// const ToggleBookmarksIcon = ({ callback, def: appbar }: IToolbarIcon) => {
 //   const iconDef = new StateLink({
 //     'type': 'icon',
 //     'props': {
@@ -100,11 +100,11 @@ const AddBookmark = ({ def: appBar }: IToolbarIcon) => {
 //       }
 //     },
 //     'onClick': callback
-//   }, appBar)
+//   }, appbar)
 //   return <Link def={iconDef} />
 // }
 
-const ShowThumbnailsToggle = ({ callback, def: appBar }: IToolbarIcon) => {
+const ShowThumbnailsToggle = ({ callback, def: appbar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
     'props': {
@@ -120,11 +120,11 @@ const ShowThumbnailsToggle = ({ callback, def: appBar }: IToolbarIcon) => {
       },
     },
     'onClick': callback
-  }, appBar)
+  }, appbar)
   return <Link def={iconDef} />
 }
 
-const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
+const IntegratedPlayerToggle = ({ callback, def: appbar }: IToolbarIcon) => {
   const iconDef = new StateLink({
     'type': 'icon',
     'props': {
@@ -138,15 +138,15 @@ const IntegratedPlayerToggle = ({ callback, def: appBar }: IToolbarIcon) => {
           'fontSize': 34
         }
       },
-      'route': appBar.parent._key // 'research-app'
+      'route': appbar.parent._key // 'research-app'
     },
     'onClick': callback
-  }, appBar)
+  }, appbar)
   return <Link def={iconDef} />
 }
 
 export default function ResearchToolbar (props: IResearchToolbarProps) {
-  const { def: appBar } = props
+  const { def: appbar } = props
   const { sessionValid } = new StateSession(
     useSelector((state: RootState) => state.session)
   )
@@ -157,15 +157,15 @@ export default function ResearchToolbar (props: IResearchToolbarProps) {
           <>
             <AddBookmark
               callback={props.bookmarkAddCallback}
-              def={appBar}
+              def={appbar}
             />
             <ShowThumbnailsToggle
               callback={props.toggleThumbnailsCallback}
-              def={appBar}
+              def={appbar}
             />
             <IntegratedPlayerToggle
               callback={props.togglePlayerCallback}
-              def={appBar}
+              def={appbar}
             />
           </>
         ) : ( null )}

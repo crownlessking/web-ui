@@ -4,19 +4,18 @@ import AbstractState from './AbstractState'
 import IStateFormItemCustom, { THandleCallback } from '../interfaces/IStateFormItemCustom'
 
 export default class StateFormItemCustom<P, T = any>
-    extends AbstractState implements IStateFormItemCustom<T> {
-      
-  protected hasState: IStateFormItemCustom<T>
+  extends AbstractState
+  implements IStateFormItemCustom<T>
+{
   protected hasItemsState: T[]
   protected parentDef: P
   protected hasCallback?: TReduxCallback
   protected hasClasses: any
   private _fieldOk = true
 
-  constructor (hasState: IStateFormItemCustom, parent: P) {
+  constructor (protected hasState: IStateFormItemCustom<T>, parent: P) {
     super()
     this.parentDef = parent
-    this.hasState = hasState
     this.hasItemsState = this.hasState.items || []
     this.hasCallback = this.hasState.callback
     this.hasClasses = this.hasState.classes || {}

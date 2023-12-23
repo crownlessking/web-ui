@@ -3,50 +3,50 @@ import BasicAppbar from './state.jsx.basic.appbar'
 import MiniAppbar from './state.jsx.mini.appbar'
 import ResponsiveAppbar from './state.jsx.responsive.appbar'
 import ComponentBuilder from '../../components'
-import StateJsxMidSearchAppBar from './state.jsx.middle-search.appbar'
+import StateJsxMidSearchAppbar from './state.jsx.middle-search.appbar'
 
-interface IAppBarProps {
+interface IAppbarProps {
   def: StatePage
 }
 
 /**
  * Choose the style of app bar to render.
  * ```ts
- * const appBarState = {
- *   'appBarStyle': '' // <-- Set your app bar style
+ * const appbarState = {
+ *   'appbarStyle': '' // <-- Set your app bar style
  * };
  * // Or
- * const appBarState = {
+ * const appbarState = {
  *   '_type': '' // <-- Or you can set it here
  * };
  * ```
- * @see IStateAppBar.appBarStyle
- * @see IStateAppBar._type
+ * @see IStateAppbar.appbarStyle
+ * @see IStateAppbar._type
  */
-export default function StateJsxAppBar ({ def: page }: IAppBarProps) {
+export default function StateJsxAppbar ({ def: page }: IAppbarProps) {
 
   if (page.hideAppbar) {
     return ( null )
   }
 
-  if (page.hasAppBar) {
-    const { appBar } = page
-    const appBarTable: {[_type: string]: JSX.Element} = {
+  if (page.hasAppbar) {
+    const { appbar } = page
+    const appbarTable: {[_type: string]: JSX.Element} = {
       'basic': <BasicAppbar def={page} />,
       'responsive': <ResponsiveAppbar def={page} />,
       'mini': <MiniAppbar def={page} />,
-      'middle_search': <StateJsxMidSearchAppBar def={page} />
+      'middle_search': <StateJsxMidSearchAppbar def={page} />
     }
   
-    return appBarTable[appBar.appBarStyle.toLowerCase()]
-      || appBarTable[appBar._type.toLowerCase()]
+    return appbarTable[appbar.appbarStyle.toLowerCase()]
+      || appbarTable[appbar._type.toLowerCase()]
       || ( null )
   }
 
-  if (page.hasCustomAppBar) {
+  if (page.hasCustomAppbar) {
     return (
       <ComponentBuilder
-        def={page.appBarCustom.items}
+        def={page.appbarCustom.items}
         parent={page}
       />
     )

@@ -8,10 +8,10 @@ import IStatePage from '../../interfaces/IStatePage'
  * [TODO] This function is not used anywhere.
  * @deprecated
  */
-export function get_appBar_background_style(pageState: IStatePage) {
+export function get_appbar_background_style(pageState: IStatePage) {
   const state = store.getState()
 
-  return get_val(pageState, 'appBar.background.value')
-    || get_val(state, 'appBar.background.value')
+  return get_val(pageState, 'appbar.background.value')
+    || get_val(state, 'appbar.background.value')
     || 'inherit'
 }

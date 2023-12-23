@@ -82,7 +82,7 @@ export default function form_submit_edit_odysee_bookmark(redux: IRedux) {
           ...formData
         }
       }
-      dispatch(actions.resourceUpdate({
+      dispatch(actions.dataUpdateByIndex({
         endpoint,
         index,
         resource: editedBookmarkResource

@@ -42,8 +42,8 @@
   w.appForms = w.appForms || {};
   w.appData  = w.appData  || {};
 
-  w.appAppBar = {
-    'appBarStyle': 'basic',
+  w.appAppbar = {
+    'appbarStyle': 'basic',
     'props': {
       'elevation': 0,
       'color': 'transparent'
@@ -55,8 +55,8 @@
 
   w.appPages['research-app'] = {
     'content': '$webapp : dinnerReservation',
-    'appBar': {
-      'appBarStyle': 'basic',
+    'appbar': {
+      'appbarStyle': 'basic',
       // items2: [
       //   {
       //     has: {

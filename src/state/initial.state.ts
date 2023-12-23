@@ -94,20 +94,20 @@ export default {
    */
   'meta': {},
 
-  'appBar': {
-    'appBarStyle': 'basic',
+  'appbar': {
+    'appbarStyle': 'basic',
     'background': {
       'color' : DEFAULT_BACKGROUND_COLOR, // 'radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)'
     },
     'items': [],
     'typography': { },
-    ...get_global_var(`${GLOBAL_PREFIX}AppBar`)
+    ...get_global_var(`${GLOBAL_PREFIX}Appbar`)
   },
 
   /**
    * Contains the appbar search field text of all pages. The key is the page name.
    */
-  'appBarQueries': {},
+  'appbarQueries': {},
   'queryHistory': {},
 
   /**
@@ -213,7 +213,7 @@ export default {
       '_key': 'default-notfound',
       'content': '$view : default_notfound_page_view',
       'layout': 'layout_centered',
-      'appBar': { 'items': [{ 'has': { 'text': 'Home', 'route': '/' }}]},
+      'appbar': { 'items': [{ 'has': { 'text': 'Home', 'route': '/' }}]},
       'data': { 'message': 'Not found!' },
       'background': {
         'type': 'color',
@@ -229,7 +229,7 @@ export default {
 
     'default-test': {
       'content': '$view : default_landing_page_view',
-      'appBar': {},
+      'appbar': {},
       'drawer': {
         '_type': 'mini'
       }
@@ -243,7 +243,7 @@ export default {
         'value': '#fcfcfc'
       },
       'layout': 'layout_none_no_appbar',
-      'appBar': {
+      'appbar': {
         'items': [
           {
             'has': {

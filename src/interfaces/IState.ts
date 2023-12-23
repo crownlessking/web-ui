@@ -3,8 +3,8 @@ import IStateAllDialogs from './IStateAllDialogs'
 import IStateAllForms from './IStateAllForms'
 import IStateAllPages from './IStateAllPages'
 import IStateApp from './IStateApp'
-import IStateAppBar from './IStateAppBar'
-import IStateAppBarQueries from './IStateAppBarQueries'
+import IStateAppbar from './IStateAppbar'
+import IStateAppbarQueries from './IStateAppbarQueries'
 import IStateBackground from './IStateBackground'
 import IStateDialog from './IStateDialog'
 import IStateNet from './IStateNet'
@@ -64,9 +64,9 @@ export interface IStatePathnames {
  */
 export default interface IState {
   app: IStateApp
-  appBar: IStateAppBar
-  appBarQueries: IStateAppBarQueries
-    background: IStateBackground
+  appbar: IStateAppbar
+  appbarQueries: IStateAppbarQueries
+  background: IStateBackground
   typography: IStateTypography
   data: IStateData
   /**
@@ -96,13 +96,13 @@ export default interface IState {
   forms: IStateAllForms
   formsLight: IStateAllForms
   formsDark: IStateAllForms
-  formsData: IGenericObject
+  formsData: Record<string, any>
   formsDataErrors: IStateFormsDataErrors
-  meta: IGenericObject
+  meta: Record<string, any>
   pages: IStateAllPages
   pagesLight: IStateAllPages
   pagesDark: IStateAllPages
-  pagesData: IGenericObject
+  pagesData: Record<string, any>
   snackbar: IStateSnackbar
   /**
    * Holds temporary data.
@@ -114,7 +114,7 @@ export default interface IState {
    * `suffix` `Form` indicates that the temporary data is stored for a form and
    * when the `newUserForm` accesses this data, it will be removed.
    */
-  tmp: IGenericObject
+  tmp: Record<string, any>
   topLevelLinks: IStateTopLevelLinks
   /** Material-ui `ThemeOptions` */
   theme: ThemeOptions

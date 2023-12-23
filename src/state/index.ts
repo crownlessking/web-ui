@@ -2,9 +2,9 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 // import logger from 'redux-logger'// TODO Uncomment when debugging Redux
 import infoReducer, { appActions } from '../slices/app.slice'
-import appBarReducer, { appBarActions } from '../slices/appBar.slice'
+import appbarReducer, { appbarActions } from '../slices/appbar.slice'
 import metaReducer, { metaActions } from '../slices/meta.slice'
-import appBarQueriesReducer, { appBarQueriesActions } from '../slices/appBarQueries.slice'
+import appbarQueriesReducer, { appbarQueriesActions } from '../slices/appbarQueries.slice'
 import backgroundReducer, { backgroundActions } from '../slices/background.slice'
 import typographyReducer, { typographyActions } from '../slices/typography.slice'
 import dialogReducer, { dialogActions } from '../slices/dialog.slice'
@@ -112,8 +112,8 @@ const net_patch_state_reducer = (oldState: any, fragment: any) => {
 
 const appReducer = combineReducers({
   app: infoReducer,
-  appBar: appBarReducer,
-  appBarQueries: appBarQueriesReducer,
+  appbar: appbarReducer,
+  appbarQueries: appbarQueriesReducer,
   background: backgroundReducer,
   data: dataReducer,
   dataPagesRange: dataLoadedPagesSlice,
@@ -189,8 +189,8 @@ export type AppDispatch = typeof store.dispatch
 
 export const actions = {
   ...appActions,
-  ...appBarActions,
-  ...appBarQueriesActions,
+  ...appbarActions,
+  ...appbarQueriesActions,
   ...backgroundActions,
   ...dataActions,
   ...dialogActions,
@@ -327,7 +327,7 @@ export function dummy_callback (_redux: IRedux): TCallback {
 export function default_callback ({store, actions, route}:IRedux): TCallback {
   return () => {
     if (route) {
-      store.dispatch(actions.appUrlPageUpdate(route))
+      store.dispatch(actions.appBrowserSwitchPage(route))
     }
   }
 }

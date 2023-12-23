@@ -1,9 +1,9 @@
 import { IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import StatePageAppBar from '../../controllers/templates/StatePageAppBar'
+import StatePageAppbar from '../../controllers/templates/StatePageAppbar'
 
 interface IJsonMIProps {
-  def: StatePageAppBar
+  def: StatePageAppbar
   toggle: () => void
 }
 

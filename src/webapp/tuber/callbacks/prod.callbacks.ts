@@ -60,7 +60,7 @@ const prodCallbacks: { readonly [key: string]: TReduxCallback } = {
   '$1_C_1': dialog_new_bookmark_from_url,
   '$3_C_1': dialog_new_video_url,
   '$32_C_1': dialog_sign_in,
-  appBarSearchBookmarks: appbar_search_bookmarks,
+  appbarSearchBookmarks: appbar_search_bookmarks,
   '$1_C_2': dialog_new_bookmark_from_url_on_enter_key,
   '$6_C_1': form_submit_new_youtube_bookmark,
   '$7_C_1': form_submit_edit_youtube_bookmark,

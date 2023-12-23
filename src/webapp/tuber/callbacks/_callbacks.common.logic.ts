@@ -95,3 +95,14 @@ export function get_form_data<T=any>(
   const formData = policy.getFilteredData()
   return { formData, formName }
 }
+
+/**
+ * Converts a string to a slug.
+ *
+ * @param str string to convert to slug
+ * @returns slug
+ */
+export const to_slug = (str: string) => str
+  .replace(/\s+/g, '-')
+  .replace(/[^A-Za-z0-9-]+/g, '')
+  .toLowerCase()

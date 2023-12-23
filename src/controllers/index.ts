@@ -304,10 +304,7 @@ export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
  * **name**: Identifier for a a specific content.  
  * **endpoint**: to which data may be sent or retrieve for the page.  
  * **args**: URL arguments when making server request using the enpoint.  
- * 
- * __Note__: This method may be made to be `private` or `protected` in the
- * near future, depending on current and future scenarios.
- * 
+ *
  * @param content 
  * @returns `IStatePageContent` object.
  */
@@ -390,21 +387,29 @@ export function get_drawer_width(): number {
  * Get the real route from the template route by ignoring the path variables.
  * @param templateRoute 
  */
-export function get_real_route(templateRoute: string): string {
+export function get_base_route(templateRoute?: string): string {
+  if (!templateRoute) return ''
   return templateRoute.replace(/^\/|\/$/g, '').split('/')[0]
 }
 
 /**
- * Get endpoint and path variables values from route.  
+ * Get base route and path variables values from route.  
  * @param template e.g. "/users/:id"
  * @param rawRoute e.g. "/users/1"
  * @returns Object with endpoint and path variables values.
  */
-export function get_endpoint_and_path_vars(
-  template: string,
-  rawRoute: string
-): { route: string, pathVars: Record<string, string> } {
-  const pathVars: Record<string, string> = {}
+export function get_path_vars(
+  template?: string,
+  rawRoute?: string
+): { baseRoute: string, params: string[], values: string[] } {
+  if (!template || !rawRoute) {
+    return { baseRoute: '',params: [], values: [] }
+  }
+  if (rawRoute === '/') {
+    return { baseRoute: rawRoute, params: [], values: [] }
+  }
+  const values: string[] = []
+  const params: string[] = []
   const route = rawRoute.replace(/^\/|\/$/g, '')
   const tpl = template.replace(/^\/|\/$/g, '')
   const tplPieces = tpl.split('/')
@@ -412,12 +417,12 @@ export function get_endpoint_and_path_vars(
   let i = 0
   for (const piece of tplPieces) {
     if (piece.startsWith(':')) {
-      const key = piece.substring(1)
-      pathVars[key] = routePieces[i]
+      params.push(piece.replace(/^:/, ''))
+      values.push(routePieces[i])
     }
     i++
   }
-  return { route: routePieces[0], pathVars }
+  return { baseRoute: routePieces[0], params, values }
 }
 
 /**
@@ -460,4 +465,18 @@ export function has_path_vars(rawRoute: string): boolean {
  */
 export function no_path_vars(rawRoute: string): boolean {
   return !has_path_vars(rawRoute)
+}
+
+/**
+ * Determine if the route is a template route.
+ *
+ * A template route has path variable parameters. e.g. "/users/:id"
+ *
+ * @param possibleTemplate
+ * @returns 
+ */
+export function is_template_route(possibleTemplate: string): boolean {
+  return possibleTemplate.replace(/^\/|\/$/g, '').split('/').some(
+    piece => piece.startsWith(':')
+  )
 }

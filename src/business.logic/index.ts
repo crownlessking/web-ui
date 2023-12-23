@@ -41,6 +41,19 @@ export function get_head_meta_content(name: string, $default = 'app'): string {
 }
 
 /**
+ * Get search query
+ * @param queries state containing search queries
+ * @param route current route or the key to the search query
+ * @returns string
+ */
+export function get_search_query(
+  queries: Record<string, string>,
+  route: string
+): string {
+    return queries[route] ?? ''
+}
+
+/**
  * Get global variable value.
  *
  * Since there's a number of global variables that are defined by clients,

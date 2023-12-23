@@ -1,11 +1,11 @@
 import { IStatePageDrawer } from './IStateDrawer'
-import IStateAppBar from './IStateAppBar'
 import IStateBackground from './IStateBackground'
 import IStateComponent from './IStateComponent'
 import IStateTypography from './IStateTypography'
 import { TStatePageLayout } from '../constants'
 import IAbstractState from './IAbstractState'
 import { IGenericObject } from './IState'
+import IStateAppbar from './IStateAppbar'
 
 /**
  * Page with content, an appbar, background, drawer... etc.
@@ -15,7 +15,7 @@ import { IGenericObject } from './IState'
  * {
  *    "content": "<$type> : <content> : <endpoint>",
  *    "layout": "",
- *    "appBar": {},
+ *    "appbar": {},
  *    "drawer": {},
  * }
  * ```
@@ -26,10 +26,10 @@ export default interface IStatePage extends IAbstractState {
   title?: string
   /** If set, only this value will be displayed in the browser tab. */
   forcedTitle?: string
-  /** Page appBar */
-  appBar?: IStateAppBar
-  /** Page custom appBar */
-  appBarCustom?: IStateComponent
+  /** Page appbar */
+  appbar?: IStateAppbar
+  /** Page custom appbar */
+  appbarCustom?: IStateComponent
   /** Page background */
   background?: IStateBackground
   /** Page's font color and family. */
@@ -51,7 +51,7 @@ export default interface IStatePage extends IAbstractState {
   hideAppbar?: boolean
   /** If `true`, the current page drawer will not be rendered. */
   hideDrawer?: boolean
-  /** If `true`, the page will use the default appBar at `IState.appBar` */
+  /** If `true`, the page will use the default appbar at `IState.appbar` */
   useDefaultAppbar?: boolean
   /** If `true`, the page will use the default drawer at `IState.drawer`. */
   useDefaultDrawer?: boolean
@@ -62,15 +62,15 @@ export default interface IStatePage extends IAbstractState {
   /** If `true`, the `IState.typography` will be used. */
   useDefaultTypography?: boolean
   /**
-   * Route of a page with a valid appBar and drawer to use.
+   * Route of a page with a valid appbar and drawer to use.
    *
    * [TODO] Check to see if this property works.
    */
   inherited?: string
-  /** Inherits the appBar of a page that has a defined appBar. */
-  appBarInherited?: string
+  /** Inherits the appbar of a page that has a defined appbar. */
+  appbarInherited?: string
   /** Inherits a valid custom appbar from another page  */
-  appBarCustomInherited?: string
+  appbarCustomInherited?: string
   /** Route of another page with a valid drawer to use. */
   drawerInherited?: string
   /** Route of another page with a valid content to use. */

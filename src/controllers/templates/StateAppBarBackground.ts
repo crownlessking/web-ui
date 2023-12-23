@@ -1,9 +1,9 @@
 import State from '../State'
-import StateAppBar from '../StateAppBar'
+import StateAppbar from '../StateAppbar'
 import StateBackground from '../StateBackground'
 
-export default class StateAppBarBackground<T = State>
-  extends StateBackground<StateAppBar<T>>
+export default class StateAppbarBackground<T = State>
+  extends StateBackground<StateAppbar<T>>
 {
   
 }

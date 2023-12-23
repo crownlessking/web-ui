@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import AppBar from '../mui/appbar'
+import Appbar from '../mui/appbar'
 import Drawer from '../mui/drawer'
 import Layout from './layout.component'
 import Content from './content'
@@ -18,7 +18,7 @@ export default function GenericApp ({ def: page }: IGenericAppProps) {
   return (
     <Fragment>
       <Background def={page.background} />
-      <AppBar def={page} />
+      <Appbar def={page} />
       <Drawer def={page} />
       <Layout def={page}>
         <Content def={page} />

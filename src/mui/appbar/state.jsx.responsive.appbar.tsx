@@ -1,5 +1,5 @@
 import * as React from 'react'
-import AppBar from '@mui/material/AppBar'
+import Appbar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -7,15 +7,15 @@ import Button from '@mui/material/Button'
 import StateJsxMenuIcon from './state.jsx.menuicon.appbar'
 import StatePage from '../../controllers/StatePage'
 
-interface IJRAppBarProps {
+interface IJRAppbarProps {
   def: StatePage
 }
 
 // const drawerWidth = 240;
 const navItems = [ 'Home', 'About', 'Contact' ]
 
-export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) {
-  const { appBar } = page
+export default function StateJsxResponsiveAppbar({ def: page }: IJRAppbarProps) {
+  const { appbar } = page
   const [ mobileOpen, setMobileOpen ] = React.useState(false)
 
   const handleDrawerToggle = () => {
@@ -42,9 +42,9 @@ export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) 
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav">
+      <Appbar component="nav">
         <Toolbar>
-          <StateJsxMenuIcon def={appBar} toggle={handleDrawerToggle} />
+          <StateJsxMenuIcon def={appbar} toggle={handleDrawerToggle} />
           <Typography
             variant="h6"
             component="div"
@@ -60,7 +60,7 @@ export default function StateJsxResponsiveAppBar({ def: page }: IJRAppBarProps) 
             ))}
           </Box>
         </Toolbar>
-      </AppBar>
+      </Appbar>
     </Box>
   )
 }

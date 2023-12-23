@@ -1,6 +1,6 @@
 // Tuber app types and interfaces gathered in one spot
 import IStateLink from '../../interfaces/IStateLink'
-import StatePageAppBar from '../../controllers/templates/StatePageAppBar'
+import StatePageAppbar from '../../controllers/templates/StatePageAppbar'
 import { TWithRequired } from 'src/interfaces'
 
 /**
@@ -100,7 +100,7 @@ export interface IResearchToolbarProps {
   bookmarkAddCallback: IStateLink['onClick']
   toggleThumbnailsCallback: IStateLink['onClick']
   /** Parent definition for state links. It is required. */
-  def: StatePageAppBar
+  def: StatePageAppbar
 }
 
 export interface ITuberPlayer {

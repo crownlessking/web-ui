@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import MuiAppbar, { AppBarProps as MuiAppbarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import HamburgerIcon from '@mui/icons-material/Menu'
 import Typography from '@mui/material/Typography'
 import StatePage from '../../controllers/StatePage'
-import AppBarButton from '../link'
+import AppbarButton from '../link'
 import StateJsxLogo from './state.jsx.logo'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../state'
@@ -16,13 +16,13 @@ interface IJsonBasicAB {
   def: StatePage
 }
 
-interface AppBarProps extends MuiAppBarProps {
+interface AppbarProps extends MuiAppbarProps {
   open?: boolean
 }
 
-const AppBar = styled(MuiAppBar, {
+const Appbar = styled(MuiAppbar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
+})<AppbarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -38,8 +38,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function StateJsxMiniAppBar({ def: page }: IJsonBasicAB) {
-  const { appBar } = page
+export default function StateJsxMiniAppbar({ def: page }: IJsonBasicAB) {
+  const { appbar } = page
   const open = useSelector((state: RootState) => state.drawer.open)
   const dispatch = useDispatch<AppDispatch>()
 
@@ -49,15 +49,15 @@ export default function StateJsxMiniAppBar({ def: page }: IJsonBasicAB) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        {...appBar.props}
+      <Appbar
+        {...appbar.props}
         position='fixed'
         open={open}
       >
-        <Toolbar {...appBar.toolbarProps}>
-          {appBar.parent.hasDrawer ? (
+        <Toolbar {...appbar.toolbarProps}>
+          {appbar.parent.hasDrawer ? (
             <IconButton
-              {...appBar.menuIconProps}
+              {...appbar.menuIconProps}
               sx={{
                 marginRight: 5,
                 ...(open && { display: 'none' }),
@@ -67,24 +67,24 @@ export default function StateJsxMiniAppBar({ def: page }: IJsonBasicAB) {
               <HamburgerIcon />
             </IconButton>
           ) : ( null )}
-          {appBar.hasLogo ? (
-            <StateJsxLogo def={appBar} />
+          {appbar.hasLogo ? (
+            <StateJsxLogo def={appbar} />
           ) : (
             <Typography
               sx={{
-                fontFamily: appBar.typography.fontFamily,
-                color: appBar.typography.color
+                fontFamily: appbar.typography.fontFamily,
+                color: appbar.typography.color
               }}
-              {...appBar.textLogoProps}
+              {...appbar.textLogoProps}
             >
               { page.parent.parent.app.title }
             </Typography>
           )}
-          {appBar.items.map((item, i) => (
-            <AppBarButton def={item} key={`nav-menu-${i}`} />
+          {appbar.items.map((item, i) => (
+            <AppbarButton def={item} key={`nav-menu-${i}`} />
           ))}
         </Toolbar>
-      </AppBar>
+      </Appbar>
     </Box>
   )
 }
