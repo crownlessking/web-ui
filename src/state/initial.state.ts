@@ -277,6 +277,7 @@ export default {
   'errors': [],
 
   'pagesData': {},
+  'chip': {},
 
   /**
    * After creating a form, when it is displayed, and the user fills it in,

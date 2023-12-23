@@ -34,6 +34,7 @@ import pagesDarkReducer, { pagesDarkActions } from '../slices/pagesDark.slice'
 import themeLightReducer, { themeLightActions } from '../slices/themeLight.slice'
 import themeDarkReducer, { themeDarkActions } from '../slices/themeDark.slice'
 import sessionReducer, { sessionActions } from '../slices/session.slice'
+import chipReducer, { chipActions } from '../slices/chip.slice'
 import { NET_STATE_PATCH_DELETE, TCallback } from '../constants'
 import Config from '../config'
 import { remember_exception } from '../business.logic/errors'
@@ -134,6 +135,7 @@ const appReducer = combineReducers({
   pagesLight: pagesLightReducer,
   pagesDark: pagesDarkReducer,
   pagesData: pagesDataReducer,
+  chip: chipReducer,
   snackbar: snackbarReducer,
   theme: themeReducer,
   themeLight: themeLightReducer,
@@ -204,6 +206,7 @@ export const actions = {
   ...netActions,
   ...pagesActions,
   ...pagesDataActions,
+  ...chipActions,
   ...snackbarActions,
   ...themeActions,
   ...themeLightActions,

@@ -103,6 +103,8 @@ export default interface IState {
   pagesLight: IStateAllPages
   pagesDark: IStateAllPages
   pagesData: Record<string, any>
+  /** **Note:** The property is the page key. */
+  chip: Record<string, IStateFormItemCustom>
   snackbar: IStateSnackbar
   /**
    * Holds temporary data.
