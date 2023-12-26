@@ -46,11 +46,11 @@ export function get_head_meta_content(name: string, $default = 'app'): string {
  * @param route current route or the key to the search query
  * @returns string
  */
-export function get_search_query(
+export function get_appbar_input_val(
   queries: Record<string, string>,
   route: string
 ): string {
-    return queries[route] ?? ''
+  return queries[route] ?? queries[`/${route}`] ?? ''
 }
 
 /**
@@ -156,8 +156,7 @@ export function clean_endpoint_ending(endpoint?: string): string {
 /** Ensures that question mark symbol is included query string. */
 export function get_query_starting_fixed(query?: string): string {
   if (query) {
-    const startingChar = query.charAt(0)
-    return startingChar === '?' ? query : '?' + query
+    return query.charAt(0) === '?' ? query : '?' + query
   }
   return ''
 }
@@ -165,8 +164,17 @@ export function get_query_starting_fixed(query?: string): string {
 /**
  * Get a value from an object as the same type as the default value without
  * causing an exception.
+ * @param obj arbitrary object
+ * @param path dot-separated object (nested) keys
+ * @param _default default value
+ * @returns value or default value
+ * @deprecated
  */
-export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
+export function safely_get_as<T=any>(
+  obj: Record<string, any>,
+  path = '',
+  _default: T
+): T {
   const value = get_val<T>(obj, path)
 
   return value !== null ? value : _default
@@ -193,14 +201,10 @@ export function set_url_query_val(url: string, param: string, val?: string) {
 }
 
 /**
- * Get the form state name
+ * Ensures that the form name ends with the suffix 'Form'.
  *
- * __Problem__: We needed a way to get the `formName` without the use of any
- * other information. This problem arised while attempting to display a form
- * in the fullscreen dialog of the virtualized table, which appears when
- * clicking on a row to edit or view data in greater detail.
- *
- * @param name 
+ * @param name
+ * @returns string
  */
 export function get_state_form_name(name: string): string {
   return name.slice(-4) === 'Form' ? name : name + 'Form'

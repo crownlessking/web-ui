@@ -9,6 +9,9 @@ interface IValidation<T> {
   message?: string
 }
 
+/**
+ * Helper class for validating form data and displaying error messages.
+ */
 export default class FormValidationPolicy<T=any> {
   /** Short for formsDataErrorsState */
   private _state: IStateFormsDataErrors
@@ -23,7 +26,12 @@ export default class FormValidationPolicy<T=any> {
 
   get e(): StateFormsDataErrors<T> { return this._e }
 
-  /** Displays error message on form field. */
+  /**
+   * Displays error message on form field.
+   * @param field Form field name.
+   * @param message Error message to display.
+   * @returns void
+   */
   emit(field: keyof T, message: string) {
     this._redux.store.dispatch({
       type: 'formsDataErrors/formsDataErrorsUpdate',
@@ -36,7 +44,11 @@ export default class FormValidationPolicy<T=any> {
     })
   }
 
-  /** Removes previously displayed error message on form field. */
+  /**
+   * Removes previously displayed error message on form field.
+   * @param field Form field name.
+   * @returns void
+   */
   mute(field: keyof T) {
     this._redux.store.dispatch({
       type: 'formsDataErrors/formsDataErrorsRemove',
@@ -47,11 +59,29 @@ export default class FormValidationPolicy<T=any> {
     })
   }
 
-  /** Get a cleaned version of the form data. */
+  /**
+   * Get a cleaned version of the form data.
+   * @returns Cleaned form data.
+   * @example const formData = formValidationPolicy.getFilteredData()
+   */
   getFilteredData(): T {
     return this._getFormData() as T
   }
 
+  /**
+   * Get the form data.
+   * @returns Form data.
+   * @example const formData = formValidationPolicy.getFormData()
+   */
+  getFormData(): T {
+    return this._getFormData() as T
+  }
+
+  /**
+   * Get a cleaned version of the form data.
+   * @returns Cleaned form data.
+   * @example const formData = formValidationPolicy.getFilteredData()
+   */
   private _filterData(value: any) {
     if (typeof value === 'string') {
       return value.trim()
@@ -60,6 +90,11 @@ export default class FormValidationPolicy<T=any> {
     return value
   }
 
+  /**
+   * Get the form data.
+   * @returns Form data.
+   * @example const formData = formValidationPolicy.getFormData()
+   */
   private _getFormData() {
     if (this._formData) {
       return this._formData
@@ -76,6 +111,11 @@ export default class FormValidationPolicy<T=any> {
     return this._formData
   }
 
+  /**
+   * Get the validation schemes.
+   * @returns Validation schemes.
+   * @example const validationSchemes = formValidationPolicy.getValidationSchemes()
+   */
   getValidationSchemes(): IValidation<T>[] | null {
     const formsData = this._getFormData()
     if (!formsData) { return null }

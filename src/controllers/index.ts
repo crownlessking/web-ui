@@ -23,16 +23,16 @@ import { IStatePageContent } from '../interfaces/IStatePage'
  *
  * Icon types are, "fas, far, fab"
  *
- * @param iconDef 
+ * @param iconStr 
  * @deprecated
  */
-export function get_font_awesome_icon_prop(iconDef: string): IconProp {
-  const pieces = iconDef.replace(/\s+/,'').split(',')
+export function get_font_awesome_icon_prop(iconStr: string): IconProp {
+  const pieces = iconStr.replace(/\s+/,'').split(',')
 
   if (pieces.length === 2) {
     return pieces as IconProp
   } else if (pieces.length === 1) {
-    return ['fas', iconDef] as IconProp
+    return ['fas', iconStr] as IconProp
   }
 
   err('bad icon definition. Check your JSON.')
@@ -41,7 +41,7 @@ export function get_font_awesome_icon_prop(iconDef: string): IconProp {
 }
 
 /**
- * Get viewport size.
+ * Get browser tab viewport size.
  *
  * @deprecated
  * Credit:
@@ -65,6 +65,7 @@ export function get_viewport_size(): { width: number; height: number }
  *               element.
  *               e.g. How much space do you want between the bottom of the
  *                    viewport and your element
+ * @returns height in pixels
  * @deprecated
  */
 export function stretch_to_bottom(bottom: number): number {
@@ -90,6 +91,8 @@ export function stretch_to_bottom(bottom: number): number {
  *
  * @param obj 
  * @param path dot-separated object (nested) keys
+ * @returns the value of the object property or `null` if the property does not
+ *          exist.
  */
 export function get_val<T=any>(obj: any, path: string): T|null {
   if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
@@ -104,7 +107,7 @@ export function get_val<T=any>(obj: any, path: string): T|null {
     if (!candidate) {
       break
     } else if (i >= paths.length - 1) {
-      return candidate
+      return candidate as T ?? null
     }
     i++
     key = paths[i]
@@ -162,7 +165,12 @@ export function set_val(obj: any, path: string, val: any): void {
   } while (1)
 }
 
-/** Get the query string value by key. */
+/**
+ * Get the query string value by key.
+ * @param url
+ * @param key
+ * @returns value of the query string key
+ */
 export function get_query_val(url: string, key: string): string {
   const query = url.split('?')[1]
   if (!query) return ''
@@ -175,14 +183,22 @@ export function get_query_val(url: string, key: string): string {
   return ''
 }
 
-/** Get all query string keys as an array */
+/**
+ * Get all query string keys as an array
+ * @param url
+ * @returns array of query string keys
+ */
 export function get_query_keys(url: string): string[] {
   const query = url.split('?')[1]
   if (!query) return []
   return query.split('&').map((pair) => pair.split('=')[0])
 }
 
-/** Get all query string values as an object */
+/**
+ * Get all query string values as an object
+ * @param url
+ * @returns object of query string keys and values
+ */
 export function get_query_values(url: string): { [key: string]: string } {
   const query = url.split('?')[1]
   if (!query) return {}
@@ -196,21 +212,34 @@ export function get_query_values(url: string): { [key: string]: string } {
   return values
 }
 
-export function set_url_query_val(url: string, param: string, val?: string) {
+/**
+ * Set the query string value by key.
+ * @param url
+ * @param key
+ * @param val
+ * @returns new url with the query string key and value
+ */
+export function set_url_query_val(url: string, key: string, val?: string) {
   const urlObj = new URL(url)
   const query = new URLSearchParams(urlObj.searchParams)
   const { origin, pathname } = urlObj
   if (typeof val === 'undefined') {
-    query.delete(param)
+    query.delete(key)
     const newUrl = `${origin}${pathname}?${query.toString()}`
     return newUrl
   }
-  query.set(param, val.toString())
+  query.set(key, val.toString())
   const newUrl = `${origin}${pathname}?${query.toString()}`
   return newUrl
 }
 
-// Delete array elements by index range.
+/**
+ * Delete array elements by index range.
+ * @param arr
+ * @param start
+ * @param end
+ * @returns new array with elements removed
+ */
 export function delete_range<T>(arr: T[], start: number, end: number): T[] {
   return arr.slice(0, start).concat(arr.slice(end + 1))
 }
@@ -219,7 +248,7 @@ export function delete_range<T>(arr: T[], start: number, end: number): T[] {
  * Get HTML head meta data.
  *
  * @param name 
- * @returns 
+ * @returns content of the meta tag
  */
 export function get_head_meta_content(name: string): string {
   const meta = document.querySelector(`meta[name="${name}"]`)
@@ -238,14 +267,10 @@ export function get_head_meta_content(name: string): string {
  * version.
  *
  * @param endpoint
+ * @returns camel case version of the endpoint
  */
 export function camelize(endpoint: string): string {
   return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase())
-}
-
-/** Convert falsy to an empty string */
-export function falsy_to_empty_string(value: any): string {
-  return value || ''
 }
 
 /**
@@ -258,6 +283,7 @@ export function falsy_to_empty_string(value: any): string {
  * @param path     an existing property of `obj` or a dot-separated list of
  *                 properties.
  * @param _default value to return if `obj[path]` is undefined
+ * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
  * @deprecated
  */
 export function safely_get(obj: any, path = '', _default?: any): any {
@@ -287,6 +313,10 @@ export function safely_get(obj: any, path = '', _default?: any): any {
 /**
  * Get a value from an object as the same type as the default value without
  * causing an exception.
+ * @param obj arbitrary object
+ * @param path dot-separated list of properties
+ * @param _default default value
+ * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
  */
 export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
   const value = get_val<T>(obj, path)
@@ -334,26 +364,6 @@ export function get_parsed_page_content(str?: string): IStatePageContent {
 /** Type for event's callback defined with a string. */
 export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur'
 
-/** Parse event's callback defined with a string. @deprecated */
-export function get_handle_prop_name(handle: string): {
-  event: THandleEvent,
-  callbackName: string
-} {
-  const pieces = handle.replace(/\s+/g, '').split(':')
-
-  if (pieces.length > 1) {
-    return {
-      event: pieces[0] as THandleEvent,
-      callbackName: pieces[1]
-    }
-  }
-
-  return {
-    event: 'onclick',
-    callbackName: handle
-  }
-}
-
 /**
  * Save array index into the array element.
  * 
@@ -368,7 +378,7 @@ export function get_handle_prop_name(handle: string): {
  * @see jsonapi_fleetly_index
  * @deprecated
  */
-export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]) {
+export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
   if (a.length <= 0
     || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
   ) {
@@ -377,7 +387,10 @@ export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]) {
   a.map((e, i) => e._index = i)
 }
 
-/** Get the default drawer width. */
+/**
+ * Get the default drawer width.
+ * @returns default drawer width
+ */
 export function get_drawer_width(): number {
   return store.getState().drawer.width
     || DRAWER_DEFAULT_WIDTH
@@ -385,6 +398,7 @@ export function get_drawer_width(): number {
 
 /**
  * Get the real route from the template route by ignoring the path variables.
+ * @param templateRoute
  * @param templateRoute 
  */
 export function get_base_route(templateRoute?: string): string {

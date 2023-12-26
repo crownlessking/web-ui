@@ -106,3 +106,8 @@ export const to_slug = (str: string) => str
   .replace(/\s+/g, '-')
   .replace(/[^A-Za-z0-9-]+/g, '')
   .toLowerCase()
+
+/** Convert a slug to a string. */
+export const from_slug = (slug: string) => 
+  decodeURIComponent(slug.replace(/\+|-/g, '%20'))
+  .toLowerCase()

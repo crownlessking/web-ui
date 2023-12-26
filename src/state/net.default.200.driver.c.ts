@@ -12,13 +12,13 @@ import {
   IJsonapiResponse
 } from '../interfaces/IJsonapi'
 import StateDataPagesRange from '../controllers/StateDataPagesRange'
-import JsonapiPaginationLinks from '../controllers/JsonapiPaginationLinks'
+import JsonapiPaginationLinks from '../controllers/Jsonapi.pagination.links'
 import { safely_get_as } from '../business.logic'
 import { remember_jsonapi_errors } from '../business.logic/errors'
 import { is_object } from '../business.logic'
 import Config from '../config'
 import { BOOTSTRAP_ATTEMPTS } from 'src/constants'
-import { loadedRangeUpdate } from 'src/slices/dataLoadedPages.slice'
+import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice'
 import StateSession from 'src/controllers/StateSession'
 import execute_directives from './net.directives.c'
 
@@ -96,7 +96,7 @@ export default function net_default_200_driver (
     const newRange = dataManager.pageToBeLoaded(currentPageNumber)
       .getNewPageRange()
     if (newRange) {
-      dispatch(loadedRangeUpdate({
+      dispatch(dataUpdateRange({
         endpoint,
         pageNumbers: newRange
       }))

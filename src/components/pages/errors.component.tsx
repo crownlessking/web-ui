@@ -6,7 +6,7 @@ import {
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import { styled } from '@mui/material/styles'
 import { Fragment } from 'react'
-import JsonapiError from '../../controllers/JsonapiError'
+import JsonapiError from '../../controllers/jsonapi.error'
 import StatePage from '../../controllers/StatePage'
 import { IJsonapiError } from '../../interfaces/IJsonapi'
 import { color_json_code, format_json_code, get_errors_list } from '../../business.logic/errors'

@@ -16,7 +16,7 @@ import StateJsxLogo from './state.jsx.logo'
 import AppbarButton from '../link'
 import InputAdornment from '@mui/material/InputAdornment'
 import { StateJsxIcon } from '../state.jsx.icons'
-import { get_search_query } from '../../business.logic'
+import { get_appbar_input_val } from '../../business.logic'
 import Menu from '@mui/material/Menu'
 import StateLink from '../../controllers/StateLink'
 import { StateJsxChip } from './state.jsx.chip'
@@ -66,7 +66,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
   const dispatch = useDispatch<AppDispatch>()
   const route = page.parent.parent.app.route
   const queries = useSelector((rootState: RootState) => rootState.appbarQueries)
-  const value = get_search_query(queries, route)
+  const value = get_appbar_input_val(queries, route)
 
   const handleSearchfieldOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(appbarQueriesSet({ route, value: e.target.value }))

@@ -136,6 +136,12 @@ const resolve = (obj: any, path: string, val?: any): any => {
 
 }
 
+/**
+ * Configuration object.  
+ * It is use to save global values that can be accessed anywhere in the app.
+ * Values can be immutable or mutable. Use set() to save immutable values and
+ * write() to save mutable values.
+ */
 const config: IConfiguration = {
 
   init: (data?: any): void => {

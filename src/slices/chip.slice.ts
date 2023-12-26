@@ -4,7 +4,7 @@ import initialState from 'src/state/initial.state'
 interface IAdd {
   type: string
   payload: {
-    name: string
+    label: string
     id?: string
   }
 }
@@ -12,7 +12,7 @@ interface IAdd {
 interface IRemove {
   type: string
   payload: {
-    name: string
+    label: string
   }
 }
 
@@ -21,11 +21,11 @@ export const chipSlice = createSlice({
   initialState: initialState.chip,
   reducers: {
     chipAdd: (state, action: IAdd) => {
-      const { name } = action.payload
+      const { label: name } = action.payload
       state[name] = action.payload
     },
     chipRemove: (state, action: IRemove) => {
-      delete state[action.payload.name]
+      delete state[action.payload.label]
     },
     chipUpdate: (state, action) => {
       const { name } = action.payload

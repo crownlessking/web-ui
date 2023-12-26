@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { get_state_form_name } from 'src/business.logic'
 import IStateAllForms from 'src/interfaces/IStateAllForms'
 import IStateForm from '../interfaces/IStateForm'
 import initialState from '../state/initial.state'
@@ -41,9 +42,9 @@ export const formsSlice = createSlice({
         state[key] = forms[key] as any
       })
     },
-    formsAdd: (state, action: IFormsReducerArgs) => {
+    formAdd: (state, action: IFormsReducerArgs) => {
       const { name, form } = action.payload
-      state[`${name}Form`] = form as any
+      state[get_state_form_name(name)] = form as any
     },
     formRemove: (state, action) => {
       state[action.payload] = {}
@@ -58,7 +59,7 @@ export const formsSlice = createSlice({
 export const formsActions = formsSlice.actions
 export const {
   formsAddMultiple,
-  formsAdd,
+  formAdd,
   formRemove,
   errorCountSet
 } = formsSlice.actions

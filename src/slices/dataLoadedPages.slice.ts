@@ -28,20 +28,18 @@ export const dataLoadedPagesSlice = createSlice({
   initialState: initialState.dataPagesRange,
   reducers: {
     /** Insert or update the loaded page ranges of endpoint. */
-    loadedRangeUpdate: (state, action: IPageNumbersUpdate) => {
+    dataUpdateRange: (state, action: IPageNumbersUpdate) => {
       const { endpoint, pageNumbers } = action.payload
       state[endpoint] = pageNumbers
     },
     /** Deletes all page number for an endpoint. */
-    endpointRemove: (state, action: IEndpointRemove) => {
-      state[action.payload] = undefined
+    dataClearRange: (state, action: IEndpointRemove) => {
+      delete state[action.payload]
     }
   }
 })
 
 export const dataLoadedPagesActions = dataLoadedPagesSlice.actions
-export const {
-  loadedRangeUpdate,
-  endpointRemove
-} = dataLoadedPagesSlice.actions
+export const { dataUpdateRange, dataClearRange } = dataLoadedPagesSlice.actions
+
 export default dataLoadedPagesSlice.reducer

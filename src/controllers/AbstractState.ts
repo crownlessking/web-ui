@@ -1,6 +1,9 @@
 import { TCallback } from '../constants'
 import Config from '../config'
 
+/**
+ * AbstractState is the base class for all state classes.
+ */
 export default abstract class AbstractState {
   /**
    * Get the state.

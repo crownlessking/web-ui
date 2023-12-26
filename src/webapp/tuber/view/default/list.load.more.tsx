@@ -1,7 +1,7 @@
 
 import { Button, CircularProgress, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import JsonapiPaginationLinks from 'src/controllers/JsonapiPaginationLinks'
+import JsonapiPaginationLinks from 'src/controllers/Jsonapi.pagination.links'
 import StateData from 'src/controllers/StateData'
 import StateDataPagesRange from 'src/controllers/StateDataPagesRange'
 import { AppDispatch, RootState } from 'src/state'

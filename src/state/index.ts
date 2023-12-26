@@ -13,7 +13,7 @@ import drawerReducer, { drawerActions } from '../slices/drawer.slice'
 import formsReducer, { formsActions } from '../slices/forms.slice'
 import pagesReducer, { pagesActions } from '../slices/pages.slice'
 import dataReducer, { dataActions } from '../slices/data.slice'
-import dataLoadedPagesSlice from '../slices/dataLoadedPages.slice'
+import dataLoadedPagesSlice, { dataLoadedPagesActions } from '../slices/dataLoadedPages.slice'
 import errorsReducer, { errorsActions } from '../slices/errors.slice'
 import pagesDataReducer, { pagesDataActions } from '../slices/pagesData.slice'
 import formsDataReducer, { formsDataActions } from '../slices/formsData.slice'
@@ -195,6 +195,7 @@ export const actions = {
   ...appbarQueriesActions,
   ...backgroundActions,
   ...dataActions,
+  ...dataLoadedPagesActions,
   ...dialogActions,
   ...dialogsAction,
   ...drawerActions,
