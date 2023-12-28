@@ -44,7 +44,7 @@ import JsonSelect from '../mui/form/items/state.jsx.select'
 import StateJsxSwitch from '../mui/form/items/state.jsx.switch'
 import StateJsxLink from '../mui/link'
 import JsonPicker from '../mui/form/items/state.jsx.picker'
-import JsonForm from '../mui/form'
+import StateJsxForm from '../mui/form'
 import StateForm from '../controllers/StateForm'
 import StateJsxTextfield from '../mui/form/items/state.jsx.textfield'
 import { post_req_state } from '../state/net.actions'
@@ -224,13 +224,13 @@ function RecursiveComponents({
     [FORM]:({ type, key, getState: getJson, items }:IDefProps): void => {
       const form = new StateForm(getJson(), parent)
       components.push(
-        <JsonForm key={`${type}-${key}`} def={form}>
+        <StateJsxForm key={`${type}-${key}`} def={form}>
           <RecursiveComponents
             key={`rc-${type}-${key}`}
             def={items}
             parent={form}
           />
-        </JsonForm>
+        </StateJsxForm>
       )
     },
     [STATE_INPUT]:({ type, key, getState: getJson }:IDefProps): number => components.push(

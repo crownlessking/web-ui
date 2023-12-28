@@ -8,7 +8,7 @@ interface IStateJsxChipProps {
   def: StateFormItemCustomChip<any>[]
 }
 
-export function StateJsxChip ({ def: chips }: IStateJsxChipProps) {
+export default function StateJsxChip ({ def: chips }: IStateJsxChipProps) {
   const dispatch = useDispatch<AppDispatch>()
   const rawRoute = useSelector((rootState: RootState) => rootState.app.route)
   const chipState = useSelector((rootState: RootState) => rootState.chip)

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { IJsonapiMeta } from '../interfaces/IJsonapi'
+import { TJsonapiMeta } from '../interfaces/IJsonapi'
 import { state_reset } from '.'
 
 const ACTIONS = {
@@ -11,7 +11,7 @@ const ACTIONS = {
 
 export default function execute_directives(
   dispatch: Dispatch<any>,
-  meta?: IJsonapiMeta
+  meta?: TJsonapiMeta
 ): void {
   const directives = meta?.directives
   if (!directives || !Array.isArray(directives)) return

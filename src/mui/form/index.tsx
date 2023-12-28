@@ -27,7 +27,7 @@ function ConditionalPaper (
   }
 }
 
-export default function JsonForm (
+export default function StateJsxForm (
   { def: form, children }: IJsonFormProps
 ) {
   const map: {[constant: string]: () => JSX.Element} = {

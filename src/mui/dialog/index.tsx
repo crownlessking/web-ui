@@ -10,12 +10,12 @@ import StateJsxCustomizedDialog from './state.jsx.customized.dialog'
 import StateJsxFormDialog from './state.jsx.form.dialog'
 import StateJsxSelectionDialog from './state.jsx.selection.dialog'
 
-export default function JsonDialog () {
+export default function StateJsxDialog () {
   const dialog = new StateDialog(
     useSelector((state: RootState) => state.dialog)
   )
   const dialogState = dialog.state
-  const dialogTable: { [x: string]: JSX.Element } = {
+  const dialogTable: Record<string, JSX.Element> = {
     'selection': (
       <StateJsxSelectionDialog
         def={new StateDialogSelection(dialogState)}

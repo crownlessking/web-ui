@@ -15,7 +15,7 @@ interface IJsonDrawerProps {
 
 // let lastStateDrawer: IStateDrawer | undefined
 
-export default function JsonDrawer({ def: page }: IJsonDrawerProps) {
+export default function StateJsxDrawer({ def: page }: IJsonDrawerProps) {
   if (page.hideDrawer) {
     return ( null )
   }

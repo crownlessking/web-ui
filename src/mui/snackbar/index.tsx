@@ -5,6 +5,7 @@ import { RootState } from '../../state'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import { AppDispatch } from '../../state'
 import { useDispatch, useSelector } from 'react-redux'
+import { snackbarClose } from '../../slices/snackbar.slice'
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -16,7 +17,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 /**
  * @see https://material-ui.com/components/snackbars/
  */
-export default function JsonSnackbar () {
+export default function StateJsxSnackbar () {
   const {
     open, anchorOrigin, autoHideDuration, variant, content, message
   } = useSelector((state: RootState) => state.snackbar)
@@ -26,8 +27,7 @@ export default function JsonSnackbar () {
     if (reason === 'clickaway') {
       return
     }
-
-    dispatch({ type: 'snackbar/snackbarClose' })
+    dispatch(snackbarClose())
   }
 
   const SnackbarContent = () => content || <>{message}</>

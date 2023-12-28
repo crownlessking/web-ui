@@ -50,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.2.21"],\
             ["@types/react-dom", "npm:18.2.7"],\
             ["@types/react-html-parser", "npm:2.0.4"],\
+            ["@types/react-test-renderer", "npm:18.0.7"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
             ["@types/youtube-player", "npm:5.5.7"],\
             ["cross-fetch", "npm:3.1.8"],\
@@ -66,6 +67,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-redux", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:8.1.2"],\
             ["react-router-dom", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:6.16.0"],\
             ["react-scripts", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:5.0.1"],\
+            ["react-test-renderer", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0"],\
             ["react-youtube", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:10.1.0"],\
             ["redux", "npm:4.2.1"],\
             ["typescript", "patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=701156"],\
@@ -6158,6 +6160,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/react-html-parser", "npm:2.0.4"],\
             ["@types/htmlparser2", "npm:3.10.6"],\
+            ["@types/react", "npm:18.2.21"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/react-test-renderer", [\
+        ["npm:18.0.7", {\
+          "packageLocation": "./.yarn/cache/@types-react-test-renderer-npm-18.0.7-0b67c3258d-701d7d815f.zip/node_modules/@types/react-test-renderer/",\
+          "packageDependencies": [\
+            ["@types/react-test-renderer", "npm:18.0.7"],\
             ["@types/react", "npm:18.2.21"]\
           ],\
           "linkType": "HARD"\
@@ -17491,6 +17503,55 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["react-shallow-renderer", [\
+        ["npm:16.15.0", {\
+          "packageLocation": "./.yarn/cache/react-shallow-renderer-npm-16.15.0-cf95219885-6052c7e3e9.zip/node_modules/react-shallow-renderer/",\
+          "packageDependencies": [\
+            ["react-shallow-renderer", "npm:16.15.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:c3fac27e03db45acb269ba88b98e5c88b34d56d12bff7f60c576a658780e78c79245c2fa637e1c232190708d1483915757330db52a2093d2ecc0d3ddd0ae73c4#npm:16.15.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-shallow-renderer-virtual-6310e84f62/0/cache/react-shallow-renderer-npm-16.15.0-cf95219885-6052c7e3e9.zip/node_modules/react-shallow-renderer/",\
+          "packageDependencies": [\
+            ["react-shallow-renderer", "virtual:c3fac27e03db45acb269ba88b98e5c88b34d56d12bff7f60c576a658780e78c79245c2fa637e1c232190708d1483915757330db52a2093d2ecc0d3ddd0ae73c4#npm:16.15.0"],\
+            ["@types/react", "npm:18.2.21"],\
+            ["object-assign", "npm:4.1.1"],\
+            ["react", "npm:18.2.0"],\
+            ["react-is", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-test-renderer", [\
+        ["npm:18.2.0", {\
+          "packageLocation": "./.yarn/cache/react-test-renderer-npm-18.2.0-cdc6051330-6b6980ced9.zip/node_modules/react-test-renderer/",\
+          "packageDependencies": [\
+            ["react-test-renderer", "npm:18.2.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-test-renderer-virtual-c3fac27e03/0/cache/react-test-renderer-npm-18.2.0-cdc6051330-6b6980ced9.zip/node_modules/react-test-renderer/",\
+          "packageDependencies": [\
+            ["react-test-renderer", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0"],\
+            ["@types/react", "npm:18.2.21"],\
+            ["react", "npm:18.2.0"],\
+            ["react-is", "npm:18.2.0"],\
+            ["react-shallow-renderer", "virtual:c3fac27e03db45acb269ba88b98e5c88b34d56d12bff7f60c576a658780e78c79245c2fa637e1c232190708d1483915757330db52a2093d2ecc0d3ddd0ae73c4#npm:16.15.0"],\
+            ["scheduler", "npm:0.23.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["react-transition-group", [\
         ["npm:4.4.5", {\
           "packageLocation": "./.yarn/cache/react-transition-group-npm-4.4.5-98ea4ef96e-7560284010.zip/node_modules/react-transition-group/",\
@@ -19459,6 +19520,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.2.21"],\
             ["@types/react-dom", "npm:18.2.7"],\
             ["@types/react-html-parser", "npm:2.0.4"],\
+            ["@types/react-test-renderer", "npm:18.0.7"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
             ["@types/youtube-player", "npm:5.5.7"],\
             ["cross-fetch", "npm:3.1.8"],\
@@ -19475,6 +19537,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-redux", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:8.1.2"],\
             ["react-router-dom", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:6.16.0"],\
             ["react-scripts", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:5.0.1"],\
+            ["react-test-renderer", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:18.2.0"],\
             ["react-youtube", "virtual:901560aadde24d2d344d9c1a3591e3a074241fdca3e8cf1307858d9d1c9288e08c3b031855b9fc458f95696a5e1e42a5804935ad888b993b44b72eee0be4dd64#npm:10.1.0"],\
             ["redux", "npm:4.2.1"],\
             ["typescript", "patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=701156"],\

@@ -42,16 +42,14 @@ export interface IJsonapiMember {
  * ```
  * @see https://jsonapi.org/format/#document-meta
  */
-export interface IJsonapiMeta {
-  [key: string]: any
-}
+export type TJsonapiMeta = Record<string, any>
 
 /**
  * @see https://jsonapi.org/format/#document-links
  */
 export interface IJsonapiLink {
   href: string
-  meta?: IJsonapiMeta
+  meta?: TJsonapiMeta
 }
 
 export interface IJsonapiErrorLinks {
@@ -85,7 +83,7 @@ export interface IJsonapiError {
   title: string
   detail?: string
   source?: IJsonapiErrorSource
-  meta?: IJsonapiMeta
+  meta?: TJsonapiMeta
 }
 
 interface IJsonapiAbstractLinks {
@@ -124,7 +122,7 @@ export interface IJsonapiResourceLinkage extends IJsonapiCompoundDoc {
 }
 
 export interface IJsonapiResourceAbstract {
-  meta?: IJsonapiMeta
+  meta?: TJsonapiMeta
   links?: IJsonapiResourceLinks
   _index?: number
 }
@@ -166,11 +164,11 @@ export interface IJsonapiAbstractResponse extends IResponseRequirement {
   jsonapi?: IJsonapiMember
 }
 export interface IJsonapiBaseResponse extends IJsonapiAbstractResponse {
-  meta?: IJsonapiMeta
+  meta?: TJsonapiMeta
   links?: IJsonapiPaginationLinks
 }
 export interface IJsonapiMetaResponse extends IJsonapiBaseResponse {
-  meta: IJsonapiMeta
+  meta: TJsonapiMeta
 }
 export interface IJsonapiDataResponse extends IJsonapiBaseResponse {
   data: IJsonapiResponseResource[] | IJsonapiResponseResource | IJsonapiResourceLinkage | null

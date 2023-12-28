@@ -4,6 +4,7 @@ import MiniAppbar from './state.jsx.mini.appbar'
 import ResponsiveAppbar from './state.jsx.responsive.appbar'
 import ComponentBuilder from '../../components'
 import StateJsxMidSearchAppbar from './state.jsx.middle-search.appbar'
+import { FC } from 'react'
 
 interface IAppbarProps {
   def: StatePage
@@ -23,7 +24,7 @@ interface IAppbarProps {
  * @see IStateAppbar.appbarStyle
  * @see IStateAppbar._type
  */
-export default function StateJsxAppbar ({ def: page }: IAppbarProps) {
+const StateJsxAppbar: FC<IAppbarProps> = ({ def: page }) => {
 
   if (page.hideAppbar) {
     return ( null )
@@ -31,13 +32,13 @@ export default function StateJsxAppbar ({ def: page }: IAppbarProps) {
 
   if (page.hasAppbar) {
     const { appbar } = page
-    const appbarTable: {[_type: string]: JSX.Element} = {
+    const appbarTable: Record<string, JSX.Element> = {
       'basic': <BasicAppbar def={page} />,
       'responsive': <ResponsiveAppbar def={page} />,
       'mini': <MiniAppbar def={page} />,
-      'middle_search': <StateJsxMidSearchAppbar def={page} />
+      'middle_search': <StateJsxMidSearchAppbar def={page} />,
     }
-  
+
     return appbarTable[appbar.appbarStyle.toLowerCase()]
       || appbarTable[appbar._type.toLowerCase()]
       || ( null )
@@ -54,3 +55,5 @@ export default function StateJsxAppbar ({ def: page }: IAppbarProps) {
 
   return ( null )
 }
+
+export default StateJsxAppbar

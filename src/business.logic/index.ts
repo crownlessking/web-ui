@@ -171,7 +171,7 @@ export function get_query_starting_fixed(query?: string): string {
  * @deprecated
  */
 export function safely_get_as<T=any>(
-  obj: Record<string, any>,
+  obj: any,
   path = '',
   _default: T
 ): T {

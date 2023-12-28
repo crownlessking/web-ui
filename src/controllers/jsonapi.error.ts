@@ -1,6 +1,6 @@
 import { mongo_object_id } from '../business.logic'
 import {
-  IJsonapiError, IJsonapiErrorLinks, IJsonapiErrorSource, IJsonapiMeta
+  IJsonapiError, IJsonapiErrorLinks, IJsonapiErrorSource, TJsonapiMeta
 } from '../interfaces/IJsonapi'
 
 export default class JsonapiError implements IJsonapiError {
@@ -18,5 +18,5 @@ export default class JsonapiError implements IJsonapiError {
   get title() { return this.e.title }
   get detail(): string { return this.e.detail ?? '' }
   get source(): IJsonapiErrorSource { return this.e.source ?? {} }
-  get meta(): IJsonapiMeta { return this.e.meta ?? {} }
+  get meta(): TJsonapiMeta { return this.e.meta ?? {} }
 }

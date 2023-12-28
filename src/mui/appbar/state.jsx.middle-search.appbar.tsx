@@ -19,7 +19,7 @@ import { StateJsxIcon } from '../state.jsx.icons'
 import { get_appbar_input_val } from '../../business.logic'
 import Menu from '@mui/material/Menu'
 import StateLink from '../../controllers/StateLink'
-import { StateJsxChip } from './state.jsx.chip'
+import StateJsxChip from './state.jsx.chip'
 import { appbarQueriesSet } from 'src/slices/appbarQueries.slice'
 
 const Search = styled('div')(({ theme }) => ({

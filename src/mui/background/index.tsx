@@ -16,7 +16,7 @@ interface IBackgroundProps {
   children?: any
 }
 
-export const Background = function (
+const Background = function (
   { def: background, children }: IBackgroundProps
 ) {
   return (
@@ -30,6 +30,7 @@ export const Background = function (
   )
 }
 
+export default Background
 /*
 
 export const Background = function (

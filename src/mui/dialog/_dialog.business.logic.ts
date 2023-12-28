@@ -7,9 +7,7 @@ import IStateDialog from '../../interfaces/IStateDialog'
 import StateFormItem from '../../controllers/StateFormItem'
 import { remember_exception } from 'src/business.logic/errors'
 
-export type THive = {
-  [prop: string]: any
-}
+export type THive = Record<string, any>
 
 /**
  * Get a `stateForm` object so that a form can be displayed in the dialog.
