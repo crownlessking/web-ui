@@ -5,19 +5,23 @@ export const pathnamesSlice = createSlice({
   name: 'pathnames',
   initialState: initialState.pathnames,
   reducers: {
-    dialogsSet: (state, action) => {
+    setDialogsPath: (state, action) => {
       state.DIALOGS = action.payload
     },
-    formsSet: (state, action) => {
+    setFormsPath: (state, action) => {
       state.FORMS = action.payload
     },
-    pagesSet: (state, action) => {
+    setPagesPath: (state, action) => {
       state.PAGES = action.payload
     },
   }
 })
 
 export const pathnamesActions = pathnamesSlice.actions
-export const { dialogsSet, formsSet, pagesSet } = pathnamesSlice.actions
+export const {
+  setDialogsPath,
+  setFormsPath,
+  setPagesPath,
+} = pathnamesSlice.actions
 
 export default pathnamesSlice.reducer

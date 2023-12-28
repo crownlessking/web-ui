@@ -5,7 +5,10 @@ export const stateRegistrySlice = createSlice({
   name: 'stateRegistry',
   initialState: initialState.stateRegistry,
   reducers: {
-    // [TODO] No actions yet
+    stateRegistryClear: () => initialState.stateRegistry,
+
+    // [TODO] No relevant actions yet
+
   }
 })
 

@@ -42,11 +42,11 @@ export const formsSlice = createSlice({
         state[key] = forms[key] as any
       })
     },
-    formAdd: (state, action: IFormsReducerArgs) => {
+    formsAdd: (state, action: IFormsReducerArgs) => {
       const { name, form } = action.payload
       state[get_state_form_name(name)] = form as any
     },
-    formRemove: (state, action) => {
+    formsRemove: (state, action) => {
       state[action.payload] = {}
     },
     errorCountSet: (state, action: IFormsErrorCountReducerArgs) => {
@@ -59,8 +59,8 @@ export const formsSlice = createSlice({
 export const formsActions = formsSlice.actions
 export const {
   formsAddMultiple,
-  formAdd,
-  formRemove,
+  formsAdd,
+  formsRemove,
   errorCountSet
 } = formsSlice.actions
 
