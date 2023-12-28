@@ -2,6 +2,7 @@ import { BadgeProps } from '@mui/material'
 import { IRedux, TReduxCallback } from '../state'
 import IAdornment from './IAdornment'
 import { IStateFormItemInputProps } from './IStateFormItem'
+import { TIconName } from './TIconName'
 
 export default interface IStateFormItemCustom<T = any> {
   callback?: (redux: IRedux) => (e: any) => void
@@ -17,6 +18,8 @@ export default interface IStateFormItemCustom<T = any> {
   defaultValue?: string
   /** Display a Material UI icon */
   icon?: string
+  /** Display a Material UI icon */
+  svgIcon?: TIconName
   /** Display a Font-Awesome icon */
   faIcon?: string
   /**

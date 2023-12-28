@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import getSvgIcon from './state.jsx.imported.svg.icons'
 import StateFormItemCustom from '../controllers/StateFormItemCustom'
 import { Fragment } from 'react'
+import { TIconName } from 'src/interfaces/TIconName'
 
 interface IJsonIconProps {
   def: StateFormItemCustom<any> // StateFormItem | StateLink
@@ -21,8 +22,10 @@ interface IJsonIconProps {
  * ```
  */
 export function StateJsxIcon ({ def: has }: IJsonIconProps) {
-  const map: {[type: string]: () => JSX.Element} = {
-    icon: () => getSvgIcon(has.icon, has.iconProps)
+  const map: Record<string, () => JSX.Element> = {
+    svgIcon: () => getSvgIcon(has.svgIcon, has.iconProps)
+      || <Icon {...has.iconProps}>{ has.svgIcon }</Icon>,
+    icon: () => getSvgIcon(has.icon as TIconName, has.iconProps)
       || <Icon {...has.iconProps}>{ has.icon }</Icon>,
     faIcon: () => {
       const faProps: any = { size: 'lg', ...has.iconProps }
@@ -31,7 +34,13 @@ export function StateJsxIcon ({ def: has }: IJsonIconProps) {
     },
     none: () => <Fragment>❌</Fragment>
   }
-  const type = has.icon ? 'icon' : has.faIcon ? 'faIcon' : 'none'
+  const type = has.svgIcon
+    ? 'svgIcon'
+    : has.icon
+      ? 'icon'
+      : has.faIcon
+        ? 'faIcon'
+        : 'none'
   return map[type]()
 }
 

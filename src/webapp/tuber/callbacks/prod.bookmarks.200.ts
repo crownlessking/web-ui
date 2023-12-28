@@ -2,7 +2,7 @@ import { IRedux, pre, log } from 'src/state'
 import { get_appbar_input_val } from 'src/business.logic'
 import { get_req_state } from 'src/state/net.actions'
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config'
-import { get_parsed_page_content, has_path_vars } from 'src/controllers'
+import { get_parsed_page_content } from 'src/controllers'
 import { to_slug } from './_callbacks.common.logic'
 
 /**
@@ -12,7 +12,7 @@ import { to_slug } from './_callbacks.common.logic'
  */
 export default function appbar_search_bookmarks (redux: IRedux) {
   return async () => {
-    const { store: { dispatch, getState }, actions: a } = redux
+    const { store: { dispatch, getState }, actions: A } = redux
     const rootState = getState()
     const route = rootState.app.route ?? ''
     const searchQuery = get_appbar_input_val(rootState.appbarQueries, route)
@@ -22,8 +22,8 @@ export default function appbar_search_bookmarks (redux: IRedux) {
       return
     }
 
-    if (has_path_vars(route) && searchQuery.startsWith(':')) {
-      dispatch(a.appSwitchPage(`listings/${to_slug(searchQuery)}`))
+    if (searchQuery.startsWith(':')) {
+      dispatch(A.appSwitchPage(`listings/${to_slug(searchQuery)}`))
       // [TODO] When creating a listing from the app bar, it will not be saved to
       //        until a bookmark is added to it on the server.
       return
@@ -36,9 +36,9 @@ export default function appbar_search_bookmarks (redux: IRedux) {
       log('Page content has no endpoint')
       return
     }
-    dispatch(a.dataRemoveCol(endpoint))
-    dispatch(a.dataClearRange(endpoint))
-    dispatch(a.appSetFetchMessage(APP_IS_FETCHING_BOOKMARKS))
+    dispatch(A.dataRemoveCol(endpoint))
+    dispatch(A.dataClearRange(endpoint))
+    dispatch(A.appSetFetchMessage(APP_IS_FETCHING_BOOKMARKS))
 
     // Prevent space-filled or empty search query requests
     if (searchQuery.replace(/\s+/, '').length < 2) {
