@@ -43,7 +43,7 @@ import DialogRadio from './dialog.radio'
 import DialogSwitch from './dialog.switch'
 import DialogTextField from './dialog.textfield'
 import DialogSelect from './select'
-import { log } from '../../../state'
+import { log } from '../../../business.logic/logging'
 
 interface IRecursiveFormBuilder {
   form: StateForm

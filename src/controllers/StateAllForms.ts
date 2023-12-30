@@ -2,7 +2,7 @@ import Controller from './AbstractState'
 import State from './State'
 import StateForm from './StateForm'
 import IStateAllForms from '../interfaces/IStateAllForms'
-import { log } from '../state'
+import { log } from '../business.logic/logging'
 
 export default class StateAllForms extends Controller {
 

@@ -2,7 +2,6 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
-import StateSession from 'src/controllers/StateSession'
 import StateLink from 'src/controllers/StateLink'
 import StateJsxLink from 'src/mui/link'
 import { RootState } from 'src/state'
@@ -12,6 +11,7 @@ import {
 } from '../../callbacks/prod.bookmarks.actions'
 import { IBookmark } from '../../tuber.interfaces'
 import { get_ratio_color } from './_default.common.logic'
+import StateNet from 'src/controllers/StateNet'
 
 interface IBookmarkActionToolbarProps {
   i: number
@@ -155,8 +155,8 @@ const handleOnMouseLeave = (e: React.MouseEvent) => {
 }
 
 export default function BookmarkActionsToolbar({ i, bookmark }: IBookmarkActionToolbarProps) {
-  const { sessionValid } = new StateSession(
-    useSelector((state: RootState) => state.session)
+  const { sessionValid } = new StateNet(
+    useSelector((rootState: RootState) => rootState.net)
   )
   // [TODO] acquire the user's privilege to determine if they can edit/delete
   return (

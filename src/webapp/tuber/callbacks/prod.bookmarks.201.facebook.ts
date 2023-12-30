@@ -1,5 +1,5 @@
 import JsonapiRequest from 'src/controllers/jsonapi.request'
-import { IRedux, ler, log } from 'src/state'
+import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { get_state_form_name } from '../../../business.logic'
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config'
@@ -8,6 +8,7 @@ import { IBookmark } from '../tuber.interfaces'
 import { remember_error } from 'src/business.logic/errors'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { get_dialog_form_endpoint } from './_callbacks.common.logic'
+import { ler, log } from 'src/business.logic/logging'
 
 /**
  * [ **Facebook** ] Save bookmark to server.

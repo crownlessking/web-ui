@@ -1,28 +1,22 @@
-import { err } from '../state'
 import { get_val, safely_get } from '.'
 import { get_head_meta_content } from '../business.logic'
 import AbstractState from './AbstractState'
 import IStateNet from '../interfaces/IStateNet'
-import State from './State'
-import StateSession from './StateSession'
+import { remember_possible_error } from 'src/business.logic/errors'
+import { err } from '../business.logic/logging'
 
 export default class StateNet extends AbstractState implements IStateNet {
 
-  private _netState: IStateNet
-  private _parentDef?: State
   private _netCsrfToken?: string
   private _netHeaders?: Record<string, string>
   private _token?: string
-  private _session?: StateSession
 
-  constructor(netState: IStateNet, parent?: State) {
+  constructor(private _netState: IStateNet) {
     super()
-    this._netState   = netState
-    this._parentDef = parent
   }
 
   get state(): IStateNet { return this._netState }
-  get parent(): State { return this._parentDef || new State() }
+  get parent(): any { return this.die('Not implemented yet.', {}) }
   get props(): any { return this.die('Not implemented yet.', {}) }
   get theme(): any { return this.die('Not implemented yet.', {}) }
   get csrfTokenName(): string { return this._netState.csrfTokenName ?? '' }
@@ -46,12 +40,6 @@ export default class StateNet extends AbstractState implements IStateNet {
     return token
   }
 
-  get session(): StateSession {
-    return this._session || (
-      this._session = new State().session
-    )
-  }
-
   private _getTokenFromCookie(): string {
     const cookies = document.cookie.split(';')
     for (const cookie of cookies) {
@@ -60,12 +48,14 @@ export default class StateNet extends AbstractState implements IStateNet {
         return value.trim()
       }
     }
-    return this.session.token ?? ''
+    return this._netState.token ?? ''
   }
+
   get token(): string {
-    return this._token = this._token ?? (
-      this._token = this._getTokenFromCookie()
-    )
+    return this._token 
+      ?? (this._token = this._netState.token
+        ?? this._getTokenFromCookie()
+      )
   }
 
   get csrfToken(): string {
@@ -101,6 +91,34 @@ export default class StateNet extends AbstractState implements IStateNet {
     this._netHeaders[prop] = parsedValue
   }
 
+  get jwt_version(): number { return this._netState.jwt_version ?? 0 }
+  get name(): string { return this._netState.name ?? '' }
+  get role(): string { return this._netState.role ?? '' }
+  get restrictions(): string[] { return this._netState.restrictions || [] }
+  /**
+   * Run this function to log out.
+   * @see https://www.tutorialspoint.com/How-to-clear-all-cookies-with-JavaScript
+   */
+  deleteCookie(): void {
+    const cookies = document.cookie.split(';')
+    // set 1 Jan, 1970 expiry for every cookies
+    for (let i = 0; i < cookies.length; i++) {
+      const [ name ] = cookies[i].trim().split('=') || []
+      if (name === 'mode') {
+        continue
+      }
+      document.cookie = `${cookies[i]}=;expires=${new Date(0).toUTCString()}`
+    }
+  }
+  get sessionValid(): boolean {
+    if (this._netState.role
+      && this._netState.name
+    ) {
+      return true
+    }
+    remember_possible_error(`Invalid session`, this._netState)
+    return false
+  }
 }
 
 /**

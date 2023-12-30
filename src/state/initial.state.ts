@@ -1,4 +1,4 @@
-import { get_head_meta_content, get_global_var } from '../business.logic'
+import { get_head_meta_content } from '../business.logic'
 import { orange } from '@mui/material/colors'
 import IState from '../interfaces/IState'
 
@@ -6,10 +6,30 @@ import IState from '../interfaces/IState'
  * WARNING: Be careful what you import in here. It might cause WEBPACK errors.
  */
 
+/**
+ * Get global variable value.
+ *
+ * Since there's a number of global variables that are defined by clients,
+ * there's a strong chance that some or all of them may be undefined.
+ * This function is a solution to that problem.
+ *
+ * @param varName string representation of in-code variable identifier.
+ * @returns object or throws an exception
+ * @throws an exception if the global variable name is invalid.
+ */
+const _get_global_var = <T=any>(varName: string): T => {
+  try {
+    return window[varName]
+  } catch (e: any) {
+    const message = `Global variable "${varName}" does not exist.`
+    console.error(message)
+  }
+  return { } as T
+}
+
 /** Allows you to rename global variables to prevent conflicts. */
 const GLOBAL_PREFIX = get_head_meta_content('web-ui')
 
-export const PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
 /**
  * Default background color  
  * History: `#af74b0`
@@ -73,7 +93,7 @@ export default {
     'title': 'web-ui',
     'origin': get_head_meta_content('origin') || undefined,
 
-    ...get_global_var(`${GLOBAL_PREFIX}Info`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Info`)
   },
 
   /**
@@ -101,7 +121,7 @@ export default {
     },
     'items': [],
     'typography': { },
-    ...get_global_var(`${GLOBAL_PREFIX}Appbar`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Appbar`)
   },
 
   /**
@@ -116,14 +136,14 @@ export default {
   'background': {
     'color': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
 
-    ...get_global_var(`${GLOBAL_PREFIX}Background`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Background`)
   },
 
   /** Application `font-family` and `color` */
   'typography': {
     // Todo: Insert default values here.
 
-    ...get_global_var(`${GLOBAL_PREFIX}Typography`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Typography`)
   },
 
   'dialog': {
@@ -145,7 +165,7 @@ export default {
   'dialogs': {
     // Todo: Insert default values here.
 
-    ...get_global_var(`${GLOBAL_PREFIX}Dialogs`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Dialogs`)
   },
 
   'dialogsLight': {},
@@ -170,7 +190,7 @@ export default {
   'forms': {
     // Todo Insert default values here.
 
-    ...get_global_var(`${GLOBAL_PREFIX}Forms`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Forms`)
   }, // forms
 
   'formsLight': {},
@@ -190,7 +210,7 @@ export default {
     'default-blank': {
       '_key': 'default-blank',
       'content': '$view : default_blank_page_view',
-      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
+      'layout': 'layout_centered_no_scroll',
       'typography': { 'color': '#74d2b3' },
       'data': {
         'message': 'Blank page!'
@@ -201,7 +221,7 @@ export default {
     'default-success': {
       '_key': 'default-success',
       'content': '$view : default_success_page_view',
-      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
+      'layout': 'layout_centered_no_scroll',
       'typography': { 'color': '#74d2b3' },
       'data': {
         'message': 'Successful!'
@@ -222,7 +242,7 @@ export default {
     },
 
     'default-landing': {
-      '_id': PAGE_HARD_CODED,
+      '_id': '613a6550a5cf801a95fb23c8',
       '_key': 'default-landing',
       'content': '$view : default_landing_page_view',
     },
@@ -255,7 +275,7 @@ export default {
       }
     },
 
-    ...get_global_var(`${GLOBAL_PREFIX}Pages`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Pages`)
   }, // pages,
 
   'pagesLight': {},
@@ -266,7 +286,7 @@ export default {
    * endpoint would be used as the key through which each dataset would be
    * accessed. This keeps the data organized.
    */
-  'data': { ...get_global_var(`${GLOBAL_PREFIX}Data`)},
+  'data': { ..._get_global_var(`${GLOBAL_PREFIX}Data`)},
   'dataPagesRange': {},
 
   /**
@@ -312,14 +332,14 @@ export default {
         'main': orange[800]
       },
     },
-  }, ...get_global_var(`${GLOBAL_PREFIX}Theme`) },
+  }, ..._get_global_var(`${GLOBAL_PREFIX}Theme`) },
   'themeLight': {},
   'themeDark': {},
 
   'net': {
     // TODO Insert default values here.
 
-    ...get_global_var(`${GLOBAL_PREFIX}Net`)
+    ..._get_global_var(`${GLOBAL_PREFIX}Net`)
   },
 
   /** 
@@ -327,14 +347,12 @@ export default {
    * not found. The app will attempt to load it from the server.
    */
   'pathnames': {
-    'DIALOGS': 'state/dialogs',
-    'FORMS': 'state/forms',
-    'PAGES': 'state/pages',
-    ...get_global_var(`${GLOBAL_PREFIX}Pathnames`)
+    'dialogs': 'state/dialogs',
+    'forms': 'state/forms',
+    'pages': 'state/pages',
+    ..._get_global_var(`${GLOBAL_PREFIX}Pathnames`)
   },
 
   /** Use to let the app know where to find your states. */
   'stateRegistry': {},
-
-  'session': {},
 } as IState

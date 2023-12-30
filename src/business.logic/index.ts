@@ -342,3 +342,52 @@ export function get_cookie<T=string>(name: string): T {
   const cookie = cookies[name] ?? ''
   return cookie as unknown as T
 }
+
+/**
+ * TODO Implement this function.
+ * This function is for handling unexpected nesting.
+ * It's a common problem when the server returns a response that is
+ * not in the expected format.  
+ * For example, the server returns a response like this:  
+ * ```json
+ * {
+ *   "data": {
+ *     "id": "123",
+ *     "type": "users",
+ *     "attributes": {
+ *       "name": "John Doe"
+ *     }
+ *   }
+ * }
+ * ```
+ * But the client expects a response like this:
+ * ```json
+ * {
+ *   "id": "123",
+ *   "type": "users",
+ *   "attributes": {
+ *     "name": "John Doe"
+ *   }
+ * }
+ * ```
+ * This function should be able to handle this problem.
+ * It should be able to detect the unexpected nesting and fix it.
+ * It should also be able to detect the expected nesting and leave it
+ * alone.
+ * This function should be able to handle the following cases:
+ * 1. The server returns a response with the expected nesting.  
+ * 2. The server returns a response with the unexpected nesting.  
+ * 3. The server returns a response with the expected nesting and
+ *   unexpected nesting.
+ *
+ * As more cases are discovered, they should be added to this list.
+ */
+export function resolve_unexpected_nesting (response: any) {
+  if (response.response) {// Case of nested response
+    return response.response
+  }
+
+  // ... other cases
+
+  return response
+}

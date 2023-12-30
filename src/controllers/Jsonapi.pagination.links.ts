@@ -1,5 +1,4 @@
 import { remember_exception } from '../business.logic/errors'
-import { get_query_val } from '.'
 import AbstractState from './AbstractState'
 import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi'
 
@@ -25,10 +24,28 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get props (): any { return this.die('Not implemented yet.', {}) }
   get theme (): any { return this.die('Not implemented yet.', {}) }
 
+  /**
+   * Get the query string value by key.
+   * @param url
+   * @param key
+   * @returns value of the query string key
+   */
+  private _get_query_val = (url: string, key: string): string => {
+    const query = url.split('?')[1]
+    if (!query) return ''
+    const pairs = query.split('&')
+    for (let i = 0; i < pairs.length; i++) {
+      const pair = pairs[i]
+      const [k, v] = pair.split('=')
+      if (k === key) return v
+    }
+    return ''
+  }
+
   get pageSize(): number {
     try {
       return this._pageSize || (
-        this._pageSize = Number(get_query_val(
+        this._pageSize = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.self),
           'page[size]'
         ))
@@ -43,7 +60,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get selfPageNumber(): number {
     try {
       return this._selfPageNumber || (
-        this._selfPageNumber = Number(get_query_val(
+        this._selfPageNumber = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.self),
           'page[number]'
         ))
@@ -57,7 +74,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get firstPageNumber(): number {
     try {
       return this._firstPageNumber || (
-        this._firstPageNumber = Number(get_query_val(
+        this._firstPageNumber = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.first),
           'page[number]'
         ))
@@ -71,7 +88,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get lastPageNumber(): number {
     try {
       return this._lastPageNumber || (
-        this._lastPageNumber = Number(get_query_val(
+        this._lastPageNumber = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.last),
           'page[number]'
         ))
@@ -85,7 +102,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get nextPageNumber(): number {
     try {
       return this._nextPageNumber || (
-        this._nextPageNumber = Number(get_query_val(
+        this._nextPageNumber = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.next),
           'page[number]'
         ))
@@ -99,7 +116,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
   get prevPageNumber(): number {
     try {
       return this._prevPageNumber || (
-        this._prevPageNumber = Number(get_query_val(
+        this._prevPageNumber = Number(this._get_query_val(
           get_jsonapi_link_url(this._links.prev),
           'page[number]'
         ))

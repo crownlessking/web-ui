@@ -40,7 +40,7 @@ export default class StateApp extends AbstractState implements IStateApp {
   get showSpinner(): boolean|undefined { return this._appState.showSpinner }
   get spinnerDisabled(): boolean|undefined { return this._appState.spinnerDisabled }
   get status(): string { return this._appState.status ?? '' }
-  get title(): string { return this._appState.title }
+  get title(): string { return this._appState.title ?? '' }
   get logoUri(): string { return this._appState.logoUri ?? ''}
   get logoTag(): 'img' | 'div' { return this._appState.logoTag ?? 'div' }
   get lastRoute(): string { return this._appState.lastRoute ?? '' }

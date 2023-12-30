@@ -16,7 +16,7 @@ export default interface IStateApp {
   /** Route of the page to be displayed. */
   route?: string
   /** web page title: It will be displayed if a logo was NOT provided. */
-  title: string
+  title?: string
   /**
    * URL of the server to which the app will make requests and receive
    * responses.

@@ -21,7 +21,6 @@ import StateAppbarQueries from './StateAppbarQueries'
 import StateTopLevelLinks from './StateTopLevelLinks'
 import StateFormsDataErrors from './StateFormsDataErrors'
 import StatePathnames from './StatePathnames'
-import StateSession from './StateSession'
 
 export default class State extends AbstractState {
 
@@ -46,7 +45,6 @@ export default class State extends AbstractState {
   private _topLevelLinksDef?: StateTopLevelLinks
   private _netDef?: StateNet
   private _pathnamesDef?: StatePathnames
-  private _sessionDef?: StateSession
 
   /**
    * Get a copy of the (store) state.
@@ -261,7 +259,6 @@ export default class State extends AbstractState {
     return this._netDef
       || (this._netDef = new StateNet(
         store.getState().net,
-        this
       ))
   }
 
@@ -272,10 +269,4 @@ export default class State extends AbstractState {
       ))
   }
 
-  get session(): StateSession {
-    return this._sessionDef
-      || (this._sessionDef = new StateSession(
-          store.getState().session
-        ))
-  }
 } // END class ----------------------------------------------------------------

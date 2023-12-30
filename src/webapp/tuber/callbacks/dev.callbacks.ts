@@ -5,7 +5,7 @@ import {
   get_req_state,
   post_req_state
 } from 'src/state/net.actions'
-import { IRedux, ler } from '../../../state'
+import { IRedux } from '../../../state'
 import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
@@ -24,6 +24,7 @@ import { YouTubePlayer } from 'react-youtube'
 import { get_state_form_name } from 'src/business.logic'
 import Config from 'src/config'
 import { TPlatform } from '../tuber.interfaces'
+import { ler } from '../../../business.logic/logging'
 
 /**
  * [ __YouTube__ ] Shows a dialog containing a form to create a new bookmark.

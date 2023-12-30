@@ -1,8 +1,8 @@
-import { ler } from '../state'
 import { remember_exception } from 'src/business.logic/errors'
 import AbstractState from './AbstractState'
 import IStateAppbarQueries from '../interfaces/IStateAppbarQueries'
 import State from './State'
+import { ler } from '../business.logic/logging'
 
 export default class StateAppbarQueries extends AbstractState {
   protected searchesState: IStateAppbarQueries

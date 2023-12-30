@@ -6,7 +6,7 @@ import {
 import { metaAdd } from '../slices/meta.slice'
 import { topLevelLinksStore } from '../slices/topLevelLinks.slice'
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
-import { bootstrap, net_patch_state, RootState } from '.'
+import { bootstrap, RootState } from '.'
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
@@ -19,8 +19,9 @@ import { is_object } from '../business.logic'
 import Config from '../config'
 import { BOOTSTRAP_ATTEMPTS } from 'src/constants'
 import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice'
-import StateSession from 'src/controllers/StateSession'
 import execute_directives from './net.directives.c'
+import { net_patch_state } from './actions'
+import StateNet from 'src/controllers/StateNet'
 
 // [TODO] The `included` state does not exist yet and needs to be created
 
@@ -116,16 +117,16 @@ export default function net_default_200_driver (
     else if (doc.state?.app?.isBootstrapped === false) {
       Config.write(BOOTSTRAP_ATTEMPTS, 0)
     }
-    if (doc.state?.session) {
-      const session = new StateSession(doc.state.session)
+    if (doc.state?.net) {
+      const net = new StateNet(doc.state.net)
 
       // [TODO] This shouldn't be here. Move it inside a callback that will run when
       //        the application is bootstrapped.
       // https://www.tabnine.com/academy/javascript/how-to-set-cookies-javascript/
-      document.cookie = `token=${session.token}`
-      document.cookie = `role=${session.role}`
-      document.cookie = `name=${session.name}`
-      document.cookie = `jwt_version=${session.jwt_version}`
+      document.cookie = `token=${net.token}`
+      document.cookie = `role=${net.role}`
+      document.cookie = `name=${net.name}`
+      document.cookie = `jwt_version=${net.jwt_version}`
     }
   }
 }

@@ -1,7 +1,7 @@
 import View from '../view.component'
 import StatePage from '../../controllers/StatePage'
 import { useDispatch } from 'react-redux'
-import { AppDispatch, ler } from '../../state'
+import { AppDispatch } from '../../state'
 import { post_req_state } from '../../state/net.actions'
 import IStateApp from '../../interfaces/IStateApp'
 import IStateAllForms from '../../interfaces/IStateAllForms'
@@ -16,6 +16,7 @@ import {
   get_state_form_name,
   save_content_jsx
 } from '../../business.logic'
+import { ler } from '../../business.logic/logging'
 
 export interface IContentState {
   stateApp: IStateApp

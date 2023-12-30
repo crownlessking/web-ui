@@ -15,8 +15,8 @@ import IStateDrawer, { IStatePageDrawer } from '../interfaces/IStateDrawer'
 import { TStatePageLayout } from '../constants'
 import State from './State'
 import { remember_exception } from 'src/business.logic/errors'
-import { ler } from '../state'
 import { mongo_object_id } from '../business.logic'
+import { ler } from '../business.logic/logging'
 
 export default class StatePage extends AbstractState implements IStatePage {
 

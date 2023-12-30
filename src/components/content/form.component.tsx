@@ -38,7 +38,7 @@ export default function FormContent ({ def, formName, type }: IFormContent) {
       dispatch(post_req_state(FORMS, { key, mode }))
       Config.write(`${key}_load_attempts`, formLoadAttempts + 1)
     }
-  }, [def, formName, allFormsDef, dispatch, fetchingStateAllowed, mode])
+  }, [ def, formName, allFormsDef, dispatch, fetchingStateAllowed, mode ])
 
   const map: {[key in Required<IFormContent>['type']]: JSX.Element | null} = {
     page: (

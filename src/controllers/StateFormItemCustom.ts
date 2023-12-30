@@ -1,7 +1,8 @@
 import { get_val } from '.'
-import { dummy_callback, IRedux, ler, TReduxCallback } from '../state'
+import { dummy_callback, IRedux, TReduxCallback } from '../state'
 import AbstractState from './AbstractState'
 import IStateFormItemCustom, { THandleCallback } from '../interfaces/IStateFormItemCustom'
+import { ler } from '../business.logic/logging'
 
 export default class StateFormItemCustom<P, T = any>
   extends AbstractState

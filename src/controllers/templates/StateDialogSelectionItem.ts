@@ -1,9 +1,9 @@
 import { blue } from '@mui/material/colors'
-import { err } from '../../state'
 import AbstractState from '../AbstractState'
 import { IStateDialogSelectionItem } from '../../interfaces/IStateDialog'
 import StateAvatar from '../StateAvatar'
 import StateDialogSelection from './StateDialogSelection'
+import { err } from '../../business.logic/logging'
 
 export default class StateDialogSelectionItem
   extends AbstractState implements IStateDialogSelectionItem

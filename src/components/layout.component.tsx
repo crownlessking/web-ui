@@ -18,7 +18,7 @@ import {
   LAYOUT_NONE,
   LAYOUT_NONE_NO_APPBAR
 } from '../constants'
-import { log } from '../state'
+import { log } from '../business.logic/logging'
 
 interface ILayoutProps {
   def: StatePage

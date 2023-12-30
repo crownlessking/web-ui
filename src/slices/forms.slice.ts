@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { get_state_form_name } from 'src/business.logic'
 import IStateAllForms from 'src/interfaces/IStateAllForms'
 import IStateForm from '../interfaces/IStateForm'
 import initialState from '../state/initial.state'
@@ -32,6 +31,16 @@ interface IAddMultipleAction {
   payload: IStateAllForms
 }
 
+/**
+ * Ensures that the form name ends with the suffix 'Form'.
+ *
+ * @param name
+ * @returns string
+ */
+const _form_ = (name: string): string => {
+  return name.slice(-4) === 'Form' ? name : name + 'Form'
+}
+
 export const formsSlice = createSlice({
   name:'forms',
   initialState: initialState.forms,
@@ -44,7 +53,7 @@ export const formsSlice = createSlice({
     },
     formsAdd: (state, action: IFormsReducerArgs) => {
       const { name, form } = action.payload
-      state[get_state_form_name(name)] = form as any
+      state[_form_(name)] = form as any
     },
     formsRemove: (state, action) => {
       state[action.payload] = {}

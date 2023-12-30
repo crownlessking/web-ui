@@ -1,5 +1,6 @@
+import { log } from 'src/business.logic/logging'
 import JsonapiRequest from 'src/controllers/jsonapi.request'
-import { IRedux, log } from 'src/state'
+import { IRedux } from 'src/state'
 import { post_req_state } from 'src/state/net.actions'
 import { FORM_ODYSEE_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'

@@ -1,12 +1,13 @@
 import JsonapiRequest from '../../../controllers/jsonapi.request'
 import { post_req_state } from '../../../state/net.actions'
-import { IRedux, log } from '../../../state'
+import { IRedux } from '../../../state'
 import { DIALOG_YOUTUBE_NEW_ID, FORM_YOUTUBE_NEW_ID } from '../tuber.config'
 import { IBookmark } from '../tuber.interfaces'
 import {
   get_form_data,
   get_dialog_form_endpoint
 } from './_callbacks.common.logic'
+import { log } from 'src/business.logic/logging'
 
 /**
  * [ **YouTube** ] Save bookmark to server.

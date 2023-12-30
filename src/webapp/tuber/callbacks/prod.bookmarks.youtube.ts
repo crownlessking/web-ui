@@ -1,11 +1,12 @@
 import { YouTubePlayer } from 'react-youtube'
 import Config from 'src/config'
 import { get_parsed_page_content } from 'src/controllers'
-import { IRedux, ler } from 'src/state'
+import { IRedux } from 'src/state'
 import { remember_exception } from 'src/business.logic/errors'
 import { get_state_form_name } from '../../../business.logic'
 import { TPlatform } from '../tuber.interfaces'
 import { get_dialog_state } from 'src/state/net.actions'
+import { ler } from '../../../business.logic/logging'
 
 /**
  * [ **YouTube** ] Shows a dialog containing a form to create a new bookmark.

@@ -9,9 +9,10 @@ import IStateFormItemCustom from './IStateFormItemCustom'
 import IStateLink from './IStateLink'
 import IStateTypography from './IStateTypography'
 
-export type TAppbarStyle = 'basic' | 'mini' | 'responsive' | 'middle_search'
+export type TAppbarStyle = 'basic' | 'mini' | 'responsive' | 'middle_search' | 'none'
 
 export default interface IStateAppbar extends IAbstractState {
+  _type?: TAppbarStyle
   /** App bar style from Material-ui example's website. */
   appbarStyle?: TAppbarStyle
   /** mui5 logo tag. i.e. "img" */

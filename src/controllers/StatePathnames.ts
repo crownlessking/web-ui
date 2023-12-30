@@ -10,7 +10,7 @@ export default class StatePathnames extends AbstractState {
   get props(): {} { return this.die('Method not implemented.', {}) }
   get theme(): {} { return this.die('Method not implemented.', {}) }
 
-  get DIALOGS(): string { return this.state.DIALOGS }
-  get FORMS(): string { return this.state.FORMS }
-  get PAGES(): string { return this.state.PAGES }
+  get DIALOGS(): string { return this.state.dialogs ?? 'state/dialogs' }
+  get FORMS(): string { return this.state.forms ?? 'state/forms' }
+  get PAGES(): string { return this.state.pages ?? 'state/pages' }
 }

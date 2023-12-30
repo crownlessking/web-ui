@@ -54,9 +54,9 @@ export interface IStateFormsDataErrors {
 }
 
 export interface IStatePathnames {
-  DIALOGS: string
-  FORMS: string
-  PAGES: string
+  dialogs?: string
+  forms?: string
+  pages?: string
 }
 
 /**
@@ -127,7 +127,6 @@ export default interface IState {
   pathnames: IStatePathnames
   /** List of state keys */
   stateRegistry: Record<string, string>
-  session: IStateSession
 }
 
 /**

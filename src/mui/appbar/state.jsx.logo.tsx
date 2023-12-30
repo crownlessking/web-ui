@@ -1,6 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
-import { err } from '../../state'
+import { err } from '../../business.logic/logging'
 import StatePageAppbar from '../../controllers/templates/StatePageAppbar'
 
 /**

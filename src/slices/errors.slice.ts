@@ -2,10 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { IJsonapiError } from '../interfaces/IJsonapi'
 import initialState from '../state/initial.state'
 
-export const ERRORS_ADD = 'errors/errorsAdd'
-export const ERRORS_REMOVE = 'errors/errorsRemove'
-export const ERRORS_CLEAR = 'errors/errorsClear'
-
 interface IErrorsSliceAction {
   payload: IJsonapiError
   type: string

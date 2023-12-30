@@ -21,7 +21,7 @@ import net_default_500_driver from './net.default.500.driver.c'
 import {
   appHideSpinner, appRequestFailed, appRequestStart,
 } from '../slices/app.slice'
-import { IRedux, ler, net_patch_state, RootState } from '.'
+import { IRedux, RootState } from '.'
 import { IJsonapiBaseResponse } from '../interfaces/IJsonapi'
 import { cancel_spinner, schedule_spinner } from './spinner'
 import IStateDialog from '../interfaces/IStateDialog'
@@ -29,6 +29,8 @@ import StateNet from '../controllers/StateNet'
 import { TThemeMode } from '../interfaces'
 import Config from '../config'
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants'
+import { net_patch_state } from './actions'
+import { ler } from '../business.logic/logging'
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Accept': 'application/json',
@@ -192,7 +194,7 @@ export async function get_dialog_state <T=any>(
   )
   if (dialogState) { return dialogState }
   const origin = get_origin_ending_fixed(rootState.app.origin)
-  const dialogPathname = rootState.pathnames.DIALOGS
+  const dialogPathname = rootState.pathnames.dialogs
   const url = `${origin}${dialogPathname}`
   const { headers } = new StateNet(rootState.net)
   const response = await post_fetch(url, {
@@ -518,20 +520,3 @@ export const get_req = (
     }
   }
 }
-
-// [TODO] I was trying to add the network actions to the redux object but it
-//        didn't work. I'll try again later.
-
-// export const netActions = {
-//   get_dialog_state,
-//   post_req_state,
-//   get_req_state,
-//   delete_req_state,
-//   put_req_state,
-//   post_req,
-//   get_req,
-// }
-
-// export interface IReduxNet extends IRedux {
-//   net: typeof netActions
-// }

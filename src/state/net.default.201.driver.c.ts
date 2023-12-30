@@ -8,9 +8,11 @@ import {
   appRequestFailed,
   appRequestSuccess
 } from '../slices/app.slice'
-import { log, ler, pre, net_patch_state, RootState } from '.'
+import { RootState } from '.'
 import { dataStackCol, dataStack } from '../slices/data.slice'
 import { metaAdd } from '../slices/meta.slice'
+import { net_patch_state } from './actions'
+import { pre, log, ler } from '../business.logic/logging'
 
 export default function net_default_201_driver (
   dispatch: Dispatch,

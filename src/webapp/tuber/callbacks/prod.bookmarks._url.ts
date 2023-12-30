@@ -1,11 +1,12 @@
 import { get_parsed_page_content, safely_get_as } from 'src/controllers'
-import { IRedux, ler } from 'src/state'
+import { IRedux } from 'src/state'
 import { remember_error, remember_exception } from 'src/business.logic/errors'
 import { URL_DIALOG_ID_NEW } from '../tuber.config'
 import parse_platform_video_url from '../tuber.platform.drivers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
 import { get_dialog_state } from 'src/state/net.actions'
 import { get_state_form_name } from '../../../business.logic'
+import { ler } from '../../../business.logic/logging'
 
 /**
  * Shows the dialog to insert a new video url from which the video bookmark

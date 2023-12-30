@@ -29,7 +29,9 @@ export default class StatePageAppbar
 
   get theme(): any { return this.appbarState.theme || this._default.theme }
   get props(): any { return this.appbarState.props || this._default.props }
-  get _type(): string { return this.appbarState._type || this._default._type }
+  get _type(): TAppbarStyle {
+    return this.appbarState._type || this._default.appbarStyle
+  }
   get appbarStyle(): TAppbarStyle {
     return this.appbarState.appbarStyle || this._default.appbarStyle
   }

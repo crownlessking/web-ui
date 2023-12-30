@@ -10,7 +10,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { Link as RouterLink } from 'react-router-dom'
 import { StateJsxIcon } from '../state.jsx.icons'
-import { get_drawer_width } from '../../controllers'
+import { get_drawer_width } from '../../state'
 import { Fragment } from 'react'
 import { get_formatted_route } from 'src/controllers/StateLink'
 

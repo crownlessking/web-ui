@@ -1,4 +1,4 @@
-import { err } from 'src/state'
+import { err } from "../../business.logic/logging"
 
 /**
  * Helper function. It helps resolve the server response's data structure.

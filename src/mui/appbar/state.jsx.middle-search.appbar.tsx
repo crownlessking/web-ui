@@ -33,7 +33,7 @@ const Search = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     width: 500,
   },
-}))
+}));
 
 const UrlIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -43,7 +43,7 @@ const UrlIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}))
+}));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
@@ -54,41 +54,41 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
   },
-}))
+}));
 
 interface IJsonMidSearchAB { def: StatePage }
 
 export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null)
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-  const appbar = new StatePageAppbarMidSearch(page.appbarJson, page)
-  const dispatch = useDispatch<AppDispatch>()
-  const route = page.parent.parent.app.route
-  const queries = useSelector((rootState: RootState) => rootState.appbarQueries)
-  const value = get_appbar_input_val(queries, route)
+    React.useState<null | HTMLElement>(null);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const appbar = new StatePageAppbarMidSearch(page.appbarJson, page);
+  const dispatch = useDispatch<AppDispatch>();
+  const route = page.parent.parent.app.route;
+  const queries = useSelector((rootState: RootState) => rootState.appbarQueries);
+  const value = get_appbar_input_val(queries, route);
 
   const handleSearchfieldOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(appbarQueriesSet({ route, value: e.target.value }))
-  }
+  };
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       appbar.searchFieldIconButton.onClick(redux)(e)
     }
-  }
+  };
 
   const handleDrawerOpen = () => {
     dispatch({ type: 'drawer/drawerOpen' })
-  }
+  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null)
-  }
+  };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  }
+  };
 
   const renderMobileMenu = (
     <Menu
@@ -110,7 +110,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
         <AppbarButton def={item} key={`nav-menu-${i}`} />
       ))}
     </Menu>
-  )
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -148,7 +148,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
               startAdornment={appbar.inputHasChips ? (
                 <InputAdornment position='start'>
                   <StateJsxChip
-                    def={appbar.getChipFromPaths(page._key, route)}
+                    def={appbar.getChipFromPaths(route)}
                   />
                 </InputAdornment>
               ) : ( null )}
@@ -199,5 +199,5 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
       </Appbar>
       { renderMobileMenu }
     </Box>
-  )
+  );
 }

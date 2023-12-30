@@ -1,12 +1,11 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import store, { err, ler } from '../state'
 import {
   APP_CONTENT_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
-  DRAWER_DEFAULT_WIDTH
 } from '../constants'
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
 import { IStatePageContent } from '../interfaces/IStatePage'
+import { err, ler } from '../business.logic/logging'
 
 /**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
@@ -385,15 +384,6 @@ export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
     return
   }
   a.map((e, i) => e._index = i)
-}
-
-/**
- * Get the default drawer width.
- * @returns default drawer width
- */
-export function get_drawer_width(): number {
-  return store.getState().drawer.width
-    || DRAWER_DEFAULT_WIDTH
 }
 
 /**

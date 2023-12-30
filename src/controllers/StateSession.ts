@@ -1,14 +1,20 @@
 import { remember_possible_error } from '../business.logic/errors'
 import { IStateSession } from '../interfaces/IStateSession'
 import AbstractState from './AbstractState'
-import State from './State'
 
-export default class StateSession extends AbstractState implements IStateSession {
+/**
+ * This class is used to manage the session state.
+ * @deprecated
+ */
+export default class StateSession
+  extends AbstractState
+  implements IStateSession
+{
   constructor (private _sessionState: IStateSession) {
     super()
   }
   get state(): IStateSession { return this._sessionState }
-  get parent(): State { return new State() }
+  get parent(): any { return this.die('Not implemented.', {})}
   get props(): any { return this.die('Not implemented.', {})}
   get theme(): any { return this.die('Method not implemented.', {})}
   get token(): string { return this._sessionState.token ?? '' }

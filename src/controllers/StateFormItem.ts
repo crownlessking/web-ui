@@ -17,11 +17,12 @@ import {
   DIV
 } from '../constants'
 import StateFormItemCustom from './StateFormItemCustom'
-import { dummy_callback, err, IRedux, TReduxCallback } from '../state'
+import { dummy_callback, IRedux, TReduxCallback } from '../state'
 import IStateFormItem from '../interfaces/IStateFormItem'
 import IStateFormItemCustom from '../interfaces/IStateFormItemCustom'
 import StateFormItemInputProps from './StateFormItemInputProps'
 import { IFormItemDataError } from '../interfaces/IState'
+import { err } from '../business.logic/logging'
 
 export interface IFormItemHandle {
   dispatch: any

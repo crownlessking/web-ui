@@ -46,7 +46,7 @@ export default class StateAppbar<P>
   get parent(): P { return this.parentDef }
   get theme(): any { return this.appbarState.theme || {} }
   get props(): AppBarProps { return this.appbarState.props || {} }
-  get _type(): string { return this.appbarState._type ?? '' }
+  get _type(): TAppbarStyle { return this.appbarState._type ?? 'none' }
   get appbarStyle(): TAppbarStyle { return this.appbarState.appbarStyle || 'basic' }
 
   /** Get app bar link objects. */

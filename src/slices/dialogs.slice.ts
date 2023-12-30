@@ -1,11 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 import IStateAllDialogs from 'src/interfaces/IStateAllDialogs'
-import { get_state_dialog_name } from '../business.logic'
 import initialState from '../state/initial.state'
 
 interface IAddMultipleAction {
   type: string
   payload: IStateAllDialogs
+}
+
+/**
+ * Ensures that the dialog name ends with 'Dialog'.
+ *
+ * @param {string} name 
+ * @returns {string}
+ */
+const _dialog_ = (name: string): string => {
+  return name.slice(-6) === 'Dialog' ? name : name + 'Dialog'
 }
 
 export const dialogsSlice = createSlice({
@@ -29,20 +38,20 @@ export const dialogsSlice = createSlice({
      */
     dialogsAdd: (state, action) => {
       const { name, dialog } = action.payload
-      const dialogName = dialog._key ?? get_state_dialog_name(name)
+      const dialogName = dialog._key ?? _dialog_(name)
       if (state[dialogName]) {
         return
       }
       state[dialogName] = dialog
     },
     dialogsRemove: (state, action) => {
-      delete state[get_state_dialog_name(action.payload)]
+      delete state[_dialog_(action.payload)]
     },
     dialogsOpen: (state, action) => {
-      state[get_state_dialog_name(action.payload)].open = true
+      state[_dialog_(action.payload)].open = true
     },
     dialogsClose: (state, action) => {
-      state[get_state_dialog_name(action.payload)].open = false
+      state[_dialog_(action.payload)].open = false
     }
   }
 })

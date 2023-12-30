@@ -6,13 +6,13 @@ export const pathnamesSlice = createSlice({
   initialState: initialState.pathnames,
   reducers: {
     setDialogsPath: (state, action) => {
-      state.DIALOGS = action.payload
+      state.dialogs = action.payload
     },
     setFormsPath: (state, action) => {
-      state.FORMS = action.payload
+      state.forms = action.payload
     },
     setPagesPath: (state, action) => {
-      state.PAGES = action.payload
+      state.pages = action.payload
     },
   }
 })

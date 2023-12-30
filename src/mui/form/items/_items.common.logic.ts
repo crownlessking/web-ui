@@ -1,6 +1,6 @@
+import { log } from '../../../business.logic/logging'
 import { remember_exception } from '../../../business.logic/errors'
 import IStateFormItem from '../../../interfaces/IStateFormItem'
-import { log } from '../../../state'
 
 /**
  * To be used with a multiple checkboxes component.

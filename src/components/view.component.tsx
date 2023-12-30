@@ -13,7 +13,7 @@ import {
   DEFAULT_SUCCESS_PAGE_VIEW
 } from '../constants'
 import PageBlank from './pages/blank.component'
-import { err, log } from '../state'
+import { err, log } from '../business.logic/logging'
 
 interface IViewTable {
   [constant: string]: ()=>JSX.Element

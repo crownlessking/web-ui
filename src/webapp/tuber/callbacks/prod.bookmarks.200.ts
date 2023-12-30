@@ -1,9 +1,10 @@
-import { IRedux, pre, log } from 'src/state'
+import { IRedux } from 'src/state'
 import { get_appbar_input_val } from 'src/business.logic'
 import { get_req_state } from 'src/state/net.actions'
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config'
 import { get_parsed_page_content } from 'src/controllers'
 import { to_slug } from './_callbacks.common.logic'
+import { pre, log } from '../../../business.logic/logging'
 
 /**
  * Callback to handle the search field in the appbar when the user submits a

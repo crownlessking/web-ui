@@ -1,4 +1,3 @@
-import { log } from '../state'
 import { DEFAULT_BLANK_PAGE, DEFAULT_LANDING_PAGE } from '../constants'
 import AbstractState from './AbstractState'
 import IStateAllPages from '../interfaces/IStateAllPages'
@@ -7,6 +6,7 @@ import State from './State'
 import StateApp from './StateApp'
 import StatePage from './StatePage'
 import { no_path_vars, route_match_template } from '.'
+import { log } from '../business.logic/logging'
 
 export default class StateAllPages extends AbstractState {
   private _allPagesState: IStateAllPages

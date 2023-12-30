@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TThemeMode } from 'src/interfaces'
 import initialState from '../state/initial.state'
-
-export const APP_IS_BOOTSTRAPPED   = 'APP_IS_BOOTSTRAPPED'
-export const APP_IS_FETCHING       = 'APP_IS_FETCHING'
-export const APP_IS_READY          = 'APP_IS_READY'
-export const APP_SWITCHED_PAGE     = 'APP_SWITCHED_PAGE'
-export const BROWSER_SWITCHED_PAGE = 'BROWSER_SWITCHED_PAGE'
-export const APP_REQUEST_FAILED    = 'APP_REQUEST_FAILED'
-export const APP_REQUEST_SUCCESS   = 'APP_REQUEST_SUCCESS'
+import {
+  APP_IS_BOOTSTRAPPED,
+  APP_IS_FETCHING,
+  APP_IS_READY,
+  APP_REQUEST_FAILED,
+  APP_REQUEST_SUCCESS,
+  APP_SWITCHED_PAGE,
+  APP_BROWSER_SWITCHED_PAGE
+} from 'src/constants'
 
 export const appSlice = createSlice({
   name: 'app',
@@ -22,7 +23,7 @@ export const appSlice = createSlice({
     appBrowserSwitchPage: (state, action) => {
       state.lastRoute = state.route
       state.route = action.payload
-      state.status = BROWSER_SWITCHED_PAGE
+      state.status = APP_BROWSER_SWITCHED_PAGE
     },
     appTitleUpdate: (state, action) => {
       state.title = action.payload

@@ -1,6 +1,5 @@
 import { ThemeOptions } from '@mui/material/styles/createTheme'
 import { createSlice } from '@reduxjs/toolkit'
-import { remember_exception } from '../business.logic/errors'
 import initialState from '../state/initial.state'
 
 type TThemeProps = Record<string, any>
@@ -17,8 +16,7 @@ export const themeSlice = createSlice({
         try {
           (state as TThemeProps)[prop] = (action.payload as TThemeProps)[prop]
         } catch (e: any) {
-          (state as TThemeProps)[prop] = undefined
-          remember_exception(e)
+          delete (state as TThemeProps)[prop]
         }
       }
     },
@@ -27,8 +25,7 @@ export const themeSlice = createSlice({
         try {
           (state as TThemeProps)[prop] = (initialState.theme as TThemeProps)[prop]
         } catch (e: any) {
-          (state as TThemeProps)[prop] = undefined
-          remember_exception(e)
+          delete (state as TThemeProps)[prop]
         }
       }
     }

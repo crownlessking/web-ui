@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import { TJsonapiMeta } from '../interfaces/IJsonapi'
-import { state_reset } from '.'
+import { state_reset } from './actions'
 
 const ACTIONS = {
   '8711cf8b0f4e8935e34e794ddc23b0ef': (

@@ -1,6 +1,6 @@
 import { safely_get_as } from 'src/controllers'
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy'
-import { IRedux, ler } from 'src/state'
+import { IRedux } from 'src/state'
 import {
   remember_error,
   remember_exception,
@@ -27,6 +27,7 @@ import { IJsonapiResource } from 'src/interfaces/IJsonapi'
 import React from 'react'
 import Config from 'src/config'
 import { get_origin_ending_fixed } from '../../../business.logic'
+import { ler } from '../../../business.logic/logging'
 
 export default function dev_get_video_thumbnail(redux: IRedux) {
   return async () => {

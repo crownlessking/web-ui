@@ -20,8 +20,8 @@ const CustomChip = styled('div')(() => ({
  * Displays the user's email on the appbar when they are logged-in.
  */
 export default function StateJsxSignedIn({ def: page }: IProps) {
-  const session = page.parent.parent.session
-  const { sessionValid, name } = session
+  const net = page.parent.parent.net
+  const { sessionValid, name } = net
   return sessionValid ? (
     <CustomChip>
       { name }

@@ -4,7 +4,8 @@ import MiniAppbar from './state.jsx.mini.appbar'
 import ResponsiveAppbar from './state.jsx.responsive.appbar'
 import ComponentBuilder from '../../components'
 import StateJsxMidSearchAppbar from './state.jsx.middle-search.appbar'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
+import { TAppbarStyle } from 'src/interfaces/IStateAppbar'
 
 interface IAppbarProps {
   def: StatePage
@@ -32,15 +33,16 @@ const StateJsxAppbar: FC<IAppbarProps> = ({ def: page }) => {
 
   if (page.hasAppbar) {
     const { appbar } = page
-    const appbarTable: Record<string, JSX.Element> = {
+    const appbarTable: Record<TAppbarStyle, JSX.Element> = {
       'basic': <BasicAppbar def={page} />,
       'responsive': <ResponsiveAppbar def={page} />,
       'mini': <MiniAppbar def={page} />,
       'middle_search': <StateJsxMidSearchAppbar def={page} />,
+      'none': <Fragment />,
     }
 
-    return appbarTable[appbar.appbarStyle.toLowerCase()]
-      || appbarTable[appbar._type.toLowerCase()]
+    return appbarTable[appbar.appbarStyle]
+      || appbarTable[appbar._type]
       || ( null )
   }
 

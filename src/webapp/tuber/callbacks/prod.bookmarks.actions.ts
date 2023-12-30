@@ -1,13 +1,14 @@
 import { get_parsed_page_content } from 'src/controllers'
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi'
 import StateTmp from 'src/controllers/StateTmp'
-import { IRedux, ler, log, pre } from 'src/state'
+import { IRedux } from 'src/state'
 import { remember_error, remember_exception } from 'src/business.logic/errors'
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions'
 import { get_endpoint_ending_fixed, get_state_form_name } from '../../../business.logic'
 import { get_dialog_id_for_edit } from '../_tuber.common.logic'
 import { IBookmark } from '../tuber.interfaces'
 import { DIALOG_DELETE_BOOKMARK_ID } from '../tuber.config'
+import { ler, log, pre } from '../../../business.logic/logging'
 
 /** Get bookmarks data from redux store. */
 function get_bookmark_resources (data: any) {

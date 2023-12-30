@@ -15,7 +15,7 @@ import StateForm from '../../../controllers/StateForm'
 import StateFormItem from '../../../controllers/StateFormItem'
 import { remember_exception } from '../../../business.logic/errors'
 import { NAME_NOT_SET } from '../../../constants'
-import { log } from '../../../state'
+import { log } from '../../../business.logic/logging'
 
 interface IJsonPickerProps {
   def: StateFormItem<StateForm>
