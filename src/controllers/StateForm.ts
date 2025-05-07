@@ -1,56 +1,74 @@
-import StateAllForms from './StateAllForms'
-import AbstractState from './AbstractState'
-import StateFormItem from './StateFormItem'
-import IStateForm from './interfaces/IStateForm'
+import StateAllForms from './StateAllForms';
+import AbstractState from './AbstractState';
+import StateFormItem from './StateFormItem';
+import IStateForm from '../interfaces/IStateForm';
+import State from './State';
 
 export default class StateForm extends AbstractState implements IStateForm {
+  private _formItems?: StateFormItem[];
+  private _ePoint?: string;
+  private _fname: string;
 
-  private formJson: IStateForm
-  private parentObj: StateAllForms
-  private fName: string
-  private formItems?: StateFormItem[]
-  private ePoint?: string
-
-  constructor (formJson: IStateForm, parent: StateAllForms) {
-    super()
-    this.parentObj = parent
-    this.formJson = formJson
-    this.fName = this.parentObj.getLastFormName()
+  constructor (private _formState: IStateForm, private _parentDef?: StateAllForms) {
+    super();
+    this._formState = _formState;
+    if (this._parentDef instanceof StateAllForms) {
+      this._fname = this.parent.getLastFormName();
+    } else {
+      this._fname = '';
+    }
   }
 
-  get json(): IStateForm { return this.formJson }
+  get state(): IStateForm { return this._formState; }
   /** Chain-access to all forms definition. */
-  get parent(): StateAllForms { return this.parentObj }
+  get parent(): StateAllForms {
+    return this._parentDef ?? new State().allForms;
+  }
   get props(): any {
-    const props :any = { ...this.formJson}
-    delete props.items
-    delete props.paperBackground
-    delete props.type
-    delete props.theme
-    delete props.paperProps
     return {
       autoComplete: 'off',
       component: 'form',
-      ...props
-    }
+      onSubmit: (e: any) => e.preventDefault(),
+      ...this._formState.props
+    };
   }
   /** Whether the form should have a paper background or not. */
-  get paperBackground(): boolean { return !!this.formJson.paperBackground }
-  get type(): Required<IStateForm>['type'] {
-    return this.formJson.type || 'default'
+  get paperBackground(): boolean { return !!this._formState.paperBackground; }
+  get _type(): Required<IStateForm>['_type'] {
+    switch (this._formState._type) {
+    case 'stack':
+    case 'box':
+    case 'none':
+      return this._formState._type;
+    case 'form':
+    case 'selection':
+    case 'alert':
+    case 'any':
+      return this.die(
+        `${this._formState._type} is NOT a valid form type.`, 'none'
+      );
+    }
+    return 'none';
   }
-  get theme(): any { return this.formJson.theme || {} }
+  get theme(): any { return this._formState.theme; }
+  /** Form name */
+  get _key(): string { return this._formState._key ?? ''; }
   /** Get (chain-access) list of form fields definition. */
   get items(): StateFormItem[] {
-    return this.formItems
-      || (this.formItems = this.formJson.items.map(
-          item => new StateFormItem(item, this
-        )))
+    return this._formItems
+      || (this._formItems = (this._formState.items || []).map(
+          item => new StateFormItem(item, this)
+        ));
   }
-  /** Get the form name (`formName`) */
-  get name(): string { return this.fName }
-  get endpoint(): string { return this.ePoint || '' }
-  get paperProps(): any { return this.formJson.paperProps }
-  set endpoint(endpoint: string) { this.ePoint = endpoint }
-
+  /**
+   * Get the form name, (`formName`). This is an _alias_ for `_key`.
+   */
+  get name(): string { return this._formState._key ?? this._fname; }
+  get endpoint(): string { return this._ePoint ?? ''; }
+  get paperProps(): any { return this._formState.paperProps; }
+  get errorCount(): number {
+    const formsDataErrors = this.parent.parent.formsDataErrors;
+    return formsDataErrors.getCount(this.name);
+  }
+  set endpoint(ep: string) { this._ePoint = ep; }
 }

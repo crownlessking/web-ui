@@ -1,60 +1,48 @@
-import Controller from './AbstractState'
-import State from './State'
-import StateForm from './StateForm'
-import { err } from '.'
-import IStateAllForms from './interfaces/IStateAllForms'
+import Controller from './AbstractState';
+import State from './State';
+import StateForm from './StateForm';
+import IStateAllForms from '../interfaces/IStateAllForms';
+import { log } from '../business.logic/logging';
 
 export default class StateAllForms extends Controller {
 
-  private allFormsJson: IStateAllForms
-  private parentObj: State
-  private lastFormName: string
+  private _allFormsState: IStateAllForms;
+  private _parentDef?: State;
+  private _lastFormName: string;
 
-  constructor (allFormsJson: IStateAllForms, parent: State) {
-    super()
-    this.parentObj = parent
-    this.allFormsJson = allFormsJson
-    this.lastFormName = ''
+  constructor (allFormsState: IStateAllForms, parent?: State) {
+    super();
+    this._parentDef = parent;
+    this._allFormsState = allFormsState;
+    this._lastFormName = '';
   }
 
   /** Get all forms json. */
-  get json(): IStateAllForms { return this.allFormsJson }
+  get state(): IStateAllForms { return this._allFormsState; }
   /** Chain-access to root definition. */
-  get parent(): State { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 
-  /**
-   * Get (chain-access to) the form definition.
-   *
-   * __Problem__: We implemented a solution for applying default values to form
-   * fields. However, although it worked, the solution caused React to complain.
-   * To stop react from complaining we had to move the solution from `render()`
-   * to `componentDidMount()`.
-   * Since we do not want duplicate codes, we decided to move the part of the
-   * logic that involves acquiring the form state to this function.
-   *
-   * @param name 
-   */
-  getForm = (name: string): StateForm => {
-    const formName = this.getStateFormName(name)
-    const stateForm = this.allFormsJson[formName]
+  getForm = (name: string): StateForm | null => {
+    const formName = this.getStateFormName(name);
+    const formState = this._allFormsState[formName];
 
-    if (stateForm) {
-      this.lastFormName = formName
-      const formDef = new StateForm(stateForm, this)
+    if (formState) {
+      this._lastFormName = formName;
+      const formDef = new StateForm(formState, this);
 
-      return formDef
+      return formDef;
     }
 
-    err(`${formName} does not exist.`)
-    return new StateForm({ items: [] }, this)
+    log(`${formName} not found or misspelled.`);
+    return null;
   }
 
   /**
    * Get the (`formName`) name of the last form that was retrieved.
    */
-  getLastFormName = (): string => this.lastFormName
+  getLastFormName = (): string => this._lastFormName;
 
   /**
    * Get the form state name
@@ -67,7 +55,7 @@ export default class StateAllForms extends Controller {
    * @param name 
    */
   private getStateFormName = (name: string): string => {
-    return name + 'Form'
-  }
+    return name + 'Form';
+  };
 
 }

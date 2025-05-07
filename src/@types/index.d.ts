@@ -1,4 +1,5 @@
 
-interface Window {
+declare interface Window {
   [property: string]: any
 }
+

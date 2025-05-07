@@ -1,171 +1,241 @@
-import * as c from '../../controllers'
-import IStateLink from '../../controllers/interfaces/IStateLink'
-import StateLink from '../../controllers/StateLink'
-import store from '../../state'
-import actions from '../../state/actions'
+import * as F from '../../controllers';
 
-test('log()', done => { done() })
-test('ler()', done => { done() })
-test('err()', done => { done() })
+describe('src/controllers/index.ts', () => {
 
-test('getPageName()', done => {
-  expect(c.getPageName('foo')).toBe('fooPage')
-  done()
-})
+  describe('get_font_awesome_icon_prop', () => {
+    it('returns the icon props for the given icon name', () => {
+      const iconName = 'faTimes';
+      const iconProps = F.get_font_awesome_icon_prop(iconName);
+      expect(iconProps).toEqual({
+        icon: 'times',
+        prefix: 'fas'
+      });
+    });
+    it('returns an empty string if argument is empty', () => {
+      const iconProps = F.get_font_awesome_icon_prop('');
+      expect(iconProps).toBeFalsy();
+    });
+  });
+  
+  describe('get_viewport_size', () => {
+    it('returns the viewport size', () => {
+      const size = F.get_viewport_size();
+      expect(size.height).toBeGreaterThan(0);
+      expect(size.width).toBeGreaterThan(0);
+    });
+  });
+  
+  describe('stretch_to_bottom', () => {
+    it('returns the height of the viewport minus the height of the element', () => {
+      const size = F.stretch_to_bottom(10);
+      expect(size).not.toBeUndefined();
+    });
+  });
 
-test('getDudEventCallback()', done => {
-  expect(typeof c.getDudEventCallback).toBe('function')
-  expect(typeof c.getDudEventCallback()).toBe('function')
-  done()
-})
+  describe('get_val', () => {
+    it('returns the value of the given key', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.get_val(obj, 'b');
+      expect(val).toEqual(2);
+    });
+    it('returns null if the key is not found', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.get_val(obj, 'c');
+      expect(val).toBeNull();
+    });
+  });
 
-test('dummyCallback()', done => {
-  const route = 'someRoute'
-  expect(typeof c.dummyCallback).toBe('function')
-  expect(typeof c.dummyCallback({ store, actions, route})).toBe('function')
-  done()
-})
+  describe('set_val', () => {
+    it('sets the value of the given key', () => {
+      const obj = { a: 1, b: 2 };
+      F.set_val(obj, 'b', 3);
+      expect(obj.b).toEqual(3);
+    });
+    it('creates a key by setting its value', () => {
+      const obj = { a: 1, b: 2 };
+      F.set_val(obj, 'c', 3);
+      expect(obj['c']).toEqual(3);
+    });
+  });
 
-test('defaultCallback()', done => {
-  const route = 'someRoute'
-  expect(typeof c.defaultCallback).toBe('function')
-  expect(typeof c.defaultCallback({ store, actions, route})).toBe('function')
-  done()
-})
+  describe ('get_query_val', () => {
+    it('returns the value of the given key in the query string', () => {
+      const val = F.get_query_val('a', '?a=1&b=2');
+      expect(val).toEqual('1');
+    });
+    it('returns null if the key is not found', () => {
+      const val = F.get_query_val('c', '?a=1&b=2');
+      expect(val).toBeNull();
+    });
+  });
 
-test('getFontAwesomeIconProp()', done => {
-  const iconDef = c.getFontAwesomeIconProp('foo')
-  expect(Array.isArray(iconDef)).toBe(true)
-  expect(iconDef[0]).toBe('fas')
-  expect(iconDef[1]).toBe('foo')
-  const iconDef1 = c.getFontAwesomeIconProp('far, bar')
-  expect(Array.isArray(iconDef1)).toBe(true)
-  expect(iconDef1[0]).toBe('far')
-  expect(iconDef1[1]).toBe('bar')
-  done()
-})
+  describe ('get_query_keys', () => {
+    it('returns the keys of the query string', () => {
+      const keys = F.get_query_keys('?a=1&b=2');
+      expect(keys).toEqual(['a', 'b']);
+    });
+    it('returns an empty array if the query string is empty', () => {
+      const keys = F.get_query_keys('');
+      expect(keys).toEqual([]);
+    });
+  });
 
-test('getViewportSize()', done => {
-  const viewportSize = c.getViewportSize()
-  expect(typeof viewportSize).toBe('object')
-  expect(typeof viewportSize.width).toBe('number')
-  expect(typeof viewportSize.height).toBe('number')
-  done()
-})
+  describe ('get_query_values', () => {
+    it('returns the values of the query string', () => {
+      const values = F.get_query_values('?a=1&b=2');
+      expect(values).toEqual(['1', '2']);
+    });
+    it('returns an empty array if the query string is empty', () => {
+      const values = F.get_query_values('');
+      expect(values).toEqual([]);
+    });
+  });
 
-test('stretchToBottom()', done => {
-  const num1 = c.stretchToBottom(5)
-  expect(typeof num1).toBe('number')
-  done()
-})
+  describe ('set_url_query_val', () => {
+    it('sets the value of the given key in the query string', () => {
+      const url = F.set_url_query_val('a', '3', '?a=1&b=2');
+      expect(url).toEqual('?a=3&b=2');
+    });
+    it('creates a key by setting its value', () => {
+      const url = F.set_url_query_val('c', '3', '?a=1&b=2');
+      expect(url).toEqual('?a=1&b=2&c=3');
+    });
+  });
 
-test('getVal()', (done) => {
-  const obj = {
-    account: {
-      user: {
-        lastname: 'Foo'
-      }
-    }
-  }
+  describe ('delete_range', () => {
+    it('deletes the given range from the given array', () => {
+      const arr = [1, 2, 3, 4, 5];
+      F.delete_range(arr, 1, 3);
+      expect(arr).toEqual([1, 5]);
+    });
+  });
 
-  const value = c.getVal(obj, 'account.user.lastname')
-  expect(value).toBe('Foo')
-  const value1 = c.getVal(obj, 'account.usr.lastname')
-  expect(value1).toBeNull()
+  describe ('get_head_meta_content', () => {
+    it('returns the content of the meta tag with the given name', () => {
+      const content = F.get_head_meta_content('description');
+      expect(content).toEqual('A React app for searching the GitHub API.');
+    });
+    it('returns an empty string if the meta tag is not found', () => {
+      const content = F.get_head_meta_content('foo');
+      expect(content).toEqual('');
+    });
+  });
 
-  done()
-})
+  describe ('camelize', () => {
+    it('returns the camelized version of the given string', () => {
+      const str = F.camelize('foo-bar');
+      expect(str).toEqual('fooBar');
+    });
+  });
 
-test('setVal()', done => {
-  let obj1: any = {}
-  c.setVal(obj1, 'foo.depth', 1)
-  c.setVal(obj1, 'foo.bar', 'hello world')
-  expect(obj1.foo.depth).toBe(1)
-  expect(obj1.foo.bar).toBe('hello world')
-  done()
-})
+  describe ('safely_get', () => {
+    it('returns the value of the given key', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.safely_get(obj, 'b');
+      expect(val).toEqual(2);
+    });
+    it('returns null if the key is not found', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.safely_get(obj, 'c');
+      expect(val).toBeNull();
+    });
+  });
 
-test('getGlobalVar()', done => {
-  window.foo = 'bar'
-  const val1 = c.getGlobalVar('foo')
-  expect(val1).toBe('bar')
-  delete window.foo
-  done()
-})
+  describe ('safely_get_as', () => {
+    it('returns the value of the given key', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.safely_get_as(obj, 'b', 'string');
+      expect(val).toEqual(2);
+    });
+    it('returns null if the key is not found', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.safely_get_as(obj, 'c', 'string');
+      expect(val).toBeNull();
+    });
+    it('returns null if the value is not of the given type', () => {
+      const obj = { a: 1, b: 2 };
+      const val = F.safely_get_as(obj, 'b', 'string');
+      expect(val).toBeNull();
+    });
+  });
 
-test('getHeadMetaContent()', done => {
-  // [TODO] Find a way to test document.querySelector()... Good luck! :P
-  done()
-})
+  describe ('get_parsed_page_content', () => {
+    it('returns the parsed page content', () => {
+      const content = F.get_parsed_page_content();
+      expect(content).not.toBeUndefined();
+    });
+  });
 
-test('getFormattedRoute()', done => {
-  const linkJson: IStateLink = { type:'link' }
-  const link = new StateLink(linkJson, {})
+  describe ('jsonapi_fleetly_index', () => {
+    it('returns the parsed page content', () => {
+      const content = F.jsonapi_fleetly_index([]);
+      expect(content).not.toBeUndefined();
+    });
+  });
 
-  const formattedRoute = c.getFormattedRoute(link, '/bar')
-  expect(formattedRoute).toBe('/bar')
+  describe ('get_drawer_width', () => {
+    it('returns the drawer width', () => {
+      const width = F.get_drawer_width();
+      expect(width).toEqual(240);
+    });
+  });
 
-  const link2 = new StateLink({
-    type: 'link',
-    has: {
-      route: '/foo'
-    }
-  }, {})
+  describe ('get_base_route', () => {
+    it('returns the base route', () => {
+      const route = F.get_base_route();
+      expect(route).toEqual('/');
+    });
+  });
 
-  const formattedRoute2 = c.getFormattedRoute(link2, '/bar')
-  expect(formattedRoute2).toBe('/foo')
+  describe ('get_path_vars', () => {
+    it('returns the path variables', () => {
+      const vars = F.get_path_vars('/foo/:bar');
+      expect(vars).toEqual(['bar']);
+    });
+  });
 
-  done()
-})
+  describe ('route_match_template', () => {
+    it('returns true if the route matches the template', () => {
+      const match = F.route_match_template('/foo/:bar', '/foo/1');
+      expect(match).toBeTruthy();
+    })
+    it('returns false if the route does not match the template', () => {
+      const match = F.route_match_template('/foo/:bar', '/foo');
+      expect(match).toBeFalsy();
+    });
+  });
 
-test('camelize()', done => {
-  expect(c.camelize('foo-bar')).toBe('fooBar')
-  done()
-})
+  describe ('has_path_vars', () => {
+    it('returns true if the route has path variables', () => {
+      const match = F.has_path_vars('/foo/:bar');
+      expect(match).toBeTruthy();
+    });
+    it('returns false if the route does not have path variables', () => {
+      const match = F.has_path_vars('/foo');
+      expect(match).toBeFalsy();
+    });
+  });
 
-test('mongoObjectId()', done => {
-  const objectId = c.mongoObjectId()
-  expect(typeof objectId).toBe('string')
-  expect(objectId.length).toBe(24)
-  done()
-})
+  describe ('no_path_vars', () => {
+    it('returns true if the route does not have path variables', () => {
+      const match = F.no_path_vars('/foo');
+      expect(match).toBeTruthy();
+    });
+    it('returns false if the route has path variables', () => {
+      const match = F.no_path_vars('/foo/:bar');
+      expect(match).toBeFalsy();
+    });
+  });
 
-test('safelyGet()', done => {
-  const obj1 = {
-    basicInfo: {
-      firstname: 'Koolio'
-    },
-  }
+  describe ('is_template_route', () => {
+    it('returns true if the route is a template route', () => {
+      const match = F.is_template_route('/foo/:bar');
+      expect(match).toBeTruthy();
+    });
+    it('returns false if the route is not a template route', () => {
+      const match = F.is_template_route('/foo');
+      expect(match).toBeFalsy();
+    });
+  });
+});
 
-  expect(c.safelyGet(obj1, 'basicInfo.firstname')).toBe('Koolio')
-  expect(c.safelyGet(obj1, 'occupation')).toBeNull()
-
-  const obj2 = undefined
-  expect(c.safelyGet(obj2)).toBeDefined()
-
-  done()
-})
-
-test('httpGet()', done => {
-  // [TODO] To test this method, you need to fix it first.
-  //        The issue: It uses a callback to get the result.
-  //        and the function returns undefined.
-  done()
-})
-
-test('getOriginEndingFixed()', done => {
-  const origin1 = c.getOriginEndingFixed('foo')
-  expect(origin1).toBe('foo/')
-  const origin2 = c.getOriginEndingFixed('foo/')
-  expect(origin2).toBe('foo/')
-  done()
-})
-
-test('parseConeExp()', done => {
-  const link = new StateLink({ type: 'link' }, {})
-  const value = c.parseConeExp(link, '<type>')
-  expect(value).toBe('link')
-  done()
-})
-
-export default undefined

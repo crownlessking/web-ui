@@ -1,41 +1,26 @@
-import AbstractState from './AbstractState'
-import State from './State'
-import { log } from '.'
+import { IGenericObject } from '../common.types';
+import AbstractState from './AbstractState';
+import State from './State';
 
 export default class StateFormsData extends AbstractState {
 
-  private formsDataJson: any
-  private parentObj: State
+  private _formsDataState: IGenericObject;
+  private _parentDef?: State;
 
-  constructor (formsDataJson: any, parent: State) {
-    super()
-    this.parentObj = parent
-    this.formsDataJson = formsDataJson
+  constructor (formsDataState: IGenericObject, parent?: State) {
+    super();
+    this._parentDef = parent;
+    this._formsDataState = formsDataState;
   }
 
-  get json(): any { return this.formsDataJson }
-  get parent(): State { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
+  get state(): IGenericObject { return this._formsDataState; }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 
-  /**
-   * Get form field value from redux store.
-   *
-   * Also sets the form fields default value if specified in the from definition.
-   *
-   */
-  getStoredValues = (formName: string, name?: string): any => {
-    try {
-      if (name) {
-        return this.formsDataJson[formName][name]
-      }
-      return this.formsDataJson[formName]
-    } catch (e: any) {
-
-      // TODO Implement logic to save error and view it later
-
-      log(e.stack)
-    }
+  /** Get form field value from redux store. */
+  getValue = (formName: string, name: string): any => {
+    return this._formsDataState[formName]?.[name] ?? '';
   }
 
   /**
@@ -44,8 +29,8 @@ export default class StateFormsData extends AbstractState {
    * @param formName
    * @param name
    */
-  get = (formName: string, name?: string): any => {
-    return this.getStoredValues(formName, name)
+  get = (formName: string) => {
+    return this._formsDataState[formName] ?? {};
   }
 
 }

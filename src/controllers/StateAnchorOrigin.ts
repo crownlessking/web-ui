@@ -1,27 +1,30 @@
 
-import StateSnackbar from './StateSnackbar'
-import AbstractState from './AbstractState'
+import StateSnackbar from './StateSnackbar';
+import AbstractState from './AbstractState';
 import IStateAnchorOrigin, {
   AnchorHorizontal, AnchorVertical
-} from './interfaces/IStateAnchorOrigin'
+} from '../interfaces/IStateAnchorOrigin';
 
 export default class StateAnchorOrigin
-    extends AbstractState implements IStateAnchorOrigin {
+  extends AbstractState
+  implements IStateAnchorOrigin
+{
+  private _parentDef: StateSnackbar;
+  private _anchorOriginState: IStateAnchorOrigin;
 
-  private parentObj: StateSnackbar
-  private anchorOriginJson: IStateAnchorOrigin
-
-  constructor(anchorOriginJson: IStateAnchorOrigin, parent: StateSnackbar) {
-    super()
-    this.parentObj = parent
-    this.anchorOriginJson = anchorOriginJson
+  constructor(anchorOriginState: IStateAnchorOrigin, parent: StateSnackbar) {
+    super();
+    this._parentDef = parent;
+    this._anchorOriginState = anchorOriginState;
   }
 
-  get json(): IStateAnchorOrigin { return this.anchorOriginJson }
-  get parent(): StateSnackbar { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
+  get state(): IStateAnchorOrigin { return this._anchorOriginState; }
+  get parent(): StateSnackbar { return this._parentDef; }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 
-  get vertical(): AnchorVertical { return this.anchorOriginJson.vertical }
-  get horizontal(): AnchorHorizontal { return this.anchorOriginJson.horizontal }
+  get vertical(): AnchorVertical { return this._anchorOriginState.vertical; }
+  get horizontal(): AnchorHorizontal {
+    return this._anchorOriginState.horizontal;
+  }
 }

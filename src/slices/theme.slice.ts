@@ -1,27 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit'
-import initialState from '../state/initial.state'
+import { ThemeOptions } from '@mui/material/styles/createTheme';
+import { createSlice } from '@reduxjs/toolkit';
+import initialState from '../state/initial.state';
+
+type TThemeProps = Record<string, any>;
+interface IThemeSetAction {
+  payload: ThemeOptions;
+}
 
 export const themeSlice = createSlice({
   name: 'theme',
   initialState: initialState.theme,
   reducers: {
-    themeSet: (state, action) => {
-      const { key, obj } = action.payload as {key: string, obj: any}
-      (state as {[prop: string]: any})[key] = obj
+    themeSet: (state, action: IThemeSetAction) => {
+      for (const prop in action.payload) {
+        try {
+          (state as TThemeProps)[prop] = (action.payload as TThemeProps)[prop];
+        } catch (e: any) {
+          delete (state as TThemeProps)[prop];
+        }
+      }
     },
     themeClear: (state) => {
       for (const prop in initialState.theme) {
         try {
-          (state as {[x: string]: any})[prop] = initialState.theme[prop]
-        } catch {
-          (state as {[x: string]: any})[prop] = undefined
+          (state as TThemeProps)[prop] = (initialState.theme as TThemeProps)[prop];
+        } catch (e: any) {
+          delete (state as TThemeProps)[prop];
         }
       }
     }
   }
-})
+});
 
-export const themeActions = themeSlice.actions
-export const { themeSet } = themeSlice.actions
+export const themeActions = themeSlice.actions;
+export const { themeSet } = themeSlice.actions;
 
-export default themeSlice.reducer
+export default themeSlice.reducer;

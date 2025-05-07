@@ -1,35 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { IJsonapiPaginationLinks } from '../controllers/interfaces/IJsonapi'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
+import initialState from '../state/initial.state';
 
 export interface ITopLevelLinksArgs {
-  endpoint: string
-  links: IJsonapiPaginationLinks
+  endpoint: string;
+  links: IJsonapiPaginationLinks;
 }
 
 interface ITopLevelLinksReducerArgs {
-  type: string
-  payload: ITopLevelLinksArgs
+  type: string;
+  payload: ITopLevelLinksArgs;
 }
 
 export const topLevelLinksSlice = createSlice({
   name: 'topLevelLinks',
   initialState: initialState.topLevelLinks,
   reducers: {
-    topLevelLinksAdd: (state, action: ITopLevelLinksReducerArgs) => {
-      const { endpoint, links } = action.payload
-      state[endpoint] = links as any
+    topLevelLinksStore: (state, action: ITopLevelLinksReducerArgs) => {
+      const { endpoint, links } = action.payload;
+      state[endpoint] = links as any;
     },
     topLevelLinksRemove: (state, action) => {
-      delete state[action.payload]
+      delete state[action.payload];
     },
   }
 })
 
-export const topLevelLinksActions = topLevelLinksSlice.actions
+export const topLevelLinksActions = topLevelLinksSlice.actions;
 export const {
-  topLevelLinksAdd,
+  topLevelLinksStore,
   topLevelLinksRemove
-} = topLevelLinksSlice.actions
+} = topLevelLinksSlice.actions;
 
-export default topLevelLinksSlice.reducer
+export default topLevelLinksSlice.reducer;

@@ -1,18 +1,40 @@
-import { getGlobalVar, getHeadMetaContent } from '../controllers'
-import { orange } from '@mui/material/colors'
-import { ThemeOptions } from '@mui/material'
-import _ from 'lodash'
-import IState from '../controllers/interfaces/IState'
+import { get_head_meta_content } from '../business.logic';
+import { orange } from '@mui/material/colors';
+import IState from '../interfaces/IState';
 
 /*
  * WARNING: Be careful what you import in here. It might cause WEBPACK errors.
  */
 
-/** Allows you to rename global variables to prevent conflicts. */
-const GLOBAL_PREFIX = getHeadMetaContent('web-ui') || 'app'
+/**
+ * Get global variable value.
+ *
+ * Since there's a number of global variables that are defined by clients,
+ * there's a strong chance that some or all of them may be undefined.
+ * This function is a solution to that problem.
+ *
+ * @param varName string representation of in-code variable identifier.
+ * @returns object or throws an exception
+ * @throws an exception if the global variable name is invalid.
+ */
+const _get_global_var = <T=any>(varName: string): T => {
+  try {
+    return window[varName];
+  } catch (e: any) {
+    const message = `Global variable "${varName}" does not exist.`;
+    console.error(message);
+  }
+  return { } as T;
+}
 
-export const PAGE_HARD_CODED = '613a6550a5cf801a95fb23c8'
-export const DEFAULT_BACKGROUND_COLOR = '#af74b0'
+/** Allows you to rename global variables to prevent conflicts. */
+const GLOBAL_PREFIX = get_head_meta_content('web-ui');
+
+/**
+ * Default background color  
+ * History: `#af74b0`
+ */
+export const DEFAULT_BACKGROUND_COLOR = '#72A0C1';
 
 /**
  * Raw data obtained from server will be stored in this object as an
@@ -49,10 +71,13 @@ export default {
   /**
    * @see info.state.ts
    */
-  'app': _.extend({
+  'app': {
+    /** Whether the app can retrieve state from server when not available */
+    'fetchingStateAllowed': true,
 
     /** Whether the app is in debugging mode or not */
     'inDebugMode': false,
+    'inDevelMode': false,
 
     /**
      * The page that is currently displayed.
@@ -65,10 +90,11 @@ export default {
      * from the server.
      */
     'route': '',
-
     'title': 'web-ui',
+    'origin': get_head_meta_content('origin') || undefined,
 
-  }, getGlobalVar(`${GLOBAL_PREFIX}Info`)),
+    ..._get_global_var(`${GLOBAL_PREFIX}Info`)
+  },
 
   /**
    * The `meta` member is used to apply rules as to how the data is
@@ -88,30 +114,37 @@ export default {
    */
   'meta': {},
 
-  'appBar': {
+  'appbar': {
+    'appbarStyle': 'basic',
     'background': {
       'color' : DEFAULT_BACKGROUND_COLOR, // 'radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)'
     },
     'items': [],
-    'typography': { }
+    'typography': { },
+    ..._get_global_var(`${GLOBAL_PREFIX}Appbar`)
   },
 
   /**
    * Contains the appbar search field text of all pages. The key is the page name.
    */
-  'appBarSearches': {},
+  'appbarQueries': {},
+  'queryHistory': {},
 
   /**
    * Application background color
    */
-  'background': _.extend({
+  'background': {
     'color': DEFAULT_BACKGROUND_COLOR, // '#f0f0f0'
-  }, getGlobalVar(`${GLOBAL_PREFIX}Background`)),
 
-  /**
-   * Application `font-family` and `color`
-   */
-  'typography': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Typography`)),
+    ..._get_global_var(`${GLOBAL_PREFIX}Background`)
+  },
+
+  /** Application `font-family` and `color` */
+  'typography': {
+    // Todo: Insert default values here.
+
+    ..._get_global_var(`${GLOBAL_PREFIX}Typography`)
+  },
 
   'dialog': {
     'title': 'Dialog Title',
@@ -124,8 +157,19 @@ export default {
 
   /**
    * Object containing all dialog definitions
+   * 
+   * It can hold dialog definitions for them to be used at the specific time.
+   * It is also a way to prevent callback function from being over-inflated
+   * with dialog definitions.
    */
-  'dialogs': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Dialogs`)),
+  'dialogs': {
+    // Todo: Insert default values here.
+
+    ..._get_global_var(`${GLOBAL_PREFIX}Dialogs`)
+  },
+
+  'dialogsLight': { ..._get_global_var(`${GLOBAL_PREFIX}DialogsLignt`) },
+  'dialogsDark': { ..._get_global_var(`${GLOBAL_PREFIX}DialogsDark`) },
 
   /**
    * Drawer general state
@@ -138,12 +182,19 @@ export default {
    *
    * @see https://material-ui.com/demos/drawers/
    */
-  'drawer': { 'width': 300 },
+  'drawer': {},
 
   /**
    * Object containing all form definitions
    */
-  'forms': _.extend({ }, getGlobalVar(`${GLOBAL_PREFIX}Forms`)), // forms,
+  'forms': {
+    // Todo Insert default values here.
+
+    ..._get_global_var(`${GLOBAL_PREFIX}Forms`)
+  }, // forms
+
+  'formsLight': {},
+  'formsDark': {},
 
   /**
    * Object containing all page definitions.
@@ -151,15 +202,27 @@ export default {
    * You can manually insert pages in that object if you wish. However, these
    * pages will be transpiled in the resulting JavaScript.
    */
-  'pages': _.extend({
+  'pages': {
 
     // List of hard coded pages
 
+    // Default blank page
+    'default-blank': {
+      '_key': 'default-blank',
+      'content': '$view : default_blank_page_view',
+      'layout': 'layout_centered_no_scroll',
+      'typography': { 'color': '#74d2b3' },
+      'data': {
+        'message': 'Blank page!'
+      }
+    },
+
     // Default success feedback page
     'default-success': {
+      '_key': 'default-success',
       'content': '$view : default_success_page_view',
-      'layout': 'LAYOUT_CENTERED_NO_SCROLL',
-      'typography': { color: '#74d2b3' },
+      'layout': 'layout_centered_no_scroll',
+      'typography': { 'color': '#74d2b3' },
       'data': {
         'message': 'Successful!'
       }
@@ -167,8 +230,10 @@ export default {
 
     // Default 404 not found page
     'default-notfound': {
+      '_key': 'default-notfound',
       'content': '$view : default_notfound_page_view',
-      'layout': 'LAYOUT_CENTERED',
+      'layout': 'layout_centered',
+      'appbar': { 'items': [{ 'has': { 'text': 'Home', 'route': '/' }}]},
       'data': { 'message': 'Not found!' },
       'background': {
         'type': 'color',
@@ -177,25 +242,52 @@ export default {
     },
 
     'default-landing': {
-      '_id': PAGE_HARD_CODED,
-      'content': '$view : default_landing_page_view'
+      '_id': '613a6550a5cf801a95fb23c8',
+      '_key': 'default-landing',
+      'content': '$view : default_landing_page_view',
+    },
+
+    'default-test': {
+      'content': '$view : default_landing_page_view',
+      'appbar': {},
+      'drawer': {
+        '_type': 'mini'
+      }
     },
 
     'default-errors-view': {
+      '_key': 'default-errors-view',
       'content': '$view : default_errors_page_view',
       'background': {
         'type': 'color',
         'value': '#fcfcfc'
+      },
+      'layout': 'layout_none_no_appbar',
+      'appbar': {
+        'items': [
+          {
+            'has': {
+              'text': 'Home',
+              'route': '/'
+            }
+          }
+        ]
       }
-    }
-  }, getGlobalVar(`${GLOBAL_PREFIX}Pages`)), // pages,
+    },
+
+    ..._get_global_var(`${GLOBAL_PREFIX}Pages`)
+  }, // pages,
+
+  'pagesLight': {},
+  'pagesDark': {},
 
   /**
    * All resources acquired from the server will be stored in this object. The
    * endpoint would be used as the key through which each dataset would be
    * accessed. This keeps the data organized.
    */
-  'data': {},
+  'data': { ..._get_global_var(`${GLOBAL_PREFIX}Data`)},
+  'dataPagesRange': {},
 
   /**
    * The idea was to throw exceptions if something went wrong, even on a
@@ -205,12 +297,14 @@ export default {
   'errors': [],
 
   'pagesData': {},
+  'chips': {},
 
   /**
    * After creating a form, when it is displayed, and the user fills it in,
    * the data is saved in this object.
    */
   'formsData': {},
+  'formsDataErrors': {},
 
   /** material-ui snackbar redux store data */
   'snackbar': {},
@@ -229,17 +323,32 @@ export default {
    *
    * @link https://v4.mui.com/customization/default-theme/#default-theme
    */
-  'theme': _.extend({
+  'theme': { ...{
     'palette': {
-      'primary': {
-        'main': '#318ee8' // '#808000' // olive
-      },
+      // 'primary': {
+      //   'main': '#318ee8' // '#808000' // olive
+      // },
       'secondary': {
         'main': orange[800]
       },
     },
-  } as ThemeOptions, getGlobalVar(`${GLOBAL_PREFIX}Theme`)),
+  }, ..._get_global_var(`${GLOBAL_PREFIX}Theme`) },
+  'themeLight': {},
+  'themeDark': {},
 
-  'net': _.extend({}, getGlobalVar(`${GLOBAL_PREFIX}Net`))
+  'net': {},
 
-} as IState
+  /** 
+   * Use for making request to a server if a dialog, form, or page state was
+   * not found. The app will attempt to load it from the server.
+   */
+  'pathnames': {
+    'dialogs': 'state/dialogs',
+    'forms': 'state/forms',
+    'pages': 'state/pages',
+    ..._get_global_var(`${GLOBAL_PREFIX}Pathnames`)
+  },
+
+  /** Use to let the app know where to find your states. */
+  'stateRegistry': {},
+} as IState;

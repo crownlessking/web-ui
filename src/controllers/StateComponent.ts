@@ -1,44 +1,44 @@
-import AbstractState from './AbstractState'
-import IStateComponent from './interfaces/IStateComponent'
+import AbstractState from './AbstractState';
+import IStateComponent from '../interfaces/IStateComponent';
 
 export default class StateComponent<P = any>
   extends AbstractState
   implements IStateComponent
 {
-  private componentJson: IStateComponent
-  private parentObj: P
-  private componentItems?: StateComponent[]
+  private _componentState: IStateComponent;
+  private _parentDef: P;
+  private _componentItems?: StateComponent[];
 
-  constructor (componentJson: IStateComponent, parent: P) {
-    super()
-    this.componentJson = componentJson
-    this.parentObj     = parent
+  constructor (componentState: IStateComponent, parent: P) {
+    super();
+    this._componentState = componentState;
+    this._parentDef     = parent;
   }
 
-  get json(): IStateComponent { return this.componentJson }
-  get parent(): P { return this.parentObj }
-  get type(): string { return this.componentJson.type || 'div' }
-  get theme(): any { return this.componentJson.theme || {} }
+  get state(): IStateComponent { return this._componentState; }
+  get parent(): P { return this._parentDef; }
+  get type(): string { return this._componentState._type || 'div'; }
+  get theme(): any { return this._componentState.theme || {}; }
   get props(): any {
-    const props: any = { ...this.componentJson }
-    delete props.type
-    delete props.theme
-    delete props.items
-    return props
+    const props: any = { ...this._componentState }
+    delete props.type;
+    delete props.theme;
+    delete props.items;
+    return props;
   }
   get items(): StateComponent<P>[] {
-    return this.componentItems = this.componentItems
-      || (this.componentItems = (this.componentJson.items || []).map(
+    return this._componentItems = this._componentItems
+      || (this._componentItems = (this._componentState.items || []).map(
         (item: IStateComponent) => new StateComponent(item, this)
-      ))
+      ));
   }
 
-  getJson = <T = any>(): T => this.componentJson as T
+  getJson = <T = any>(): T => this._componentState as T;
 }
 
 export function getStateComponents<T>(
   sc: IStateComponent[],
   parent: T
 ): StateComponent<T>[] {
-  return sc.map(component => new StateComponent<T>(component, parent))
+  return sc.map(component => new StateComponent<T>(component, parent));
 }

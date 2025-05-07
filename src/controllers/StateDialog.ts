@@ -1,45 +1,63 @@
-import AbstractState from './AbstractState'
-import State from './State'
-import StateFormItem from './StateFormItem'
-import { getDudEventCallback } from '.'
-import IStateFormItem from './interfaces/IStateFormItem'
-import IStateDialog from './interfaces/IStateDialog'
+import AbstractState from './AbstractState';
+import State from './State';
+import IStateDialog, {
+  IDialogActionsProps,
+  IDialogContentProps,
+  IDialogContentTextProps,
+  IDialogTitleProps
+} from '../interfaces/IStateDialog';
+import StateDialogSelectionItem from './templates/StateDialogSelectionItem';
+import IStateFormItem from '../interfaces/IStateFormItem';
 
-export default class StateDialog extends AbstractState implements IStateDialog {
+export default class StateDialog<T = any> extends AbstractState implements IStateDialog<T> {
+  protected parentDef?: State;
+  protected dialogState: IStateDialog;
 
-  private parentObj: State
-  private dialogJson: IStateDialog
-  private dialogActionsJson: IStateFormItem[]
-  private dialogActions?: StateFormItem<StateDialog>[]
-
-  constructor(dialogJson: IStateDialog, parent: State) {
-    super()
-    this.parentObj = parent
-    this.dialogJson = dialogJson
-    this.dialogActionsJson = this.dialogJson.actions || []
+  constructor(dialogState: IStateDialog, parent?: State) {
+    super();
+    this.parentDef = parent;
+    this.dialogState = dialogState;
   }
 
-  get json(): IStateDialog { return this.dialogJson }
-  get parent(): State { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
-  get title(): string { return this.dialogJson.title || '' }
-  get label(): string { return this.dialogJson.label || '' }
-  get contentType(): IStateDialog['contentType'] {
-    return this.dialogJson.contentType
+  get state(): IStateDialog { return this.dialogState; }
+  get parent(): State { return this.parentDef || new State(); }
+  get props() { return this.dialogState.props; }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get _type() { return this.dialogState._type || 'any'; }
+  get title(): string { return this.dialogState.title ?? ''; }
+  get label(): string { return this.dialogState.label ?? ''; }
+  get contentText(): string { return this.dialogState.contentText ?? ''; }
+  get content(): any { return this.dialogState.content; }
+  get actions(): IStateFormItem[] { return this.dialogState.actions || []; }
+  get showActions(): Required<IStateDialog>['showActions'] {
+    return this.dialogState.showActions ?? false;
   }
-  get contentText(): string { return this.dialogJson.contentText || '' }
-  get content(): any { return this.dialogJson.content }
-  get actions(): StateFormItem<StateDialog>[] {
-    return this.dialogActions
-      || (this.dialogActions = this.dialogActionsJson.map(
-          item => new StateFormItem<StateDialog>(item, this)
-        ))
+  get onSubmit(): (() => void) | undefined {
+    return this.dialogState.onSubmit || this.get_dud_event_callback;
   }
-  get showActions(): IStateDialog['showActions'] {
-    return this.dialogJson.showActions
+  get open(): boolean { return this.dialogState.open ?? false; }
+  get titleProps(): IDialogTitleProps | undefined {
+    return this.dialogState.titleProps;
   }
-  get onSubmit() { return this.dialogJson.onSubmit || getDudEventCallback }
-  get items(): IStateFormItem[] { return this.dialogJson.items || [] }
-  get open(): boolean { return this.dialogJson.open }
+  get actionsProps(): IDialogActionsProps | undefined {
+    return this.dialogState.actionsProps;
+  }
+  get contentProps(): IDialogContentProps | undefined {
+    return this.dialogState.contentProps;
+  }
+  get contentTextProps(): IDialogContentTextProps | undefined {
+    return this.dialogState.contentTextProps;
+  }
+  get list(): StateDialogSelectionItem[] {
+    return this.die<StateDialogSelectionItem[]>(
+      'Use a `StateDialogSelection` instance to call `list`.',
+      []
+    );
+  }
+  get callback() {
+    return this.dialogState.callback || this.die(
+      'StateDialogSelection.callback needs to be defined.',
+      () => {}
+    );
+  }
 }

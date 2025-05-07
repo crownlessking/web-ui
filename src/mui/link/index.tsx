@@ -1,19 +1,19 @@
-import { Component } from 'react'
-import Button from '@mui/material/Button'
-import Icon from '@mui/material/Icon'
-import IconButton from '@mui/material/IconButton'
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getFontAwesomeIconProp, getFormattedRoute } from '../../controllers'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import store from '../../state'
-import actions from '../../state/actions'
-import StateLink, { getLinkProps } from '../../controllers/StateLink'
-import { Link as RouterLink } from 'react-router-dom'
-import { Badge } from '@mui/material'
+import { Fragment } from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import StateLink, { get_formatted_route } from '../../controllers/StateLink';
+import store, { IRedux, actions } from '../../state';
+import { Link as RouterLink } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
+import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
+import StateJsxBadgedIcon from '../state.jsx.icons';
 
-interface IJsonLinkProps { def: StateLink }
+interface IJsonLinkProps {
+  def: StateLink
+  children?: any
+}
 
 /**
  * [TODO] To update badge notification, the data needs to be retrieve from
@@ -23,187 +23,210 @@ interface IJsonLinkProps { def: StateLink }
  *        `state.data`. Then retrieve the content of that property and set it
  *        as the value of badge content.
  */
-export default class JsonLink extends Component<IJsonLinkProps> {
+export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
+  const { type, color, has } = def;
+  const redux: IRedux = { store, actions, route: has.route };
+  const route = get_formatted_route(has);
+  const menuItemsProps = def.parent.menuItemsProps;
+  const props = { ...menuItemsProps, ...def.props };
+  const menuItemsSx = def.parent.menuItemsSx;
 
-  public render() {
-    const { def } = this.props
-    const { type, has, onClick } = def
-    const redux = { store, actions, route: has.route }
-    const route = getFormattedRoute(def, has.route)
-    const props = getLinkProps(def.json)
-    const menuItemStyle = {
-      fontFamily: def.parent.typography.fontFamily
-    }
-
-    switch (type) {
-
+  const linkTable: Record<string, () => JSX.Element> = {
     // normal link
-    case 'link':
-      return (
-        <Link
-          component={RouterLink}
-          variant='body2'
-          color='inherit'
-          {...props}
-          to={route}
-          onClick={onClick(redux)}
-        >
-          { has.text }
-        </Link>
-      )
+    'link': () => (
+      <Link
+        component={RouterLink}
+        variant='body2'
+        color='inherit'
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        { has.text }
+      </Link>
+    ),
 
     // Text looking like icon
-    case 'text':
-      return (
-        <Button
-          style={menuItemStyle}
-          component={RouterLink}
-          color='inherit'
-          aria-label={has.label}
-          {...props}
-          to={route}
-          onClick={onClick(redux)}
-        >
-          { has.text }
-        </Button>
-      )
+    'text': () => (
+      <Button
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        { has.text }
+      </Button>
+    ),
 
-    case 'textlogo':
-      return (
-        <Button
-          component={RouterLink}
-          color='inherit'
-          aria-label={has.label}
-          {...props}
-          to={route}
-          onClick={onClick(redux)}
-          style={{textTransform: 'none'}}
-        >
-          <Typography variant="h6" noWrap>
-            { has.text }
-          </Typography>
-        </Button>
-      )
+    'textlogo': () => (
+      <Button
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{textTransform: 'none'}}
+      >
+        <Typography variant="h6" noWrap>
+          { has.text }
+        </Typography>
+      </Button>
+    ),
+
+    'svg': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { children }
+      </IconButton>
+    ),
+
+    'svg_right': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { has.text }
+        &nbsp;
+        { children }
+      </IconButton>
+    ),
+
+    'svg_left': () => (
+      <IconButton
+        component={RouterLink}
+        color='inherit'
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+        style={{ textTransform: 'none' }}
+      >
+        { children }
+        &nbsp;
+        { has.text }
+      </IconButton>
+    ),
 
     // icon only
-    case 'icon':
-      if (has.icon) {
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            {...props}
-            to={route}
-            onClick={onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <Icon>{ has.icon }</Icon>
-              </Badge>
-            ) : (
-              <Icon>{ has.icon }</Icon>
-            )}
-          </IconButton>
-        )
-      } else if (has.faIcon) {
-        const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            {...props}
-            to={route}
-            onClick={onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <FontAwesomeIcon icon={icon} />
-              </Badge>
-            ) : (
-              <FontAwesomeIcon icon={icon} />
-            )}
-          </IconButton>
-        )
-      }
-      break
+    'icon': () => (
+      <IconButton
+        component={RouterLink}
+        color={color}
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        <StateJsxBadgedIcon def={has} />
+      </IconButton>
+    ),
 
     // The icon and the text
-    case 'hybrid':
-      if (has.icon) {
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            {...props}
-            to={route}
-            onClick={onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <Icon>{ has.icon }</Icon>
-              </Badge>
-            ) : (
-              <Icon>{ has.icon }</Icon>
-            )}
-            &nbsp;
-            { has.text }
-          </IconButton>
-        )
-      } else if (has.faIcon) {
-        const icon = getFontAwesomeIconProp(has.faIcon) as IconProp
-        return (
-          <IconButton
-            component={RouterLink}
-            color='inherit'
-            aria-label={has.label}
-            {...props}
-            to={route}
-            onClick={onClick(redux)}
-          >
-            {has.badge ? (
-              <Badge
-                color='error'
-                {...has.badge}
-                badgeContent='-' // store.data[badgeId]
-              >
-                <FontAwesomeIcon icon={icon} />
-              </Badge>
-            ) : (
-              <FontAwesomeIcon icon={icon} />
-            )}
-            &nbsp;
-            { has.text }
-          </IconButton>
-        )
-      }
+    'hybrid': () => (
+      <IconButton
+        component={RouterLink}
+        color={color}
+        aria-label={has.label}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+        to={route}
+        onClick={def.onClick(redux)}
+      >
+        <StateJsxBadgedIcon def={has} />
+        &nbsp;
+        { has.text }
+      </IconButton>
+    ),
+
+    // Capsule or chip with avatar or just text
+    'chip': () => {
+      const chipHas = new StateFormItemCustomChip(has.state, def)
       return (
-        <Link
-          component={RouterLink}
-          variant='body2'
-          color='inherit'
-          to={route}
-          {...props}
-        >
-          { has.text }
-        </Link>
+        <Chip
+          label={chipHas.text}
+          color={chipHas.color}
+          { ...props}
+        />
       )
+    },
 
-    } // END switch
-  } // END render()
+    'default': () => (
+      <Link
+        component={RouterLink}
+        variant='body2'
+        color='inherit'
+        to={route}
+        sx={{
+          ...menuItemsSx,
+          fontFamily: def.parent.typography.fontFamily,
+          color: def.parent.typography.color
+        }}
+        {...props}
+      >
+        { has.text }
+      </Link>
+    ),
 
+    // [TODO] Finish implementing the Dropdown Menu Link
+    // It's a link, when clicked (or hovered) will show a drop-down
+    'DROPDOWN': () => (
+      <Fragment />
+    )
+  };
+
+  return linkTable[type.toLowerCase()]();
 }

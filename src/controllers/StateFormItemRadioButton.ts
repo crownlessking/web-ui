@@ -1,7 +1,7 @@
-import AbstractState from './AbstractState'
-import { IStateFormItemRadioButton } from './interfaces/IFormChoices'
-import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
-import StateFormItemRadioCustom from './StateFormItemRadioCustom'
+import AbstractState from './AbstractState';
+import { IStateFormItemRadioButton } from '../interfaces/IFormChoices';
+import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
+import StateFormItemRadioCustom from './templates/StateFormItemRadioCustom';
 
 /**
  * If a set of radio buttons is a *single form item (`StateFormItemRadio`) then
@@ -11,32 +11,34 @@ export default class StateFormItemRadioButton
   extends AbstractState
   implements IStateFormItemRadioButton
 {
-  private radioButtonJson: IStateFormItemRadioButton
-  private parentObj: StateFormItemRadioCustom
-  private radioButtonHasJson: IStateFormItemCustom
+  private _radioButtonState: IStateFormItemRadioButton;
+  private _parentDef: StateFormItemRadioCustom;
+  private _radioButtonHasState: IStateFormItemCustom;
 
-  constructor(radioButtonJson: IStateFormItemRadioButton, parent: StateFormItemRadioCustom) {
-    super()
-    this.radioButtonJson = radioButtonJson
-    this.parentObj = parent
-    this.radioButtonHasJson = radioButtonJson.has || {}
+  constructor(radioButtonState: IStateFormItemRadioButton, parent: StateFormItemRadioCustom) {
+    super();
+    this._radioButtonState = radioButtonState;
+    this._parentDef = parent;
+    this._radioButtonHasState = radioButtonState.has || {};
   }
 
-  get json(): IStateFormItemRadioButton { return this.radioButtonJson }
-  get parent(): StateFormItemRadioCustom { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
-  get value(): string { return this.radioButtonJson.value }
+  get state(): IStateFormItemRadioButton { return this._radioButtonState; }
+  get parent(): StateFormItemRadioCustom { return this._parentDef; }
+  get props(): any { return this._radioButtonState.props; }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get name(): string { return this._radioButtonState.name ?? ''; }
   get label(): string {
-    return this.radioButtonJson.label || this.radioButtonJson.value
+    return this._radioButtonState.label
+      ?? this._radioButtonState.name
+      ?? '';
   }
   get color(): Required<IStateFormItemRadioButton>['color'] {
-    return this.radioButtonJson.color || 'default'
+    return this._radioButtonState.color || 'default';
   }
   get disabled(): boolean {
-    return this.radioButtonJson.disabled === true
+    return this._radioButtonState.disabled === true;
   }
   get formControlLabelProps(): any {
-    return this.radioButtonHasJson.formControlLabelProps || {}
+    return this._radioButtonHasState.formControlLabelProps;
   }
 }

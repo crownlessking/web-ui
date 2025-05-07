@@ -1,99 +1,11 @@
-import Config from '../config'
-import { IRedux } from '../state'
-import AbstractState from './AbstractState'
-import StateLink from './StateLink'
-
-export type TCallback = (e: any) => void
-
-// layouts
-
-export const LAYOUT_CENTERED = 'LAYOUT_CENTERED'
-export const LAYOUT_CENTERED_NO_SCROLL = 'LAYOUT_CENTERED_NO_SCROLL'
-export const LAYOUT_MINI_DRAWER_CONTENT = 'LAYOUT_MINI_DRAWER_CONTENT'
-export const LAYOUT_TABLE_VIRTUALIZED = 'LAYOUT_TABLE_VIRTUALIZED'
-export const LAYOUT_DEFAULT = 'LAYOUT_DEFAULT'
-export const LAYOUT_NONE = 'LAYOUT_NONE'
-
-// contents
-
-export const APP_CONTENT_VIEW = '$view'
-export const DEFAULT_LANDING_PAGE = 'default-landing'
-export const DEFAULT_PAGE_NOT_FOUND = 'default-notfound'
-export const CONTENT_PAGE_NOT_FOUND = 'notfound_page'
-
-// miscellanous
-
-// messages
-
-export const FIELD_NAME_NOT_SET = 'FIELD NAME NOT SET!'
-
-/**
- * Sometimes, you don't want a hard crash. Sometimes, you want a simple
- * console print out.
- */
-export function log(message: string): void {
-  if (Config.DEBUG) {
-    console.log(message)
-  }
-}
-
-/** Logs an error to the console. */
-export function ler(message: string): void {
-  if (Config.DEBUG) {
-    console.error(message)
-  }
-}
-
-/**
- * A simple shortcut for triggering exceptions and preventing unecessarily
- * inflated code blocks.
- */
-export function err(message?: string): void {
-  if (Config.DEBUG) {
-    throw new Error (message)
-  }
-}
-
-/**
- * Get page name.
- *
- * This function is only used to store a data for a page into `state.tmp`.
- *
- * @param name 
- */
- export function getPageName(name: string): string {
-  return name + 'Page'
-}
-
-/**
- * If a callback is required for a link or button but is not defined, then this
- * method will provide a dummy one.
- */
-export function getDudEventCallback (): TCallback {
-  return (e: any) => { }
-}
-
-/**
- * If a callback is required for a link or button but is not defined, then this
- * method will provide a dummy one.
- */
-export function dummyCallback (redux: IRedux): TCallback {
-  return (e: any) => { }
-}
-
-/**
- * If a link was not provided a callback, this one should be called
- * automatically.
- *
- * The app page will be updated based on the URL change triggered by the link.
- */
-export function defaultCallback ({store, actions, route}:IRedux): TCallback {
-  return (e: any) => {
-    if (route) {
-      store.dispatch(actions.appUrlPageUpdate(route))
-    }
-  }
-}
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import {
+  APP_CONTENT_VIEW,
+  DEFAULT_LANDING_PAGE_VIEW,
+} from '../constants';
+import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi';
+import { IStatePageContent } from '../interfaces/IStatePage';
+import { err, ler } from '../business.logic/logging';
 
 /**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
@@ -110,36 +22,38 @@ export function defaultCallback ({store, actions, route}:IRedux): TCallback {
  *
  * Icon types are, "fas, far, fab"
  *
- * @param iconDef 
+ * @param iconStr 
+ * @deprecated
  */
-export function getFontAwesomeIconProp(iconDef: string): string[]|string {
-  const pieces = iconDef.replace(/\s+/,'').split(',')
+export function get_font_awesome_icon_prop(iconStr: string): IconProp {
+  const pieces = iconStr.replace(/\s+/,'').split(',');
 
   if (pieces.length === 2) {
-    return pieces
+    return pieces as IconProp;
   } else if (pieces.length === 1) {
-    return ['fas', iconDef]
+    return ['fas', iconStr] as IconProp;
   }
 
-  err('bad icon definition. Check your JSON.')
+  err('bad icon definition. Check your JSON.');
 
-  return ''
+  return '' as IconProp;
 }
 
 /**
- * Get viewport size.
+ * Get browser tab viewport size.
  *
- * Creedit:
+ * @deprecated
+ * Credit:
  * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
  */
-export function getViewportSize(): { width: number; height: number }
+export function get_viewport_size(): { width: number; height: number }
 {
-  let e: any = window, a = 'inner'
+  let e: any = window, a = 'inner';
   if ( !( 'innerWidth' in window ) ) {
     a = 'client';
     e = document.documentElement || document.body;
   }
-  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
 }
 
 /**
@@ -150,11 +64,13 @@ export function getViewportSize(): { width: number; height: number }
  *               element.
  *               e.g. How much space do you want between the bottom of the
  *                    viewport and your element
+ * @returns height in pixels
+ * @deprecated
  */
-export function stretchToBottom(bottom: number): number {
-  const height = getViewportSize().height
+export function stretch_to_bottom(bottom: number): number {
+  const height = get_viewport_size().height;
 
-  return height - bottom
+  return height - bottom;
 }
 
 /**
@@ -174,28 +90,30 @@ export function stretchToBottom(bottom: number): number {
  *
  * @param obj 
  * @param path dot-separated object (nested) keys
+ * @returns the value of the object property or `null` if the property does not
+ *          exist.
  */
-export function getVal(obj: any, path: string): any {
-  if (obj === undefined || Array.isArray(obj) || typeof obj !== 'object') {
-    return null
+export function get_val<T=any>(obj: any, path: string): T|null {
+  if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
+    return null;
   }
-  const paths = path.split('.')
+  const paths = path.split('.');
   let i = 0,
     key = paths[i],
-    candidate = obj[key]
+    candidate = obj[key];
 
   while (i < paths.length) {
     if (!candidate) {
-      break
+      break;
     } else if (i >= paths.length - 1) {
-      return candidate
+      return candidate as T ?? null;
     }
-    i++
-    key = paths[i]
-    candidate = candidate[key]
+    i++;
+    key = paths[i];
+    candidate = candidate[key];
   }
 
-  return null
+  return null;
 }
 
 /**
@@ -205,108 +123,142 @@ export function getVal(obj: any, path: string): any {
  * @param prop new property name of object
  * @param val the value at that object property
  */
-const createWritableProperty = (data: any, prop: string, val: any): void => {
+const create_writable_property = (data: any, prop: string, val: any): void => {
   Object.defineProperty(data, prop, {
     value: val,
     writable: true
-  })
+  });
 }
 
 /**
  * Set a value within an object.
  *
  * @param obj arbitrary object
- * @param path dot-separated list of properties
- *              e.g. "pagination.users.limit"
+ * @param path dot-separated list of properties e.g. "pagination.users.limit"
  * @param val value to be assigned
  *
  * @todo NOT TESTED, please test
  */
-export function setVal(obj: any, path: string, val: any): void {
-  const propArray = path.split('.')
+export function set_val(obj: any, path: string, val: any): void {
+  const propArray = path.split('.');
   let o = obj,
       candidate: any,
-      j = 0
+      j = 0;
 
   do {
-    let prop = propArray[j]
-    candidate = o[prop]
+    let prop = propArray[j];
+    candidate = o[prop];
 
     // if this is the last property
     if (j >= (propArray.length - 1)) {
-      createWritableProperty(o, prop, val)
-      return
+      create_writable_property(o, prop, val);
+      return;
 
     // if the property does not exist but a value was provided
     } else if (!candidate) {
-      createWritableProperty(o, prop, {})
+      create_writable_property(o, prop, {});
     }
 
-    o = o[prop]
-    j++
-  } while (1)
+    o = o[prop];
+    j++;
+  } while (1);
 }
 
 /**
- * Get global variable value.
- *
- * Since there's a number of global variables that are defined by clients,
- * there's a strong chance that some or all of them may be undefined.
- * This function is a solution to that problem.
- *
- * @param varName string representation of in-code variable identifier.
- * @returns object or throws an exception
- * @throws an exception if the global variable name is invalid.
+ * Get the query string value by key.
+ * @param url
+ * @param key
+ * @returns value of the query string key
  */
-export function getGlobalVar(varName: string): any {
-  try {
-    return window[varName]
-  } catch (e: any) {
-    err(`Global variable "${varName}" does not exist.`)
+export function get_query_val(url: string, key: string): string {
+  const query = url.split('?')[1];
+  if (!query) return '';
+  const pairs = query.split('&');
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i];
+    const [k, v] = pair.split('=');
+    if (k === key) return v;
   }
-  return { }
+  return '';
+}
+
+/**
+ * Get all query string keys as an array
+ * @param url
+ * @returns array of query string keys
+ */
+export function get_query_keys(url: string): string[] {
+  const query = url.split('?')[1];
+  if (!query) return [];
+  return query.split('&').map((pair) => pair.split('=')[0]);
+}
+
+/**
+ * Get all query string values as an object
+ * @param url
+ * @returns object of query string keys and values
+ */
+export function get_query_values(url: string): { [key: string]: string } {
+  const query = url.split('?')[1];
+  if (!query) return {};
+  const values: { [key: string]: string } = {};
+  const pairs = query.split('&');
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i];
+    const [k, v] = pair.split('=');
+    values[k] = v;
+  }
+  return values;
+}
+
+/**
+ * Set the query string value by key.
+ * @param url
+ * @param key
+ * @param val
+ * @returns new url with the query string key and value
+ */
+export function set_url_query_val(url: string, key: string, val?: string) {
+  const urlObj = new URL(url);
+  const query = new URLSearchParams(urlObj.searchParams);
+  const { origin, pathname } = urlObj;
+  if (typeof val === 'undefined') {
+    query.delete(key);
+    const newUrl = `${origin}${pathname}?${query.toString()}`;
+    return newUrl;
+  }
+  query.set(key, val.toString());
+  const newUrl = `${origin}${pathname}?${query.toString()}`;
+  return newUrl;
+}
+
+/**
+ * Delete array elements by index range.
+ * @param arr
+ * @param start
+ * @param end
+ * @returns new array with elements removed
+ */
+export function delete_range<T>(arr: T[], start: number, end: number): T[] {
+  return arr.slice(0, start).concat(arr.slice(end + 1));
 }
 
 /**
  * Get HTML head meta data.
  *
  * @param name 
- * @returns 
+ * @returns content of the meta tag
  */
-export function getHeadMetaContent(name: string): string {
-  const meta = document.querySelector(`meta[name="${name}"]`)
+export function get_head_meta_content(name: string): string {
+  const meta = document.querySelector(`meta[name="${name}"]`);
 
   if (meta) {
-    return (meta as HTMLMetaElement).content
+    return (meta as HTMLMetaElement).content;
   }
 
   // err(`Meta with '${name}' name does not exist.`)
 
-  return ''
-}
-
-/**
- * Format routes
- *
- * **dev**
- * This function was created because I did not want to be force to include
- * the starting forwardslash in the route when defining buttons and links.
- * I believe it is much cleaner (in terms of naming convension) to keep the
- * forwardslash out of the definition.
- * Although an entire function is not necessary but you never know, the
- * route formatting process might grow in complexity in the furture.
- *
- * @todo This function could be moved to `links.controller.ts` file once it is
- *       created OR if there is a need to create it.
- *
- * @param route
- */
-export function getFormattedRoute(def: StateLink, href?: string): string {
-  const route = def.has.route
-  if (route) {
-    return route.charAt(0) !== '/' ? `/${route}` : route
-  }
-  return href || ''
+  return '';
 }
 
 /**
@@ -314,21 +266,10 @@ export function getFormattedRoute(def: StateLink, href?: string): string {
  * version.
  *
  * @param endpoint
+ * @returns camel case version of the endpoint
  */
 export function camelize(endpoint: string): string {
-  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase())
-}
-
-/**
- * Generates a mongodb ObjectId
- *
- * @see https://gist.github.com/solenoid/1372386
- */
-export function mongoObjectId(): string {
-  const timestamp = (new Date().getTime() / 1000 | 0).toString(16)
-  return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function() {
-      return (Math.random() * 16 | 0).toString(16)
-  }).toLowerCase()
+  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase());
 }
 
 /**
@@ -341,96 +282,220 @@ export function mongoObjectId(): string {
  * @param path     an existing property of `obj` or a dot-separated list of
  *                 properties.
  * @param _default value to return if `obj[path]` is undefined
+ * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
+ * @deprecated
  */
-export function safelyGet(obj: any, path?: string, _default?: any): any {
-  const value = getVal(obj, path || '')
+export function safely_get(obj: any, path = '', _default?: any): any {
+  const value = get_val(obj, path);
 
   if (value !== null) {
-    return value
+    return value;
   }
 
   // force function to return undefined
   if (_default === 'undefined') {
-    return undefined
+    return undefined;
   }
 
   if (_default === undefined) {
   
     // If a path was not provided, we can safely assume that the object is being
     // tested for a valid value
-    if (!path) return {}
+    if (!path) return {};
   
-    return null
+    return null;
   }
 
-  return _default
+  return _default;
 }
 
 /**
- * Given a URL, it will return the content as a string.
- *
- * Note: This function is NOT used anywhere. Most likely, it is safe to remove.
- *
- * @param theUrl 
- *
- * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
+ * Get a value from an object as the same type as the default value without
+ * causing an exception.
+ * @param obj arbitrary object
+ * @param path dot-separated list of properties
+ * @param _default default value
+ * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
  */
-export function httpGet(theUrl: string): void
-{
-  // code for IE7+, Firefox, Chrome, Opera, Safari
-  const xmlhttp = new XMLHttpRequest()
+export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
+  const value = get_val<T>(obj, path);
 
-  xmlhttp.onreadystatechange = function () {
-    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-      return xmlhttp.responseText;
+  return value !== null ? value : _default;
+}
+
+/**
+ * Parses the definition string found in `PageState.content` and
+ * `StateDialogForm.content`.
+ *
+ * Format: "type : name : endpoint : args"
+ *
+ * **type**: Type of content found on the page.  
+ * **name**: Identifier for a a specific content.  
+ * **endpoint**: to which data may be sent or retrieve for the page.  
+ * **args**: URL arguments when making server request using the enpoint.  
+ *
+ * @param content 
+ * @returns `IStatePageContent` object.
+ */
+export function get_parsed_page_content(str?: string): IStatePageContent {
+  const content = str ?? '';
+  const options = content.replace(/\s+/g, '').split(':');
+  if (options.length <= 1) {
+    ler('get_parsed_page_content: Invalid or missing `page` content definition');
+    return {
+      type: APP_CONTENT_VIEW,
+      name: DEFAULT_LANDING_PAGE_VIEW
+    };
+  }
+  const contentObj: IStatePageContent = {
+    type: options[0],
+    name: options[1]
+  };
+  if (options.length >= 3) {
+    contentObj.endpoint = options[2];
+  }
+  if (options.length >= 4) {
+    contentObj.args = options[3];
+  }
+  return contentObj;
+}
+
+/** Type for event's callback defined with a string. */
+export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur';
+
+/**
+ * Save array index into the array element.
+ * 
+ * **Purpose:** Useful for array of object where an element needs to be modify
+ * and retrieve in the index directly from the element to be modify avoid
+ * having to iterate through the array find it.
+ *
+ * **Be careful:** Object to be indexed must extends the `IFeetlyIndexed`
+ * interface.
+ * @param a
+ * @see IFeetlyIndexed
+ * @see jsonapi_fleetly_index
+ * @deprecated
+ */
+export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
+  if (a.length <= 0
+    || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
+  ) {
+    return;
+  }
+  a.map((e, i) => e._index = i);
+}
+
+/**
+ * Get the real route from the template route by ignoring the path variables.
+ * @param templateRoute
+ * @param templateRoute 
+ */
+export function get_base_route(templateRoute?: string): string {
+  if (!templateRoute) return '';
+  return templateRoute.replace(/^\/|\/$/g, '').split('/')[0];
+}
+
+/**
+ * Delete path variables from the route.
+ *
+ * @param rawRoute
+ * @param $var 
+ * @returns new route without the path variables
+ */
+export function delete_path_vars(rawRoute: string, $var: string): string {
+  const route = rawRoute.replace(/^\/|\/$/g, '');
+  const pieces = route.split('/');
+  const index = pieces.indexOf($var);
+  if (index === -1) return route;
+  return pieces.slice(0, index).join('/');
+}
+
+/**
+ * Get base route and path variables values from route.  
+ * @param template e.g. "/users/:id"
+ * @param rawRoute e.g. "/users/1"
+ * @returns Object with endpoint and path variables values.
+ */
+export function get_path_vars(
+  template?: string,
+  rawRoute?: string
+): { baseRoute: string, params: string[], values: string[] } {
+  if (!template || !rawRoute) {
+    return { baseRoute: '',params: [], values: [] };
+  }
+  if (rawRoute === '/') {
+    return { baseRoute: rawRoute, params: [], values: [] };
+  }
+  const values: string[] = [];
+  const params: string[] = [];
+  const route = rawRoute.replace(/^\/|\/$/g, '');
+  const tpl = template.replace(/^\/|\/$/g, '');
+  const tplPieces = tpl.split('/');
+  const routePieces = route.split('/');
+  let i = 0;
+  for (const piece of tplPieces) {
+    if (piece.startsWith(':')) {
+      params.push(piece.replace(/^:/, ''));
+      values.push(routePieces[i]);
     }
+    i++;
   }
-  xmlhttp.open("GET", theUrl, false);
-  xmlhttp.send();    
+  return { baseRoute: routePieces[0], params, values };
 }
 
 /**
- * Ensures the origin URL is valid and has an ending forward slash.
- *
- * @returns string
+ * Check to see if the route matches the template route.
+ * @param template e.g. "/users/:id" Key of the page state.
+ * @param rawRoute e.g. "/users/1" Usually defined by link states.
+ * @returns `true` if the route matches the template route.
  */
-export function getOriginEndingFixed(origin?: string): string {
-  if (origin) {
-    const endingChar = origin.charAt(origin.length - 1)
-
-    return endingChar === '/' ? origin : origin + '/'
+export function route_match_template(
+  template: string,
+  rawRoute: string
+): boolean {
+  if (rawRoute === '/') {
+    return template === rawRoute;
   }
-  return window.location.origin + '/'
+  const routePaths = rawRoute.replace(/^\/|\/$/g, '').split('/');
+  const templatePaths = template.replace(/^\/|\/$/g, '').split('/');
+  if (routePaths[0] === templatePaths[0]
+    && routePaths.length === templatePaths.length
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /**
- * Parses a cone expression.
+ * Check to see if the route has path variables.
+ * @param rawRoute
+ * @returns `true` if the route has path variables.
+ * @see no_path_vars
+ */
+export function has_path_vars(rawRoute: string): boolean {
+  return rawRoute.replace(/^\/|\/$/g, '').split('/').length > 1;
+}
+
+/**
+ * Check to see if the route has path variables.
+ * @param rawRoute 
+ * @returns `true` if the route has NO path variables.
+ */
+export function no_path_vars(rawRoute: string): boolean {
+  return !has_path_vars(rawRoute);
+}
+
+/**
+ * Determine if the route is a template route.
  *
- * e.g. "<appInfo.origin>"
+ * A template route has path variable parameters. e.g. "/users/:id"
  *
- * Use a cone expression to give a property the value of another property. e.g.
- *
- * ```ts
- * const appNet = {
- *   headers: {
- *     origin: '<appInfo.origin>'
- *   }
- * };
- * ```
- *
- * `appNet.headers.origin` now as the value of `appInfo.origin`
- *
- * @param state that supports cone expressions
- * @param cone  the cone expression
+ * @param possibleTemplate
  * @returns 
  */
-export function parseConeExp(state: AbstractState, cone: string): string {
-  if (/^<([-$_a-zA-Z0-9\\/]+)(\.[-$_a-zA-Z0-9\\/]+)*>$/.test(cone)) {
-    const value = getVal(state, cone.substring(1, cone.length - 1))
-    if (!value) {
-      err(`Cone expression resolution on '${cone}' failed.`)
-    }
-    return value
-  }
-  return cone
+export function is_template_route(possibleTemplate: string): boolean {
+  return possibleTemplate.replace(/^\/|\/$/g, '').split('/').some(
+    piece => piece.startsWith(':')
+  );
 }

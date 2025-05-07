@@ -1,7 +1,9 @@
-import { CircularProgress, styled } from '@mui/material'
-import { LayoutCenteredNoScroll } from '../mui/layouts'
-import { RootState } from '../state'
-import { useSelector } from 'react-redux'
+import { CircularProgress, styled } from '@mui/material';
+import { LayoutCenteredNoScroll } from '../mui/layouts';
+import { RootState } from '../state';
+import { useSelector } from 'react-redux';
+import { APP_IS_FETCHING } from 'src/constants';
+import { FC } from 'react';
 
 const Background = styled('div')(() => ({
   width: '100%',
@@ -13,10 +15,21 @@ const Background = styled('div')(() => ({
   bottom: 0,
   zIndex: 9999,
   backgroundColor: 'rgba(255,255,255,0.8)'
-}))
+}));
 
-export default function Spinner() {
-  const open = useSelector((state: RootState) => state.app.showSpinner)
+/** Spinner */
+const Spinner: FC = () => {
+  const showSpinner = useSelector(
+    (rootState: RootState) => rootState.app.showSpinner
+  );
+  const status = useSelector((rootState: RootState) => rootState.app.status);
+  const spinnerDisabled = useSelector(
+    (rootState: RootState) => rootState.app.spinnerDisabled
+  );
+  const open = showSpinner
+    && !spinnerDisabled
+    && (status === APP_IS_FETCHING || undefined === status);
+
   return (
     <Background style={{display: open ? 'block' : 'none'}}>
       <LayoutCenteredNoScroll>
@@ -27,5 +40,7 @@ export default function Spinner() {
         />
       </LayoutCenteredNoScroll>
     </Background>
-  )
+  );
 }
+
+export default Spinner;

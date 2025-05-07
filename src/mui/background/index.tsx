@@ -1,12 +1,37 @@
-import StateBackground from '../../controllers/StateBackground'
-import StatePage from '../../controllers/StatePage'
-import Fade from '@mui/material/Fade'
-import { Box } from '@mui/material'
+import StateBackground from '../../controllers/StateBackground';
+import StatePage from '../../controllers/StatePage';
+import Fade from '@mui/material/Fade';
+import { Box, styled } from '@mui/material';
+
+const BackgroundStyledBox = styled(Box)(() => ({
+  height: 'inherit',
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  zIndex: -9999,
+}));
 
 interface IBackgroundProps {
-  def: StateBackground<StatePage>,
-  children?: any
+  def: StateBackground<StatePage>;
+  children?: any;
 }
+
+const Background = function (
+  { def: background, children }: IBackgroundProps
+) {
+  return (
+    <Fade in={true}>
+      <BackgroundStyledBox
+        sx={background.sx}
+      >
+        { children }
+      </BackgroundStyledBox>
+    </Fade>
+  );
+}
+
+export default Background;
+/*
 
 export const Background = function (
   { def: background, children }: IBackgroundProps
@@ -22,9 +47,12 @@ export const Background = function (
           zIndex: -9999,
           ...background.sx
         }}
+        data-name='Background'
       >
         { children }
       </Box>
     </Fade>
   )
 }
+
+*/

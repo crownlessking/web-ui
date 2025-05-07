@@ -1,17 +1,11 @@
-import { makeStyles } from '@mui/styles'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import StatePage from '../../controllers/StatePage'
-import { getPageName } from '../../controllers'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import StatePage from '../../controllers/StatePage';
+import { styled } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  resultSymbol: {
-    fontSize: '29.5rem !important'
-  },
-  messageDiv: {
-    width: '100%',
-    textAlign: 'center'
-  }
-}))
+const MsgDiv = styled('div')(() => ({
+  width: '100%',
+  textAlign: 'center'
+}));
 
 /**
  * Displays a generic page that indicates a successful operation.
@@ -33,28 +27,22 @@ const useStyles = makeStyles(() => ({
  * Tags: `success`, `page`, `message`
  */
 export default function PageSuccess ({ def: page }:{ def: StatePage }) {
-  const classes = useStyles()
-  const route = page.parent.parent.app.route
-  const pageName = getPageName(route)
   const msg = page.parent.parent.tmp.get(
-    pageName,
+    page.parent.parent.app.route,
     'message',
     page.data.message
-  )
+  );
 
   return (
     <>
       <CheckCircleOutlineIcon
-        className={classes.resultSymbol}
+        sx={{ fontSize: '29.5rem !important' }}
         htmlColor={page.typography.color}
       />
-      <div
-        className={classes.messageDiv}
-        style={{color: page.typography.color}}
-      >
+      <MsgDiv style={{color: page.typography.color}}>
         <h1>{ msg }</h1>
-      </div>
+      </MsgDiv>
     </>
-  )
+  );
 
 }

@@ -1,26 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { _cancelSpinner } from '../state/state.controller'
-import initialState from '../state/initial.state'
-
-export const APP_IS_BOOTSTRAPPED   = 'APP_IS_BOOTSTRAPPED'
-export const APP_IS_FETCHING       = 'APP_IS_FETCHING'
-export const APP_IS_READY          = 'APP_IS_READY'
-export const APP_SWITCHED_PAGE     = 'APP_SWITCHED_PAGE'
-export const BROWSER_SWITCHED_PAGE = 'BROWSER_SWITCHED_PAGE'
-export const APP_REQUEST_FAILED    = 'APP_REQUEST_FAILED'
-export const APP_REQUEST_SUCCESS   = 'APP_REQUEST_SUCCESS'
+import { createSlice } from '@reduxjs/toolkit';
+import { TThemeMode } from 'src/interfaces';
+import initialState from '../state/initial.state';
+import {
+  APP_IS_BOOTSTRAPPED,
+  APP_IS_FETCHING,
+  APP_IS_READY,
+  APP_REQUEST_FAILED,
+  APP_REQUEST_SUCCESS,
+  APP_SWITCHED_PAGE,
+  APP_BROWSER_SWITCHED_PAGE
+} from 'src/constants';
 
 export const appSlice = createSlice({
   name: 'app',
   initialState: initialState.app,
   reducers: {
-    appPageUpdate: (state, action) => {
+    appSwitchPage: (state, action) => {
+      state.lastRoute = state.route
       state.route = action.payload
       state.status = APP_SWITCHED_PAGE
     },
-    appUrlPageUpdate: (state, action) => {
+    appBrowserSwitchPage: (state, action) => {
+      state.lastRoute = state.route
       state.route = action.payload
-      state.status = BROWSER_SWITCHED_PAGE
+      state.status = APP_BROWSER_SWITCHED_PAGE
     },
     appTitleUpdate: (state, action) => {
       state.title = action.payload
@@ -38,11 +41,17 @@ export const appSlice = createSlice({
       state.showSpinner = true
     },
     appHideSpinner: (state) => {
-      _cancelSpinner()
       state.showSpinner = false
     },
+    appDisableSpinner: (state) => {
+      state.spinnerDisabled = true
+    },
+    appEnableSpinner: (state) => {
+      state.spinnerDisabled = false
+    },
     appRequestStart: (state) => {
-      state.status = APP_IS_FETCHING
+      state.status = state.fetchMessage ?? APP_IS_FETCHING
+      state.fetchMessage = undefined
     },
     appRequestSuccess: (state) => {
       state.status = APP_REQUEST_SUCCESS
@@ -53,16 +62,19 @@ export const appSlice = createSlice({
     appRequestEnd: (state) => {
       state.status = APP_IS_BOOTSTRAPPED
     },
-    appStartRequest: (state) => {
-      state.status = APP_IS_FETCHING
-    },
     appRequestProcessEnd: (state) => {
       state.status = APP_IS_BOOTSTRAPPED
     },
+    appSetFetchMessage: (state, actions) => {
+      state.fetchMessage = actions.payload
+    },
+    appThemeModeUpdate: (state, actions:{type:string;payload:TThemeMode}) => {
+      state.themeMode = actions.payload
+    }
   },
-})
+});
 
-export const appActions = appSlice.actions
+export const appActions = appSlice.actions;
 export const {
   appHideSpinner,
   appOriginUpdate,
@@ -72,12 +84,15 @@ export const {
   appRequestStart,
   appRequestSuccess,
   appShowSpinner,
-  appStartRequest,
+  appDisableSpinner,
+  appEnableSpinner,
   appTaskCompleted,
   appTitleUpdate,
-  appPageUpdate,
+  appSwitchPage,
   appStatusUpdate,
-  appUrlPageUpdate
-} = appSlice.actions
+  appBrowserSwitchPage,
+  appSetFetchMessage,
+  appThemeModeUpdate
+} = appSlice.actions;
 
-export default appSlice.reducer
+export default appSlice.reducer;

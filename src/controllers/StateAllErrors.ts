@@ -1,21 +1,21 @@
-import State from './State'
-import AbstractState from './AbstractState'
-import { IJsonapiError } from './interfaces/IJsonapi'
+import State from './State';
+import AbstractState from './AbstractState';
+import { IJsonapiError } from '../interfaces/IJsonapi';
 
 export default class StateAllErrors extends AbstractState {
 
-  private parentObj: State
-  private allErrorsJson: IJsonapiError[]
+  private _parentDef?: State;
+  private _allErrorsState: IJsonapiError[];
 
-  constructor(allErrorsJson: IJsonapiError[], parent: State) {
-    super()
-    this.parentObj = parent
-    this.allErrorsJson = allErrorsJson
+  constructor(allErrorsState: IJsonapiError[], parent?: State) {
+    super();
+    this._parentDef = parent;
+    this._allErrorsState = allErrorsState;
   }
 
-  get json(): IJsonapiError[] { return this.allErrorsJson }
+  get state(): IJsonapiError[] { return this._allErrorsState; }
   /** Chain-access to root definition. */
-  get parent(): State { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.')}
-  get theme(): any { throw new Error('Not implemented yet.') }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 }

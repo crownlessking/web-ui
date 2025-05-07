@@ -1,29 +1,32 @@
-import { Fragment } from 'react'
+import { Fragment } from 'react';
+import Container from '@mui/material/Container';
 import {
-  LAYOUT_NONE,
-  LAYOUT_DEFAULT,
-  LAYOUT_CENTERED,
-  LAYOUT_CENTERED_NO_SCROLL,
-  LAYOUT_TABLE_VIRTUALIZED,
-  log
-} from '../controllers'
-import {
-  LayoutCenteredNoScroll, LayoutCentered, DefaultLayout, VirtualizedTableLayout,
+  LayoutCenteredNoScroll, LayoutCentered, VirtualizedTableLayout,
   DefaultLayoutToolbared
-} from '../mui/layouts'
-import StatePage from '../controllers/StatePage'
-import { errorsAdd } from '../slices/errors.slice'
-import { toJsonapiError } from '../state/errors.controller'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../state'
+} from '../mui/layouts';
+import StatePage from '../controllers/StatePage';
+import { remember_exception } from '../business.logic/errors';
+import {
+  LAYOUT_CENTERED_NO_SCROLL,
+  LAYOUT_CENTERED,
+  LAYOUT_DEFAULT,
+  LAYOUT_MD,
+  LAYOUT_SM,
+  LAYOUT_XL,
+  LAYOUT_XS,
+  LAYOUT_TABLE_VIRTUALIZED,
+  LAYOUT_NONE,
+  LAYOUT_NONE_NO_APPBAR
+} from '../constants';
+import { log } from '../business.logic/logging';
 
 interface ILayoutProps {
-  def: StatePage
-  children: any
+  def: StatePage;
+  children: any;
 }
 
 interface ILayoutMap {
-  [constant: string]: () => JSX.Element
+  [constant: string]: () => JSX.Element;
 }
 
 /**
@@ -33,8 +36,6 @@ export default function Layout({
   def: page,
   children
 }: ILayoutProps): JSX.Element | null {
-  const dispatch = useDispatch<AppDispatch>()
-
   const layoutsMap: ILayoutMap = {
     [LAYOUT_CENTERED_NO_SCROLL]: () => (
       <LayoutCenteredNoScroll>
@@ -47,9 +48,29 @@ export default function Layout({
       </LayoutCentered>
     ),
     [LAYOUT_DEFAULT]: () => (
-      <DefaultLayout>
+      <Container>
         { children }
-      </DefaultLayout>
+      </Container>
+    ),
+    [LAYOUT_MD]: () => (
+      <Container maxWidth='md'>
+        { children }
+      </Container>
+    ),
+    [LAYOUT_SM]: () => (
+      <Container maxWidth='sm'>
+        { children }
+      </Container>
+    ),
+    [LAYOUT_XL]: () => (
+      <Container maxWidth='xl'>
+        { children }
+      </Container>
+    ),
+    [LAYOUT_XS]: () => (
+      <Container maxWidth='xs'>
+        { children }
+      </Container>
     ),
     [LAYOUT_TABLE_VIRTUALIZED]: () => (
       <VirtualizedTableLayout>
@@ -57,41 +78,48 @@ export default function Layout({
       </VirtualizedTableLayout>
     ),
     [LAYOUT_NONE]: () => {
-      if (page.hasAppBar) {
+      if (page.hasAppbar) {
         return (
           <DefaultLayoutToolbared>
             { children }
           </DefaultLayoutToolbared>
-        )
+        );
       }
       return (
         <Fragment>
           { children }
         </Fragment>
-      )
+      );
     },
+    [LAYOUT_NONE_NO_APPBAR]: () => {
+      return (
+        <Fragment>
+          { children }
+        </Fragment>
+      );
+    }
 
     // TODO Add properties here for different types of layout
   }
 
   try {
-    const layout = page.layout.replace(/\s+/g, '').toUpperCase()
+    const layout = page.layout.replace(/\s+/g, '');
     if (layout) {
-      return layoutsMap[layout]()
+      return layoutsMap[layout.toLowerCase()]();
     }
     return (
       <Fragment>
         { children }
       </Fragment>
-    )
+    );
   } catch (e: any) {
-    dispatch(errorsAdd(toJsonapiError(e)))
-    log(e.message)
+    remember_exception(e);
+    log(e.message);
   }
   return (
     <Fragment>
       { children }
     </Fragment>
-  )
+  );
 
 }

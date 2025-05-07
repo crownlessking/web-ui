@@ -1,264 +1,272 @@
-import { RootState } from '../state'
-import StateAllPages from './StateAllPages'
-import AbstractState from './AbstractState'
-import StateBackground from './StateBackground'
-import StateApp from './StateApp'
-import StateDrawer from './StateDrawer'
-import StateAppBar from './StateAppBar'
-import StateAllForms from './StateAllForms'
-import StateFormsData from './StateFormsData'
-import StateMeta from './StateMeta'
-import StateTypography from './StateTypography'
-import StateData from './StateData'
-import StateDialog from './StateDialog'
-import StateAllErrors from './StateAllErrors'
-import StateAllDialogs from './StateAllDialogs'
-import StatePagesData from './StatePagesData'
-import StateSnackbar from './StateSnackbar'
-import StateTmp from './StateTmp'
-import StateTopLevelLinks from './StateTopLevelLinks'
-import StateNet from './StateNet'
-
-/**
- * Use when component receives its parent state
- *
- * @deprecated
- */
-export interface IParentState {
-  state: any
-  setState: Function
-}
+import store, { RootState } from '../state';
+import StateAllPages from './StateAllPages';
+import AbstractState from './AbstractState';
+import StateBackground from './StateBackground';
+import StateApp from './StateApp';
+import StateDrawer from './StateDrawer';
+import StateAllForms from './StateAllForms';
+import StateFormsData from './StateFormsData';
+import StateMeta from './StateMeta';
+import StateTypography from './StateTypography';
+import StateData from './StateData';
+import StateDialog from './StateDialog';
+import StateAllErrors from './StateAllErrors';
+import StateAllDialogs from './StateAllDialogs';
+import StatePagesData from './StatePagesData';
+import StateSnackbar from './StateSnackbar';
+import StateTmp from './StateTmp';
+import StateNet from './StateNet';
+import StateAppbarDefault from './templates/StateAppbarDefault';
+import StateAppbarQueries from './StateAppbarQueries';
+import StateTopLevelLinks from './StateTopLevelLinks';
+import StateFormsDataErrors from './StateFormsDataErrors';
+import StatePathnames from './StatePathnames';
 
 export default class State extends AbstractState {
 
-  /**
-   * The entire Redux Store.
-   */
-  private storeJson: RootState
-  private storeApp?: StateApp
-  private storeAppBar?: StateAppBar
-  private storeBackground?: StateBackground
-  private storeTypography?: StateTypography
-  private storeData?: StateData
-  private storeDialog?: StateDialog
-  private storeAllDialogs?: StateAllDialogs
-  private storeDrawer?: StateDrawer<this>
-  private storeAllErrors?: StateAllErrors
-  private storeAllForms?: StateAllForms
-  private storeFormsData?: StateFormsData
-  private storeMeta?: StateMeta
-  private storeAllPages?: StateAllPages
-  private storePagesData?: StatePagesData
-  private storeSnackbar?: StateSnackbar
-  private storeTmp?: StateTmp
-  private storeTopLevelLinks?: StateTopLevelLinks
-  private storeNet?: StateNet
-
-  /**
-   * Constructor of the (store) root state.
-   *
-   * @param storeJson 
-   */
-  constructor(storeJson: RootState) {
-    super()
-    this.storeJson = storeJson
-  }
+  private _appDef?: StateApp;
+  private _appbarDef?: StateAppbarDefault;
+  private _appbarQueriesDef?: StateAppbarQueries;
+  private _backgroundDef?: StateBackground;
+  private _typographyDef?: StateTypography;
+  private _dataDef?: StateData;
+  private _dialogDef?: StateDialog;
+  private _allDialogsDef?: StateAllDialogs;
+  private _drawerDef?: StateDrawer<this>;
+  private _allErrorsDef?: StateAllErrors;
+  private _allFormsDef?: StateAllForms;
+  private _formsDataDef?: StateFormsData;
+  private _formsDataErrorsDef?: StateFormsDataErrors;
+  private _metaDef?: StateMeta;
+  private _allPagesDef?: StateAllPages;
+  private _pagesDataDef?: StatePagesData;
+  private _snackbarDef?: StateSnackbar;
+  private _tmpDef?: StateTmp;
+  private _topLevelLinksDef?: StateTopLevelLinks;
+  private _netDef?: StateNet;
+  private _pathnamesDef?: StatePathnames;
 
   /**
    * Get a copy of the (store) state.
    */
-  get json(): RootState {
-    throw new Error(`Access to the root state is NOT a good idea.`)
+  get state(): RootState {
+    return this.die(
+      `Access to the root state is NOT a good idea.`,
+      store.getState()
+    );
   }
 
   /**
    * Chain-access to parent definition.
    */
-  get parent(): undefined | null {
-    throw new Error('Root state has no parent.')
+  get parent(): null {
+    return this.die('Root state has no parent.', null);
   }
 
-  get props(): undefined | null {
-    throw new Error('Root state props cannot be used for component spreading.')
+  get props(): null {
+    return this.die(
+      'Root state props cannot be used for component spreading.',
+      null
+    );
   }
 
   /**
    * Chain-access to app definition.
    */
   get app(): StateApp {
-    return this.storeApp
-      || (this.storeApp = new StateApp(
-          this.storeJson.app,
+    return this._appDef
+      || (this._appDef = new StateApp(
+          store.getState().app,
           this
-        ))
+        ));
   }
 
   /**
    * Get the default appbar definition.
    */
-  get appBar(): StateAppBar {
-    return this.storeAppBar
-      || (this.storeAppBar = new StateAppBar(
-          this.storeJson.appBar,
+  get appbar(): StateAppbarDefault {
+    return this._appbarDef
+      || (this._appbarDef = new StateAppbarDefault(
+          store.getState().appbar,
           this
-        ))
+        ));
+  }
+
+  get appbarQueries(): StateAppbarQueries {
+    return this._appbarQueriesDef
+      || (this._appbarQueriesDef = new StateAppbarQueries(
+            store.getState().appbarQueries,
+            this
+          ));
   }
 
   /**
    * Get the default background definition.
    */
   get background(): StateBackground {
-    return this.storeBackground
-      || (this.storeBackground = new StateBackground(
-          this.storeJson.background,
+    return this._backgroundDef
+      || (this._backgroundDef = new StateBackground(
+          store.getState().background,
           this
-        ))
+        ));
   }
 
   get typography(): StateTypography {
-    return this.storeTypography
-      || (this.storeTypography = new StateTypography(
-          this.storeJson.typography,
+    return this._typographyDef
+      || (this._typographyDef = new StateTypography(
+          store.getState().typography,
           this
-        ))
+        ));
   }
 
   get data(): StateData {
-    return this.storeData
-      || (this.storeData = new StateData(
-          this.storeJson.data,
-          this
-        ))
+    return this._dataDef
+      || (this._dataDef = new StateData(
+        store.getState().data
+      ));
   }
 
   get dialog(): StateDialog {
-    return this.storeDialog
-      || (this.storeDialog = new StateDialog(
-          this.storeJson.dialog,
+    return this._dialogDef
+      || (this._dialogDef = new StateDialog(
+          store.getState().dialog,
           this
-        ))
+        ));
   }
 
   get allDialogs(): StateAllDialogs {
-    return this.storeAllDialogs
-      || (this.storeAllDialogs = new StateAllDialogs(
-          this.storeJson.dialogs,
+    return this._allDialogsDef
+      || (this._allDialogsDef = new StateAllDialogs(
+          store.getState().dialogs,
           this
-        ))
-    // throw new Error(`'Patched all dialogs' NOT implemented.`)
+        ));
   }
 
-  get dialogs(): StateAllDialogs { return this.allDialogs }
+  get dialogs(): StateAllDialogs { return this.allDialogs; }
 
   /**
    * Get the default drawer definition.
    */
   get drawer(): StateDrawer {
-    return this.storeDrawer
-      || (this.storeDrawer = new StateDrawer(
-          this.storeJson.drawer,
+    return this._drawerDef
+      || (this._drawerDef = new StateDrawer(
+          store.getState().drawer,
           this
-        ))
+        ));
   }
 
   get allErrors(): StateAllErrors {
-    return this.storeAllErrors
-      || (this.storeAllErrors = new StateAllErrors(
-          this.storeJson.errors,
+    return this._allErrorsDef
+      || (this._allErrorsDef = new StateAllErrors(
+          store.getState().errors,
           this
-        ))
+        ));
   }
 
-  get errors(): StateAllErrors { return this.allErrors }
+  get errors(): StateAllErrors { return this.allErrors; }
 
   /**
    * Chain-access to all form definitions.
    */
   get allForms(): StateAllForms {
-    return this.storeAllForms
-      || (this.storeAllForms = new StateAllForms(
-          this.storeJson.forms,
+    return this._allFormsDef
+      || (this._allFormsDef = new StateAllForms(
+          store.getState().forms,
           this
-        ))
+        ));
   }
 
-  get forms(): StateAllForms { return this.allForms }
+  get forms(): StateAllForms { return this.allForms; }
 
   /**
    * Chain-access to forms data.
    */
   get formsData(): StateFormsData {
-    return this.storeFormsData
-      || (this.storeFormsData = new StateFormsData(
-          this.storeJson.formsData,
+    return this._formsDataDef
+      || (this._formsDataDef = new StateFormsData(
+          store.getState().formsData,
           this
-        ))
+        ));
+  }
+
+  get formsDataErrors(): StateFormsDataErrors {
+    return this._formsDataErrorsDef
+      || (this._formsDataErrorsDef = new StateFormsDataErrors(
+          store.getState().formsDataErrors,
+          this
+        ));
   }
 
   /**
    * Chain-access to metadata.
    */
   get meta(): StateMeta {
-    return this.storeMeta
-      || (this.storeMeta = new StateMeta(
-          this.storeJson.meta,
+    return this._metaDef
+      || (this._metaDef = new StateMeta(
+          store.getState().meta,
           this
-        ))
+        ));
   }
 
   /**
    * Chain-access to all page definitions.
    */
   get allPages(): StateAllPages {
-    return this.storeAllPages
-      || (this.storeAllPages = new StateAllPages(
-          this.storeJson.pages,
+    return this._allPagesDef
+      || (this._allPagesDef = new StateAllPages(
+          store.getState().pages,
           this
-        ))
+        ));
   }
 
-  get pages (): StateAllPages { return this.allPages }
+  get pages (): StateAllPages { return this.allPages; }
 
   get pagesData(): StatePagesData {
-    return this.storePagesData
-      || (this.storePagesData = new StatePagesData(
-          this.storeJson.pagesData,
+    return this._pagesDataDef
+      || (this._pagesDataDef = new StatePagesData(
+          store.getState().pagesData,
           this
-        ))
+        ));
   }
 
   get snackbar(): StateSnackbar {
-    return this.storeSnackbar
-      || (this.storeSnackbar = new StateSnackbar(
-          this.storeJson.snackbar,
+    return this._snackbarDef
+      || (this._snackbarDef = new StateSnackbar(
+          store.getState().snackbar,
           this
-        ))
+        ));
   }
 
   get tmp(): StateTmp {
-    return this.storeTmp
-      || (this.storeTmp = new StateTmp(
-          this.storeJson.tmp,
+    return this._tmpDef
+      || (this._tmpDef = new StateTmp(
+          store.getState().tmp,
           this
-        ))
+        ));
   }
 
   get topLevelLinks(): StateTopLevelLinks {
-    return this.storeTopLevelLinks
-      || (this.storeTopLevelLinks = new StateTopLevelLinks(
-          this.storeJson.topLevelLinks,
+    return this._topLevelLinksDef
+      || (this._topLevelLinksDef = new StateTopLevelLinks(
+          store.getState().topLevelLinks,
           this
-        ))
+        ));
   }
 
-  get theme(): any { return this.storeJson.theme }
+  get theme(): any { return store.getState().theme; }
 
   get net(): StateNet {
-    return this.storeNet
-      || (this.storeNet = new StateNet(
-        this.storeJson.net,
-        this
-      ))
+    return this._netDef
+      || (this._netDef = new StateNet(
+        store.getState().net,
+      ));
+  }
+
+  get pathnames(): StatePathnames {
+    return this._pathnamesDef
+      || (this._pathnamesDef = new StatePathnames(
+        store.getState().pathnames
+      ));
   }
 
 } // END class ----------------------------------------------------------------

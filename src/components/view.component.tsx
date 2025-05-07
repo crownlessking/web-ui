@@ -1,39 +1,44 @@
-import PageSuccess from './pages/success.component'
-import PageNotFound from './pages/notfound.component'
-import StatePage from '../controllers/StatePage'
-import PageErrors from './pages/errors.component'
-import PageLanding from './pages/landing.component'
-import { errorsAdd } from '../slices/errors.slice'
-import { toJsonapiError } from '../state/errors.controller'
-import { log } from '../controllers'
-import { useDispatch } from 'react-redux'
-
-export const DEFAULT_LANDING_PAGE_VIEW = 'DEFAULT_LANDING_PAGE_VIEW'
-export const DEFAULT_SUCCESS_PAGE_VIEW = 'DEFAULT_SUCCESS_PAGE_VIEW'
-export const DEFAULT_NOTFOUND_PAGE_VIEW = 'DEFAULT_NOTFOUND_PAGE_VIEW'
-export const DEFAULT_ERRORS_PAGE_VIEW = 'DEFAULT_ERRORS_PAGE_VIEW'
+import PageSuccess from './pages/success.component';
+import PageNotFound from './pages/notfound.component';
+import StatePage from '../controllers/StatePage';
+import PageErrors from './pages/errors.component';
+import PageLanding from './pages/landing.component';
+import { remember_exception } from '../business.logic/errors';
+import { Fragment } from 'react';
+import {
+  DEFAULT_BLANK_PAGE_VIEW,
+  DEFAULT_ERRORS_PAGE_VIEW,
+  DEFAULT_LANDING_PAGE_VIEW,
+  DEFAULT_NOTFOUND_PAGE_VIEW,
+  DEFAULT_SUCCESS_PAGE_VIEW
+} from '../constants';
+import PageBlank from './pages/blank.component';
+import { err, log } from '../business.logic/logging';
 
 interface IViewTable {
-  [constant: string]: ()=>JSX.Element
+  [constant: string]: ()=>JSX.Element;
 }
 
 export default function View({ def: page }: { def: StatePage }): JSX.Element|null {
-  const dispatch = useDispatch()
-  const view = (page.contentName).toUpperCase()
+  const view = (page.contentName).toLowerCase();
 
   const viewsTable: IViewTable = {
-    'TABLE_VIEW': () => {throw new Error('Not implemented yet.')},
+    'table_view': () => {
+      err('Not implemented yet.');
+      return <Fragment />;
+    },
     [DEFAULT_LANDING_PAGE_VIEW]: () => <PageLanding def={page} />,
     [DEFAULT_SUCCESS_PAGE_VIEW]: () => <PageSuccess def={page} />,
     [DEFAULT_NOTFOUND_PAGE_VIEW]: () => <PageNotFound def={page} />,
     [DEFAULT_ERRORS_PAGE_VIEW]: () => <PageErrors def={page} />,
+    [DEFAULT_BLANK_PAGE_VIEW]: () => <PageBlank def={page} />,
   }
 
   try {
-    return viewsTable[view]()
+    return viewsTable[view]();
   } catch (e: any) {
-    dispatch(errorsAdd(toJsonapiError(e)))
-    log(e.message)
+    remember_exception(e);
+    log(e.message);
   }
-  return ( null )
+  return ( null );
 }

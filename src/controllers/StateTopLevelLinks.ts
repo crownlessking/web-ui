@@ -1,20 +1,20 @@
-import AbstractState from './AbstractState'
-import IStateTopLevelLinks from './interfaces/IStateTopLevelLinks'
-import State from './State'
+import AbstractState from './AbstractState';
+import IStateTopLevelLinks from '../interfaces/IStateTopLevelLinks';
+import State from './State';
 
 export default class StateTopLevelLinks extends AbstractState {
 
-  private parentObj: State
-  private topLevelLinksJson: IStateTopLevelLinks
+  private _parentDef?: State;
+  private topLevelLinksState: IStateTopLevelLinks;
 
-  constructor(topLevelLinksJson: IStateTopLevelLinks, parent: State) {
-    super()
-    this.parentObj = parent
-    this.topLevelLinksJson = topLevelLinksJson
+  constructor(topLevelLinksState: IStateTopLevelLinks, parent?: State) {
+    super();
+    this._parentDef = parent;
+    this.topLevelLinksState = topLevelLinksState;
   }
 
-  get json(): IStateTopLevelLinks { return this.topLevelLinksJson }
-  get parent(): State { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
+  get state(): IStateTopLevelLinks { return this.topLevelLinksState; }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 }

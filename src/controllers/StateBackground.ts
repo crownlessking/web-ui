@@ -1,40 +1,40 @@
-import { CSSProperties } from 'react'
-import { SxProps } from '@mui/material'
-import AbstractState from './AbstractState'
-import IStateBackground from './interfaces/IStateBackground'
-import State from './State'
+import { CSSProperties } from 'react';
+import { SxProps } from '@mui/material';
+import AbstractState from './AbstractState';
+import IStateBackground from '../interfaces/IStateBackground';
+import State from './State';
 
 export default class StateBackground<P = State>
   extends AbstractState implements IStateBackground {
 
-  private backgroundJson: IStateBackground
-  private parentObj: P
+  private _backgroundState: IStateBackground;
+  private _parentDef: P;
 
   /**
   * Background
   *
-  * @param backgroundJson 
+  * @param backgroundState 
   */
-  constructor(backgroundJson: IStateBackground, parent: P) {
-    super()
-    this.backgroundJson = backgroundJson
-    this.parentObj = parent
+  constructor(backgroundState: IStateBackground, parent: P) {
+    super();
+    this._backgroundState = backgroundState;
+    this._parentDef = parent;
   }
 
   /** Get the background json. */
-  get json(): IStateBackground { return this.backgroundJson }
-  get parent(): P { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
-  get color(): CSSProperties['backgroundColor'] { return this.backgroundJson.color }
-  get image(): CSSProperties['backgroundImage'] { return this.backgroundJson.image }
-  get repeat(): CSSProperties['backgroundRepeat'] { return this.backgroundJson.repeat }
+  get state(): IStateBackground { return this._backgroundState; }
+  get parent(): P { return this._parentDef; }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get color(): CSSProperties['backgroundColor'] { return this._backgroundState.color; }
+  get image(): CSSProperties['backgroundImage'] { return this._backgroundState.image; }
+  get repeat(): CSSProperties['backgroundRepeat'] { return this._backgroundState.repeat; }
 
   get sx(): SxProps {
     return {
-      backgroundColor: this.backgroundJson.color,
-      backgroundImage: this.backgroundJson.image,
-      backgroundRepeat: this.backgroundJson.repeat
-    }
+      backgroundColor: this._backgroundState.color,
+      backgroundImage: this._backgroundState.image,
+      backgroundRepeat: this._backgroundState.repeat
+    };
   }
 }

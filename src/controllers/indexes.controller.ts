@@ -1,36 +1,10 @@
-import { errorsAdd } from '../slices/errors.slice'
-import store from '../state'
+import { remember_exception } from '../business.logic/errors';
+import { IJsonapiResponseResource } from '../interfaces/IJsonapi';
 
-/**
- * Use this method to convert an array (of objects) to an object containing
- * nested objects.
- *
- * The array must contain entities object. This means, every single object
- * within the array have the same properties.
- * Then, you must choose an existing property of the entities as the key
- * which will be used to access the object.
- *
- * e.g.
- *  var array = [ {_id: 'abc'}, {_id: 'abcd'} ]
- *
- * using:
- *  var object = arrayToObject(array, '_id')
- *
- * yields:
- *  object = { abc: {_id: 'abc'}, abcd: {_id: 'abcd'} }
- *
- * @param array 
- * @param key 
- */
- export function arrayToEntities(array: any[], key: string): any {
-  if (key in array[0]) {
-    const object: any = {}
-    for (const obj of array) {
-      object[obj[key]] = obj
-    }
-    return object
-  }
-  return null
+export interface IIndexes {
+  [endpoint: string]: {
+    [id: string]: IJsonapiResponseResource;
+  } | undefined;
 }
 
 /**
@@ -54,35 +28,39 @@ import store from '../state'
  * Note: One caveat, indexes needs to be updated whenever the content of
  *       `state.data` is changed.
  */
-let indexes: any = {}
+const indexes: IIndexes = {};
 
 /**
- * Indexes new data.
+ * Use this method to convert an array (of objects) to an object containing
+ * nested objects.
  *
- * The new indexed `data` will be added to existing indexed `data`
+ * The array must contain entities object. This means, every single object
+ * within the array have the same properties.
+ * Then, you must choose an existing property of the entities as the key
+ * which will be used to access the object.
  *
- * @param endpoint 
- * @param res server response
+ * e.g.
+ *  var array = [ {_id: 'abc'}, {_id: 'abcd'} ]
+ *
+ * using:
+ *  var object = arrayToObject(array, '_id')
+ *
+ * yields:
+ *  object = { abc: {_id: 'abc'}, abcd: {_id: 'abcd'} }
+ *
+ * @param array 
+ * @param key 
  */
-export function insertIndexes(endpoint: string, res: any): void {
-  const update = arrayToEntities(res.data, 'id')
-
-  indexes = { ...indexes, [endpoint]: { ...indexes[endpoint], ...update }}
+export function index_by_id(array: IJsonapiResponseResource[], collection: string): void {
+  const object: {[i: string]: IJsonapiResponseResource} = {};
+  array.forEach(obj => {
+    object[obj.id] = obj;
+  });
+  indexes[collection] = object;
 }
 
-/**
- * Remove `data` which was previously indexed.
- *
- * @param endpoint
- * @param data
- */
-export function removeIndexes(endpoint: string, data: any): void {
-  const update = arrayToEntities(data, 'id')
-
-  for (const key in update) {
-    delete indexes[endpoint][key]
-  }
-
+export function drop_index(collection: string): void {
+  delete indexes[collection];
 }
 
 /**
@@ -95,15 +73,15 @@ export function removeIndexes(endpoint: string, data: any): void {
  */
 export function select(endpoint: string, id: string): any {
   try {
-    return indexes[endpoint][id]
+    return indexes?.[endpoint]?.[id];
   } catch (e: any) {
-    store.dispatch(errorsAdd({
+    remember_exception({
       'code': '404',
       'title': e.message,
       'detail': e.stack,
       'source': {
         parameter: `${endpoint}/${id}`
       }
-    }))
+    });
   }
 }

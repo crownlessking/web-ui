@@ -1,48 +1,87 @@
-import { defaultCallback } from '.'
-import AbstractState from './AbstractState'
-import IStateFormItemCustom from './interfaces/IStateFormItemCustom'
-import IStateLink from './interfaces/IStateLink'
-import StateFormItemCustom from './StateFormItemCustom'
-
-export function getLinkProps(def: IStateLink) {
-  const props = { ...def } as any
-  delete props.type
-  delete props.has
-  delete props.onClick
-
-  return props
-}
+import { default_callback, TReduxHandle } from 'src/state';
+import AbstractState from './AbstractState';
+import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
+import IStateLink from '../interfaces/IStateLink';
+import StateFormItemCustom from './StateFormItemCustom';
 
 export default class StateLink<P = any>
-    extends AbstractState implements IStateLink {
+  extends AbstractState
+  implements IStateLink
+{
+  private _linkState: IStateLink;
+  private _parentDef: P;
+  private _linkHasState: IStateFormItemCustom;
+  private _linkHas?: StateFormItemCustom<this>;
+  private _handleOnClick?: TReduxHandle;
 
-  private linkJson: IStateLink
-  private parentObj: P
-  private linkHasJson: IStateFormItemCustom
-  private linkHas?: StateFormItemCustom<this>
-
-  constructor (linkJson: IStateLink, parent: P) {
-    super()
-    this.linkJson = linkJson
-    this.parentObj = parent
-    this.linkHasJson = this.linkJson.has || { }
+  constructor (linkState: IStateLink, parent?: P) {
+    super();
+    this._linkState = linkState;
+    this._parentDef = parent || ({
+      menuItemsProps: {},
+      menuItemsSx: {},
+      typography: {}
+    }) as any;
+    this._linkHasState = this._linkState.has || { };
   }
 
-  get json(): IStateLink { return this.linkJson }
-  get parent(): P { return this.parentObj }
-  get props(): any { throw new Error('Not implemented yet.') }
-  get theme(): any { throw new Error('Not implemented yet.') }
-  get type(): IStateLink['type'] { return this.linkJson.type }
+  get state(): IStateLink { return this._linkState; }
+  get parent(): P { return this._parentDef; }
+  get props(): any { return this._linkState.props; }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get type(): Required<IStateLink>['type'] { return this._linkState.type || 'text'; }
   get has(): StateFormItemCustom<this> {
-    return this.linkHas
-      || (this.linkHas = new StateFormItemCustom(
-        this.linkHasJson, this
-      ))
+    return this._linkHas
+      || (this._linkHas = new StateFormItemCustom(
+        this._linkHasState, this
+      ));
   }
-  get onClick() {
-    return this.linkJson.onClick || defaultCallback
+  private setHandleOnClick = (): TReduxHandle => {
+    if (this._linkState.onClick) {
+      return this._handleOnClick = this._linkState.onClick;
+    }
+    if (this._linkHas) {
+      const handleCallback = this._linkHas.getHandleCallback();
+      if (handleCallback) {
+        return this._handleOnClick = handleCallback;
+      }
+    }
+    return this._handleOnClick = default_callback;
   }
-  get href(): string { return this.linkJson.href || '' }
 
-  get(attr: string): void { return this.linkJson[attr] }
+  get onClick(): TReduxHandle {
+    return this._handleOnClick || this.setHandleOnClick();
+  }
+  get href(): string { return this._linkState.href ?? ''; }
+  get color(): string { return this._linkHasState.color || 'inherit'; }
+
+  /** Set form field `onClick` attribute */
+  set onClick(cb: TReduxHandle) {
+    this._handleOnClick = cb;
+  }
+}
+
+/**
+ * Format routes
+ *
+ * **dev**
+ * This function was created because I did not want to be force to include
+ * the starting forwardslash in the route when defining buttons and links.
+ * I believe it is much cleaner (in terms of naming convension) to keep the
+ * forwardslash out of the definition.
+ * Although an entire function is not necessary but you never know, the
+ * route formatting process might grow in complexity in the furture.
+ *
+ * @todo This function could be moved to `links.controller.ts` file once it is
+ *       created OR if there is a need to create it.
+ *
+ * @param route
+ */
+export function get_formatted_route(has: StateFormItemCustom<any>, href?: string): string {
+  const route = has.route;
+  if (route) {
+    return route.charAt(0) !== '/' ? `/${route}` : route;
+  }
+  const {pathname, search } = window.location;
+  return href || pathname + (search ?? '');
 }

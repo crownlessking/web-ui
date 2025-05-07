@@ -1,43 +1,55 @@
+import getConfig, { IConfiguration } from '../../controllers/config.controller'
 
-import Config from '../../controllers/config.controller'
+describe('config.controller.ts', () => {
+  const initConfObj = {
+    /** App default theme mode. */
+    DEFAULT_THEME_MODE: 'light',
+    /** Indicates whether the app is in debug mode or not. */
+    DEBUG: false,
+    /** Indicates whether the app is in development mode or not. */
+    DEV: false,
+    // TODO Add your config object values here e.g.
+    // MY_CONFIG: 'my config value',
+  }
 
-test('IConfiguration.init()', done => {
-  Config.init({
-    init: 'foo',
-    tries: 1
+  const $config = getConfig()
+  $config.init(initConfObj)
+
+  // Makes config object key available in suggestions
+  type IAppConfig = IConfiguration & typeof initConfObj
+
+  const Config = $config as IAppConfig
+
+  it('should initialize config object', () => {
+    expect(Config).toBeDefined()
+    expect(Config.DEFAULT_THEME_MODE).toBe('light')
+    expect(Config.DEBUG).toBe(false)
+    expect(Config.DEV).toBe(false)
   })
 
-  expect(Config.init).not.toBe('foo')
-  expect(Config.tries).toBe(1)
+  it('should set config object value', () => {
+    Config.set('MY_CONFIG', 'my config value')
+    expect(Config.MY_CONFIG).toBe('my config value')
+  })
 
-  Config.tries = 2
-  expect(Config.tries).toBe(2)
+  it('should read config object value', () => {
+    expect(Config.read('MY_CONFIG')).toBe('my config value')
+  })
 
-  done()
-})
+  it('should write config object value', () => {
+    Config.write('MY_CONFIG', 'new config value')
+    expect(Config.MY_CONFIG).toBe('new config value')
+  })
 
-test('IConfiguration.set()', done => {
+  it('should delete config object value', () => {
+    Config.delete('MY_CONFIG')
+    expect(Config.MY_CONFIG).toBeUndefined()
+  })
 
-  Config.set('pagination.users.limit', 5)
-  expect(Config.pagination.users.limit).toBe(5)
-  try {
-    Config.write('pagination.users.limit', 25)
-  } catch (e) {}
-  expect(Config.pagination.users.limit).not.toBe(25)
-
-  Config.set('init', '')
-  expect(Config.init).not.toBe('')
-
-  done()
-})
-
-test('IConfiguration.write()', done => {
-
-  Config.write('firstname', 'joe')
-  expect(Config.firstname).toBe('joe')
-
-  Config.write('firstname', 'foo')
-  expect(Config.firstname).toBe('foo')
-
-  done()
+  it('should clear config object', () => {
+    Config.clear()
+    expect(Config.DEFAULT_THEME_MODE).toBeUndefined()
+    expect(Config.DEBUG).toBeUndefined()
+    expect(Config.DEV).toBeUndefined()
+  })
 })
