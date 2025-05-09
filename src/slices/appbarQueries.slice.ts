@@ -4,9 +4,9 @@ import initialState from '../state/initial.state';
 interface IABSSliceAction {
   type: string;
   payload: {
-    route: string
-    value: string
-    mode?: 'search' | 'filter'
+    route: string;
+    value: string;
+    mode?: 'search' | 'filter';
   };
 }
 

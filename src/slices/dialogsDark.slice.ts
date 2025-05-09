@@ -8,7 +8,7 @@ export const dialogsDarkSlice = createSlice({
   
     dialogsDarkClear: (state) => {
       for (const key in state) {
-        delete state[key]
+        delete state[key];
       }
     }
 

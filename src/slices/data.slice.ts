@@ -6,9 +6,9 @@ export interface IDataAdd {
   type: string;
   payload: {
     /** Collection of resources retrieved from server. */
-    data: any
+    data: any;
     /** The endpoint at which the collection was retrieved. */
-    endpoint: string
+    endpoint: string;
   };
 }
 

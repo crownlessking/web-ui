@@ -12,10 +12,10 @@ export const backgroundSlice = createSlice({
   initialState: initialState.background,
   reducers: {
     backgroundSet: (state, action: ISBAction) => {
-      const { color, image, repeat } = action.payload
-      state.color = color
-      state.image = image
-      state.repeat = repeat
+      const { color, image, repeat } = action.payload;
+      state.color = color;
+      state.image = image;
+      state.repeat = repeat;
     },
   },
 });
